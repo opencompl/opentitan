@@ -1,0 +1,216 @@
+module {
+  hw.module @pwrmgr_slow_fsm(in %clk_i : i1, in %rst_ni : i1, in %rst_main_ni : i1, in %wakeup_i : i1, in %reset_req_i : i1, out req_pwrup_o : i1, out pwrup_cause_toggle_o : i1, out pwrup_cause_o : i2, in %ack_pwrup_i : i1, in %req_pwrdn_i : i1, out ack_pwrdn_o : i1, out rst_req_o : i1, out fsm_invalid_o : i1, in %clr_req_i : i1, in %main_pd_ni : i1, in %main_clk_en_i : i1, in %io_clk_en_i : i1, in %ast_i : !hw.struct<slow_clk_val: i1, core_clk_val: i1, io_clk_val: i1, main_pok: i1>, out ast_o : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>) {
+    %true = hw.constant true
+    %c-503_i10 = hw.constant -503 : i10
+    %c332_i10 = hw.constant 332 : i10
+    %c-133_i10 = hw.constant -133 : i10
+    %c117_i10 = hw.constant 117 : i10
+    %c-32_i10 = hw.constant -32 : i10
+    %c218_i10 = hw.constant 218 : i10
+    %c-324_i10 = hw.constant -324 : i10
+    %c401_i10 = hw.constant 401 : i10
+    %c1_i2 = hw.constant 1 : i2
+    %c-2_i2 = hw.constant -2 : i2
+    %c-313_i10 = hw.constant -313 : i10
+    %c431_i10 = hw.constant 431 : i10
+    %c34_i10 = hw.constant 34 : i10
+    %false = hw.constant false
+    %c0_i2 = hw.constant 0 : i2
+    %0 = hw.struct_create (%pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q) : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
+    %core_clk_val = hw.struct_extract %ast_i["core_clk_val"] : !hw.struct<slow_clk_val: i1, core_clk_val: i1, io_clk_val: i1, main_pok: i1>
+    %io_clk_val = hw.struct_extract %ast_i["io_clk_val"] : !hw.struct<slow_clk_val: i1, core_clk_val: i1, io_clk_val: i1, main_pok: i1>
+    %1 = comb.and %core_clk_val, %io_clk_val : i1
+    %2 = comb.and %main_pd_ni, %main_clk_en_i {sv.namehint = "main_clk_en"} : i1
+    %3 = comb.and %main_pd_ni, %io_clk_en_i {sv.namehint = "io_clk_en"} : i1
+    %4 = comb.xor %core_clk_val, %true : i1
+    %5 = comb.or %2, %4 : i1
+    %6 = comb.xor %io_clk_val, %true : i1
+    %7 = comb.or %3, %6 : i1
+    %8 = comb.and %5, %7 : i1
+    %9 = comb.or %fsm_invalid_q, %137, %2 : i1
+    %10 = comb.or %fsm_invalid_q, %137, %3 : i1
+    %11 = seq.to_clock %clk_i
+    %12 = comb.xor %rst_ni, %true : i1
+    %cause_q = seq.firreg %120 clock %11 reset async %12, %c0_i2 : i2
+    %cause_toggle_q = seq.firreg %125 clock %11 reset async %12, %false : i1
+    %pd_nq = seq.firreg %122 clock %11 reset async %12, %true : i1
+    %pwr_clamp_q = seq.firreg %127 clock %11 reset async %12, %true : i1
+    %pwr_clamp_env_q = seq.firreg %129 clock %11 reset async %12, %true : i1
+    %main_clk_en_q = seq.firreg %9 clock %11 reset async %12, %false : i1
+    %io_clk_en_q = seq.firreg %10 clock %11 reset async %12, %false : i1
+    %req_pwrup_q = seq.firreg %131 clock %11 reset async %12, %false : i1
+    %ack_pwrdn_q = seq.firreg %133 clock %11 reset async %12, %false : i1
+    %fsm_invalid_q = seq.firreg %135 clock %11 reset async %12, %false : i1
+    %u_state_regs.state_o = hw.instance "u_state_regs" @prim_sparse_fsm_flop(clk_i: %clk_i: i1, rst_ni: %rst_ni: i1, state_i: %119: i10) -> (state_o: i10)
+    %13 = comb.icmp ceq %u_state_regs.state_o, %c34_i10 : i10
+    %14 = comb.icmp ceq %u_state_regs.state_o, %c-313_i10 : i10
+    %15 = comb.or %wakeup_i, %reset_req_i : i1
+    %16 = comb.mux %reset_req_i, %c-2_i2, %c1_i2 : i2
+    %17 = comb.icmp ceq %u_state_regs.state_o, %c431_i10 : i10
+    %18 = comb.icmp ceq %u_state_regs.state_o, %c401_i10 : i10
+    %19 = comb.icmp ceq %u_state_regs.state_o, %c-324_i10 : i10
+    %20 = comb.mux %17, %u_main_pok_sync.q_o, %1 : i1
+    %21 = comb.mux %17, %c401_i10, %c218_i10 : i10
+    %22 = comb.or %17, %pd_nq : i1
+    %23 = comb.xor %17, %true : i1
+    %24 = comb.icmp ceq %u_state_regs.state_o, %c218_i10 : i10
+    %25 = comb.icmp ceq %u_state_regs.state_o, %c-32_i10 : i10
+    %26 = comb.mux %24, %req_pwrdn_i, %ack_pwrup_i : i1
+    %27 = comb.mux %24, %ack_pwrup_i, %req_pwrdn_i : i1
+    %28 = comb.mux %24, %c-32_i10, %c117_i10 : i10
+    %29 = comb.xor %24, %true : i1
+    %30 = comb.and %29, %req_pwrup_q : i1
+    %31 = comb.or %24, %req_pwrup_q : i1
+    %32 = comb.xor %26, %true : i1
+    %33 = comb.and %27, %32 : i1
+    %34 = comb.icmp ceq %u_state_regs.state_o, %c117_i10 : i10
+    %35 = comb.xor %req_pwrdn_i, %true : i1
+    %36 = comb.icmp ceq %u_state_regs.state_o, %c-133_i10 : i10
+    %37 = comb.xor %main_pd_ni, %true : i1
+    %38 = comb.icmp ceq %u_state_regs.state_o, %c332_i10 : i10
+    %39 = comb.xor %u_main_pok_sync.q_o, %true : i1
+    %40 = comb.or %39, %main_pd_ni : i1
+    %41 = comb.xor %13, %true : i1
+    %42 = comb.xor %14, %true : i1
+    %43 = comb.and %42, %41 : i1
+    %44 = comb.and %23, %43 : i1
+    %45 = comb.xor %18, %true : i1
+    %46 = comb.and %45, %44 : i1
+    %47 = comb.xor %19, %true : i1
+    %48 = comb.and %47, %46 : i1
+    %49 = comb.and %29, %48 : i1
+    %50 = comb.xor %25, %true : i1
+    %51 = comb.and %50, %49 : i1
+    %52 = comb.xor %34, %true : i1
+    %53 = comb.and %52, %51 : i1
+    %54 = comb.xor %36, %true : i1
+    %55 = comb.and %54, %53 : i1
+    %56 = comb.xor %38, %true : i1
+    %57 = comb.icmp cne %u_state_regs.state_o, %c-503_i10 : i10
+    %58 = comb.and %56, %55, %57 : i1
+    %59 = comb.xor %40, %true : i1
+    %60 = comb.or %58, %59 : i1
+    %61 = comb.mux %60, %u_state_regs.state_o, %c-313_i10 : i10
+    %62 = comb.xor %58, %true : i1
+    %63 = comb.and %62, %main_pd_ni : i1
+    %64 = comb.or %58, %pwr_clamp_q : i1
+    %65 = comb.and %55, %38 : i1
+    %66 = comb.mux %65, %c-503_i10, %61 : i10
+    %67 = comb.mux %65, %pwr_clamp_env_q, %64 : i1
+    %68 = comb.xor %65, %true : i1
+    %69 = comb.mux %35, %c-133_i10, %u_state_regs.state_o : i10
+    %70 = comb.and %34, %51 : i1
+    %71 = comb.mux %70, %69, %66 : i10
+    %72 = comb.xor %70, %true : i1
+    %73 = comb.mux %33, %28, %u_state_regs.state_o : i10
+    %74 = comb.mux %33, %30, %31 : i1
+    %75 = comb.and %25, %49 : i1
+    %76 = comb.and %24, %48 : i1
+    %77 = comb.or %75, %76 : i1
+    %78 = comb.mux %77, %73, %71 : i10
+    %79 = comb.or %77, %70 : i1
+    %80 = comb.mux %79, %pwr_clamp_q, %67 : i1
+    %81 = comb.xor %77, %true : i1
+    %82 = comb.and %44, %18 : i1
+    %83 = comb.mux %82, %c-324_i10, %78 : i10
+    %84 = comb.or %82, %77, %70, %65 : i1
+    %85 = comb.mux %84, %pd_nq, %63 : i1
+    %86 = comb.xor %82, %true : i1
+    %87 = comb.and %86, %80 : i1
+    %88 = comb.and %86, %79 : i1
+    %89 = comb.mux %20, %21, %u_state_regs.state_o : i10
+    %90 = comb.xor %20, %true : i1
+    %91 = comb.and %19, %46 : i1
+    %92 = comb.and %17, %43 : i1
+    %93 = comb.or %91, %92 : i1
+    %94 = comb.mux %93, %89, %83 : i10
+    %95 = comb.mux %93, %22, %85 : i1
+    %96 = comb.xor %93, %true : i1
+    %97 = comb.mux %93, %23, %88 : i1
+    %98 = comb.mux %13, %c431_i10, %94 : i10
+    %99 = comb.or %13, %96, %90, %23 : i1
+    %100 = comb.and %99, %pwr_clamp_env_q : i1
+    %101 = comb.and %36, %53 : i1
+    %102 = comb.and %8, %101 : i1
+    %103 = comb.mux %102, %c332_i10, %98 : i10
+    %104 = comb.mux %102, %37, %100 : i1
+    %105 = comb.xor %102, %true : i1
+    %106 = comb.xor %8, %true : i1
+    %107 = comb.and %101, %106 : i1
+    %108 = comb.mux %107, %u_state_regs.state_o, %103 : i10
+    %109 = comb.or %107, %102, %41 : i1
+    %110 = comb.mux %109, %cause_q, %c0_i2 : i2
+    %111 = comb.xor %107, %true : i1
+    %112 = comb.and %14, %41 : i1
+    %113 = comb.and %15, %112 : i1
+    %114 = comb.mux %113, %c431_i10, %108 : i10
+    %115 = comb.mux %113, %16, %110 : i2
+    %116 = comb.xor %113, %true : i1
+    %117 = comb.xor %15, %true : i1
+    %118 = comb.and %112, %117 : i1
+    %119 = comb.mux %118, %u_state_regs.state_o, %114 : i10
+    %120 = comb.mux %118, %cause_q, %115 : i2
+    %121 = comb.or %118, %113, %107, %102, %13 : i1
+    %122 = comb.mux %121, %pd_nq, %95 : i1
+    %123 = comb.xor %118, %true : i1
+    %124 = comb.and %123, %113 : i1
+    %125 = comb.xor %124, %cause_toggle_q : i1
+    %126 = comb.or %118, %113, %107, %102, %13, %93 : i1
+    %127 = comb.mux %126, %pwr_clamp_q, %87 : i1
+    %128 = comb.or %118, %113, %107 : i1
+    %129 = comb.mux %128, %pwr_clamp_env_q, %104 : i1
+    %130 = comb.or %118, %113, %107, %102, %13, %93, %82, %81 : i1
+    %131 = comb.mux %130, %req_pwrup_q, %74 : i1
+    %132 = comb.or %118, %113, %107, %102, %13, %93, %82, %77, %72 : i1
+    %133 = comb.mux %132, %ack_pwrdn_q, %req_pwrdn_i : i1
+    %134 = comb.and %123, %116, %111, %105, %41, %96, %86, %81, %72, %68, %58 : i1
+    %135 = comb.or %134, %fsm_invalid_q : i1
+    %136 = comb.and %123, %116, %111, %105, %41, %93, %20, %17 : i1
+    %137 = comb.and %123, %116, %111, %105, %41, %97 : i1
+    %main_pok = hw.struct_extract %ast_i["main_pok"] : !hw.struct<slow_clk_val: i1, core_clk_val: i1, io_clk_val: i1, main_pok: i1>
+    %138 = comb.xor %rst_main_ni, %true : i1
+    %async_main_pok_st = seq.firreg %main_pok clock %11 reset async %138, %false : i1
+    %u_main_pok_sync.q_o = hw.instance "u_main_pok_sync" @prim_flop_2sync(clk_i: %clk_i: i1, rst_ni: %rst_ni: i1, d_i: %async_main_pok_st: i1) -> (q_o: i1)
+    %139 = comb.xor %122, %true : i1
+    %140 = comb.and %139, %mon_main_pok : i1
+    %141 = comb.or %136, %mon_main_pok : i1
+    %142 = comb.xor %140, %true : i1
+    %143 = comb.and %142, %141 : i1
+    %144 = comb.or %140, %136 : i1
+    %145 = comb.mux bin %144, %143, %mon_main_pok : i1
+    %mon_main_pok = seq.firreg %145 clock %11 reset async %12, %false : i1
+    %146 = comb.and %mon_main_pok, %39 : i1
+    %147 = comb.or %rst_req_o, %146 : i1
+    %148 = comb.xor %clr_req_i, %true : i1
+    %149 = comb.and %148, %147 : i1
+    %rst_req_o = seq.firreg %149 clock %11 reset async %12, %false : i1
+    %150 = comb.xor %146, %true : i1
+    verif.clocked_assert %150, posedge %clk_i : i1
+    hw.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %0 : i1, i1, i2, i1, i1, i1, !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
+  }
+  hw.module private @prim_sparse_fsm_flop(in %clk_i : i1, in %rst_ni : i1, in %state_i : i10, out state_o : i10) {
+    %u_state_flop.q_o = hw.instance "u_state_flop" @prim_flop(clk_i: %clk_i: i1, rst_ni: %rst_ni: i1, d_i: %state_i: i10) -> (q_o: i10) {sv.namehint = "state_raw"}
+    hw.output %u_state_flop.q_o : i10
+  }
+  hw.module private @prim_flop_2sync(in %clk_i : i1, in %rst_ni : i1, in %d_i : i1, out q_o : i1) {
+    %u_sync_1.q_o = hw.instance "u_sync_1" @prim_flop_0(clk_i: %clk_i: i1, rst_ni: %rst_ni: i1, d_i: %d_i: i1) -> (q_o: i1) {sv.namehint = "intq"}
+    %u_sync_2.q_o = hw.instance "u_sync_2" @prim_flop_0(clk_i: %clk_i: i1, rst_ni: %rst_ni: i1, d_i: %u_sync_1.q_o: i1) -> (q_o: i1)
+    hw.output %u_sync_2.q_o : i1
+  }
+  hw.module private @prim_flop(in %clk_i : i1, in %rst_ni : i1, in %d_i : i10, out q_o : i10) {
+    %true = hw.constant true
+    %c34_i10 = hw.constant 34 : i10
+    %0 = seq.to_clock %clk_i
+    %1 = comb.xor %rst_ni, %true : i1
+    %q_o = seq.firreg %d_i clock %0 reset async %1, %c34_i10 : i10
+    hw.output %q_o : i10
+  }
+  hw.module private @prim_flop_0(in %clk_i : i1, in %rst_ni : i1, in %d_i : i1, out q_o : i1) {
+    %true = hw.constant true
+    %false = hw.constant false
+    %0 = seq.to_clock %clk_i
+    %1 = comb.xor %rst_ni, %true : i1
+    %q_o = seq.firreg %d_i clock %0 reset async %1, %false : i1
+    hw.output %q_o : i1
+  }
+}
