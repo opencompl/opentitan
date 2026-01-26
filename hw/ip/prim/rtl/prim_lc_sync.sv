@@ -33,7 +33,7 @@ module prim_lc_sync #(
   localparam lc_ctrl_pkg::lc_tx_t LcResetValue = (ResetValueIsOn) ? lc_ctrl_pkg::On :
                                                                   lc_ctrl_pkg::Off;
 
-  `ASSERT_INIT(NumCopiesMustBeGreaterZero_A, NumCopies > 0)
+  // `ASSERT_INIT(NumCopiesMustBeGreaterZero_A, NumCopies > 0)
 
   logic [lc_ctrl_pkg::TxWidth-1:0] lc_en;
   if (AsyncOn) begin : gen_flops

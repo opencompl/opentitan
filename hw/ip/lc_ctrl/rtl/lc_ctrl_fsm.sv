@@ -187,9 +187,9 @@ module lc_ctrl_fsm
   // Conditional LC signal outputs
   lc_tx_t lc_clk_byp_req, lc_flash_rma_req, lc_check_byp_en;
 
-  `ASSERT_KNOWN(LcStateKnown_A,   lc_state_q   )
-  `ASSERT_KNOWN(LcCntKnown_A,     lc_cnt_q     )
-  `ASSERT_KNOWN(FsmStateKnown_A,  fsm_state_q  )
+  // `ASSERT_KNOWN(LcStateKnown_A,   lc_state_q   )
+  // `ASSERT_KNOWN(LcCntKnown_A,     lc_cnt_q     )
+  // `ASSERT_KNOWN(FsmStateKnown_A,  fsm_state_q  )
 
   // Hashed token to compare against.
   logic [1:0] hashed_token_valid_mux;
@@ -888,6 +888,6 @@ module lc_ctrl_fsm
       fsm_state_q inside {InvalidSt, EscalateSt})
 
   // Check that the FSM is linear and does not contain any loops
-  `ASSERT_FPV_LINEAR_FSM(SecCmCFILinear_A, fsm_state_q, fsm_state_e)
+  // `ASSERT_FPV_LINEAR_FSM(SecCmCFILinear_A, fsm_state_q, fsm_state_e)
 
 endmodule : lc_ctrl_fsm

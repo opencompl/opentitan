@@ -186,6 +186,7 @@ FSM_TEST_CASES = [
             "-Ihw/ip/prim/rtl",
             "-yhw/ip/prim_generic/rtl",
             "hw/ip/prim/rtl/prim_assert.sv",
+            "hw/top_earlgrey/rtl/autogen/testing/lc_ctrl_token_pkg.sv"
             # "-DYOSYS", "-DSYNTHESIS",
         ]
     }
