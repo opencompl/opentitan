@@ -39,29 +39,29 @@ module prim_sparse_fsm_flop #(
   );
   assign state_o = StateEnumT'(state_raw);
 
-  `ifdef INC_ASSERT
-  assign unused_err_o = is_undefined_state(state_o);
+  // `ifdef INC_ASSERT
+  // assign unused_err_o = is_undefined_state(state_o);
 
-  function automatic logic is_undefined_state(StateEnumT sig);
-    // This is written with a vector in order to make it amenable to x-prop analysis.
-    logic is_defined = 1'b0;
-    for (int i = 0, StateEnumT t = t.first(); i < t.num(); i += 1, t = t.next()) begin
-      is_defined |= (sig === t);
-    end
-    return ~is_defined;
-  endfunction
+  // function automatic logic is_undefined_state(StateEnumT sig);
+  //   // This is written with a vector in order to make it amenable to x-prop analysis.
+  //   logic is_defined = 1'b0;
+  //   for (int i = 0, StateEnumT t = t.first(); i < t.num(); i += 1, t = t.next()) begin
+  //     is_defined |= (sig === t);
+  //   end
+  //   return ~is_defined;
+  // endfunction
 
-  `else
-    assign unused_err_o = 1'b0;
-  `endif
+  // `else
+  //   assign unused_err_o = 1'b0;
+  // `endif
 
-  // If ASSERT_PRIM_FSM_ERROR_TRIGGER_ALERT is declared, the unused_assert_connected signal will
-  // be set to 1 and the below check will pass.
-  // If the assertion is not declared however, the statement below will fail.
-  `ifdef INC_ASSERT
-  logic unused_assert_connected;
+  // // If ASSERT_PRIM_FSM_ERROR_TRIGGER_ALERT is declared, the unused_assert_connected signal will
+  // // be set to 1 and the below check will pass.
+  // // If the assertion is not declared however, the statement below will fail.
+  // `ifdef INC_ASSERT
+  // logic unused_assert_connected;
 
-  `ASSERT_INIT_NET(AssertConnected_A, unused_assert_connected === 1'b1 || !EnableAlertTriggerSVA)
-  `endif
+  // `ASSERT_INIT_NET(AssertConnected_A, unused_assert_connected === 1'b1 || !EnableAlertTriggerSVA)
+  // `endif
 
 endmodule

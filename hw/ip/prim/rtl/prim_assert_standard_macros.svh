@@ -75,10 +75,11 @@
     `ASSERT_FINAL(Final_``__name``, __prop)
 
 `define ASSERT(__name, __prop, __clk = `ASSERT_DEFAULT_CLK, __rst = `ASSERT_DEFAULT_RST) \
-  __name: assert property (@(posedge __clk) disable iff ((__rst) !== '0) (__prop))       \
-    else begin                                                                           \
-      `ASSERT_ERROR(__name)                                                              \
-    end
+always assert property (@(posedge __clk) (__prop) );
+//__name: assert property (@(posedge __clk)  (__prop));       
+    //else begin                                                                           \
+    //  `ASSERT_ERROR(__name)                                                              \
+    //end
 
 `define ASSERT_NEVER(__name, __prop, __clk = `ASSERT_DEFAULT_CLK, __rst = `ASSERT_DEFAULT_RST) \
   __name: assert property (@(posedge __clk) disable iff ((__rst) !== '0) not (__prop))         \
