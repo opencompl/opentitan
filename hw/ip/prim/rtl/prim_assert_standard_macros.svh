@@ -16,17 +16,9 @@
 // It calls $fatal() with the first argument equal to 2, it outputs the statistics about the memory
 // and CPU time.
 `define ASSERT_INIT(__name, __prop)                                                  \
-`ifdef FPV_ON                                                                        \
-  if (!(__prop)) $fatal(2, "Fatal static assertion [%s]: (%s) is not true.",         \
-                        (__name), (__prop));                                         \
-`else                                                                                \
-  initial begin                                                                      \
-    __name: assert (__prop)                                                          \
-      else begin                                                                     \
-        `ASSERT_ERROR(__name)                                                        \
-      end                                                                            \
-  end                                                                                \
-`endif
+initial begin                                                                      \
+  __name: assert (__prop);                                                          \
+end                                                                                
 
 `define ASSERT_INIT_NET(__name, __prop)                                                   \
   initial begin                                                                      \
