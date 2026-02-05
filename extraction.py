@@ -1,4 +1,5 @@
 import os
+import sys
 
 FSM_TEST_CASES = [
     {
@@ -163,7 +164,7 @@ FSM_TEST_CASES = [
 
 #  -yhw/ip/prim_generic/rtl -yhw/ip/prim/rtl -yhw/ip/spi_host/rtl -yhw/ip/lc_ctrl/rtl -yhw/ip/rom_ctrl/rtl hw/ip/spi_host/rtl/spi_host_fsm.sv -Ihw/ip/prim/rtl
         "sv_path":"hw/ip/spi_host/rtl/spi_host_fsm.sv",
-        "name": "spi_host_fsm.sv",
+        "name": "spi_host_fsm",
         "verilog_flags":[
             "-yhw/ip/prim_generic/rtl",
         "-yhw/ip/prim/rtl",
@@ -198,11 +199,14 @@ OPENTITAN_ROOT = "./"
 output_base_dir = OPENTITAN_ROOT+"testing"
 CIRCT_VERILOG = "circt-verilog"
 CIRCT_OPT = "circt-opt"
+quietMode = "--quiet" in sys.argv
+
 
 def run_command(cmd, cwd=None):
-    print(f"Running command: {' '.join(cmd)} in {cwd}")
+    if not quietMode:
+        print(f"Running command: {' '.join(cmd)} in {cwd}")
     result = os.system(' '.join(cmd))
-    if result != 0:
+    if result != 0 and not quietMode:
         print(f"Command failed with exit code {result}")
     return result == 0
 
@@ -218,14 +222,15 @@ def main():
 
         test_dir = output_base_dir + "/" + name + "/"
         os.makedirs(test_dir, exist_ok=True)
-
-        print(f"--- Running Test: {name} ---")
+        if not quietMode:
+            print(f"--- Running Test: {name} ---")
 
 
         # --- Step 1: Ingest SystemVerilog ---
         initial_mlir = test_dir + "1_initial.mlir"
         cmd = [str(CIRCT_VERILOG), str(sv_path), *verilog_flags, "-o", str(initial_mlir)]
-        print(*cmd)
+        if not quietMode:
+            print(*cmd)
         res = run_command(cmd, cwd=OPENTITAN_ROOT)
         total_tests += 1
         passed_tests += int(res)
@@ -244,8 +249,8 @@ def main():
 
         test_dir = output_base_dir + "/" + name + "/"
         os.makedirs(test_dir, exist_ok=True)
-
-        print(f"--- Running Test: {name} ---")
+        if not quietMode:
+            print(f"--- Running Test: {name} ---")
 
         initial_mlir = test_dir + "1_initial.mlir"
         proc_mlir = test_dir + "2_proc.mlir"
@@ -268,8 +273,8 @@ def main():
 
         test_dir = output_base_dir + "/" + name + "/"
         os.makedirs(test_dir, exist_ok=True)
-
-        print(f"--- Running Test: {name} ---")
+        if not quietMode:
+            print(f"--- Running Test: {name} ---")
 
         initial_mlir = test_dir + "2_proc.mlir"
         extracted_mlir = test_dir + "3_extracted.mlir"
