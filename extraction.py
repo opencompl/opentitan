@@ -197,6 +197,7 @@ FSM_TEST_CASES = [
 OPENTITAN_ROOT = "./"
 output_base_dir = OPENTITAN_ROOT+"testing"
 CIRCT_VERILOG = "circt-verilog"
+CIRCT_OPT = "circt-opt"
 
 def run_command(cmd, cwd=None):
     print(f"Running command: {' '.join(cmd)} in {cwd}")
@@ -206,6 +207,7 @@ def run_command(cmd, cwd=None):
     return result == 0
 
 def main():
+    run_command("rm -rf " + output_base_dir)
     total_tests = 0
     passed_tests = 0
     for fsm_config in FSM_TEST_CASES:
@@ -229,6 +231,56 @@ def main():
         passed_tests += int(res)
 
     print(f"{passed_tests} out of {total_tests} designs produced MLIR from SV")
+
+    # --- Step 2: Preprocesssing on emitted MLIR ---
+
+    total_tests = 0
+    passed_tests = 0
+    for fsm_config in FSM_TEST_CASES:
+        name = fsm_config["name"]
+        sv_path = OPENTITAN_ROOT + fsm_config["sv_path"]
+        verilog_flags = fsm_config["verilog_flags"]
+
+
+        test_dir = output_base_dir + "/" + name + "/"
+        os.makedirs(test_dir, exist_ok=True)
+
+        print(f"--- Running Test: {name} ---")
+
+        initial_mlir = test_dir + "1_initial.mlir"
+        proc_mlir = test_dir + "2_proc.mlir"
+        cmd = [str(CIRCT_OPT), "--hw-flatten-modules", "--comb-assume-two-valued", "--arc-strip-sv=async-resets-as-sync", str(initial_mlir), "-o",  str(proc_mlir)]
+        res = run_command(cmd, cwd=OPENTITAN_ROOT)
+        total_tests += 1
+        passed_tests += int(res)
+
+    print(f"{passed_tests} out of {total_tests} designs preprocessed")
+
+
+    # --- Step 3: Run passes to extract FSMs ---
+    total_tests = 0
+    passed_tests = 0
+    for fsm_config in FSM_TEST_CASES:
+        name = fsm_config["name"]
+        sv_path = OPENTITAN_ROOT + fsm_config["sv_path"]
+        verilog_flags = fsm_config["verilog_flags"]
+
+
+        test_dir = output_base_dir + "/" + name + "/"
+        os.makedirs(test_dir, exist_ok=True)
+
+        print(f"--- Running Test: {name} ---")
+
+        initial_mlir = test_dir + "2_proc.mlir"
+        extracted_mlir = test_dir + "3_extracted.mlir"
+        cmd = [str(CIRCT_OPT), "--convert-core-to-fsm", str(initial_mlir), "-o",  str(extracted_mlir)]
+        res = run_command(cmd, cwd=OPENTITAN_ROOT)
+        total_tests += 1
+        passed_tests += int(res)
+
+    print(f"{passed_tests} out of {total_tests} designs extracted FSMs")
+
+
 
 
 
