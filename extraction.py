@@ -228,7 +228,9 @@ def main():
         total_tests += 1
         passed_tests += int(res)
 
-    print(f"{passed_tests} out of {total_tests} designs produced SV")
+    print(f"{passed_tests} out of {total_tests} designs produced MLIR from SV")
+
+
 
 if __name__ == '__main__':
     main()
