@@ -211,7 +211,7 @@ def run_command(cmd, cwd=None):
     return result == 0
 
 def main():
-    run_command("rm -rf " + output_base_dir)
+    run_command(["rm", "-rf", output_base_dir])
     total_tests = 0
     passed_tests = 0
     for fsm_config in FSM_TEST_CASES:
