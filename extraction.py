@@ -199,6 +199,7 @@ OPENTITAN_ROOT = "./"
 output_base_dir = OPENTITAN_ROOT+"testing"
 CIRCT_VERILOG = "circt-verilog"
 CIRCT_OPT = "circt-opt"
+CIRCT_TRANSLATE = "circt-translate"
 quietMode = "--quiet" in sys.argv
 after = 0
 for arg in sys.argv:
@@ -270,6 +271,8 @@ def main():
             proc_mlir = test_dir + "2_proc.mlir"
             cmd = [str(CIRCT_OPT), "--hw-flatten-modules", "--comb-assume-two-valued", "--arc-strip-sv=async-resets-as-sync", "--hw-flatten-io", "--lower-ltl-to-core", str(initial_mlir), "-o",  str(proc_mlir)]
             res = run_command(cmd, cwd=OPENTITAN_ROOT)
+            # Hack until FSMToSMT handles clocked asserts
+            run_command(["sed", "-i", "-E", "-r", "\"s/clocked\_assert (%[a-zA-Z0-9_]+), .* : (.*)/assert \\1 : \\2/g\"", str(proc_mlir)])
             total_tests += 1
             passed_tests += int(res)
 
@@ -317,12 +320,37 @@ def main():
 
             extracted_mlir = test_dir + "3_extracted.mlir"
             smt_mlir = test_dir + "4_smt.mlir"
-            cmd = [str(FSM_CIRCT_OPT), "--convert-fsm-to-smt", "--mlir-diagnostic-verbosity-level=errors", str(extracted_mlir), "-o",  str(smt_mlir)]
+            cmd = [str(FSM_CIRCT_OPT), "--convert-fsm-to-smt", "--convert-comb-to-smt", "--convert-hw-to-smt", "--reconcile-unrealized-casts", "--mlir-diagnostic-verbosity-level=errors", str(extracted_mlir), "-o",  str(smt_mlir)]
             res = run_command(cmd, cwd=OPENTITAN_ROOT)
             total_tests += 1
             passed_tests += int(res)
 
         print(f"{passed_tests} out of {total_tests} designs produced SMT dialect MLIR")
+
+    # --- Step 5: FSM To SMT ---
+    if after <= 5:
+        total_tests = 0
+        passed_tests = 0
+        for fsm_config in FSM_TEST_CASES:
+            name = fsm_config["name"]
+            sv_path = OPENTITAN_ROOT + fsm_config["sv_path"]
+            verilog_flags = fsm_config["verilog_flags"]
+
+
+            test_dir = output_base_dir + "/" + name + "/"
+            os.makedirs(test_dir, exist_ok=True)
+            if not quietMode:
+                print(f"--- Running Test: {name} ---")
+
+            smt_mlir = test_dir + "4_smt.mlir"
+            smtlib_file = test_dir + "5_smtlib.smt2"
+            cmd = [str(CIRCT_TRANSLATE), "--export-smtlib", str(smt_mlir), "-o",  str(smtlib_file)]
+            res = run_command(cmd, cwd=OPENTITAN_ROOT)
+            total_tests += 1
+            passed_tests += int(res)
+
+        print(f"{passed_tests} out of {total_tests} designs produced SMT-LIB files")
+
 
 if __name__ == '__main__':
     main()
