@@ -201,6 +201,12 @@ CIRCT_VERILOG = "circt-verilog"
 CIRCT_OPT = "circt-opt"
 quietMode = "--quiet" in sys.argv
 
+FSM_CIRCT_OPT = "/local/scratch/tah56/paper-evals/fsm-mc-benchmarking/fsm-circt/build/bin/circt-opt"
+
+if not os.path.isfile(FSM_CIRCT_OPT):
+    print("Sorry Bea has hardcoded the location of this binary until the FSMToSMT pass is merged (isn't she awfully silly!?). You'll need to update the FSM_CIRCT_OPT variable locally.")
+    sys.exit(0)
+
 
 def run_command(cmd, cwd=None):
     if not quietMode:
@@ -284,10 +290,6 @@ def main():
         passed_tests += int(res)
 
     print(f"{passed_tests} out of {total_tests} designs extracted FSMs")
-
-
-
-
 
 if __name__ == '__main__':
     main()
