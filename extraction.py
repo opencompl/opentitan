@@ -291,5 +291,28 @@ def main():
 
     print(f"{passed_tests} out of {total_tests} designs extracted FSMs")
 
+    # --- Step 4: FSM To SMT ---
+    total_tests = 0
+    passed_tests = 0
+    for fsm_config in FSM_TEST_CASES:
+        name = fsm_config["name"]
+        sv_path = OPENTITAN_ROOT + fsm_config["sv_path"]
+        verilog_flags = fsm_config["verilog_flags"]
+
+
+        test_dir = output_base_dir + "/" + name + "/"
+        os.makedirs(test_dir, exist_ok=True)
+        if not quietMode:
+            print(f"--- Running Test: {name} ---")
+
+        extracted_mlir = test_dir + "3_extracted.mlir"
+        smt_mlir = test_dir + "4_smt.mlir"
+        cmd = [str(CIRCT_OPT), "--convert-core-to-fsm", "--mlir-diagnostic-verbosity-level=errors", str(extracted_mlir), "-o",  str(smt_mlir)]
+        res = run_command(cmd, cwd=OPENTITAN_ROOT)
+        total_tests += 1
+        passed_tests += int(res)
+
+    print(f"{passed_tests} out of {total_tests} designs produced SMT dialect MLIR")
+
 if __name__ == '__main__':
     main()
