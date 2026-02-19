@@ -200,6 +200,10 @@ output_base_dir = OPENTITAN_ROOT+"testing"
 CIRCT_VERILOG = "circt-verilog"
 CIRCT_OPT = "circt-opt"
 quietMode = "--quiet" in sys.argv
+after = 0
+for arg in sys.argv:
+    if arg.startswith("--after="):
+        after = int(arg.split("=")[1])    
 
 FSM_CIRCT_OPT = "/local/scratch/tah56/paper-evals/fsm-mc-benchmarking/fsm-circt/build/bin/circt-opt"
 
@@ -217,102 +221,108 @@ def run_command(cmd, cwd=None):
     return result == 0
 
 def main():
-    run_command(["rm", "-rf", output_base_dir])
-    total_tests = 0
-    passed_tests = 0
-    for fsm_config in FSM_TEST_CASES:
-        name = fsm_config["name"]
-        sv_path = OPENTITAN_ROOT + fsm_config["sv_path"]
-        verilog_flags = fsm_config["verilog_flags"]
+    if after == 0:
+        run_command(["rm", "-rf", output_base_dir])
+
+    if after <= 1:
+        total_tests = 0
+        passed_tests = 0
+        for fsm_config in FSM_TEST_CASES:
+            name = fsm_config["name"]
+            sv_path = OPENTITAN_ROOT + fsm_config["sv_path"]
+            verilog_flags = fsm_config["verilog_flags"]
 
 
-        test_dir = output_base_dir + "/" + name + "/"
-        os.makedirs(test_dir, exist_ok=True)
-        if not quietMode:
-            print(f"--- Running Test: {name} ---")
+            test_dir = output_base_dir + "/" + name + "/"
+            os.makedirs(test_dir, exist_ok=True)
+            if not quietMode:
+                print(f"--- Running Test: {name} ---")
 
 
-        # --- Step 1: Ingest SystemVerilog ---
-        initial_mlir = test_dir + "1_initial.mlir"
-        cmd = [str(CIRCT_VERILOG), str(sv_path), *verilog_flags, "-o", str(initial_mlir)]
-        if not quietMode:
-            print(*cmd)
-        res = run_command(cmd, cwd=OPENTITAN_ROOT)
-        total_tests += 1
-        passed_tests += int(res)
+            # --- Step 1: Ingest SystemVerilog ---
+            initial_mlir = test_dir + "1_initial.mlir"
+            cmd = [str(CIRCT_VERILOG), str(sv_path), *verilog_flags, "-o", str(initial_mlir)]
+            if not quietMode:
+                print(*cmd)
+            res = run_command(cmd, cwd=OPENTITAN_ROOT)
+            total_tests += 1
+            passed_tests += int(res)
 
-    print(f"{passed_tests} out of {total_tests} designs produced MLIR from SV")
+        print(f"{passed_tests} out of {total_tests} designs produced MLIR from SV")
 
     # --- Step 2: Preprocesssing on emitted MLIR ---
 
-    total_tests = 0
-    passed_tests = 0
-    for fsm_config in FSM_TEST_CASES:
-        name = fsm_config["name"]
-        sv_path = OPENTITAN_ROOT + fsm_config["sv_path"]
-        verilog_flags = fsm_config["verilog_flags"]
+    if after <= 2:
+        total_tests = 0
+        passed_tests = 0
+        for fsm_config in FSM_TEST_CASES:
+            name = fsm_config["name"]
+            sv_path = OPENTITAN_ROOT + fsm_config["sv_path"]
+            verilog_flags = fsm_config["verilog_flags"]
 
 
-        test_dir = output_base_dir + "/" + name + "/"
-        os.makedirs(test_dir, exist_ok=True)
-        if not quietMode:
-            print(f"--- Running Test: {name} ---")
+            test_dir = output_base_dir + "/" + name + "/"
+            os.makedirs(test_dir, exist_ok=True)
+            if not quietMode:
+                print(f"--- Running Test: {name} ---")
 
-        initial_mlir = test_dir + "1_initial.mlir"
-        proc_mlir = test_dir + "2_proc.mlir"
-        cmd = [str(CIRCT_OPT), "--hw-flatten-modules", "--comb-assume-two-valued", "--arc-strip-sv=async-resets-as-sync", "--hw-flatten-io", str(initial_mlir), "-o",  str(proc_mlir)]
-        res = run_command(cmd, cwd=OPENTITAN_ROOT)
-        total_tests += 1
-        passed_tests += int(res)
+            initial_mlir = test_dir + "1_initial.mlir"
+            proc_mlir = test_dir + "2_proc.mlir"
+            cmd = [str(CIRCT_OPT), "--hw-flatten-modules", "--comb-assume-two-valued", "--arc-strip-sv=async-resets-as-sync", "--hw-flatten-io", str(initial_mlir), "-o",  str(proc_mlir)]
+            res = run_command(cmd, cwd=OPENTITAN_ROOT)
+            total_tests += 1
+            passed_tests += int(res)
 
-    print(f"{passed_tests} out of {total_tests} designs preprocessed")
+        print(f"{passed_tests} out of {total_tests} designs preprocessed")
 
 
     # --- Step 3: Run passes to extract FSMs ---
-    total_tests = 0
-    passed_tests = 0
-    for fsm_config in FSM_TEST_CASES:
-        name = fsm_config["name"]
-        sv_path = OPENTITAN_ROOT + fsm_config["sv_path"]
-        verilog_flags = fsm_config["verilog_flags"]
+    if after <= 3:
+        total_tests = 0
+        passed_tests = 0
+        for fsm_config in FSM_TEST_CASES:
+            name = fsm_config["name"]
+            sv_path = OPENTITAN_ROOT + fsm_config["sv_path"]
+            verilog_flags = fsm_config["verilog_flags"]
 
 
-        test_dir = output_base_dir + "/" + name + "/"
-        os.makedirs(test_dir, exist_ok=True)
-        if not quietMode:
-            print(f"--- Running Test: {name} ---")
+            test_dir = output_base_dir + "/" + name + "/"
+            os.makedirs(test_dir, exist_ok=True)
+            if not quietMode:
+                print(f"--- Running Test: {name} ---")
 
-        initial_mlir = test_dir + "2_proc.mlir"
-        extracted_mlir = test_dir + "3_extracted.mlir"
-        cmd = [str(CIRCT_OPT), "--convert-core-to-fsm", "--mlir-diagnostic-verbosity-level=errors", str(initial_mlir), "-o",  str(extracted_mlir)]
-        res = run_command(cmd, cwd=OPENTITAN_ROOT)
-        total_tests += 1
-        passed_tests += int(res)
+            initial_mlir = test_dir + "2_proc.mlir"
+            extracted_mlir = test_dir + "3_extracted.mlir"
+            cmd = [str(CIRCT_OPT), "--convert-core-to-fsm", "--mlir-diagnostic-verbosity-level=errors", str(initial_mlir), "-o",  str(extracted_mlir)]
+            res = run_command(cmd, cwd=OPENTITAN_ROOT)
+            total_tests += 1
+            passed_tests += int(res)
 
-    print(f"{passed_tests} out of {total_tests} designs extracted FSMs")
+        print(f"{passed_tests} out of {total_tests} designs extracted FSMs")
 
     # --- Step 4: FSM To SMT ---
-    total_tests = 0
-    passed_tests = 0
-    for fsm_config in FSM_TEST_CASES:
-        name = fsm_config["name"]
-        sv_path = OPENTITAN_ROOT + fsm_config["sv_path"]
-        verilog_flags = fsm_config["verilog_flags"]
+    if after <= 4:
+        total_tests = 0
+        passed_tests = 0
+        for fsm_config in FSM_TEST_CASES:
+            name = fsm_config["name"]
+            sv_path = OPENTITAN_ROOT + fsm_config["sv_path"]
+            verilog_flags = fsm_config["verilog_flags"]
 
 
-        test_dir = output_base_dir + "/" + name + "/"
-        os.makedirs(test_dir, exist_ok=True)
-        if not quietMode:
-            print(f"--- Running Test: {name} ---")
+            test_dir = output_base_dir + "/" + name + "/"
+            os.makedirs(test_dir, exist_ok=True)
+            if not quietMode:
+                print(f"--- Running Test: {name} ---")
 
-        extracted_mlir = test_dir + "3_extracted.mlir"
-        smt_mlir = test_dir + "4_smt.mlir"
-        cmd = [str(FSM_CIRCT_OPT), "--convert-fsm-to-smt", "--mlir-diagnostic-verbosity-level=errors", str(extracted_mlir), "-o",  str(smt_mlir)]
-        res = run_command(cmd, cwd=OPENTITAN_ROOT)
-        total_tests += 1
-        passed_tests += int(res)
+            extracted_mlir = test_dir + "3_extracted.mlir"
+            smt_mlir = test_dir + "4_smt.mlir"
+            cmd = [str(FSM_CIRCT_OPT), "--convert-fsm-to-smt", "--mlir-diagnostic-verbosity-level=errors", str(extracted_mlir), "-o",  str(smt_mlir)]
+            res = run_command(cmd, cwd=OPENTITAN_ROOT)
+            total_tests += 1
+            passed_tests += int(res)
 
-    print(f"{passed_tests} out of {total_tests} designs produced SMT dialect MLIR")
+        print(f"{passed_tests} out of {total_tests} designs produced SMT dialect MLIR")
 
 if __name__ == '__main__':
     main()
