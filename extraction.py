@@ -260,7 +260,7 @@ def main():
 
         initial_mlir = test_dir + "1_initial.mlir"
         proc_mlir = test_dir + "2_proc.mlir"
-        cmd = [str(CIRCT_OPT), "--hw-flatten-modules", "--comb-assume-two-valued", "--arc-strip-sv=async-resets-as-sync", str(initial_mlir), "-o",  str(proc_mlir)]
+        cmd = [str(CIRCT_OPT), "--hw-flatten-modules", "--comb-assume-two-valued", "--arc-strip-sv=async-resets-as-sync", "--hw-flatten-io", str(initial_mlir), "-o",  str(proc_mlir)]
         res = run_command(cmd, cwd=OPENTITAN_ROOT)
         total_tests += 1
         passed_tests += int(res)
