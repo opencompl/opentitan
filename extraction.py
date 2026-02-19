@@ -278,7 +278,7 @@ def main():
 
         initial_mlir = test_dir + "2_proc.mlir"
         extracted_mlir = test_dir + "3_extracted.mlir"
-        cmd = [str(CIRCT_OPT), "--convert-core-to-fsm", str(initial_mlir), "-o",  str(extracted_mlir)]
+        cmd = [str(CIRCT_OPT), "--convert-core-to-fsm", "--mlir-diagnostic-verbosity-level=errors", str(initial_mlir), "-o",  str(extracted_mlir)]
         res = run_command(cmd, cwd=OPENTITAN_ROOT)
         total_tests += 1
         passed_tests += int(res)
