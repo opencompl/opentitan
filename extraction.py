@@ -269,7 +269,7 @@ def main():
 
             initial_mlir = test_dir + "1_initial.mlir"
             proc_mlir = test_dir + "2_proc.mlir"
-            cmd = [str(CIRCT_OPT), "--hw-flatten-modules", "--comb-assume-two-valued", "--arc-strip-sv=async-resets-as-sync", "--hw-flatten-io", "--lower-ltl-to-core", str(initial_mlir), "-o",  str(proc_mlir)]
+            cmd = [str(CIRCT_OPT), "--hw-flatten-modules", "--hw-flatten-io", "--comb-assume-two-valued", "--arc-strip-sv=async-resets-as-sync", "--lower-ltl-to-core", str(initial_mlir), "-o",  str(proc_mlir)]
             res = run_command(cmd, cwd=OPENTITAN_ROOT)
             # Hack until FSMToSMT handles clocked asserts
             run_command(["sed", "-i", "-E", "-r", "\"s/clocked_assert (%[a-zA-Z0-9_]+), .* : (.*)/assert \\1 : \\2/g\"", str(proc_mlir)])
