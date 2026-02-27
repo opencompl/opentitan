@@ -19,6 +19,8 @@
 
 #include "hw/top_earlgrey/sw/autogen/top_earlgrey.h"
 
+const uint32_t rescue_type = kRescueProtocolUsbDfu;
+
 static const usb_device_descriptor_t device_desc = {
     .length = (uint8_t)sizeof(usb_device_descriptor_t),
     .descriptor_type = kUsbDescTypeDevice,
@@ -76,7 +78,7 @@ static const char lang_id[] = {
 // clang-format off
 static const char str_vendor[] = { USB_STRING_DSCR('G','o','o','g','l','e'), };
 static const char str_opentitan[] = { USB_STRING_DSCR('O','p','e','n','T','i','t','a','n'), };
-static const char str_resq[] = { USB_STRING_DSCR('R','e','s','c','u','e') };
+static const char str_resq[] = { USB_STRING_DSCR('R','e','s','c','u','e',' ','S','l','o','t','A')};
 static const char str_resb[] = { USB_STRING_DSCR('R','e','s','c','u','e',' ','S','l','o','t','B')};
 static const char str_otid[] = { USB_STRING_DSCR('D','e','v','i','c','e','I','D') };
 static const char str_blog[] = { USB_STRING_DSCR('B','o','o','t','L','o','g') };
@@ -84,7 +86,7 @@ static const char str_bsvc[] = { USB_STRING_DSCR('B','o','o','t','S','e','r','v'
 static const char str_ownr[] = { USB_STRING_DSCR('O','w','n','e','r','s','h','i','p') };
 
 // Located in RAM so we can fill in the OpenTitan device ID.
-static char str_serialnumber[2 + 32];
+static char str_serialnumber[2 + 4 + 32];
 
 static const char *string_desc[] = {
     lang_id,
@@ -108,9 +110,17 @@ static void set_serialnumber(void) {
   const char hex[] = "0123456789ABCDEF";
 
   char *sn = str_serialnumber;
-  *sn++ = 2 + 32;
+  // Length: descriptor header (2) + 2 * (len("0x") + len(64-bit integer)).
+  *sn++ = 2 + 4 + 32;
+  // Descriptor type: 3 (string descriptor).
   *sn++ = 3;
-  for (size_t w = 1; w < 3; ++w) {
+  // Leading "0x".
+  *sn++ = '0';
+  *sn++ = 0;
+  *sn++ = 'x';
+  *sn++ = 0;
+  // The device identification number, printed in hex as a uint64_t.
+  for (size_t w = 2; w > 0; --w) {
     uint8_t byte = (uint8_t)(dev.device_id[w] >> 24);
     *sn++ = hex[byte >> 4];
     *sn++ = 0;
@@ -151,11 +161,10 @@ void dfu_transport_result(dfu_ctx_t *ctx, rom_error_t result) {
   }
 }
 
-rom_error_t rescue_protocol(boot_data_t *bootdata,
+rom_error_t rescue_protocol(boot_data_t *bootdata, boot_log_t *boot_log,
                             const owner_rescue_config_t *config) {
   set_serialnumber();
   dfu_ctx_t ctx = {
-      .bootdata = bootdata,
       .ep0 =
           {
               .device_desc = &device_desc,
@@ -166,12 +175,13 @@ rom_error_t rescue_protocol(boot_data_t *bootdata,
       .dfu_error = kDfuErrOk,
   };
   dbg_printf("USB-DFU rescue ready\r\n");
-  rescue_state_init(&ctx.state, config);
+  rescue_state_init(&ctx.state, bootdata, boot_log, config);
   pinmux_init_usb();
   usb_init();
   usb_ep_init(0, kUsbEpTypeControl, 0x40, dfu_protocol_handler, &ctx);
   usb_enable(true);
   while (true) {
+    RETURN_IF_ERROR(rescue_inactivity(&ctx.state));
     usb_poll();
   }
   return kErrorOk;

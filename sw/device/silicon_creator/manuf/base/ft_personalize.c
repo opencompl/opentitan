@@ -14,6 +14,7 @@
 #include "sw/device/lib/dif/dif_pinmux.h"
 #include "sw/device/lib/dif/dif_rstmgr.h"
 #include "sw/device/lib/runtime/log.h"
+#include "sw/device/lib/runtime/print.h"
 #include "sw/device/lib/testing/flash_ctrl_testutils.h"
 #include "sw/device/lib/testing/json/provisioning_data.h"
 #include "sw/device/lib/testing/lc_ctrl_testutils.h"
@@ -34,6 +35,7 @@
 #include "sw/device/silicon_creator/lib/cert/cdi_1.h"  // Generated.
 #include "sw/device/silicon_creator/lib/cert/cert.h"
 #include "sw/device/silicon_creator/lib/cert/dice.h"
+#include "sw/device/silicon_creator/lib/cert/dice_chain.h"
 #include "sw/device/silicon_creator/lib/cert/uds.h"  // Generated.
 #include "sw/device/silicon_creator/lib/drivers/flash_ctrl.h"
 #include "sw/device/silicon_creator/lib/drivers/hmac.h"
@@ -59,11 +61,6 @@
 #include "hw/top/flash_ctrl_regs.h"  // Generated.
 #include "hw/top/otp_ctrl_regs.h"    // Generated.
 #include "hw/top_earlgrey/sw/autogen/top_earlgrey.h"
-
-OTTF_DEFINE_TEST_CONFIG(.console.type = kOttfConsoleSpiDevice,
-                        .console.base_addr = TOP_EARLGREY_SPI_DEVICE_BASE_ADDR,
-                        .console.test_may_clobber = false,
-                        .silence_console_prints = true);
 
 enum {
   /**
@@ -109,6 +106,15 @@ static const dif_gpio_pin_t kGpioPinTestError = 2;
 static const dif_gpio_pin_t kGpioPinSpiConsoleTxReady = 3;
 static const dif_gpio_pin_t kGpioPinSpiConsoleRxReady = 4;
 
+OTTF_DEFINE_TEST_CONFIG(
+        .console.type = kOttfConsoleSpiDevice,
+        .console.base_addr = TOP_EARLGREY_SPI_DEVICE_BASE_ADDR,
+        .console.test_may_clobber = false, .console.putbuf_buffered = true,
+        .silence_console_prints = true, .console_tx_indicator.enable = true,
+        .console_tx_indicator.spi_console_tx_ready_mio = kDtPadIoa5,
+        .console_tx_indicator.spi_console_tx_ready_gpio =
+            kGpioPinSpiConsoleTxReady);
+
 /**
  * Keymgr binding values.
  */
@@ -152,6 +158,7 @@ static uint8_t all_certs[8192];
 // 1K should be enough for the largest certificate perso LTV object.
 enum { kBufferSize = 1024 };
 static alignas(uint32_t) uint8_t cert_buffer[kBufferSize];
+static alignas(uint32_t) dice_page_t dice_page;
 static size_t uds_offset;
 static size_t cdi_0_offset;
 static size_t cdi_1_offset;
@@ -161,12 +168,14 @@ static cert_flash_info_layout_t cert_flash_layout[] = {
         // post manufacturing. This page should never be erased by ROM_EXT, nor
         // owner firmware.
         .used = true,
+        .need_digest = true,
         .group_name = "FACTORY",
         .info_page = &kFlashCtrlInfoPageFactoryCerts,
         .num_certs = 1,
     },
     {
         .used = true,
+        .need_digest = true,
         .group_name = "DICE",
         .info_page = &kFlashCtrlInfoPageDiceCerts,
         .num_certs = 2,
@@ -175,12 +184,14 @@ static cert_flash_info_layout_t cert_flash_layout[] = {
     // additional certificates SKU owners may desire to provision.
     {
         .used = false,
+        .need_digest = false,
         .group_name = "Ext0",
         .info_page = &kFlashCtrlInfoPageOwnerReserved6,
         .num_certs = 0,
     },
     {
         .used = false,
+        .need_digest = false,
         .group_name = "Ext1",
         .info_page = &kFlashCtrlInfoPageOwnerReserved7,
         .num_certs = 0,
@@ -196,18 +207,22 @@ OT_WEAK rom_error_t sku_creator_owner_init(boot_data_t *bootdata) {
   return kErrorOk;
 }
 
-static void log_self_hash(void) {
-  // clang-format off
-  LOG_INFO("Personalization Firmware Hash: 0x%08x%08x%08x%08x%08x%08x%08x%08x",
-           boot_measurements.rom_ext.data[7],
-           boot_measurements.rom_ext.data[6],
-           boot_measurements.rom_ext.data[5],
-           boot_measurements.rom_ext.data[4],
-           boot_measurements.rom_ext.data[3],
-           boot_measurements.rom_ext.data[2],
-           boot_measurements.rom_ext.data[1],
-           boot_measurements.rom_ext.data[0]);
-  // clang-format on
+/**
+ * Pushes the hash of the personalization firmware to the perso blob.
+ */
+static status_t log_self_hash(perso_blob_t *perso_blob_to_host) {
+  perso_tlv_object_header_t tlv_header = 0;
+  PERSO_TLV_SET_FIELD(Objh, Type, tlv_header, kPersoObjectTypePersoSha256Hash);
+  PERSO_TLV_SET_FIELD(
+      Objh, Size, tlv_header,
+      sizeof(perso_tlv_object_header_t) + sizeof(keymgr_binding_value_t));
+  TRY(perso_tlv_push_to_perso_blob(
+      &tlv_header, sizeof(perso_tlv_object_header_t), perso_blob_to_host));
+  TRY(perso_tlv_push_to_perso_blob(boot_measurements.rom_ext.data,
+                                   sizeof(keymgr_binding_value_t),
+                                   perso_blob_to_host));
+  perso_blob_to_host->num_objs++;
+  return OK_STATUS();
 }
 
 /*
@@ -364,7 +379,7 @@ static status_t personalize_otp_and_flash_secrets(ujson_t *uj) {
     TRY(manuf_individualize_device_field_cfg(
         &otp_ctrl,
         OTP_CTRL_PARAM_CREATOR_SW_CFG_FLASH_DATA_DEFAULT_CFG_OFFSET));
-    LOG_INFO("Bootstrap requested.");
+    base_printf("Bootstrap requested.\n");
     wait_for_interrupt();
   }
 
@@ -372,9 +387,8 @@ static status_t personalize_otp_and_flash_secrets(ujson_t *uj) {
   // and DICE keygen seeds).
   if (!status_ok(manuf_personalize_device_secrets_check(&otp_ctrl))) {
     lc_token_hash_t token_hash;
-    // Wait for host the host generated RMA unlock token hash to arrive over the
-    // console.
-    LOG_INFO("Waiting For RMA Unlock Token Hash ...");
+    // Wait for the host to send the RMA unlock token hash over the console.
+    base_printf("Waiting For RMA Unlock Token Hash ...\n");
     TRY(dif_gpio_write(&gpio, kGpioPinSpiConsoleRxReady, true));
     CHECK_STATUS_OK(
         UJSON_WITH_CRC(ujson_deserialize_lc_token_hash_t, uj, &token_hash));
@@ -523,7 +537,7 @@ static status_t personalize_gen_dice_certificates(ujson_t *uj) {
   // Retrieve certificate provisioning data.
   // DO NOT CHANGE THE BELOW STRING without modifying the host code in
   // sw/host/provisioning/ft_lib/src/lib.rs
-  LOG_INFO("Waiting for certificate inputs ...");
+  base_printf("Waiting for certificate inputs ...\n");
   TRY(dif_gpio_write(&gpio, kGpioPinSpiConsoleRxReady, true));
   TRY(ujson_deserialize_manuf_certgen_inputs_t(uj, &certgen_inputs));
   TRY(dif_gpio_write(&gpio, kGpioPinSpiConsoleRxReady, false));
@@ -590,10 +604,10 @@ static status_t personalize_gen_dice_certificates(ujson_t *uj) {
       "UDS",
       /*needs_endorsement=*/kDiceCertFormat == kDiceCertFormatX509TcbInfo,
       kDiceCertFormat, all_certs, curr_cert_size, &perso_blob_to_host));
-  LOG_INFO("Generated UDS certificate.");
 
+  // After we have cranked the keymgr to the CreatorRootKey (UDS) stage, we now
+  // can initialize and seal the ownership block.
   ownership_seal_init();
-  LOG_INFO("Initialized ownership sealing in UDS state.");
 
   // Generate CDI_0 keys and cert.
   curr_cert_size = kCdi0MaxCertSizeBytes;
@@ -611,7 +625,6 @@ static status_t personalize_gen_dice_certificates(ujson_t *uj) {
   TRY(perso_tlv_push_cert_to_perso_blob("CDI_0", /*needs_endorsement=*/false,
                                         kDiceCertFormat, all_certs,
                                         curr_cert_size, &perso_blob_to_host));
-  LOG_INFO("Generated CDI_0 certificate.");
 
   // Generate CDI_1 keys and cert.
   curr_cert_size = kCdi1MaxCertSizeBytes;
@@ -630,7 +643,6 @@ static status_t personalize_gen_dice_certificates(ujson_t *uj) {
   TRY(perso_tlv_push_cert_to_perso_blob("CDI_1", /*needs_endorsement=*/false,
                                         kDiceCertFormat, all_certs,
                                         curr_cert_size, &perso_blob_to_host));
-  LOG_INFO("Generated CDI_1 certificate.");
 
   return OK_STATUS();
 }
@@ -833,7 +845,6 @@ static status_t extract_next_cert(uint8_t **dest, size_t *free_room) {
     // Copy the certificate object to the destination buffer.
     uint8_t *dest_p = *dest;
     memcpy(dest_p, block.obj_p, block.obj_size);
-    LOG_INFO("Copied %s certificate", block.name);
 
     // Advance destination buffer pointer and reduce free space counter.
     *dest = dest_p + block.obj_size;
@@ -848,36 +859,37 @@ static status_t extract_next_cert(uint8_t **dest, size_t *free_room) {
   return OK_STATUS();
 }
 
-static status_t write_cert_to_flash_info_page(
-    const cert_flash_info_layout_t *layout, perso_tlv_cert_obj_t *block,
-    uint8_t *cert_data, uint32_t page_offset, uint32_t cert_write_size_bytes,
-    uint32_t cert_write_size_words) {
-  if ((page_offset + cert_write_size_bytes) > FLASH_CTRL_PARAM_BYTES_PER_PAGE) {
+static status_t write_cert_to_dice_page(const cert_flash_info_layout_t *layout,
+                                        perso_tlv_cert_obj_t *block,
+                                        uint8_t *cert_data,
+                                        uint32_t page_offset,
+                                        uint32_t cert_write_size_bytes) {
+  base_printf("Importing %s cert to %s ...\n", block->name, layout->group_name);
+  if ((page_offset + cert_write_size_bytes) > sizeof(dice_page.data)) {
     LOG_ERROR("%s %s certificate did not fit into the info page.",
               layout->group_name, block->name);
     return OUT_OF_RANGE();
   }
-  if (sizeof(cert_buffer) < cert_write_size_bytes) {
-    LOG_ERROR("%s %s certificate did not fit into the buffer.",
-              layout->group_name, block->name);
-    return OUT_OF_RANGE();
-  }
 
-  memset(cert_buffer, 0, cert_write_size_bytes);
+  // The page will be zero-padded between obj_size to cert_write_size_bytes.
+  TRY_CHECK(block->obj_size <= cert_write_size_bytes);
 
   // Copy the actual certificate data into the cert buffer.
-  // This is necessary because flash_ctrl_info_write() requires the
-  // data source pointer to be word-aligned. The input cert_data
-  // pointer might not meet this alignment requirement, whereas
-  // cert_buffer is expected to be world-aligned.
-  memcpy(cert_buffer, cert_data, block->obj_size);
-
-  TRY(flash_ctrl_info_write(layout->info_page, page_offset,
-                            cert_write_size_words, cert_buffer));
+  memcpy(dice_page.data + page_offset, cert_data, block->obj_size);
 
   return OK_STATUS();
 }
 
+static status_t write_digest_to_dice_page(
+    const cert_flash_info_layout_t *layout, uint32_t page_offset) {
+  base_printf("Digesting %s page ...\n", layout->group_name);
+
+  hmac_sha256(dice_page.data, sizeof(dice_page.data), &dice_page.digest);
+
+  return OK_STATUS();
+}
+
+size_t orig_num_objects_from_host;
 static status_t personalize_endorse_certificates(ujson_t *uj) {
   /*****************************************************************************
    * Certificate Export and Endorsement.
@@ -885,15 +897,13 @@ static status_t personalize_endorse_certificates(ujson_t *uj) {
   // Export the certificates to the provisioning appliance.
   // DO NOT CHANGE THE BELOW STRING without modifying the host code in
   // sw/host/provisioning/ft_lib/src/lib.rs
-  LOG_INFO("Exporting TBS certificates ...");
-  TRY(dif_gpio_write(&gpio, kGpioPinSpiConsoleTxReady, true));
+  base_printf("Exporting TBS certificates ...\n");
   RESP_OK(ujson_serialize_perso_blob_t, uj, &perso_blob_to_host);
-  TRY(dif_gpio_write(&gpio, kGpioPinSpiConsoleTxReady, false));
 
   // Import endorsed certificates from the provisioning appliance.
   // DO NOT CHANGE THE BELOW STRING without modifying the host code in
   // sw/host/provisioning/ft_lib/src/lib.rs
-  LOG_INFO("Importing endorsed certificates ...");
+  base_printf("Importing endorsed certificates ...\n");
   TRY(dif_gpio_write(&gpio, kGpioPinSpiConsoleRxReady, true));
   TRY(ujson_deserialize_perso_blob_t(uj, &perso_blob_from_host));
   TRY(dif_gpio_write(&gpio, kGpioPinSpiConsoleRxReady, false));
@@ -946,11 +956,11 @@ static status_t personalize_endorse_certificates(ujson_t *uj) {
       return RESOURCE_EXHAUSTED();
 
     memcpy(next_cert, block.obj_p, block.obj_size);
-    LOG_INFO("Copied %s certificate", block.name);
     next_cert += block.obj_size;
     free_room -= block.obj_size;
   }
 
+  orig_num_objects_from_host = perso_blob_from_host.num_objs;
   // Extract the remaining cert perso LTV objects received from the host.
   while (perso_blob_from_host.num_objs)
     TRY(extract_next_cert(&next_cert, &free_room));
@@ -971,6 +981,8 @@ static status_t personalize_endorse_certificates(ujson_t *uj) {
       continue;
     }
 
+    memset(&dice_page, 0, sizeof(dice_page));
+
     // This is a bit brittle, but we expect the sum of {layout}.num_certs values
     // in the following flash layout sections to be equal to the number of
     // endorsed extension certificates received from the host.
@@ -980,22 +992,27 @@ static status_t personalize_endorse_certificates(ujson_t *uj) {
       // Round up the size to the nearest word boundary.
       uint32_t cert_size_words = util_size_to_words(block.obj_size);
       uint32_t cert_size_bytes_ru = cert_size_words * sizeof(uint32_t);
-      TRY(write_cert_to_flash_info_page(&curr_layout, &block, next_cert,
-                                        page_offset, cert_size_bytes_ru,
-                                        cert_size_words));
-      LOG_INFO("Imported %s %s certificate.", curr_layout.group_name,
-               block.name);
+      TRY(write_cert_to_dice_page(&curr_layout, &block, next_cert, page_offset,
+                                  cert_size_bytes_ru));
       page_offset += cert_size_bytes_ru;
       next_cert += block.obj_size;
 
       // Each certificate must be 8 bytes aligned (flash word size).
       page_offset = util_round_up_to(page_offset, 3);
     }
+
+    if (curr_layout.need_digest) {
+      TRY(write_digest_to_dice_page(&curr_layout, page_offset));
+    }
+
+    TRY(flash_ctrl_info_write(curr_layout.info_page, /*page_offset=*/0,
+                              util_size_to_words(sizeof(dice_page)),
+                              &dice_page));
   }
 
   // DO NOT CHANGE THE BELOW STRING without modifying the host code in
   // sw/host/provisioning/ft_lib/src/lib.rs
-  LOG_INFO("Finished importing certificates.");
+  base_printf("Finished importing certificates.\n");
 
   return OK_STATUS();
 }
@@ -1126,6 +1143,7 @@ static status_t provision(ujson_t *uj) {
           &otp_rot_creator_auth_state_measurement};
   TRY(personalize_extension_pre_cert_endorse(&pre_endorse));
   TRY(compute_tbs_was_hmac(pre_endorse.perso_blob_to_host));
+  TRY(log_self_hash(pre_endorse.perso_blob_to_host));
 
   // Endorse TBS certs and install in flash.
   TRY(personalize_endorse_certificates(uj));
@@ -1134,16 +1152,15 @@ static status_t provision(ujson_t *uj) {
       .uj = uj,
       .perso_blob_from_host = &perso_blob_from_host,
       .cert_flash_layout = cert_flash_layout};
+  post_endorse.perso_blob_from_host->num_objs = orig_num_objects_from_host;
   TRY(personalize_extension_post_cert_endorse(&post_endorse));
 
-  // Log the hash of all perso objects to the host and console.
+  // Check the hash of all perso objects with the host to confirm integrity of
+  // the transmission / provisioning operations.
   serdes_sha256_hash_t hash;
   hmac_sha256_process();
   hmac_sha256_final((hmac_digest_t *)&hash);
   TRY(send_final_hash(uj, &hash));
-  LOG_INFO("SHA256 hash of all perso objects: %08x%08x%08x%08x%08x%08x%08x%08x",
-           hash.data[7], hash.data[6], hash.data[5], hash.data[4], hash.data[3],
-           hash.data[2], hash.data[1], hash.data[0]);
 
   // Complete any remaining OTP programming.
   TRY(finalize_otp_partitions());
@@ -1164,8 +1181,6 @@ bool test_main(void) {
   CHECK_STATUS_OK(entropy_complex_init());
   ujson_t uj = ujson_ottf_console();
 
-  log_self_hash();
-
   // Read the reset reason directly from the RSTMGR.
   // This is needed to clear the reset reason before the first call to
   // `personalize_otp_and_flash_secrets()`, which will reset the device.
@@ -1184,7 +1199,7 @@ bool test_main(void) {
 
   // DO NOT CHANGE THE BELOW STRING without modifying the host code in
   // sw/host/provisioning/ft_lib/src/lib.rs
-  LOG_INFO("Personalization done.");
+  base_printf("Personalization done.\n");
 
   return true;
 }

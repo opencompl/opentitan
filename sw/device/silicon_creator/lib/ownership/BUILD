@@ -3,13 +3,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 load(
+    "//rules:cross_platform.bzl",
+    "dual_cc_library",
+    "dual_inputs",
+)
+load(
     "//rules/opentitan:defs.bzl",
     "opentitan_test",
 )
 load(
-    "//rules:cross_platform.bzl",
-    "dual_cc_library",
-    "dual_inputs",
+    "//sw/device/silicon_creator/rom_ext:defs.bzl",
+    "TEST_OWNER_CONFIGS",
 )
 
 package(default_visibility = ["//visibility:public"])
@@ -70,6 +74,7 @@ dual_cc_library(
     deps = dual_inputs(
         device = [
             ":owner_verify",
+            "//sw/device/lib/arch:device",
             "//sw/device/lib/base:memory",
             "//sw/device/lib/base:hardened_memory",
             "//sw/device/silicon_creator/lib/drivers:rnd",
@@ -161,6 +166,7 @@ cc_library(
         "//sw/device/silicon_creator/lib/drivers:flash_ctrl",
         "//sw/device/silicon_creator/lib/drivers:hmac",
         "//sw/device/silicon_creator/lib/drivers:lifecycle",
+        "//sw/device/silicon_creator/lib/sigverify:flash_exec",
     ],
 )
 
@@ -178,6 +184,7 @@ cc_test(
         "//sw/device/silicon_creator/lib/boot_svc:boot_svc_header",
         "//sw/device/silicon_creator/lib/drivers:lifecycle",
         "//sw/device/silicon_creator/lib/drivers:rnd",
+        "//sw/device/silicon_creator/lib/sigverify:flash_exec",
         "//sw/device/silicon_creator/testing:rom_test",
         "@googletest//:gtest_main",
     ],
@@ -197,6 +204,7 @@ cc_library(
         "//sw/device/silicon_creator/lib/boot_svc:boot_svc_msg",
         "//sw/device/silicon_creator/lib/drivers:flash_ctrl",
         "//sw/device/silicon_creator/lib/drivers:lifecycle",
+        "//sw/device/silicon_creator/lib/sigverify:flash_exec",
     ],
 )
 
@@ -212,6 +220,7 @@ cc_test(
         "//sw/device/lib/base:hardened",
         "//sw/device/silicon_creator/lib:boot_data",
         "//sw/device/silicon_creator/lib/boot_svc:boot_svc_header",
+        "//sw/device/silicon_creator/lib/sigverify:flash_exec",
         "//sw/device/silicon_creator/testing:rom_test",
         "@googletest//:gtest_main",
     ],
@@ -226,57 +235,59 @@ cc_library(
         ":owner_block",
         ":ownership",
         "//sw/device/silicon_creator/lib:boot_data",
+        "//sw/device/silicon_creator/lib/boot_svc:boot_svc_msg",
         "//sw/device/silicon_creator/lib/drivers:flash_ctrl",
         "//sw/device/silicon_creator/lib/ownership/keys/fake:includes",
+        "//sw/device/silicon_creator/lib/rescue",
     ],
     alwayslink = True,
 )
 
-cc_library(
-    name = "test_owner_hybrid",
-    testonly = True,
-    srcs = ["test_owner.c"],
-    defines = [
-        "TEST_OWNER_KEY_ALG_HYBRID_SPX_PURE=1",
-    ],
-    deps = [
-        ":datatypes",
-        ":owner_block",
-        ":ownership",
-        "//sw/device/silicon_creator/lib:boot_data",
-        "//sw/device/silicon_creator/lib/drivers:flash_ctrl",
-        "//sw/device/silicon_creator/lib/ownership/keys/fake:includes",
-    ],
-    alwayslink = True,
-)
+[
+    cc_library(
+        name = "test_owner_{}".format(name),
+        testonly = True,
+        srcs = ["test_owner.c"],
+        defines = param["owner_defines"],
+        deps = [
+            ":datatypes",
+            ":owner_block",
+            ":ownership",
+            "//sw/device/silicon_creator/lib:boot_data",
+            "//sw/device/silicon_creator/lib/boot_svc:boot_svc_msg",
+            "//sw/device/silicon_creator/lib/drivers:flash_ctrl",
+            "//sw/device/silicon_creator/lib/ownership/keys/fake:includes",
+            "//sw/device/silicon_creator/lib/rescue",
+        ],
+        alwayslink = True,
+    )
+    for name, param in TEST_OWNER_CONFIGS.items()
+]
 
-cc_library(
-    name = "test_owner_update_mode_newversion",
-    testonly = True,
-    srcs = ["test_owner.c"],
-    defines = [
-        "TEST_OWNER_UPDATE_MODE=kOwnershipUpdateModeNewVersion",
-    ],
-    deps = [
-        ":datatypes",
-        ":owner_block",
-        ":ownership",
-        "//sw/device/silicon_creator/lib:boot_data",
-        "//sw/device/silicon_creator/lib/drivers:flash_ctrl",
-        "//sw/device/silicon_creator/lib/ownership/keys/fake:includes",
-    ],
-    alwayslink = True,
-)
-
-cc_library(
+dual_cc_library(
     name = "owner_verify",
-    srcs = ["owner_verify.c"],
-    hdrs = ["owner_verify.h"],
-    deps = [
-        ":datatypes",
-        "//sw/device/silicon_creator/lib:error",
-        "//sw/device/silicon_creator/lib/base:util",
-        "//sw/device/silicon_creator/lib/drivers:hmac",
-        "//sw/device/silicon_creator/lib/sigverify",
-    ],
+    srcs = dual_inputs(
+        device = ["owner_verify.c"],
+        host = ["mock_owner_verify.cc"],
+    ),
+    hdrs = dual_inputs(
+        host = ["mock_owner_verify.h"],
+        shared = ["owner_verify.h"],
+    ),
+    deps = dual_inputs(
+        device = [
+            "//sw/device/silicon_creator/lib/sigverify",
+        ],
+        host = [
+            "//sw/device/lib/base:global_mock",
+            "//sw/device/silicon_creator/testing:rom_test",
+            "@googletest//:gtest",
+        ],
+        shared = [
+            ":datatypes",
+            "//sw/device/silicon_creator/lib/base:util",
+            "//sw/device/silicon_creator/lib/drivers:hmac",
+            "//sw/device/silicon_creator/lib:error",
+        ],
+    ),
 )

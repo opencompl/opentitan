@@ -38,7 +38,7 @@ pub struct Firmware {
     offset: Option<usize>,
     #[arg(long, default_value_t = false, help = "Upload the file contents as-is")]
     raw: bool,
-    #[arg(long, default_value_t = true, help = "Reboot after upload")]
+    #[arg(long, default_value_t = true, action = clap::ArgAction::Set, help = "Reboot after the rescue command")]
     reboot: bool,
     #[arg(
         long,
@@ -120,7 +120,7 @@ pub struct GetBootLog {
         help = "Method to reset for rescue mode",
     )]
     reset_target: EntryMode,
-    #[arg(long, default_value_t = true, help = "Reboot after the rescue command")]
+    #[arg(long, default_value_t = true, action = clap::ArgAction::Set, help = "Reboot after the rescue command")]
     reboot: bool,
     #[arg(long, short, default_value = "false")]
     raw: bool,
@@ -158,7 +158,7 @@ pub struct GetBootSvc {
         help = "Method to reset for rescue mode",
     )]
     reset_target: EntryMode,
-    #[arg(long, default_value_t = true, help = "Reboot after the rescue command")]
+    #[arg(long, default_value_t = true, action = clap::ArgAction::Set, help = "Reboot after the rescue command")]
     reboot: bool,
     #[arg(long, short, default_value = "false")]
     raw: bool,
@@ -196,7 +196,7 @@ pub struct GetDeviceId {
         help = "Method to reset for rescue mode",
     )]
     reset_target: EntryMode,
-    #[arg(long, default_value_t = true, help = "Reboot after the rescue command")]
+    #[arg(long, default_value_t = true, action = clap::ArgAction::Set, help = "Reboot after the rescue command")]
     reboot: bool,
     #[arg(long, short, default_value = "false")]
     raw: bool,
@@ -248,7 +248,7 @@ pub struct SetNextBl0Slot {
         help = "Method to reset for rescue mode",
     )]
     reset_target: EntryMode,
-    #[arg(long, default_value_t = true, help = "Reboot after the rescue command")]
+    #[arg(long, default_value_t = true, action = clap::ArgAction::Set, help = "Reboot after the rescue command")]
     reboot: bool,
     #[arg(
         long,
@@ -292,7 +292,7 @@ pub struct OwnershipUnlock {
         help = "Method to reset for rescue mode",
     )]
     reset_target: EntryMode,
-    #[arg(long, default_value_t = true, help = "Reboot after the rescue command")]
+    #[arg(long, default_value_t = true, action = clap::ArgAction::Set, help = "Reboot after the rescue command")]
     reboot: bool,
     #[arg(
         long,
@@ -350,7 +350,7 @@ pub struct OwnershipActivate {
         help = "Method to reset for rescue mode",
     )]
     reset_target: EntryMode,
-    #[arg(long, default_value_t = true, help = "Reboot after the rescue command")]
+    #[arg(long, default_value_t = true, action = clap::ArgAction::Set, help = "Reboot after the rescue command")]
     reboot: bool,
     #[arg(
         long,
@@ -408,7 +408,7 @@ pub struct SetOwnerConfig {
         help = "Method to reset for rescue mode",
     )]
     reset_target: EntryMode,
-    #[arg(long, default_value_t = true, help = "Reboot after the rescue command")]
+    #[arg(long, default_value_t = true, action = clap::ArgAction::Set, help = "Reboot after the rescue command")]
     reboot: bool,
     #[arg(help = "A signed owner configuration block")]
     input: PathBuf,
@@ -441,7 +441,7 @@ pub struct GetOwnerConfig {
         help = "Method to reset for rescue mode",
     )]
     reset_target: EntryMode,
-    #[arg(long, default_value_t = true, help = "Reboot after the rescue command")]
+    #[arg(long, default_value_t = true, action = clap::ArgAction::Set, help = "Reboot after the rescue command")]
     reboot: bool,
     #[arg(long, short, default_value = "false", conflicts_with = "output")]
     raw: bool,
@@ -490,6 +490,31 @@ impl CommandDispatch for GetOwnerConfig {
 }
 
 #[derive(Debug, Args)]
+/// Rescue No-op.
+pub struct NoOp {
+    #[arg(
+        long,
+        value_enum,
+        default_value_t = EntryMode::Reset,
+        help = "Method to reset for rescue mode",
+    )]
+    reset_target: EntryMode,
+}
+
+impl CommandDispatch for NoOp {
+    fn run(
+        &self,
+        context: &dyn Any,
+        transport: &TransportWrapper,
+    ) -> Result<Option<Box<dyn erased_serde::Serialize>>> {
+        let context = context.downcast_ref::<RescueCommand>().unwrap();
+        let rescue = context.params.create(transport)?;
+        rescue.enter(transport, self.reset_target)?;
+        Ok(None)
+    }
+}
+
+#[derive(Debug, Args)]
 pub struct EraseOwner {
     #[arg(
         long,
@@ -498,7 +523,7 @@ pub struct EraseOwner {
         help = "Method to reset for rescue mode",
     )]
     reset_target: EntryMode,
-    #[arg(long, default_value_t = true, help = "Reboot after the rescue command")]
+    #[arg(long, default_value_t = true, action = clap::ArgAction::Set, help = "Reboot after the rescue command")]
     reboot: bool,
     #[arg(long, default_value_t = false, help = "Really erase the owner config")]
     really: bool,
@@ -545,6 +570,7 @@ pub enum InternalRescueCommand {
     Firmware(Firmware),
     SetOwnerConfig(SetOwnerConfig),
     GetOwnerConfig(GetOwnerConfig),
+    NoOp(NoOp),
 }
 
 #[derive(Debug, Args)]

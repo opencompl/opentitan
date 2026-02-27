@@ -145,7 +145,7 @@ impl<T: Flavor> Hyperdebug<T> {
         usb_pid: Option<u16>,
         usb_serial: Option<&str>,
     ) -> Result<Self> {
-        let mut device = UsbBackend::new(
+        let device = UsbBackend::new(
             usb_vid.unwrap_or_else(T::get_default_usb_vid),
             usb_pid.unwrap_or_else(T::get_default_usb_pid),
             usb_serial,
@@ -825,7 +825,7 @@ impl<T: Flavor> Transport for Hyperdebug<T> {
             let usb_vid = self.inner.usb_device.borrow().get_vendor_id();
             let usb_pid = self.inner.usb_device.borrow().get_product_id();
             dfu::update_firmware(
-                &mut self.inner.usb_device.borrow_mut(),
+                &self.inner.usb_device.borrow(),
                 self.current_firmware_version.as_deref(),
                 &update_firmware_action.firmware,
                 update_firmware_action.progress.as_ref(),
@@ -1059,8 +1059,13 @@ builtin_file!(
     include_str!("../config/hyperdebug_teacup.json5")
 );
 builtin_file!(
-    "hyperdebug_teacup_default.json5",
-    include_str!("../config/hyperdebug_teacup_default.json5")
+    "hyperdebug_teacup_bga69.json5",
+    include_str!("../config/hyperdebug_teacup_bga69.json5")
+);
+define_interface!(
+    "teacup-bga69",
+    HyperdebugBackend<StandardFlavor>,
+    "/__builtin__/hyperdebug_teacup_bga69.json5"
 );
 
 define_interface!("hyperdebug", HyperdebugBackend<StandardFlavor>);

@@ -115,6 +115,12 @@
       reseed: 1
     }
     {
+      name: aes_nist_vectors_gcm
+      uvm_test: aes_wake_up_test
+      uvm_test_seq: aes_nist_vectors_gcm_vseq
+      reseed: 1
+    }
+    {
       name: aes_deinit
       uvm_test: aes_deinit_test
       uvm_test_seq: aes_deinit_vseq
@@ -128,6 +134,12 @@
       name: aes_readability
       uvm_test: aes_fi_test
       uvm_test_seq: aes_readability_vseq
+    }
+    {
+      name: aes_gcm_save_restore
+      uvm_test: aes_gcm_save_restore_test
+      uvm_test_seq: aes_gcm_save_restore_vseq
+      reseed: 100
     }
     // Regular tests for which the scoreboard is active.
     {
@@ -201,6 +213,12 @@
       uvm_test: aes_fi_test
       uvm_test_seq: aes_core_fi_vseq
       reseed: 70 // Test must cover 35 bins. Overseed by 2x to get reasonable coverage.
+    }
+    {
+      name: aes_ghash_fi
+      uvm_test: aes_ghash_fi_test
+      uvm_test_seq: aes_ghash_fi_vseq
+      reseed: 90 // Test must cover 42 bins. Overseed by 2x to get reasonable coverage.
     }
     // This test runs several sequences back-to-back with random resets between the individual
     // sequences. We shouldn't need many seeds here because aes_stress is the real stress test.

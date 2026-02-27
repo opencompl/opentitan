@@ -21,6 +21,8 @@
 
 #include "hw/top_earlgrey/sw/autogen/top_earlgrey.h"
 
+const uint32_t rescue_type = kRescueProtocolSpiDfu;
+
 enum {
   /**
    * Base address of the spi_device registers.
@@ -74,15 +76,14 @@ void dfu_transport_result(dfu_ctx_t *ctx, rom_error_t result) {
   spi_device_flash_status_clear();
 }
 
-rom_error_t rescue_protocol(boot_data_t *bootdata,
+rom_error_t rescue_protocol(boot_data_t *bootdata, boot_log_t *boot_log,
                             const owner_rescue_config_t *config) {
   dfu_ctx_t ctx = {
-      .bootdata = bootdata,
       .dfu_state = kDfuStateIdle,
       .dfu_error = kDfuErrOk,
   };
   dbg_printf("SPI-DFU rescue ready\r\n");
-  rescue_state_init(&ctx.state, config);
+  rescue_state_init(&ctx.state, bootdata, boot_log, config);
   spi_device_init(
       /*log2_density=*/kRescueDensity, &kRescueSfdpTable,
       sizeof(kRescueSfdpTable));
@@ -91,9 +92,15 @@ rom_error_t rescue_protocol(boot_data_t *bootdata,
   spi_device_cmd_t cmd;
   uint32_t length;
   while (true) {
-    rom_error_t result = spi_device_cmd_get(&cmd);
-    if (result != kErrorOk) {
-      break;
+    RETURN_IF_ERROR(rescue_inactivity(&ctx.state));
+    rom_error_t result = spi_device_cmd_get(&cmd, /*blocking=*/false);
+    switch (result) {
+      case kErrorOk:
+        break;
+      case kErrorNoData:
+        continue;
+      default:
+        return result;
     }
     switch (cmd.opcode) {
       case kSpiDeviceOpcodePageProgram: {
@@ -123,11 +130,10 @@ rom_error_t rescue_protocol(boot_data_t *bootdata,
       } break;
 
       case kSpiDeviceOpcodeReset:
-        rstmgr_reset();
+        rstmgr_reboot();
         break;
       default:
         dfu_transport_result(&ctx, kErrorUsbBadSetup);
     }
   }
-  return kErrorOk;
 }

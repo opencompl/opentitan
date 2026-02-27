@@ -60,6 +60,7 @@ _FAULT_TEST_CASES = {
         defines = test_data["defines"],
         exec_env = {
             "//hw/top_earlgrey:fpga_cw310_rom_ext": None,
+            "//hw/top_earlgrey:fpga_cw340_rom_ext": None,
         },
         fpga = fpga_params(
             exit_success = test_data["exit_success"],
@@ -117,7 +118,7 @@ opentitan_test(
             "13: 00010000 NAPOT -XWR sz=00001000",  # RvDM regionn
             "14: 40000000 NAPOT --WR sz=10000000",  # MMIO for peripherals.
             "15: 10000000 NAPOT --WR sz=00020000",  # All of RAM.
-            "mseccfg = 00000002",
+            "mseccfg = 00000006",  # rlb=true, mmwp=true, mml=false
             ".*",
             ".*PASS!",
             "",

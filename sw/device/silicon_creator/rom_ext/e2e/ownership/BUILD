@@ -31,6 +31,7 @@ opentitan_binary(
     },
     exec_env = {
         "//hw/top_earlgrey:fpga_cw310_rom_ext": None,
+        "//hw/top_earlgrey:fpga_cw340_rom_ext": None,
     },
     deps = [
         "//sw/device/lib/base:status",
@@ -51,12 +52,14 @@ opentitan_binary(
     },
     exec_env = {
         "//hw/top_earlgrey:fpga_cw310_rom_ext": None,
+        "//hw/top_earlgrey:fpga_cw340_rom_ext": None,
     },
     linker_script = "//sw/device/lib/testing/test_framework:ottf_ld_silicon_owner_slot_virtual",
     deps = [
         "//hw/top_earlgrey/sw/autogen:top_earlgrey",
         "//sw/device/lib/base:status",
         "//sw/device/lib/dif:flash_ctrl",
+        "//sw/device/lib/testing:flash_ctrl_testutils",
         "//sw/device/lib/testing/test_framework:ottf_main",
         "//sw/device/silicon_creator/lib:boot_log",
         "//sw/device/silicon_creator/lib/drivers:retention_sram",
@@ -460,6 +463,7 @@ _FLASH_PERMISSION_TESTS = {
             "//hw/top_earlgrey/sw/autogen:top_earlgrey",
             "//sw/device/lib/base:status",
             "//sw/device/lib/dif:flash_ctrl",
+            "//sw/device/lib/testing:flash_ctrl_testutils",
             "//sw/device/lib/testing/test_framework:ottf_main",
             "//sw/device/silicon_creator/lib:boot_log",
             "//sw/device/silicon_creator/lib/drivers:retention_sram",
@@ -629,6 +633,7 @@ opentitan_binary(
     },
     exec_env = {
         "//hw/top_earlgrey:fpga_cw310_rom_ext": None,
+        "//hw/top_earlgrey:fpga_cw340_rom_ext": None,
     },
     deps = [
         "//hw/top_earlgrey/sw/autogen:top_earlgrey",
@@ -753,4 +758,57 @@ ownership_transfer_test(
         "//sw/device/silicon_creator/lib/drivers:flash_ctrl",
         "//sw/device/silicon_creator/lib/drivers:retention_sram",
     ],
+)
+
+ownership_transfer_test(
+    name = "newversion_pq_to_pq_update_test",
+    ecdsa_key = {
+        "//sw/device/silicon_creator/lib/ownership/keys/fake:app_prod_ecdsa": "app_prod",
+    },
+    fpga = fpga_params(
+        changes_otp = True,
+        rom_ext = "//sw/device/silicon_creator/rom_ext:rom_ext_hybrid_owner_update_newversion",
+        test_cmd = """
+            --clear-bitstream
+            --bootstrap={firmware}
+            --next-owner-key=$(location //sw/device/silicon_creator/lib/ownership/keys/fake:owner_key)
+            --next-unlock-key=$(location //sw/device/silicon_creator/lib/ownership/keys/fake:unlock_key)
+            --next-activate-key=$(location //sw/device/silicon_creator/lib/ownership/keys/fake:activate_key)
+            --next-application-key=$(location //sw/device/silicon_creator/lib/ownership/keys/fake:app_prod_ecdsa_pub)
+            --next-key-alg=HybridSpxPrehash
+            --next-owner-key-spx=$(location //sw/device/silicon_creator/lib/ownership/keys/fake:owner_key_spx)
+            --next-unlock-key-spx=$(location //sw/device/silicon_creator/lib/ownership/keys/fake:unlock_key_spx)
+            --next-activate-key-spx=$(location //sw/device/silicon_creator/lib/ownership/keys/fake:activate_key_spx)
+            --config-version=2
+            # We expect to see the version updated and the owner key the same.
+            --expect "config_version = 2"
+            --expect "owner_key = 8e3dcb50"
+        """,
+        test_harness = "//sw/host/tests/ownership:newversion_test",
+    ),
+)
+
+ownership_transfer_test(
+    name = "newversion_pq_downgrade_test",
+    ecdsa_key = {
+        "//sw/device/silicon_creator/lib/ownership/keys/fake:app_prod_ecdsa": "app_prod",
+    },
+    fpga = fpga_params(
+        changes_otp = True,
+        rom_ext = "//sw/device/silicon_creator/rom_ext:rom_ext_hybrid_owner_update_newversion",
+        test_cmd = """
+            --clear-bitstream
+            --bootstrap={firmware}
+            --next-owner-key=$(location //sw/device/silicon_creator/lib/ownership/keys/fake:owner_key)
+            --next-unlock-key=$(location //sw/device/silicon_creator/lib/ownership/keys/fake:unlock_key)
+            --next-activate-key=$(location //sw/device/silicon_creator/lib/ownership/keys/fake:activate_key)
+            --next-application-key=$(location //sw/device/silicon_creator/lib/ownership/keys/fake:app_prod_ecdsa_pub)
+            --next-owner-key-spx=$(location //sw/device/silicon_creator/lib/ownership/keys/fake:owner_key_spx)
+            --config-version=2
+            # We expect to see the version unchanged.
+            --expect "config_version = 1"
+            --expect "owner_key = 8e3dcb50"
+        """,
+        test_harness = "//sw/host/tests/ownership:newversion_test",
+    ),
 )

@@ -14,6 +14,7 @@ load(
 )
 load(
     "//rules/opentitan:defs.bzl",
+    "EARLGREY_CW340_TEST_ENVS",
     "EARLGREY_SILICON_OWNER_ROM_EXT_ENVS",
     "EARLGREY_TEST_ENVS",
     "fpga_params",
@@ -261,6 +262,7 @@ dual_cc_library(
 cc_test(
     name = "hmac_unittest",
     srcs = ["hmac_unittest.cc"],
+    local_defines = ["HMAC_UNIT_TEST_"],
     deps = [
         dual_cc_device_library_of(":hmac"),
         "//hw/top:hmac_c_regs",
@@ -275,7 +277,10 @@ cc_test(
 opentitan_test(
     name = "hmac_functest",
     srcs = ["hmac_functest.c"],
-    exec_env = EARLGREY_TEST_ENVS,
+    exec_env = dicts.add(
+        EARLGREY_TEST_ENVS,
+        EARLGREY_CW340_TEST_ENVS,
+    ),
     verilator = verilator_params(
         timeout = "long",
     ),
@@ -422,7 +427,10 @@ cc_test(
 opentitan_test(
     name = "kmac_functest",
     srcs = ["kmac_functest.c"],
-    exec_env = EARLGREY_TEST_ENVS,
+    exec_env = dicts.add(
+        EARLGREY_TEST_ENVS,
+        EARLGREY_CW340_TEST_ENVS,
+    ),
     verilator = verilator_params(
         timeout = "long",
     ),

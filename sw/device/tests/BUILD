@@ -78,6 +78,7 @@ opentitan_test(
         "//sw/device/lib/dif:aes",
         "//sw/device/lib/runtime:log",
         "//sw/device/lib/testing:aes_testutils",
+        "//sw/device/lib/testing/test_framework:ottf_alerts",
         "//sw/device/lib/testing/test_framework:ottf_main",
     ],
 )
@@ -110,10 +111,7 @@ opentitan_test(
     name = "aes_gcm_test",
     srcs = ["aes_gcm_test.c"],
     exec_env = dicts.add(
-        {
-            "//hw/top_earlgrey:sim_verilator": None,
-            "//hw/top_earlgrey:fpga_cw340_sival": None,
-        },
+        DARJEELING_TEST_ENVS,
     ),
     verilator = verilator_params(
         timeout = "long",
@@ -121,7 +119,7 @@ opentitan_test(
     deps = [
         "//hw/ip/aes:model",
         "//hw/top:aes_c_regs",
-        "//hw/top_earlgrey/sw/autogen:top_earlgrey",
+        "//hw/top/dt",
         "//sw/device/lib/base:memory",
         "//sw/device/lib/base:mmio",
         "//sw/device/lib/dif:aes",
@@ -1083,6 +1081,7 @@ opentitan_test(
         EARLGREY_SILICON_OWNER_ROM_EXT_ENVS,
         {
             "//hw/top_earlgrey:fpga_cw310_sival": None,
+            "//hw/top_earlgrey:fpga_cw340_sival": None,
             "//hw/top_earlgrey:silicon_creator": None,
         },
     ),
@@ -1098,6 +1097,7 @@ opentitan_test(
         "//sw/device/lib/testing:rstmgr_testutils",
         "//sw/device/lib/testing:sensor_ctrl_testutils",
         "//sw/device/lib/testing/test_framework:check",
+        "//sw/device/lib/testing/test_framework:ottf_alerts",
         "//sw/device/lib/testing/test_framework:ottf_main",
     ],
 )
@@ -1346,6 +1346,7 @@ opentitan_test(
         "//sw/device/lib/testing:rand_testutils",
         "//sw/device/lib/testing:rv_core_ibex_testutils",
         "//sw/device/lib/testing/test_framework:check",
+        "//sw/device/lib/testing/test_framework:ottf_alerts",
         "//sw/device/lib/testing/test_framework:ottf_main",
         "//sw/device/tests:otbn_randomness_impl",
     ],
@@ -1638,6 +1639,7 @@ opentitan_test(
         "//sw/device/lib/testing:keymgr_testutils",
         "//sw/device/lib/testing:otp_ctrl_testutils",
         "//sw/device/lib/testing:pwrmgr_testutils",
+        "//sw/device/lib/testing/test_framework:ottf_alerts",
         "//sw/device/lib/testing/test_framework:ottf_main",
     ],
 )
@@ -1679,6 +1681,7 @@ opentitan_test(
         "//sw/device/lib/testing:keymgr_testutils",
         "//sw/device/lib/testing:otp_ctrl_testutils",
         "//sw/device/lib/testing:pwrmgr_testutils",
+        "//sw/device/lib/testing/test_framework:ottf_alerts",
         "//sw/device/lib/testing/test_framework:ottf_main",
     ],
 )
@@ -1895,6 +1898,7 @@ opentitan_test(
         "//sw/device/lib/testing:isr_testutils",
         "//sw/device/lib/testing:lc_ctrl_testutils",
         "//sw/device/lib/testing:rv_plic_testutils",
+        "//sw/device/lib/testing/test_framework:ottf_alerts",
         "//sw/device/lib/testing/test_framework:ottf_main",
     ],
 )
@@ -2042,6 +2046,7 @@ opentitan_test(
     ],
     verilator = verilator_params(timeout = "long"),
     deps = [
+        "//hw/top/dt",
         "//hw/top_earlgrey/sw/autogen:top_earlgrey",
         "//sw/device/lib/base:macros",
         "//sw/device/lib/base:memory",
@@ -2049,6 +2054,7 @@ opentitan_test(
         "//sw/device/lib/dif:flash_ctrl",
         "//sw/device/lib/runtime:log",
         "//sw/device/lib/testing:flash_ctrl_testutils",
+        "//sw/device/lib/testing/test_framework:ottf_alerts",
         "//sw/device/lib/testing/test_framework:ottf_main",
     ],
 )
@@ -2090,6 +2096,7 @@ opentitan_test(
     verilator = verilator_params(timeout = "long"),
     deps = [
         "//hw/top:flash_ctrl_c_regs",
+        "//hw/top/dt",
         "//hw/top_earlgrey/sw/autogen:top_earlgrey",
         "//sw/device/lib/base:macros",
         "//sw/device/lib/base:memory",
@@ -2097,6 +2104,7 @@ opentitan_test(
         "//sw/device/lib/dif:flash_ctrl",
         "//sw/device/lib/runtime:log",
         "//sw/device/lib/testing:flash_ctrl_testutils",
+        "//sw/device/lib/testing/test_framework:ottf_alerts",
         "//sw/device/lib/testing/test_framework:ottf_main",
     ],
 )
@@ -2387,6 +2395,7 @@ opentitan_test(
         EARLGREY_SILICON_OWNER_ROM_EXT_ENVS,
         {
             "//hw/top_earlgrey:fpga_cw310_sival": None,
+            "//hw/top_earlgrey:fpga_cw340_sival": None,
             "//hw/top_earlgrey:silicon_creator": None,
         },
     ),
@@ -2403,6 +2412,7 @@ opentitan_test(
         "//sw/device/lib/testing:ret_sram_testutils",
         "//sw/device/lib/testing:rstmgr_testutils",
         "//sw/device/lib/testing:sram_ctrl_testutils",
+        "//sw/device/lib/testing/test_framework:ottf_alerts",
         "//sw/device/lib/testing/test_framework:ottf_main",
         "//sw/device/silicon_creator/lib/drivers:retention_sram",
         "//sw/otbn/crypto:x25519_sideload",
@@ -2418,6 +2428,7 @@ opentitan_test(
         EARLGREY_SILICON_OWNER_ROM_EXT_ENVS,
         {
             "//hw/top_earlgrey:fpga_cw310_sival": None,
+            "//hw/top_earlgrey:fpga_cw340_sival": None,
             "//hw/top_earlgrey:silicon_creator": None,
         },
     ),
@@ -2629,6 +2640,7 @@ opentitan_test(
     verilator = verilator_params(timeout = "long"),
     deps = [
         "//hw/top:otbn_c_regs",
+        "//hw/top/dt",
         "//sw/device/lib/arch:device",
         "//sw/device/lib/base:macros",
         "//sw/device/lib/dif:keymgr",
@@ -2639,6 +2651,7 @@ opentitan_test(
         "//sw/device/lib/testing:entropy_testutils",
         "//sw/device/lib/testing:keymgr_testutils",
         "//sw/device/lib/testing:otbn_testutils",
+        "//sw/device/lib/testing/test_framework:ottf_alerts",
         "//sw/device/lib/testing/test_framework:ottf_main",
         "//sw/otbn/crypto:x25519_sideload",
     ],
@@ -2819,6 +2832,7 @@ opentitan_test(
         "//sw/device/lib/runtime:log",
         "//sw/device/lib/testing:keymgr_testutils",
         "//sw/device/lib/testing:kmac_testutils",
+        "//sw/device/lib/testing/test_framework:ottf_alerts",
         "//sw/device/lib/testing/test_framework:ottf_main",
     ],
 )
@@ -3036,6 +3050,7 @@ opentitan_test(
         "//sw/device/lib/runtime:log",
         "//sw/device/lib/testing:entropy_testutils",
         "//sw/device/lib/testing:otbn_testutils",
+        "//sw/device/lib/testing/test_framework:ottf_alerts",
         "//sw/device/lib/testing/test_framework:ottf_main",
         "//sw/otbn/code-snippets:err_test",
     ],
@@ -3062,6 +3077,7 @@ opentitan_test(
         "//sw/device/lib/dif:rv_core_ibex",
         "//sw/device/lib/runtime:log",
         "//sw/device/lib/testing:otbn_testutils",
+        "//sw/device/lib/testing/test_framework:ottf_alerts",
         "//sw/device/lib/testing/test_framework:ottf_main",
     ],
 )
@@ -3144,6 +3160,7 @@ opentitan_test(
         DARJEELING_TEST_ENVS,
         {
             "//hw/top_earlgrey:fpga_cw310_sival": None,
+            "//hw/top_earlgrey:fpga_cw340_sival": None,
             "//hw/top_earlgrey:silicon_creator": None,
         },
     ),
@@ -3155,6 +3172,7 @@ opentitan_test(
         "//sw/device/lib/runtime:log",
         "//sw/device/lib/testing:entropy_testutils",
         "//sw/device/lib/testing:otbn_testutils",
+        "//sw/device/lib/testing/test_framework:ottf_alerts",
         "//sw/device/lib/testing/test_framework:ottf_main",
         "//sw/otbn/code-snippets:barrett384",
         "//sw/otbn/code-snippets:err_test",
@@ -3664,6 +3682,7 @@ opentitan_test(
         EARLGREY_SILICON_OWNER_ROM_EXT_ENVS,
         {
             "//hw/top_earlgrey:fpga_cw310_sival": None,
+            "//hw/top_earlgrey:fpga_cw340_sival": None,
             "//hw/top_earlgrey:silicon_creator": None,
         },
     ),
@@ -3699,6 +3718,7 @@ opentitan_test(
         EARLGREY_SILICON_OWNER_ROM_EXT_ENVS,
         {
             "//hw/top_earlgrey:fpga_cw310_sival": None,
+            "//hw/top_earlgrey:fpga_cw340_sival": None,
             "//hw/top_earlgrey:silicon_creator": None,
         },
     ),
@@ -3736,6 +3756,7 @@ opentitan_test(
         EARLGREY_SILICON_OWNER_ROM_EXT_ENVS,
         {
             "//hw/top_earlgrey:fpga_cw310_sival": None,
+            "//hw/top_earlgrey:fpga_cw340_sival": None,
             "//hw/top_earlgrey:silicon_creator": None,
         },
     ),
@@ -4553,6 +4574,7 @@ cc_library(
         "//sw/device/lib/testing:rstmgr_testutils",
         "//sw/device/lib/testing:rv_plic_testutils",
         "//sw/device/lib/testing:sram_ctrl_testutils",
+        "//sw/device/lib/testing/test_framework:ottf_alerts",
         "//sw/device/silicon_creator/lib/drivers:retention_sram",
     ],
 )
@@ -4610,6 +4632,30 @@ opentitan_test(
         "//sw/device/lib/dif:spi_device",
         "//sw/device/lib/runtime:log",
         "//sw/device/lib/testing:spi_flash_testutils",
+        "//sw/device/lib/testing/test_framework:ottf_main",
+    ],
+)
+
+opentitan_test(
+    name = "ottf_dual_console_test",
+    srcs = ["ottf_dual_console_test.c"],
+    exec_env = dicts.add(
+        {
+            "//hw/top_earlgrey:fpga_cw310_sival_rom_ext": None,
+            "//hw/top_earlgrey:fpga_cw310_rom_with_fake_keys": None,
+        },
+        EARLGREY_CW340_TEST_ENVS,
+    ),
+    fpga = fpga_params(
+        test_cmd = """
+            --bootstrap="{firmware}"
+        """,
+        test_harness = "//sw/host/tests/chip/ottf_dual_console",
+    ),
+    deps = [
+        "//hw/top_earlgrey/sw/autogen:top_earlgrey",
+        "//sw/device/lib/runtime:log",
+        "//sw/device/lib/testing:uart_testutils",
         "//sw/device/lib/testing/test_framework:ottf_main",
     ],
 )
@@ -5770,6 +5816,7 @@ opentitan_test(
         EARLGREY_SILICON_OWNER_ROM_EXT_ENVS,
         {
             "//hw/top_earlgrey:fpga_cw310_sival": None,
+            "//hw/top_earlgrey:fpga_cw340_sival": None,
             "//hw/top_earlgrey:silicon_creator": None,
         },
     ),
@@ -5788,6 +5835,7 @@ opentitan_test(
         "//sw/device/lib/testing:pwrmgr_testutils",
         "//sw/device/lib/testing:sensor_ctrl_testutils",
         "//sw/device/lib/testing/test_framework:check",
+        "//sw/device/lib/testing/test_framework:ottf_alerts",
         "//sw/device/lib/testing/test_framework:ottf_main",
     ],
 )
@@ -7580,6 +7628,7 @@ opentitan_test(
         "//sw/device/lib/runtime:log",
         "//sw/device/lib/testing:rstmgr_testutils",
         "//sw/device/lib/testing:sram_ctrl_testutils",
+        "//sw/device/lib/testing/test_framework:ottf_alerts",
         "//sw/device/lib/testing/test_framework:ottf_main",
         "//sw/device/lib/testing/test_framework:ottf_utils",
     ],
@@ -7959,5 +8008,29 @@ opentitan_test(
         "//sw/device/lib/runtime:print",
         "//sw/device/lib/testing/test_framework:ottf_main",
         "//sw/device/lib/testing/test_framework:status",
+    ],
+)
+
+opentitan_test(
+    name = "ottf_alert_catch_test",
+    srcs = ["ottf_alert_catch_test.c"],
+    exec_env = dicts.add(
+        EARLGREY_TEST_ENVS,
+        EARLGREY_SILICON_OWNER_ROM_EXT_ENVS,
+    ),
+    fpga = fpga_params(
+        exit_failure = "FAIL!",
+        exit_success = "Alert 3 is asserted",
+    ),
+    silicon = silicon_params(
+        exit_failure = "FAIL!",
+        exit_success = "Alert 3 is asserted",
+    ),
+    deps = [
+        "//hw/top/dt",
+        "//sw/device/lib/dif:alert_handler",
+        "//sw/device/lib/dif:uart",
+        "//sw/device/lib/runtime:hart",
+        "//sw/device/lib/testing/test_framework:ottf_main",
     ],
 )

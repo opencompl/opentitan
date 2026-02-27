@@ -18,11 +18,10 @@ use cert_lib::{
     CaConfig, CaKey, EndorsedCert, parse_and_endorse_x509_cert, validate_cert_chain,
     validate_cwt_dice_chain,
 };
-use ft_ext_lib::ft_ext;
+use ft_ext_lib::{ft_inject_certs_ext, ft_post_boot_ext};
 use opentitanlib::app::{TransportWrapper, UartRx};
 use opentitanlib::console::spi::SpiConsoleDevice;
 use opentitanlib::io::console::ConsoleError;
-use opentitanlib::io::gpio::{PinMode, PullMode};
 use opentitanlib::io::jtag::{JtagParams, JtagTap, RiscvGpr, RiscvReg};
 use opentitanlib::test_utils::init::InitializeTest;
 use opentitanlib::test_utils::lc_transition::trigger_lc_transition;
@@ -41,9 +40,7 @@ use ujson_lib::provisioning_data::{
     LcTokenHash, ManufCertgenInputs, ManufFtIndividualizeData, PersoBlob, SerdesSha256Hash,
 };
 use util_lib::hash_lc_token;
-
-pub mod response;
-use response::*;
+use util_lib::response::*;
 
 pub fn test_unlock(
     transport: &TransportWrapper,
@@ -89,17 +86,11 @@ pub fn run_sram_ft_individualize(
     jtag_params: &JtagParams,
     sram_program: &SramProgramParams,
     ft_individualize_data_in: &ManufFtIndividualizeData,
-    console_spi: &str,
-    console_tx_indicator_pin: &str,
+    spi_console: &SpiConsoleDevice,
     timeout: Duration,
     ujson_payloads: &mut UjsonPayloads,
 ) -> Result<()> {
-    // Setup the SPI console with the GPIO TX indicator pin.
-    let spi = transport.spi(console_spi)?;
-    let device_console_tx_ready_pin = &transport.gpio_pin(console_tx_indicator_pin)?;
-    device_console_tx_ready_pin.set_mode(PinMode::Input)?;
-    device_console_tx_ready_pin.set_pull_mode(PullMode::None)?;
-    let spi_console = SpiConsoleDevice::new(&*spi, Some(device_console_tx_ready_pin))?;
+    // Reset the SPI console before loading the target firmware.
     spi_console.reset_frame_counter();
 
     // Set CPU TAP straps, reset, and connect to the JTAG interface.
@@ -125,7 +116,7 @@ pub fn run_sram_ft_individualize(
     {
         // Wait for SRAM program to complete execution.
         let _ = UartConsole::wait_for(
-            &spi_console,
+            spi_console,
             r"Waiting for FT SRAM provisioning data ...",
             timeout,
         )?;
@@ -133,7 +124,7 @@ pub fn run_sram_ft_individualize(
         // Inject provisioning data into the device.
         ujson_payloads.dut_in.insert(
             "FT_INDIVIDUALIZE_DATA_IN".to_string(),
-            ft_individualize_data_in.send(&spi_console)?,
+            ft_individualize_data_in.send(spi_console)?,
         );
     }
 
@@ -358,7 +349,12 @@ fn provision_certificates(
     // Wait until the device exports the TBS certificates.
     let t0 = Instant::now();
     let _ = UartConsole::wait_for(spi_console, r"Exporting TBS certificates ...", timeout)?;
-    let perso_blob = PersoBlob::recv(spi_console, timeout, true)?;
+    let perso_blob = PersoBlob::recv(
+        spi_console,
+        timeout,
+        /*quiet=*/ true,
+        /*skip_crc=*/ true,
+    )?;
     response.stats.log_elapsed_time("perso-tbs-export", t0);
 
     // Extract certificate byte vectors, endorse TBS certs, and ensure they parse with OpenSSL.
@@ -377,6 +373,7 @@ fn provision_certificates(
     let mut device_was_hmac: Vec<u8> = Vec::new();
     let mut device_id: Vec<u8> = Vec::new();
     let mut host_was_hmac = Hmac::<Sha256>::new_from_slice(wafer_auth_secret.as_slice())?;
+    let mut generic_seed_id: usize = 0;
 
     // Extract CAs.
     let dice_ca_cert = &ca_cfgs["dice"].certificate;
@@ -387,7 +384,6 @@ fn provision_certificates(
 
     let t0 = Instant::now();
     for _ in 0..perso_blob.num_objs {
-        log::info!("Processing next object");
         let header = get_obj_header(&perso_blob.body[start..])?;
         let obj_header_size = std::mem::size_of::<ObjHeaderType>();
 
@@ -418,6 +414,28 @@ fn provision_certificates(
                 start += dev_seed_size;
                 response.seeds.number += r.len();
                 response.seeds.seed.extend(r);
+                continue;
+            }
+            ObjType::GenericSeed => {
+                let generic_seed_size = header.obj_size - obj_header_size;
+                let generic_seed = &perso_blob.body[start..start + generic_seed_size];
+                log::info!(
+                    "Generic Seed #{}: {}",
+                    generic_seed_id,
+                    hex::encode(generic_seed)
+                );
+                start += generic_seed_size;
+                generic_seed_id += 1;
+                continue;
+            }
+            ObjType::PersoSha256Hash => {
+                let hash_size = header.obj_size - obj_header_size;
+                let hash = &perso_blob.body[start..start + hash_size];
+                log::info!(
+                    "Personalization firmware SHA256 hash: {}",
+                    hex::encode(hash)
+                );
+                start += hash_size;
                 continue;
             }
         }
@@ -465,7 +483,11 @@ fn provision_certificates(
                     (CertFormat::X509, &mut dice_cert_chain)
                 }
                 ObjType::EndorsedCwtCert => (CertFormat::Cwt, &mut dice_cert_chain_cwt),
-                ObjType::WasTbsHmac | ObjType::DeviceId | ObjType::DevSeed => unreachable!(),
+                ObjType::WasTbsHmac
+                | ObjType::DeviceId
+                | ObjType::DevSeed
+                | ObjType::GenericSeed
+                | ObjType::PersoSha256Hash => unreachable!(),
             };
 
             let ec = EndorsedCert {
@@ -493,7 +515,7 @@ fn provision_certificates(
 
     // Execute extension hook.
     let t0 = Instant::now();
-    endorsed_cert_concat = ft_ext(endorsed_cert_concat)?;
+    endorsed_cert_concat = ft_inject_certs_ext(endorsed_cert_concat)?;
     response.stats.log_elapsed_time("perso-ft-ext", t0);
 
     // Authenticate WAS HMAC.
@@ -521,7 +543,13 @@ fn provision_certificates(
 
     // Check the integrity of the certificates written to the device's flash by comparing a
     // SHA256 over all certificates computed on the host and device sides.
-    let device_computed_certs_hash = SerdesSha256Hash::recv(spi_console, timeout, false)?;
+    let device_computed_certs_hash = SerdesSha256Hash::recv(
+        spi_console,
+        timeout,
+        /*quiet=*/ false,
+        /*skip_crc=*/ true,
+    )?;
+
     if !device_computed_certs_hash
         .data
         .as_bytes()
@@ -594,8 +622,10 @@ pub fn run_ft_personalize(
     response: &mut PersonalizeResponse,
 ) -> Result<()> {
     // Bootstrap only personalization binary into ROM_EXT slot A in flash.
+    spi_console.reset_frame_counter();
     let t0 = Instant::now();
     init.bootstrap.init(transport)?;
+    spi_console.reset_frame_counter();
     response.stats.log_elapsed_time("first-bootstrap", t0);
 
     // Bootstrap personalization + ROM_EXT + Owner FW binaries into flash, since
@@ -606,6 +636,7 @@ pub fn run_ft_personalize(
 
     let t0 = Instant::now();
     init.bootstrap.load(transport, &second_bootstrap)?;
+    spi_console.reset_frame_counter();
     response.stats.log_elapsed_time("second-bootstrap", t0);
 
     // Send RMA unlock token digest to device.
@@ -613,6 +644,10 @@ pub fn run_ft_personalize(
     let t0 = second_t0;
     send_rma_unlock_token_hash(rma_unlock_token, timeout, spi_console, ujson_payloads)?;
     response.stats.log_elapsed_time("send-rma-unlock-token", t0);
+
+    // After the OTP SECRET2 partition is programmed, the chip performs a SW
+    // reset, so we need to reset the SPI console frame counter.
+    spi_console.reset_frame_counter();
 
     // Provision all device certificates.
     let t0 = Instant::now();
@@ -675,13 +710,17 @@ pub fn check_slot_b_boot_up(
 
     let error_code_msg = r"BFV:.*\r\n";
 
-    let anchor_text = if let Some(owner_anchor) = &owner_fw_success_string {
-        format!(
-            r"(?s)({}|{}|{})",
-            rom_ext_failure_msg, error_code_msg, owner_anchor
-        )
-    } else {
-        format!(r"(?s)({}|{})", rom_ext_failure_msg, error_code_msg)
+    // Optional text requried by certain SKUs.
+    let owner_ext_string = ft_post_boot_ext(response)?;
+
+    // Compile the full regex anchor including possible error messages and
+    // expected owner FW messages.
+    let errors_text = format!(r"{}|{}", rom_ext_failure_msg, error_code_msg);
+    let anchor_text = match (owner_ext_string.clone(), owner_fw_success_string.clone()) {
+        (Some(x), Some(y)) => format!(r"(?s)({errors_text}|{x}.*{y})"),
+        (Some(x), None) => format!(r"(?s)({errors_text}|{x})"),
+        (None, Some(y)) => format!(r"(?s)({errors_text}|{y})"),
+        (None, None) => format!(r"(?s)({errors_text})"),
     };
 
     let result =
@@ -698,6 +737,7 @@ pub fn check_slot_b_boot_up(
         }
         Err(e) => {
             if owner_fw_success_string.is_none()
+                && owner_ext_string.is_none()
                 && matches!(
                     e.downcast_ref::<ConsoleError>(),
                     Some(ConsoleError::TimedOut)

@@ -112,7 +112,7 @@ fn run_aes_gcm_testcase(
     }
     .send(spi_console)?;
 
-    let aes_gcm_output = CryptotestAesGcmOutput::recv(spi_console, opts.timeout, false)?;
+    let aes_gcm_output = CryptotestAesGcmOutput::recv(spi_console, opts.timeout, false, false)?;
 
     // Check if the tag comparison matches.
     assert_eq!(aes_gcm_output.tag_valid, expected_tag_check);
@@ -137,7 +137,7 @@ fn run_aes_gcm_testcase(
 
 fn test_aes_gcm(opts: &Opts, transport: &TransportWrapper) -> Result<()> {
     let spi = transport.spi("BOOTSTRAP")?;
-    let spi_console_device = SpiConsoleDevice::new(&*spi, None)?;
+    let spi_console_device = SpiConsoleDevice::new(&*spi, None, /*ignore_frame_num=*/ false)?;
     let _ = UartConsole::wait_for(&spi_console_device, r"Running ", opts.timeout)?;
 
     let mut test_counter = 0u32;

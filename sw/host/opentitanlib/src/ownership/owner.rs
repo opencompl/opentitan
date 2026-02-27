@@ -40,7 +40,7 @@ with_unknown! {
 }
 
 /// Describes the owner configuration and key material.
-#[derive(Debug, Deserialize, Annotate)]
+#[derive(Debug, Deserialize, Annotate, PartialEq)]
 pub struct OwnerBlock {
     /// Header identifying this struct.
     #[serde(
@@ -265,7 +265,7 @@ impl OwnerBlock {
     }
 }
 
-#[derive(Debug, Deserialize, Annotate)]
+#[derive(Debug, Deserialize, Annotate, PartialEq)]
 pub enum OwnerConfigItem {
     #[serde(alias = "application_key")]
     ApplicationKey(OwnerApplicationKey),
@@ -587,6 +587,8 @@ r#"00000000: 4f 57 4e 52 00 08 00 00 00 00 00 00 4c 4e 45 58  OWNR........LNEX
         trigger_index: 0,
         gpio_pull_en: false,
         gpio_value: false,
+        enter_on_failure: false,
+        timeout: 0,
         start: 32,
         size: 224,
         command_allow: [

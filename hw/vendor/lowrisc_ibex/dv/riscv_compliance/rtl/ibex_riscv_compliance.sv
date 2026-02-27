@@ -23,6 +23,7 @@ module ibex_riscv_compliance (
   parameter bit RV32E                     = 1'b0;
   parameter ibex_pkg::rv32m_e RV32M       = ibex_pkg::RV32MFast;
   parameter ibex_pkg::rv32b_e RV32B       = ibex_pkg::RV32BNone;
+  parameter ibex_pkg::rv32zc_e RV32ZC     = ibex_pkg::RV32Zca;
   parameter ibex_pkg::regfile_e RegFile   = ibex_pkg::RegFileFF;
   parameter bit BranchTargetALU           = 1'b0;
   parameter bit WritebackStage            = 1'b0;
@@ -30,6 +31,7 @@ module ibex_riscv_compliance (
   parameter bit ICacheECC                 = 1'b0;
   parameter bit BranchPredictor           = 1'b0;
   parameter bit SecureIbex                = 1'b0;
+  parameter int unsigned LockstepOffset   = 1;
   parameter bit ICacheScramble            = 1'b0;
   parameter bit DbgTriggerEn              = 1'b0;
 
@@ -146,6 +148,7 @@ module ibex_riscv_compliance (
       .RV32E            (RV32E             ),
       .RV32M            (RV32M             ),
       .RV32B            (RV32B             ),
+      .RV32ZC           (RV32ZC            ),
       .RegFile          (RegFile           ),
       .BranchTargetALU  (BranchTargetALU   ),
       .WritebackStage   (WritebackStage    ),
@@ -154,6 +157,7 @@ module ibex_riscv_compliance (
       .BranchPredictor  (BranchPredictor   ),
       .DbgTriggerEn     (DbgTriggerEn      ),
       .SecureIbex       (SecureIbex        ),
+      .LockstepOffset   (LockstepOffset    ),
       .ICacheScramble   (ICacheScramble    ),
       .DmBaseAddr       (32'h00000000      ),
       .DmAddrMask       (32'h00000003      ),
@@ -213,7 +217,19 @@ module ibex_riscv_compliance (
       .alert_minor_o             (                     ),
       .alert_major_internal_o    (                     ),
       .alert_major_bus_o         (                     ),
-      .core_sleep_o              (                     )
+      .core_sleep_o              (                     ),
+
+      .lockstep_cmp_en_o         (                     ),
+
+      .data_req_shadow_o         (                     ),
+      .data_we_shadow_o          (                     ),
+      .data_be_shadow_o          (                     ),
+      .data_addr_shadow_o        (                     ),
+      .data_wdata_shadow_o       (                     ),
+      .data_wdata_intg_shadow_o  (                     ),
+
+      .instr_req_shadow_o        (                     ),
+      .instr_addr_shadow_o       (                     )
     );
 
   // SRAM block for instruction and data storage

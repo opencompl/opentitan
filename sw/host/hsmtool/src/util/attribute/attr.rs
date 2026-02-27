@@ -7,8 +7,9 @@ use std::str::FromStr;
 use std::sync::LazyLock;
 
 use anyhow::Result;
-use cryptoki::object::{Attribute, AttributeInfo, ObjectHandle};
+use cryptoki::object::{Attribute, AttributeInfo, ObjectHandle, ParameterSetType};
 use cryptoki::session::Session;
+use cryptoki::types::Ulong;
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
@@ -100,6 +101,10 @@ fn into_kv(attr: &Attribute) -> Result<(AttributeType, AttrData)> {
                 AttrData::from(val),
             ))
         }
+        Attribute::ParameterSet(val) => Ok((
+            AttributeType::from(attr.attribute_type()),
+            AttrData::from(**val),
+        )),
         Attribute::Class(object_class) => {
             let val = ObjectClass::from(*object_class);
             Ok((
@@ -200,6 +205,17 @@ fn from_kv(atype: AttributeType, data: &AttrData) -> Result<Attribute> {
         AttributeType::NeverExtractable => Ok(Attribute::NeverExtractable(data.try_into()?)),
         AttributeType::ObjectId => Ok(Attribute::ObjectId(data.try_into()?)),
         AttributeType::Owner => Ok(Attribute::Owner(data.try_into()?)),
+        AttributeType::ParameterSet => {
+            // TODO: Remove this once cryptoki supports the ML-DSA ParameterSetType.
+            let val = u64::try_from(data)?;
+            match ParameterSetType::try_from(Ulong::from(val)) {
+                Ok(p) => Ok(Attribute::ParameterSet(p)),
+                Err(e) => {
+                    log::error!("ParameterSetType conversion failed for {}: {:?}", val, e);
+                    Err(AttributeError::InvalidDataType.into())
+                }
+            }
+        }
         AttributeType::Prime => Ok(Attribute::Prime(data.try_into()?)),
         AttributeType::Prime1 => Ok(Attribute::Prime1(data.try_into()?)),
         AttributeType::Prime2 => Ok(Attribute::Prime2(data.try_into()?)),
@@ -249,6 +265,10 @@ impl AttributeMap {
     pub fn all() -> &'static [cryptoki::object::AttributeType] {
         static VALID_TYPES: LazyLock<Vec<cryptoki::object::AttributeType>> = LazyLock::new(|| {
             AttributeType::iter()
+                // TODO: Skip KeyGenMechanism because querying it for MLDSA keys
+                // triggers a mechanism validation error in the cryptoki library.
+                // Remove this once cryptoki supports the MLDSA keygenmechanism.
+                .filter(|&a| a != AttributeType::KeyGenMechanism)
                 .map(|a| Ok(a.try_into()?))
                 .filter(|a| a.is_ok())
                 .collect::<Result<Vec<_>>>()

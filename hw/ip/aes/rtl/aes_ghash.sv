@@ -324,6 +324,7 @@ module aes_ghash
       );
       assign ghash_add_in_sel_q[s] = ghash_add_in_sel_e'(ghash_add_in_sel_q_raw[s]);
 
+      // SEC_CM: CTRL.SPARSE
       // Check that the selector signals are indeed one-hot encoded or zero.
       prim_onehot_check #(
         .OneHotWidth(GHashAddInSelWidth),
@@ -501,6 +502,7 @@ module aes_ghash
     );
     assign gf_mult1_in_sel_q = gf_mult_in_sel_e'(gf_mult1_in_sel_q_raw);
 
+    // SEC_CM: CTRL.SPARSE
     // Check that the selector signal is indeed one-hot encoded or zero.
     prim_onehot_check #(
       .OneHotWidth(GFMultInSelWidth),
@@ -661,12 +663,10 @@ module aes_ghash
         in_ready_o = SP2V_HIGH;
         if (in_valid_i == SP2V_HIGH) begin
           if (clear_i) begin
-            // Clearing has highest priority. In case of the masked implementation, we clear the
-            // state using the initial state (the cipher core output, for which both shares are
-            // random at this point). For the unmasked implementation, we use the unmasked cipher
-            // core output.
+            // Clearing has highest priority. We clear the state using the unmasked cipher core
+            // output which is randomized at this point.
             s_we              = SP2V_HIGH;
-            ghash_state_sel   = SecMasking ? GHASH_STATE_INIT : GHASH_STATE_ADD;
+            ghash_state_sel   = GHASH_STATE_ADD;
             ghash_state_we[0] = SP2V_HIGH;
             ghash_state_we[1] = SP2V_HIGH;
             hash_subkey_we    = SP2V_HIGH;
@@ -677,7 +677,7 @@ module aes_ghash
             // This can be done by using the multipliers.
             if (SecMasking) begin
               gf_mult0_en_d     = 1'b1;
-              gf_mult1_in_sel_d = MULT_IN_STATE0;
+              gf_mult1_in_sel_d = MULT_IN_STATE1;
               aes_ghash_ns      = GHASH_MASKED_INIT;
             end
 
@@ -781,6 +781,9 @@ module aes_ghash
         // 2.  S0 * H1
         //
         // S0 and S1 have been loaded into the GHASH state registers previsously.
+        //
+        // This state is also used as part of the clearing sequence. Then, we multiply each state
+        // share by the corresponding share of the cleared hash subkey.
         gf_mult_req = 2'b11;
         if (gf_mult_ack_pre[0]) begin
           corr0_en_d = 1'b1;
@@ -925,15 +928,25 @@ module aes_ghash
         if (out_ready_i == SP2V_HIGH) begin
           add_s_en_d        = 1'b0;
           s_we              = SP2V_HIGH;
-          ghash_state_sel   = SecMasking ? GHASH_STATE_INIT : GHASH_STATE_ADD;
+          ghash_state_sel   = GHASH_STATE_ADD;
           ghash_state_we[0] = SP2V_HIGH;
           ghash_state_we[1] = SP2V_HIGH;
           hash_subkey_we    = SP2V_HIGH;
-          aes_ghash_ns      = SecMasking ? GHASH_MASKED_INIT : GHASH_IDLE;
+
+          // In case of the masked implementation, also the correction terms need to be cleared.
+          // This can be done by using the multipliers.
+          if (SecMasking) begin
+            gf_mult0_en_d     = 1'b1;
+            gf_mult1_in_sel_d = MULT_IN_STATE1;
+            aes_ghash_ns      = GHASH_MASKED_INIT;
+          end else begin
+            aes_ghash_ns      = GHASH_IDLE;
+          end
         end
       end
 
       GHASH_ERROR: begin
+        // SEC_CM: GHASH.FSM.LOCAL_ESC
         // Terminal error state
         alert_o = 1'b1;
       end
@@ -1040,5 +1053,60 @@ module aes_ghash
   always_comb begin : data_out_conversion
     ghash_state_done_o = aes_transpose(aes_state_to_ghash_vec(ghash_state_done));
   end
+
+  ////////////////
+  // Assertions //
+  ////////////////
+
+// Typically assertions already contain this macro, which ensures that assertions are only compiled
+// in simulation and FPV. However, we wrap the entire assertion section with INC_ASSERT so that the
+// helper logic below is not synthesized either, since that could cause issues in DC.
+`ifdef INC_ASSERT
+  //VCS coverage off
+  // pragma coverage off
+
+  if (SecMasking) begin : gen_sec_cm_key_masking_svas
+
+    // For clearing operations directly following a reset, the hash subkey shares as well as the
+    // GHASH state may still be zero which is not an issue SCA wise.
+    logic hsk_vld_after_rst_d, hsk_vld_after_rst_q;
+    logic s_vld_after_rst_d, s_vld_after_rst_q;
+    logic in_hs;
+
+    assign in_hs = (in_valid_i == SP2V_HIGH) & (in_ready_o == SP2V_HIGH);
+    assign hsk_vld_after_rst_d = (in_hs & ~clear_i &  load_hash_subkey_i) | hsk_vld_after_rst_q;
+    assign s_vld_after_rst_d   = (in_hs & ~clear_i & ~load_hash_subkey_i) | s_vld_after_rst_q;
+
+    always_ff @(posedge clk_i or negedge rst_ni) begin : sva_reg
+      if (!rst_ni) begin
+        hsk_vld_after_rst_q <= 1'b0;
+        s_vld_after_rst_q   <= 1'b0;
+      end else begin
+        hsk_vld_after_rst_q <= hsk_vld_after_rst_d;
+        s_vld_after_rst_q   <= s_vld_after_rst_d;
+      end
+    end
+
+    for (genvar s = 0; s < NumShares; s++) begin : gen_sec_cm_key_masking_share_svas
+      // Ensure that none of the hash subkey shares are zero when they are used.
+      `ASSERT(AesSecCmKeyMaskingGhashHskNonZero,
+          hsk_vld_after_rst_q && gf_mult_req[s] |-> |hash_subkey_q[s])
+      // Ensure that none of the GHASH state shares (initialized to S) are zero.
+      `ASSERT(AesSecCmKeyMaskingGhashInitialStateNonZero,
+          s_vld_after_rst_q && (aes_ghash_cs == GHASH_MASKED_INIT) |-> |ghash_state_q[s])
+      // Ensure that none of the repeatedly used correction terms are zero when they're used.
+      `ASSERT(AesSecCmKeyMaskingGhashCorrNonZero,
+          aes_ghash_cs == GHASH_MASKED_ADD_CORR |-> |corr_q[s])
+    end
+    // Ensure that S1 is not zero when it's used. This includes both the computation of the
+    // correction term used only once, as well as the final addition of S1.
+    `ASSERT(AesSecCmKeyMaskingGhashS1NonZero,
+        (aes_ghash_cs == GHASH_MASKED_ADD_CORR && first_block_q) ||
+        (aes_ghash_cs == GHASH_OUT) |-> |s_q)
+  end
+
+  //VCS coverage on
+  // pragma coverage on
+`endif
 
 endmodule

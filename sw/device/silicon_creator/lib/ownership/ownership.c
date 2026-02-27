@@ -50,7 +50,7 @@ static owner_page_status_t owner_page_validity_check(size_t page,
 
   rom_error_t result = ownership_key_validate(
       page, kOwnershipKeyOwner, kTlvTagOwner, &bootdata->nonce,
-      &owner_page[page].signature, &owner_page[page], sig_len);
+      &owner_page[page].signature, &owner_page[page], sig_len, NULL);
   if (result != kErrorOk) {
     // If the page is bad, destroy the RAM copy.
     memset(&owner_page[page], 0x5a, sizeof(owner_page[0]));
@@ -71,9 +71,7 @@ static rom_error_t locked_owner_init(boot_data_t *bootdata,
       owner_page_valid[1] == kOwnerPageStatusSigned &&
       owner_block_newversion_mode() == kHardenedBoolTrue &&
       owner_page[1].config_version > owner_page[0].config_version &&
-      hardened_memeq(owner_page[0].owner_key.raw, owner_page[1].owner_key.raw,
-                     ARRAYSIZE(owner_page[0].owner_key.raw)) ==
-          kHardenedBoolTrue) {
+      owner_block_owner_key_equal() == kHardenedBoolTrue) {
     rom_error_t error =
         ownership_activate(bootdata, /*write_both_pages=*/kHardenedBoolFalse);
     if (error == kErrorOk) {
