@@ -205,7 +205,9 @@ module pwrmgr_fsm import pwrmgr_pkg::*; import pwrmgr_reg_pkg::*;(
   end
 
   // SEC_CM: FSM.SPARSE
-  `PRIM_FLOP_A(FastPwrStateLowPower, state_d, state_q, clk_i, rst_ni)
+  // `PRIM_FLOP_A(FastPwrStateLowPower, state_d, state_q, clk_i, rst_ni)
+
+  `PRIM_FLOP_A(state_d, state_q, FastPwrStateLowPower , clk_i, rst_ni)
 
   //`PRIM_FLOP_SPARSE_FSM(u_state_regs, state_d, state_q, fast_pwr_state_e, FastPwrStateLowPower)
 
