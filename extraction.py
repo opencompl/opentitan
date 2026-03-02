@@ -206,7 +206,7 @@ for arg in sys.argv:
     if arg.startswith("--after="):
         after = int(arg.split("=")[1])    
 
-FSM_CIRCT_OPT = "/local/scratch/tah56/paper-evals/fsm-mc-benchmarking/fsm-circt/build/bin/circt-opt"
+FSM_CIRCT_OPT = "/home/bea/Research/paper-evals/fsm-mc-benchmarking/fsm-circt/build/bin/circt-opt"
 
 if not os.path.isfile(FSM_CIRCT_OPT):
     print("Sorry Bea has hardcoded the location of this binary until the FSMToSMT pass is merged (isn't she awfully silly!?). You'll need to update the FSM_CIRCT_OPT variable locally.")
@@ -269,7 +269,7 @@ def main():
 
             initial_mlir = test_dir + "1_initial.mlir"
             proc_mlir = test_dir + "2_proc.mlir"
-            cmd = [str(CIRCT_OPT), "--hw-flatten-modules", "--hw-flatten-io", "--comb-assume-two-valued", "--arc-strip-sv=async-resets-as-sync", "--lower-ltl-to-core", str(initial_mlir), "-o",  str(proc_mlir)]
+            cmd = [str(CIRCT_OPT), "--hw-flatten-modules", "--hw-flatten-io", "--comb-assume-two-valued", "--arc-strip-sv=async-resets-as-sync", "--lower-ltl-to-core", "--canonicalize", str(initial_mlir), "-o",  str(proc_mlir)]
             res = run_command(cmd, cwd=OPENTITAN_ROOT)
             # Hack until FSMToSMT handles clocked asserts
             run_command(["sed", "-i", "-E", "-r", "\"s/clocked_assert (%[a-zA-Z0-9_]+), .* : (.*)/assert \\1 : \\2/g\"", str(proc_mlir)])
