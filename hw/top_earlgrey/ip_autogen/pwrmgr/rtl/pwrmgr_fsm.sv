@@ -419,10 +419,17 @@ module pwrmgr_fsm import pwrmgr_pkg::*; import pwrmgr_reg_pkg::*;(
         // reset non-always-on domains if requested
         // this includes the clock manager, which implies pwr/rst managers must
         // be fed directly from the source
-        for (int i = OffDomainSelStart; i < PowerDomains; i++) begin
-          rst_lc_req_d[i] = ~main_pd_ni;
-          rst_sys_req_d[i] = ~main_pd_ni;
-        end
+        // for (int i = OffDomainSelStart; i < PowerDomains; i++) begin
+        //   rst_lc_req_d[i] = ~main_pd_ni;
+        //   rst_sys_req_d[i] = ~main_pd_ni;
+        // end
+
+        // TODO: I'm manually unrolling this loop. Why?
+        rst_lc_req_d[0] = ~main_pd_ni;
+         rst_sys_req_d[0] = ~main_pd_ni;
+         rst_lc_req_d[1] = ~main_pd_ni;
+         rst_sys_req_d[1] = ~main_pd_ni;
+
 
         if (reset_valid) begin
           state_d = FastPwrStateReqPwrDn;

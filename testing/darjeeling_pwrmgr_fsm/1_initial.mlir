@@ -2,14 +2,11 @@ module {
   hw.module @pwrmgr_fsm(in %clk_i : i1, in %rst_ni : i1, in %clk_slow_i : i1, in %rst_slow_ni : i1, in %req_pwrup_i : i1, in %pwrup_cause_i : i2, out ack_pwrup_o : i1, out req_pwrdn_o : i1, in %ack_pwrdn_i : i1, in %low_power_entry_i : i1, in %main_pd_ni : i1, in %reset_reqs_i : i6, in %fsm_invalid_i : i1, out clr_slow_req_o : i1, out wkup_o : i1, out fall_through_o : i1, out abort_o : i1, out clr_hint_o : i1, out clr_cfg_lock_o : i1, in %int_reset_req_i : i1, in %ext_rst_ack_i : i1, out pwr_rst_o : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>, in %pwr_rst_i : !hw.struct<rst_lc_src_n: i2, rst_sys_src_n: i2>, out ips_clk_en_o : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>, in %clk_en_status_i : !hw.struct<main_status: i1, io_status: i1>, out otp_init_o : i1, in %otp_done_i : i1, in %otp_idle_i : i1, out lc_init_o : i1, in %lc_done_i : i1, in %lc_idle_i : i1, in %lc_dft_en_i : i4, in %lc_hw_debug_en_i : i4, in %flash_idle_i : i1, in %rom_ctrl_done_i : i4, in %rom_ctrl_good_i : i4, out strap_o : i1, out strap_sampled_o : i1, out low_power_o : i1, out fetch_en_o : i4) {
     %c0_i3 = hw.constant 0 : i3
     %true = hw.constant true
-    %c0_i31 = hw.constant 0 : i31
     %c0_i6 = hw.constant 0 : i6
     %c-682_i12 = hw.constant -682 : i12
     %c-4_i12 = hw.constant -4 : i12
     %c1647_i12 = hw.constant 1647 : i12
     %c-375_i12 = hw.constant -375 : i12
-    %c2_i32 = hw.constant 2 : i32
-    %c1_i32 = hw.constant 1 : i32
     %c1423_i12 = hw.constant 1423 : i12
     %c-1671_i12 = hw.constant -1671 : i12
     %c1744_i12 = hw.constant 1744 : i12
@@ -34,7 +31,7 @@ module {
     %c-2_i2 = hw.constant -2 : i2
     %c1_i2 = hw.constant 1 : i2
     %false = hw.constant false
-    %0 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %102, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
+    %0 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %333, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
     %1 = hw.struct_create (%ip_clk_en_q, %ip_clk_en_q) : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
     %rst_lc_src_n = hw.struct_extract %pwr_rst_i["rst_lc_src_n"] : !hw.struct<rst_lc_src_n: i2, rst_sys_src_n: i2>
     %2 = comb.extract %rst_lc_src_n from 1 : (i2) -> i1
@@ -77,22 +74,22 @@ module {
     %38 = comb.xor %rst_ni, %true : i1
     %ext_rst_req_q = seq.firreg %ext_rst_ack_i clock %37 reset async %38, %false : i1
     %ext_rst_pending_q = seq.firreg %36 clock %37 reset async %38, %false : i1
-    %ack_pwrup_q = seq.firreg %101#10 clock %37 reset async %38, %false : i1
-    %req_pwrdn_q = seq.firreg %101#11 clock %37 reset async %38, %false : i1
-    %reset_ongoing_q = seq.firreg %101#12 clock %37 reset async %38, %false : i1
-    %ip_clk_en_q = seq.firreg %101#13 clock %37 reset async %38, %false : i1
-    %rst_lc_req_q = seq.firreg %101#14 clock %37 reset async %38, %c-1_i2 : i2
-    %rst_sys_req_q = seq.firreg %101#15 clock %37 reset async %38, %c-1_i2 : i2
-    %reset_cause_q = seq.firreg %101#16 clock %37 reset async %38, %c-1_i2 : i2
-    %low_power_q = seq.firreg %101#17 clock %37 reset async %38, %true : i1
-    %state_q = seq.firreg %101#9 clock %37 reset async %38, %c55_i12 : i12
+    %ack_pwrup_q = seq.firreg %318 clock %37 reset async %38, %false : i1
+    %req_pwrdn_q = seq.firreg %320 clock %37 reset async %38, %false : i1
+    %reset_ongoing_q = seq.firreg %321 clock %37 reset async %38, %false : i1
+    %ip_clk_en_q = seq.firreg %323 clock %37 reset async %38, %false : i1
+    %rst_lc_req_q = seq.firreg %325 clock %37 reset async %38, %c-1_i2 : i2
+    %rst_sys_req_q = seq.firreg %326 clock %37 reset async %38, %c-1_i2 : i2
+    %reset_cause_q = seq.firreg %327 clock %37 reset async %38, %c-1_i2 : i2
+    %low_power_q = seq.firreg %328 clock %37 reset async %38, %true : i1
+    %state_q = seq.firreg %332 clock %37 reset async %38, %c55_i12 : i12
     %39 = comb.icmp eq %rst_sys_req_q, %c-1_i2 : i2
     %40 = comb.xor %39, %true : i1
-    %41 = comb.and %40, %101#7 : i1
-    %42 = comb.or %39, %101#7 : i1
+    %41 = comb.and %40, %316 : i1
+    %42 = comb.or %39, %316 : i1
     %43 = comb.mux bin %42, %41, %strap_sampled_o : i1
     %strap_sampled_o = seq.firreg %43 clock %37 reset async %38, %false : i1
-    %u_fetch_en.lc_en_o = hw.instance "u_fetch_en" @prim_lc_sender(clk_i: %clk_i: i1, rst_ni: %rst_ni: i1, lc_en_i: %101#18: i4) -> (lc_en_o: i4)
+    %u_fetch_en.lc_en_o = hw.instance "u_fetch_en" @prim_lc_sender(clk_i: %clk_i: i1, rst_ni: %rst_ni: i1, lc_en_i: %330: i4) -> (lc_en_o: i4)
     %u_slow_sync_lc_done.q_o = hw.instance "u_slow_sync_lc_done" @prim_flop_2sync(clk_i: %clk_slow_i: i1, rst_ni: %rst_slow_ni: i1, d_i: %lc_done_i: i1) -> (q_o: i1) {sv.namehint = "slow_lc_done"}
     %u_sync_lc_done.q_o = hw.instance "u_sync_lc_done" @prim_flop_2sync(clk_i: %clk_i: i1, rst_ni: %rst_ni: i1, d_i: %u_slow_sync_lc_done.q_o: i1) -> (q_o: i1)
     %44 = hw.bitcast %1 : (!hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>) -> i2
@@ -152,134 +149,242 @@ module {
     %98 = comb.concat %false, %94 : i1, i3
     %99 = comb.concat %97, %c0_i3 : i1, i3
     %100 = comb.or %98, %99 : i4
-    %101:19 = llhd.combinational -> i1, i1, i1, i1, i1, i1, i1, i1, i1, i12, i1, i1, i1, i1, i2, i2, i2, i1, i4 {
-      %103 = comb.icmp ceq %state_q, %c55_i12 : i12
-      cf.cond_br %103, ^bb1(%req_pwrup_i, %reset_ongoing_q, %reset_cause_q, %u_fetch_en.lc_en_o, %c-1330_i12, %u_fetch_en.lc_en_o : i1, i1, i2, i4, i12, i4), ^bb2
-    ^bb1(%104: i1, %105: i1, %106: i2, %107: i4, %108: i12, %109: i4):  // 2 preds: ^bb0, ^bb16
-      %110 = comb.or %104, %105 : i1
-      cf.cond_br %110, ^bb32(%false, %false, %false, %false, %false, %false, %false, %false, %false, %ack_pwrup_q, %req_pwrdn_q, %reset_ongoing_q, %ip_clk_en_q, %rst_lc_req_q, %rst_sys_req_q, %106, %low_power_q, %107, %108 : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12), ^bb32(%false, %false, %false, %false, %false, %false, %false, %false, %false, %ack_pwrup_q, %req_pwrdn_q, %reset_ongoing_q, %ip_clk_en_q, %rst_lc_req_q, %rst_sys_req_q, %reset_cause_q, %low_power_q, %109, %state_q : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12)
-    ^bb2:  // pred: ^bb0
-      %111 = comb.icmp ceq %state_q, %c-1330_i12 : i12
-      cf.cond_br %111, ^bb3(%50, %false, %false, %req_pwrdn_q, %true, %rst_lc_req_q, %rst_sys_req_q, %reset_cause_q, %c-1600_i12, %false, %req_pwrdn_q : i1, i1, i1, i1, i1, i2, i2, i2, i12, i1, i1), ^bb4
-    ^bb3(%112: i1, %113: i1, %114: i1, %115: i1, %116: i1, %117: i2, %118: i2, %119: i2, %120: i12, %121: i1, %122: i1):  // 5 preds: ^bb2, ^bb6, ^bb7, ^bb24, ^bb26
-      cf.cond_br %112, ^bb32(%113, %114, %false, %false, %false, %false, %false, %false, %false, %ack_pwrup_q, %115, %reset_ongoing_q, %116, %117, %118, %119, %low_power_q, %u_fetch_en.lc_en_o, %120 : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12), ^bb32(%113, %121, %false, %false, %false, %false, %false, %false, %false, %ack_pwrup_q, %122, %reset_ongoing_q, %116, %117, %118, %119, %low_power_q, %u_fetch_en.lc_en_o, %state_q : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12)
-    ^bb4:  // pred: ^bb2
-      %123 = comb.icmp ceq %state_q, %c-1600_i12 : i12
-      cf.cond_br %123, ^bb5, ^bb6
-    ^bb5:  // pred: ^bb4
-      %124 = comb.icmp eq %rst_lc_src_n, %c-1_i2 : i2
-      cf.cond_br %124, ^bb32(%false, %false, %false, %false, %false, %false, %false, %false, %false, %ack_pwrup_q, %req_pwrdn_q, %reset_ongoing_q, %ip_clk_en_q, %c0_i2, %c0_i2, %reset_cause_q, %low_power_q, %u_fetch_en.lc_en_o, %c-94_i12 : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12), ^bb32(%false, %false, %false, %false, %false, %false, %false, %false, %false, %ack_pwrup_q, %req_pwrdn_q, %reset_ongoing_q, %ip_clk_en_q, %c0_i2, %c0_i2, %reset_cause_q, %low_power_q, %u_fetch_en.lc_en_o, %state_q : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12)
-    ^bb6:  // pred: ^bb4
-      %125 = comb.icmp ceq %state_q, %c-94_i12 : i12
-      cf.cond_br %125, ^bb3(%otp_done_i, %true, %false, %req_pwrdn_q, %ip_clk_en_q, %rst_lc_req_q, %rst_sys_req_q, %reset_cause_q, %c-1453_i12, %false, %req_pwrdn_q : i1, i1, i1, i1, i1, i2, i2, i2, i12, i1, i1), ^bb7
-    ^bb7:  // pred: ^bb6
-      %126 = comb.icmp ceq %state_q, %c-1453_i12 : i12
-      cf.cond_br %126, ^bb3(%u_sync_lc_done.q_o, %false, %true, %req_pwrdn_q, %ip_clk_en_q, %rst_lc_req_q, %rst_sys_req_q, %reset_cause_q, %c168_i12, %true, %req_pwrdn_q : i1, i1, i1, i1, i1, i2, i2, i2, i12, i1, i1), ^bb8
-    ^bb8:  // pred: ^bb7
-      %127 = comb.icmp ceq %state_q, %c168_i12 : i12
-      cf.cond_br %127, ^bb9, ^bb11
-    ^bb9:  // pred: ^bb8
-      %128 = comb.xor %reset_ongoing_q, %true : i1
-      %129 = comb.xor %req_pwrup_i, %true : i1
-      %130 = comb.or %129, %reset_ongoing_q : i1
-      cf.cond_br %130, ^bb10, ^bb32(%false, %false, %false, %false, %false, %false, %false, %false, %false, %128, %req_pwrdn_q, %reset_ongoing_q, %ip_clk_en_q, %rst_lc_req_q, %rst_sys_req_q, %reset_cause_q, %low_power_q, %u_fetch_en.lc_en_o, %state_q : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12)
-    ^bb10:  // pred: ^bb9
-      %131 = comb.icmp eq %pwrup_cause_i, %c1_i2 : i2
-      %132 = comb.and %131, %27 : i1
-      cf.br ^bb32(%false, %false, %132, %false, %false, %false, %true, %false, %false, %false, %req_pwrdn_q, %false, %ip_clk_en_q, %rst_lc_req_q, %rst_sys_req_q, %reset_cause_q, %low_power_q, %u_fetch_en.lc_en_o, %c-966_i12 : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12)
-    ^bb11:  // pred: ^bb8
-      %133 = comb.icmp ceq %state_q, %c-966_i12 : i12
-      cf.cond_br %133, ^bb12, ^bb13
-    ^bb12:  // pred: ^bb11
-      %134 = comb.xor %strap_sampled_o, %true : i1
-      cf.br ^bb32(%false, %false, %false, %false, %false, %false, %false, %134, %false, %ack_pwrup_q, %req_pwrdn_q, %reset_ongoing_q, %ip_clk_en_q, %rst_lc_req_q, %rst_sys_req_q, %reset_cause_q, %low_power_q, %u_fetch_en.lc_en_o, %c1523_i12 : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12)
-    ^bb13:  // pred: ^bb11
-      %135 = comb.icmp ceq %state_q, %c1523_i12 : i12
-      cf.cond_br %135, ^bb14(%rom_ctrl_done_i, %c0_i2, %false, %c1028_i12 : i4, i2, i1, i12), ^bb15
-    ^bb14(%136: i4, %137: i2, %138: i1, %139: i12):  // 2 preds: ^bb13, ^bb15
-      %140 = comb.icmp eq %136, %c6_i4 : i4
-      cf.cond_br %140, ^bb32(%false, %false, %false, %false, %false, %false, %false, %false, %false, %ack_pwrup_q, %req_pwrdn_q, %reset_ongoing_q, %ip_clk_en_q, %rst_lc_req_q, %rst_sys_req_q, %137, %138, %u_fetch_en.lc_en_o, %139 : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12), ^bb32(%false, %false, %false, %false, %false, %false, %false, %false, %false, %ack_pwrup_q, %req_pwrdn_q, %reset_ongoing_q, %ip_clk_en_q, %rst_lc_req_q, %rst_sys_req_q, %137, %138, %u_fetch_en.lc_en_o, %state_q : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12)
-    ^bb15:  // pred: ^bb13
-      %141 = comb.icmp ceq %state_q, %c1028_i12 : i12
-      cf.cond_br %141, ^bb14(%100, %reset_cause_q, %low_power_q, %c868_i12 : i4, i2, i1, i12), ^bb16
-    ^bb16:  // pred: ^bb15
-      %142 = comb.icmp ceq %state_q, %c868_i12 : i12
-      cf.cond_br %142, ^bb1(%19, %low_power_entry_i, %c-1_i2, %c-6_i4, %c917_i12, %c5_i4 : i1, i1, i2, i4, i12, i4), ^bb17
-    ^bb17:  // pred: ^bb16
-      %143 = comb.icmp ceq %state_q, %c917_i12 : i12
-      cf.cond_br %143, ^bb18, ^bb19
-    ^bb18:  // pred: ^bb17
-      %144 = comb.mux %56, %19, %24 : i1
-      %145 = comb.mux %56, %c1744_i12, %state_q : i12
-      %146 = comb.mux %144, %c778_i12, %145 : i12
-      %147 = comb.xor %19, %true : i1
-      cf.br ^bb32(%false, %false, %false, %false, %false, %false, %false, %false, %false, %ack_pwrup_q, %req_pwrdn_q, %reset_ongoing_q, %false, %rst_lc_req_q, %rst_sys_req_q, %reset_cause_q, %147, %u_fetch_en.lc_en_o, %146 : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12)
-    ^bb19:  // pred: ^bb17
-      %148 = comb.icmp ceq %state_q, %c1744_i12 : i12
-      cf.cond_br %148, ^bb20, ^bb21
-    ^bb20:  // pred: ^bb19
-      %149 = comb.xor %low_power_entry_i, %true : i1
-      cf.cond_br %149, ^bb32(%false, %false, %true, %true, %false, %true, %false, %false, %false, %ack_pwrup_q, %req_pwrdn_q, %reset_ongoing_q, %true, %rst_lc_req_q, %rst_sys_req_q, %reset_cause_q, %low_power_q, %u_fetch_en.lc_en_o, %c1523_i12 : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12), ^bb32(%false, %false, %false, %false, %false, %true, %false, %false, %false, %ack_pwrup_q, %req_pwrdn_q, %reset_ongoing_q, %ip_clk_en_q, %rst_lc_req_q, %rst_sys_req_q, %reset_cause_q, %low_power_q, %u_fetch_en.lc_en_o, %c-1671_i12 : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12)
-    ^bb21:  // pred: ^bb19
-      %150 = comb.icmp ceq %state_q, %c-1671_i12 : i12
-      cf.cond_br %150, ^bb22, ^bb23
-    ^bb22:  // pred: ^bb21
-      %151 = comb.and %otp_idle_i, %lc_idle_i, %flash_idle_i : i1
-      cf.cond_br %151, ^bb32(%false, %false, %false, %false, %false, %false, %false, %false, %false, %ack_pwrup_q, %req_pwrdn_q, %reset_ongoing_q, %ip_clk_en_q, %rst_lc_req_q, %rst_sys_req_q, %reset_cause_q, %low_power_q, %u_fetch_en.lc_en_o, %c1423_i12 : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12), ^bb32(%false, %false, %true, %false, %true, %false, %false, %false, %false, %ack_pwrup_q, %req_pwrdn_q, %reset_ongoing_q, %true, %rst_lc_req_q, %rst_sys_req_q, %reset_cause_q, %low_power_q, %u_fetch_en.lc_en_o, %c1523_i12 : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12)
-    ^bb23:  // pred: ^bb21
-      %152 = comb.icmp ceq %state_q, %c1423_i12 : i12
-      cf.cond_br %152, ^bb24(%c1_i32, %rst_lc_req_q, %rst_sys_req_q : i32, i2, i2), ^bb26
-    ^bb24(%153: i32, %154: i2, %155: i2):  // 2 preds: ^bb23, ^bb25
-      %156 = comb.icmp slt %153, %c2_i32 : i32
-      cf.cond_br %156, ^bb25, ^bb3(%31, %false, %false, %req_pwrdn_q, %ip_clk_en_q, %154, %155, %c1_i2, %c-375_i12, %false, %req_pwrdn_q : i1, i1, i1, i1, i1, i2, i2, i2, i12, i1, i1)
-    ^bb25:  // pred: ^bb24
-      %157 = comb.extract %153 from 1 : (i32) -> i31
-      %158 = comb.extract %153 from 0 : (i32) -> i1
-      %159 = comb.icmp ne %157, %c0_i31 : i31
-      %160 = comb.or %159, %158 : i1
-      %161 = comb.xor %main_pd_ni, %true : i1
-      %162 = comb.concat %false, %160 : i1, i1
-      %163 = comb.shl %c1_i2, %162 : i2
-      %164 = comb.xor bin %163, %c-1_i2 : i2
-      %165 = comb.and %154, %164 : i2
-      %166 = comb.concat %false, %161 : i1, i1
-      %167 = comb.shl %166, %162 : i2
-      %168 = comb.or %165, %167 : i2
-      %169 = comb.and %155, %164 : i2
-      %170 = comb.or %169, %167 : i2
-      %171 = comb.add %153, %c1_i32 : i32
-      cf.br ^bb24(%171, %168, %170 : i32, i2, i2)
-    ^bb26:  // pred: ^bb23
-      %172 = comb.icmp ceq %state_q, %c-375_i12 : i12
-      cf.cond_br %172, ^bb3(%ack_pwrdn_i, %false, %false, %false, %ip_clk_en_q, %rst_lc_req_q, %rst_sys_req_q, %reset_cause_q, %c55_i12, %false, %true : i1, i1, i1, i1, i1, i2, i2, i2, i12, i1, i1), ^bb27
-    ^bb27:  // pred: ^bb26
-      %173 = comb.icmp ceq %state_q, %c778_i12 : i12
-      cf.cond_br %173, ^bb32(%false, %false, %false, %false, %false, %true, %false, %false, %false, %ack_pwrup_q, %req_pwrdn_q, %true, %ip_clk_en_q, %rst_lc_req_q, %rst_sys_req_q, %reset_cause_q, %low_power_q, %u_fetch_en.lc_en_o, %c1647_i12 : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12), ^bb28
-    ^bb28:  // pred: ^bb27
-      %174 = comb.icmp ceq %state_q, %c1647_i12 : i12
-      cf.cond_br %174, ^bb29, ^bb30
-    ^bb29:  // pred: ^bb28
-      %175 = comb.icmp ne %lc_hw_debug_en_i, %c5_i4 : i4
-      %176 = comb.and %25, %175 : i1
-      %177 = comb.or %21, %24, %26, %176 : i1
-      %178 = comb.replicate %177 : (i1) -> i2
-      cf.br ^bb32(%false, %false, %false, %false, %false, %false, %false, %false, %false, %ack_pwrup_q, %req_pwrdn_q, %reset_ongoing_q, %ip_clk_en_q, %c-1_i2, %178, %c-2_i2, %low_power_q, %u_fetch_en.lc_en_o, %c-4_i12 : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12)
-    ^bb30:  // pred: ^bb28
-      %179 = comb.icmp ceq %state_q, %c-4_i12 : i12
-      cf.cond_br %179, ^bb31, ^bb32(%false, %false, %false, %false, %false, %false, %false, %false, %false, %ack_pwrup_q, %req_pwrdn_q, %reset_ongoing_q, %false, %c-1_i2, %c-1_i2, %reset_cause_q, %low_power_q, %u_fetch_en.lc_en_o, %state_q : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12)
-    ^bb31:  // pred: ^bb30
-      %180 = comb.xor %23, %true : i1
-      %181 = comb.xor %ext_rst_pending_q, %true : i1
-      %182 = comb.and %31, %180, %181 : i1
-      cf.cond_br %182, ^bb32(%false, %false, %false, %false, %false, %false, %false, %false, %23, %ack_pwrup_q, %req_pwrdn_q, %reset_ongoing_q, %ip_clk_en_q, %c-1_i2, %rst_sys_req_q, %reset_cause_q, %low_power_q, %u_fetch_en.lc_en_o, %c55_i12 : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12), ^bb32(%false, %false, %false, %false, %false, %false, %false, %false, %23, %ack_pwrup_q, %req_pwrdn_q, %reset_ongoing_q, %ip_clk_en_q, %c-1_i2, %rst_sys_req_q, %reset_cause_q, %low_power_q, %u_fetch_en.lc_en_o, %state_q : i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i2, i1, i4, i12)
-    ^bb32(%183: i1, %184: i1, %185: i1, %186: i1, %187: i1, %188: i1, %189: i1, %190: i1, %191: i1, %192: i1, %193: i1, %194: i1, %195: i1, %196: i2, %197: i2, %198: i2, %199: i1, %200: i4, %201: i12):  // 21 preds: ^bb1, ^bb1, ^bb3, ^bb3, ^bb5, ^bb5, ^bb9, ^bb10, ^bb12, ^bb14, ^bb14, ^bb18, ^bb20, ^bb20, ^bb22, ^bb22, ^bb27, ^bb29, ^bb30, ^bb31, ^bb31
-      %202 = comb.mux %fsm_invalid_i, %c-682_i12, %201 : i12
-      llhd.yield %183, %184, %185, %186, %187, %188, %189, %190, %191, %202, %192, %193, %194, %195, %196, %197, %198, %199, %200 : i1, i1, i1, i1, i1, i1, i1, i1, i1, i12, i1, i1, i1, i1, i2, i2, i2, i1, i4
-    }
-    %102 = comb.extract %reset_reqs_i from 0 : (i6) -> i5
-    %u_reg_otp_init.q_o = hw.instance "u_reg_otp_init" @prim_flop(clk_i: %clk_i: i1, rst_ni: %rst_ni: i1, d_i: %101#0: i1) -> (q_o: i1)
-    %u_reg_lc_init.q_o = hw.instance "u_reg_lc_init" @prim_flop(clk_i: %clk_i: i1, rst_ni: %rst_ni: i1, d_i: %101#1: i1) -> (q_o: i1)
-    hw.output %ack_pwrup_q, %req_pwrdn_q, %101#8, %101#2, %101#3, %101#4, %101#5, %101#6, %0, %1, %u_reg_otp_init.q_o, %u_reg_lc_init.q_o, %101#7, %strap_sampled_o, %low_power_q, %u_fetch_en.lc_en_o : i1, i1, i1, i1, i1, i1, i1, i1, !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>, !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>, i1, i1, i1, i1, i1, i4
+    %101 = comb.icmp ceq %state_q, %c55_i12 : i12
+    %102 = comb.icmp ceq %state_q, %c-1330_i12 : i12
+    %103 = comb.icmp ceq %state_q, %c-1600_i12 : i12
+    %104 = comb.icmp ceq %state_q, %c-94_i12 : i12
+    %105 = comb.icmp ceq %state_q, %c-1453_i12 : i12
+    %106 = comb.icmp ceq %state_q, %c168_i12 : i12
+    %107 = comb.icmp ceq %state_q, %c-966_i12 : i12
+    %108 = comb.icmp ceq %state_q, %c1523_i12 : i12
+    %109 = comb.icmp ceq %state_q, %c1028_i12 : i12
+    %110 = comb.icmp ceq %state_q, %c868_i12 : i12
+    %111 = comb.mux %101, %req_pwrup_i, %19 : i1
+    %112 = comb.mux %101, %reset_ongoing_q, %low_power_entry_i : i1
+    %113 = comb.mux %101, %c-1330_i12, %c917_i12 : i12
+    %114 = comb.or %111, %112 : i1
+    %115 = comb.icmp ceq %state_q, %c917_i12 : i12
+    %116 = comb.icmp ceq %state_q, %c1744_i12 : i12
+    %117 = comb.icmp ceq %state_q, %c-1671_i12 : i12
+    %118 = comb.icmp ceq %state_q, %c1423_i12 : i12
+    %119 = comb.icmp ceq %state_q, %c-375_i12 : i12
+    %120 = comb.xor %102, %true : i1
+    %121 = comb.xor %103, %true : i1
+    %122 = comb.and %121, %120 : i1
+    %123 = comb.xor %104, %true : i1
+    %124 = comb.and %123, %122, %105 : i1
+    %125 = comb.mux %124, %u_sync_lc_done.q_o, %ack_pwrdn_i : i1
+    %126 = comb.mux %124, %c168_i12, %c55_i12 : i12
+    %127 = comb.xor %124, %true : i1
+    %128 = comb.and %122, %104 : i1
+    %129 = comb.mux %128, %otp_done_i, %125 : i1
+    %130 = comb.xor %128, %true : i1
+    %131 = comb.mux %128, %c-1453_i12, %126 : i12
+    %132 = comb.mux %102, %50, %129 : i1
+    %133 = comb.or %102, %128, %124 : i1
+    %134 = comb.and %133, %req_pwrdn_q : i1
+    %135 = comb.or %102, %ip_clk_en_q : i1
+    %136 = comb.mux %102, %c-1600_i12, %131 : i12
+    %137 = comb.and %120, %130, %127 : i1
+    %138 = comb.or %137, %req_pwrdn_q : i1
+    %139 = comb.icmp eq %rst_lc_src_n, %c-1_i2 : i2
+    %140 = comb.xor %reset_ongoing_q, %true : i1
+    %141 = comb.xor %req_pwrup_i, %true : i1
+    %142 = comb.or %141, %reset_ongoing_q : i1
+    %143 = comb.icmp eq %pwrup_cause_i, %c1_i2 : i2
+    %144 = comb.and %143, %27 : i1
+    %145 = comb.xor %strap_sampled_o, %true : i1
+    %146 = comb.mux %108, %rom_ctrl_done_i, %100 : i4
+    %147 = comb.mux %108, %c0_i2, %reset_cause_q : i2
+    %148 = comb.xor %108, %true : i1
+    %149 = comb.mux %108, %c1028_i12, %c868_i12 : i12
+    %150 = comb.icmp eq %146, %c6_i4 : i4
+    %151 = comb.mux %56, %19, %24 : i1
+    %152 = comb.mux %56, %c1744_i12, %state_q : i12
+    %153 = comb.mux %151, %c778_i12, %152 : i12
+    %154 = comb.xor %19, %true : i1
+    %155 = comb.xor %low_power_entry_i, %true : i1
+    %156 = comb.and %otp_idle_i, %lc_idle_i, %flash_idle_i : i1
+    %157 = comb.xor %main_pd_ni, %true : i1
+    %158 = comb.replicate %157 : (i1) -> i2
+    %159 = comb.icmp ceq %state_q, %c778_i12 : i12
+    %160 = comb.icmp ceq %state_q, %c1647_i12 : i12
+    %161 = comb.icmp ne %lc_hw_debug_en_i, %c5_i4 : i4
+    %162 = comb.and %25, %161 : i1
+    %163 = comb.or %21, %24, %26, %162 : i1
+    %164 = comb.replicate %163 : (i1) -> i2
+    %165 = comb.xor %23, %true : i1
+    %166 = comb.xor %ext_rst_pending_q, %true : i1
+    %167 = comb.and %31, %165, %166 : i1
+    %168 = comb.xor %101, %true : i1
+    %169 = comb.and %120, %168 : i1
+    %170 = comb.and %121, %169 : i1
+    %171 = comb.and %123, %170 : i1
+    %172 = comb.xor %105, %true : i1
+    %173 = comb.and %172, %171 : i1
+    %174 = comb.xor %106, %true : i1
+    %175 = comb.and %174, %173 : i1
+    %176 = comb.xor %107, %true : i1
+    %177 = comb.and %176, %175 : i1
+    %178 = comb.and %148, %177 : i1
+    %179 = comb.xor %109, %true : i1
+    %180 = comb.and %179, %178 : i1
+    %181 = comb.xor %110, %true : i1
+    %182 = comb.and %181, %180 : i1
+    %183 = comb.xor %115, %true : i1
+    %184 = comb.and %183, %182 : i1
+    %185 = comb.xor %116, %true : i1
+    %186 = comb.and %185, %184 : i1
+    %187 = comb.xor %117, %true : i1
+    %188 = comb.and %187, %186 : i1
+    %189 = comb.xor %118, %true : i1
+    %190 = comb.and %189, %188 : i1
+    %191 = comb.xor %119, %true : i1
+    %192 = comb.and %191, %190 : i1
+    %193 = comb.xor %159, %true : i1
+    %194 = comb.and %193, %192 : i1
+    %195 = comb.xor %160, %true : i1
+    %196 = comb.icmp cne %state_q, %c-4_i12 : i12
+    %197 = comb.and %195, %194, %196 : i1
+    %198 = comb.xor %197, %true : i1
+    %199 = comb.xor %167, %true : i1
+    %200 = comb.or %197, %199 : i1
+    %201 = comb.mux %200, %state_q, %c55_i12 : i12
+    %202 = comb.and %192, %159 : i1
+    %203 = comb.xor %202, %true : i1
+    %204 = comb.mux %202, %rst_lc_req_q, %c-1_i2 : i2
+    %205 = comb.or %202, %198 : i1
+    %206 = comb.mux %205, %rst_sys_req_q, %c-1_i2 : i2
+    %207 = comb.mux %202, %c1647_i12, %201 : i12
+    %208 = comb.mux %31, %c-375_i12, %state_q : i12
+    %209 = comb.and %118, %188 : i1
+    %210 = comb.xor %209, %true : i1
+    %211 = comb.or %209, %202, %198 : i1
+    %212 = comb.and %211, %ip_clk_en_q : i1
+    %213 = comb.mux %209, %158, %204 : i2
+    %214 = comb.mux %209, %158, %206 : i2
+    %215 = comb.mux %209, %208, %207 : i12
+    %216 = comb.xor %156, %true : i1
+    %217 = comb.or %216, %ip_clk_en_q : i1
+    %218 = comb.mux %156, %c1423_i12, %c1523_i12 : i12
+    %219 = comb.and %117, %186 : i1
+    %220 = comb.and %219, %216 : i1
+    %221 = comb.xor %219, %true : i1
+    %222 = comb.and %221, %210, %202 : i1
+    %223 = comb.mux %219, %217, %212 : i1
+    %224 = comb.mux %219, %218, %215 : i12
+    %225 = comb.or %155, %ip_clk_en_q : i1
+    %226 = comb.mux %155, %c1523_i12, %c-1671_i12 : i12
+    %227 = comb.and %116, %184 : i1
+    %228 = comb.mux %227, %155, %220 : i1
+    %229 = comb.xor %227, %true : i1
+    %230 = comb.or %227, %222 : i1
+    %231 = comb.mux %227, %225, %223 : i1
+    %232 = comb.or %227, %219, %210 : i1
+    %233 = comb.mux %232, %reset_cause_q, %c1_i2 : i2
+    %234 = comb.mux %227, %226, %224 : i12
+    %235 = comb.mux %150, %149, %state_q : i12
+    %236 = comb.and %109, %178 : i1
+    %237 = comb.and %108, %177 : i1
+    %238 = comb.or %236, %237 : i1
+    %239 = comb.xor %238, %true : i1
+    %240 = comb.or %238, %227, %219 : i1
+    %241 = comb.mux %240, %rst_lc_req_q, %213 : i2
+    %242 = comb.mux %240, %rst_sys_req_q, %214 : i2
+    %243 = comb.mux %238, %147, %233 : i2
+    %244 = comb.mux %238, %235, %234 : i12
+    %245 = comb.mux %139, %c-94_i12, %state_q : i12
+    %246 = comb.and %103, %169 : i1
+    %247 = comb.xor %246, %true : i1
+    %248 = comb.or %246, %238 : i1
+    %249 = comb.mux %248, %ip_clk_en_q, %231 : i1
+    %250 = comb.mux %246, %c0_i2, %241 : i2
+    %251 = comb.mux %246, %c0_i2, %242 : i2
+    %252 = comb.mux %246, %245, %244 : i12
+    %253 = comb.mux %132, %134, %138 : i1
+    %254 = comb.mux %132, %136, %state_q : i12
+    %255 = comb.and %119, %190 : i1
+    %256 = comb.and %105, %171 : i1
+    %257 = comb.and %104, %170 : i1
+    %258 = comb.and %102, %168 : i1
+    %259 = comb.or %255, %256, %257, %258 : i1
+    %260 = comb.xor %259, %true : i1
+    %261 = comb.mux %259, %135, %249 : i1
+    %262 = comb.or %259, %246 : i1
+    %263 = comb.mux %262, %reset_cause_q, %243 : i2
+    %264 = comb.mux %259, %254, %252 : i12
+    %265 = comb.xor %114, %true : i1
+    %266 = comb.or %265, %101 : i1
+    %267 = comb.mux %266, %reset_cause_q, %c-1_i2 : i2
+    %268 = comb.mux %114, %c-6_i4, %c5_i4 : i4
+    %269 = comb.mux %114, %113, %state_q : i12
+    %270 = comb.and %110, %180 : i1
+    %271 = comb.or %270, %101 : i1
+    %272 = comb.xor %271, %true : i1
+    %273 = comb.or %271, %259 : i1
+    %274 = comb.mux %273, %rst_lc_req_q, %250 : i2
+    %275 = comb.mux %273, %rst_sys_req_q, %251 : i2
+    %276 = comb.mux %271, %267, %263 : i2
+    %277 = comb.mux %271, %269, %264 : i12
+    %278 = comb.and %160, %194 : i1
+    %279 = comb.xor %278, %true : i1
+    %280 = comb.or %278, %271 : i1
+    %281 = comb.mux %280, %ip_clk_en_q, %261 : i1
+    %282 = comb.mux %278, %c-1_i2, %274 : i2
+    %283 = comb.mux %278, %164, %275 : i2
+    %284 = comb.mux %278, %c-2_i2, %276 : i2
+    %285 = comb.or %278, %271, %259, %246, %239, %148 : i1
+    %286 = comb.and %285, %low_power_q : i1
+    %287 = comb.mux %278, %c-4_i12, %277 : i12
+    %288 = comb.and %115, %182 : i1
+    %289 = comb.xor %288, %true : i1
+    %290 = comb.and %289, %281 : i1
+    %291 = comb.mux %288, %154, %286 : i1
+    %292 = comb.mux %288, %153, %287 : i12
+    %293 = comb.and %107, %175 : i1
+    %294 = comb.xor %293, %true : i1
+    %295 = comb.and %294, %289, %279, %272, %260, %247, %239, %228 : i1
+    %296 = comb.and %294, %289, %279, %272, %260, %247, %239, %229, %221, %210, %202 : i1
+    %297 = comb.or %296, %reset_ongoing_q : i1
+    %298 = comb.mux %293, %c1523_i12, %292 : i12
+    %299 = comb.and %106, %173 : i1
+    %300 = comb.and %142, %299 : i1
+    %301 = comb.xor %300, %true : i1
+    %302 = comb.mux %300, %144, %295 : i1
+    %303 = comb.and %301, %ack_pwrup_q : i1
+    %304 = comb.and %301, %297 : i1
+    %305 = comb.mux %300, %c-966_i12, %298 : i12
+    %306 = comb.xor %142, %true : i1
+    %307 = comb.and %299, %306 : i1
+    %308 = comb.xor %307, %true : i1
+    %309 = comb.and %308, %301, %294, %289, %279, %272, %259, %128 : i1
+    %310 = comb.and %308, %301, %294, %289, %279, %272, %259, %130, %124 : i1
+    %311 = comb.and %308, %302 : i1
+    %312 = comb.and %308, %301, %294, %289, %279, %272, %260, %247, %239, %227, %155 : i1
+    %313 = comb.and %308, %301, %294, %289, %279, %272, %260, %247, %239, %229, %220 : i1
+    %314 = comb.and %308, %301, %294, %289, %279, %272, %260, %247, %239, %230 : i1
+    %315 = comb.and %308, %300 : i1
+    %316 = comb.and %308, %301, %293, %145 : i1
+    %317 = comb.and %308, %301, %294, %289, %279, %272, %260, %247, %239, %229, %221, %210, %203, %198, %23 : i1
+    %318 = comb.mux %307, %140, %303 : i1
+    %319 = comb.or %307, %300, %293, %288, %278, %271, %260 : i1
+    %320 = comb.mux %319, %req_pwrdn_q, %253 : i1
+    %321 = comb.mux %307, %reset_ongoing_q, %304 : i1
+    %322 = comb.or %307, %300, %293 : i1
+    %323 = comb.mux %322, %ip_clk_en_q, %290 : i1
+    %324 = comb.or %307, %300, %293, %288 : i1
+    %325 = comb.mux %324, %rst_lc_req_q, %282 : i2
+    %326 = comb.mux %324, %rst_sys_req_q, %283 : i2
+    %327 = comb.mux %324, %reset_cause_q, %284 : i2
+    %328 = comb.mux %322, %low_power_q, %291 : i1
+    %329 = comb.or %307, %300, %293, %288, %278, %272, %101 : i1
+    %330 = comb.mux %329, %u_fetch_en.lc_en_o, %268 : i4
+    %331 = comb.mux %307, %state_q, %305 : i12
+    %332 = comb.mux %fsm_invalid_i, %c-682_i12, %331 : i12
+    %333 = comb.extract %reset_reqs_i from 0 : (i6) -> i5
+    %u_reg_otp_init.q_o = hw.instance "u_reg_otp_init" @prim_flop(clk_i: %clk_i: i1, rst_ni: %rst_ni: i1, d_i: %309: i1) -> (q_o: i1)
+    %u_reg_lc_init.q_o = hw.instance "u_reg_lc_init" @prim_flop(clk_i: %clk_i: i1, rst_ni: %rst_ni: i1, d_i: %310: i1) -> (q_o: i1)
+    hw.output %ack_pwrup_q, %req_pwrdn_q, %317, %311, %312, %313, %314, %315, %0, %1, %u_reg_otp_init.q_o, %u_reg_lc_init.q_o, %316, %strap_sampled_o, %low_power_q, %u_fetch_en.lc_en_o : i1, i1, i1, i1, i1, i1, i1, i1, !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>, !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>, i1, i1, i1, i1, i1, i4
   }
   hw.module private @prim_lc_sender(in %clk_i : i1, in %rst_ni : i1, in %lc_en_i : i4, out lc_en_o : i4) {
     %gen_flops.u_prim_flop.q_o = hw.instance "gen_flops.u_prim_flop" @prim_sec_anchor_flop(clk_i: %clk_i: i1, rst_ni: %rst_ni: i1, d_i: %lc_en_i: i4) -> (q_o: i4) {sv.namehint = "lc_en_out"}
