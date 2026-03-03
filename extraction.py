@@ -206,11 +206,16 @@ for arg in sys.argv:
     if arg.startswith("--after="):
         after = int(arg.split("=")[1])    
 
-FSM_CIRCT_OPT = "/home/bea/Research/paper-evals/fsm-mc-benchmarking/fsm-circt/build/bin/circt-opt"
+if not os.path.exists("fsm-circt-dir.txt"):
+    raise FileNotFoundError("Please put the path to a local CIRCT build with FSMToSMT in 'fsm-circt-dir.txt'.")
+
+with open("fsm-circt-dir.txt", "r") as f:
+    FSM_CIRCT_OPT = os.path.join(f.read().strip(), "build", "bin", "circt-opt")
 
 if not os.path.isfile(FSM_CIRCT_OPT):
-    print("Sorry Bea has hardcoded the location of this binary until the FSMToSMT pass is merged (isn't she awfully silly!?). You'll need to update the FSM_CIRCT_OPT variable locally.")
+    print("Couldn't find the FSMToSMT circt-opt binary. Please check the path in 'fsm-circt-dir.txt'.")
     sys.exit(0)
+
 
 
 def run_command(cmd, cwd=None):

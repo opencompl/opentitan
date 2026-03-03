@@ -92,3 +92,6 @@ book
 
 # Custom Ruff config overrides
 .ruff.toml
+
+# Local fsm-circt location
+fsm-circt-dir.txt
