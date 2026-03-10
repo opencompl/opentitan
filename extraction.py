@@ -273,8 +273,11 @@ def main():
                 print(f"--- Running Test: {name} ---")
 
             initial_mlir = test_dir + "1_initial.mlir"
+            intermed_mlir = test_dir + "1p5_intermediate.mlir"
             proc_mlir = test_dir + "2_proc.mlir"
-            cmd = [str(CIRCT_OPT), "--hw-flatten-modules", "--hw-flatten-io", "--comb-assume-two-valued", "--arc-strip-sv=async-resets-as-sync", "--lower-ltl-to-core='assume-first-clock'", "--canonicalize", "--lower-seq-shiftreg", "--cse", "--canonicalize", str(initial_mlir), "-o",  str(proc_mlir)]
+            cmd = [str(CIRCT_OPT), "--hw-flatten-modules", "--hw-flatten-io", "--comb-assume-two-valued", "--arc-strip-sv=async-resets-as-sync", "--lower-ltl-to-core='assume-first-clock'", "--canonicalize", str(initial_mlir), "-o",  str(intermed_mlir)]
+            res = run_command(cmd, cwd=OPENTITAN_ROOT)
+            cmd = [str(CIRCT_OPT), "--lower-seq-shiftreg", "--cse", "--canonicalize", str(intermed_mlir), "-o",  str(proc_mlir)]
             res = run_command(cmd, cwd=OPENTITAN_ROOT)
             # Hack until FSMToSMT handles clocked asserts
             run_command(["sed", "-i", "-E", "-r", "\"s/clocked_assert (%[a-zA-Z0-9_]+), .* : (.*)/assert \\1 : \\2/g\"", str(proc_mlir)])
