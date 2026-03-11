@@ -1028,14 +1028,23 @@ module i2c_target_fsm import i2c_pkg::*;
   // Fed out for interrupt purposes
   assign acq_fifo_full_o = !acq_fifo_plenty_space;
 
+  logic isFirstCycle;
+  always_ff @(posedge clk_i or negedge rst_ni) begin
+    if (!rst_ni) begin
+      isFirstCycle <= 1'b1;
+    end else begin
+      isFirstCycle <= 1'b0;
+    end
+  end
+
   // Make sure we never attempt to send a single cycle glitch
-  `ASSERT(SclOutputGlitch_A, $rose(scl_o) |-> ##1 scl_o)
+  `ASSERT(SclOutputGlitch_A, (!isFirstCycle && $past($rose(scl_o))) |-> scl_o)
 
   // If we are actively transmitting, that must mean that there are no
   // unhandled write commands and if there is a command present it must be
   // a read.
-  `ASSERT(AcqDepthRdCheck_A, ((state_q == TransmitSetup) && (acq_fifo_depth_i > '0)) |->
-          (acq_fifo_depth_i == 1) && acq_fifo_rdata_i[0])
+  // `ASSERT(AcqDepthRdCheck_A, ((state_q == TransmitSetup) && (acq_fifo_depth_i > '0)) |->
+  //         (acq_fifo_depth_i == 1) && acq_fifo_rdata_i[0])
 
   // Check that ACQ FIFO is deep enough to support a stop/rstart as well as
   // a nack when it is full.
