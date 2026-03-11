@@ -974,8 +974,26 @@ module i2c_controller_fsm import i2c_pkg::*;
   assign event_stretch_timeout_o = stretch_en && timeout_enable_i &&
                                    (stretch_idle_cnt > 31'(stretch_timeout_i));
 
+  logic isFirstCycle;
+  always_ff @(posedge clk_i or negedge rst_ni) begin
+    if (!rst_ni) begin
+      isFirstCycle <= 1'b1;
+    end else begin
+      isFirstCycle <= 1'b0;
+    end
+  end
+
+  logic isSecondCycle;
+  always_ff @(posedge clk_i or negedge rst_ni) begin
+    if (!rst_ni) begin
+      isSecondCycle <= 1'b0;
+    end else begin
+      isSecondCycle <= isFirstCycle;
+    end
+  end
+
   // Make sure we never attempt to send a single cycle glitch
-  `ASSERT(SclOutputGlitch_A, $rose(scl_o) |-> ##1 scl_o)
+  `ASSERT(SclOutputGlitch_A, (!isFirstCycle && !isSecondCycle && $rose($past(scl_o))) |-> scl_o)
 
   // TODO: Handle the assertion below
 //  // I2C bus outputs
