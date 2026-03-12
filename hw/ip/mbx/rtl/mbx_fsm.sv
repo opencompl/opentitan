@@ -174,4 +174,10 @@ module mbx_fsm #(
       endcase
     end
   end
+
+always assert property (
+  @(posedge clk_i)
+    (($past((ctrl_state_q == MbxRead) && !mbx_error_set_i && !sysif_control_abort_set_i && sys_read_all_i)) |-> (ctrl_state_q == MbxIdle))
+);
+
 endmodule
