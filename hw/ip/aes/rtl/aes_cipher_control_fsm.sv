@@ -508,8 +508,7 @@ module aes_cipher_control_fsm import aes_pkg::*;
       CIPHER_CTRL_ROUND,
       CIPHER_CTRL_FINISH,
       CIPHER_CTRL_PRNG_RESEED,
-      CIPHER_CTRL_CLEAR_S,
-      CIPHER_CTRL_CLEAR_KD
+      CIPHER_CTRL_CLEAR_S
       })
 
 endmodule
