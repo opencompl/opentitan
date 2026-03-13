@@ -14,7 +14,6 @@ module spi_host_fsm
 ) (
   input                              clk_i,
   input                              rst_ni,
-  input                              en_i,
   input  command_t                   command_i,
   input  logic [CSW-1:0]             command_csid_i,
   input                              command_valid_i,
@@ -36,73 +35,67 @@ module spi_host_fsm
   output logic                       tx_stall_o,
   output logic                       active_o,
 
-  input                              sw_rst_i
+  input                              sw_rst_i,
+
+  // Datapath status inputs
+  input                              fsm_en_i,
+  input                              last_bit_i,
+  input                              last_byte_i,
+  input                              wait_cntr_zero_i,
+  input                              byte_cntr_early_zero_i,
+
+  // Externalized command/config datapath registers
+  input  logic [CSW-1:0]             csid_q_i,
+  input  logic                       cpol_q_i,
+  input  logic                       cpha_q_i,
+  input  logic                       full_cyc_q_i,
+  input  logic                       csaat_q_i,
+  input  logic                       cmd_rd_en_q_i,
+  input  logic                       cmd_wr_en_q_i,
+  input  logic [1:0]                 cmd_speed_q_i,
+
+  // Externalized output-stage datapath registers
+  input  logic                       sample_en_q_i,
+  input  logic                       sample_en_q2_i,
+  input  logic [NumCS-1:0]           csb_q_i,
+  input  logic                       cmd_wr_en_last_bit_i,
+  input  logic                       is_first_cycle_i,
+
+  // Externalized combinational datapath signals
+  input  logic                       config_changed_i,
+  input  logic                       byte_starting_i,
+  input  logic                       stall_i,
+  input  logic                       segment_rd_en_cpha1_i
 );
 
   logic             is_idle;
-  logic [15:0]      clkdiv, clkdiv_q;
-  logic [15:0]      clk_cntr_q, clk_cntr_d;
-  logic             clk_cntr_en;
 
   logic [CSW-1:0]   csid;
-  logic [CSW-1:0]   csid_q;
 
-  logic [3:0]       csnidle, csntrail, csnlead;
-  logic [3:0]       csnidle_q, csntrail_q, csnlead_q;
   logic             full_cyc, cpha, cpol;
-  logic             full_cyc_q, cpha_q, cpol_q;
 
-  // Unlike the configopts fields, the segment fields can change in back-to-back segment operation.
-  // (If a change in only the configopts fields is detected, the FSM transitions to idle instead).
-  // For that reason, when using the segment fields in back-to-back operations,  we have to bear
-  // in mind context and determine whether it is appropriate to use the value for the previous
-  // segment or the following segment.
-  // For instance, the cmd_rd_en signal is sometimes used to push segment bytes into the shift
-  // register, and so in that case it is important to use cmd_rd_en_q in that sense. The same
-  // signal is consulted to load the bit counter at the /beginning/ of each byte or dummy cycle,
-  // and so in this context it is appropriate to use cmd_rd_en_d (which refers to the value from
-  // the immediately following segment).
-  logic [1:0]       cmd_speed_d, cmd_speed_q;
-  logic             cmd_wr_en_d, cmd_wr_en_q;
-  logic             cmd_rd_en_d, cmd_rd_en_q;
-  logic [19:0]      cmd_len_d, cmd_len_q;
-  logic             csaat;
-  logic             csaat_q;
-
-  logic [2:0]       bit_cntr_d, bit_cntr_q;
-  logic [19:0]      byte_cntr_cpha0_d, byte_cntr_cpha1_d, byte_cntr_cpha0_q, byte_cntr_cpha1_q;
-  logic [19:0]      byte_cntr_early, byte_cntr_late;
-  logic [3:0]       wait_cntr_d, wait_cntr_q;
-  logic             last_bit, last_byte;
+  logic             cmd_wr_en_d;
 
   logic             state_changing;
-  logic             byte_starting, byte_starting_cpha0, byte_starting_cpha1;
   logic             bit_shifting, bit_shifting_cpha0, bit_shifting_cpha1;
   logic             byte_ending, byte_ending_cpha0, byte_ending_cpha1;
 
-  logic             sample_en_d, sample_en_q, sample_en_q2;
-
-  logic             config_changed;
-  logic             fsm_en;
+  logic             sample_en_internal;
 
   // new_command: signals a new segment input
   logic             new_command;
 
   logic             csb_single_d;
-  logic [NumCS-1:0] csb_q;
-  logic             sck_d, sck_q;
+  logic             sck_d;
 
-  logic wr_en_internal, rd_en_internal, sample_en_internal, shift_en_internal;
-
-  logic stall;
-
-  assign stall = rx_stall_o | tx_stall_o;
+  logic wr_en_internal, rd_en_internal, shift_en_internal;
+  logic segment_rd_en;
 
   // suppress output pulses if stalled.
-  assign wr_en_o     = wr_en_internal & ~stall;
-  assign rd_en_o     = rd_en_internal & ~stall;
-  assign sample_en_o = sample_en_internal & ~stall;
-  assign shift_en_o  = shift_en_internal & ~stall;
+  assign wr_en_o     = wr_en_internal & ~stall_i;
+  assign rd_en_o     = rd_en_internal & ~stall_i;
+  assign sample_en_o = sample_en_internal & ~stall_i;
+  assign shift_en_o  = shift_en_internal & ~stall_i;
 
   typedef enum logic [2:0] {
     Idle,
@@ -118,87 +111,30 @@ module spi_host_fsm
   spi_host_st_e state_q, state_d;
 
   logic command_ready_int;
-  assign command_ready_o = command_ready_int & ~stall;
+  assign command_ready_o = command_ready_int & ~stall_i;
 
 
   assign new_command    = command_valid_i && command_ready_int;
-  assign config_changed = (command_i.configopts.cpol     != cpol_q) ||
-                          (command_i.configopts.cpha     != cpha_q) ||
-                          (command_i.configopts.full_cyc != full_cyc_q) ||
-                          (command_i.configopts.csnidle  != csnidle_q) ||
-                          (command_i.configopts.csntrail != csntrail_q) ||
-                          (command_i.configopts.csnlead  != csnlead_q) ||
-                          (command_i.configopts.clkdiv   != clkdiv_q);
 
   always_comb begin
-    csid      = new_command ? command_csid_i : csid_q;
-    cpol      = new_command ? command_i.configopts.cpol : cpol_q;
-    cpha      = new_command ? command_i.configopts.cpha : cpha_q;
-    full_cyc  = new_command ? command_i.configopts.full_cyc : full_cyc_q;
-    csnidle   = new_command ? command_i.configopts.csnidle : csnidle_q;
-    csnlead   = new_command ? command_i.configopts.csnlead : csnlead_q;
-    csntrail  = new_command ? command_i.configopts.csntrail : csntrail_q;
-    clkdiv    = new_command ? command_i.configopts.clkdiv : clkdiv_q;
-    csaat     = new_command ? command_i.segment.csaat : csaat_q;
-    cmd_len_d   = new_command ? command_i.segment.len : cmd_len_q;
-    cmd_wr_en_d = new_command ? command_i.segment.cmd_wr_en : cmd_wr_en_q;
-    cmd_rd_en_d = new_command ? command_i.segment.cmd_rd_en : cmd_rd_en_q;
-    cmd_speed_d = new_command ? command_i.segment.speed : cmd_speed_q;
-  end
-
-  always_ff @(posedge clk_i or negedge rst_ni) begin
-    if (!rst_ni) begin
-      csid_q      <= {CSW{1'b0}};
-      cpol_q      <= 1'b0;
-      cpha_q      <= 1'b0;
-      full_cyc_q  <= 1'b0;
-      csnidle_q   <= 4'h0;
-      csnlead_q   <= 4'h0;
-      csntrail_q  <= 4'h0;
-      clkdiv_q    <= 16'h0;
-      csaat_q     <= 1'b0;
-      cmd_rd_en_q <= 1'b0;
-      cmd_wr_en_q <= 1'b0;
-      cmd_speed_q <= 2'b00;
-      cmd_len_q   <= 20'h0;
-    end else begin
-      csid_q      <= (new_command && !stall) ? csid : csid_q;
-      cpol_q      <= (new_command && !stall) ? cpol : cpol_q;
-      cpha_q      <= (new_command && !stall) ? cpha : cpha_q;
-      full_cyc_q  <= (new_command && !stall) ? full_cyc : full_cyc_q;
-      csnidle_q   <= (new_command && !stall) ? csnidle : csnidle_q;
-      csnlead_q   <= (new_command && !stall) ? csnlead : csnlead_q;
-      csntrail_q  <= (new_command && !stall) ? csntrail : csntrail_q;
-      clkdiv_q    <= (new_command && !stall) ? clkdiv : clkdiv_q;
-      csaat_q     <= (new_command && !stall) ? csaat : csaat_q;
-      cmd_wr_en_q <= (new_command && !stall) ? cmd_wr_en_d : cmd_wr_en_q;
-      cmd_rd_en_q <= (new_command && !stall) ? cmd_rd_en_d : cmd_rd_en_q;
-      cmd_speed_q <= (new_command && !stall) ? cmd_speed_d : cmd_speed_q;
-      cmd_len_q   <= (new_command && !stall) ? cmd_len_d : cmd_len_q;
-    end
+    csid        = new_command ? command_csid_i : csid_q_i;
+    cpol        = new_command ? command_i.configopts.cpol : cpol_q_i;
+    cpha        = new_command ? command_i.configopts.cpha : cpha_q_i;
+    full_cyc    = new_command ? command_i.configopts.full_cyc : full_cyc_q_i;
+    cmd_wr_en_d = new_command ? command_i.segment.cmd_wr_en : cmd_wr_en_q_i;
   end
 
   assign is_idle     = (state_q == Idle) || (state_q == IdleCSBActive);
 
   assign active_o   = ~is_idle;
 
-  // New commands must always ensure there is the full setup time available.
-  assign clk_cntr_d = sw_rst_i              ? 16'h0 :
-                      !clk_cntr_en          ? clk_cntr_q :
-                      new_command           ? clkdiv :
-                      is_idle               ? clk_cntr_q :
-                      (clk_cntr_q == 16'h0) ? clkdiv :
-                      clk_cntr_q - 1;
-
   assign tx_stall_o = wr_en_internal & ~sr_wr_ready_i;
   assign rx_stall_o = rd_en_internal & ~sr_rd_ready_i;
-  assign clk_cntr_en = en_i;
-  assign fsm_en = (clk_cntr_en && ((clk_cntr_q == 0) || is_idle));
 
   spi_host_st_e next_state_after_idle;
   always_comb begin
     if (command_valid_i) begin
-      if (config_changed) begin
+      if (config_changed_i) begin
          next_state_after_idle = CSBSwitch;
       end else begin
          next_state_after_idle = WaitLead;
@@ -212,7 +148,7 @@ module spi_host_fsm
   logic         command_ready_idle_csb_active;
   always_comb begin
     if (command_valid_i) begin
-      if (command_csid_i != csid_q) begin
+      if (command_csid_i != csid_q_i) begin
         //
         // Do not acknowledge the command now, as it will trigger
         // an update of the internal command and configuration registers.
@@ -223,7 +159,7 @@ module spi_host_fsm
         // Explicitly *suppress* command_ready
         command_ready_idle_csb_active = 1'b0;
       end else begin
-        if (cpha_q) begin
+        if (cpha_q_i) begin
           next_state_after_idle_csb_active = InternalClkHigh;
         end else begin
           next_state_after_idle_csb_active = InternalClkLow;
@@ -244,7 +180,7 @@ module spi_host_fsm
     command_ready_int = 1'b0;
     if (sw_rst_i) begin
       state_d = Idle;
-    end else if (fsm_en) begin
+    end else if (fsm_en_i) begin
       unique case (state_q)
         Idle: begin
           // Initial state, wait for commands.
@@ -253,7 +189,7 @@ module spi_host_fsm
         end
         WaitLead: begin
           // Transaction lead: CSB is low, waiting to start sck pulses.
-          if (wait_cntr_q == 4'h0) begin
+          if (wait_cntr_zero_i) begin
             state_d = InternalClkHigh;
           end
         end
@@ -262,9 +198,9 @@ module spi_host_fsm
           // Half-cycle sampling clock for CPHA=1.
           // End-of-transaction clock level for both CPHA=0 and CPHA=1.
           // One of two active clock states. sck is low when CPOL=0.
-          if (!last_bit || !last_byte || !cpha_q) begin
+          if (!last_bit_i || !last_byte_i || !cpha_q_i) begin
             state_d = InternalClkHigh;
-          end else if (!csaat_q) begin
+          end else if (!csaat_q_i) begin
             state_d = WaitTrail;
           end else begin
             state_d = next_state_after_idle_csb_active;
@@ -277,10 +213,10 @@ module spi_host_fsm
           // One of two active clock states. sck is low when CPOL=0.
           // Typically often the last state in a command, and so the next state depends on CSAAT,
           // and of CSAAT is asserted, the details of the subsequent command.
-          if (!last_bit || !last_byte || cpha_q) begin
+          if (!last_bit_i || !last_byte_i || cpha_q_i) begin
             state_d = InternalClkLow;
           // Check value of csaat for the previously submitted segment
-          end else if (!csaat_q) begin
+          end else if (!csaat_q_i) begin
             state_d = WaitTrail;
           end else begin
             state_d = next_state_after_idle_csb_active;
@@ -289,13 +225,13 @@ module spi_host_fsm
         end
         WaitTrail: begin
           // Prepare to enter CSB high idle state by waiting csntrail cycles.
-          if (wait_cntr_q == 4'h0) begin
+          if (wait_cntr_zero_i) begin
             state_d = WaitIdle;
           end
         end
         WaitIdle: begin
           // Once CSB is high, wait for the designated number of cycles before accepting commands.
-          if (wait_cntr_q == 4'h0) begin
+          if (wait_cntr_zero_i) begin
             // ready to accept new command
             command_ready_int = 1'b1;
             state_d = next_state_after_idle;
@@ -305,7 +241,7 @@ module spi_host_fsm
           // Insert extra idle cycles when swtiching between CSID, this allows time to switch CPHA,
           // CPOL and clkdiv settings, as well as guarantee that the idle delay requirements have
           // been observed for the new device.
-          if (wait_cntr_q == 4'h0) begin
+          if (wait_cntr_zero_i) begin
             state_d = WaitLead;
           end else begin
             state_d = CSBSwitch;
@@ -324,60 +260,27 @@ module spi_host_fsm
     end
   end
 
-  // All register updates freeze when a stall is detected.
-  // The definition of the stall signal looks ahead to determine whether a conflict is looming.
-  // Thus stall depends on state_d.  Making state_d depend on stall
-  // would create a circular logic loop, and lint errors.  Therefore stall is applied here, not
-  // in the previous always_comb block;
+  // The sole sequential element: the FSM state register.
+  // Stall freezes the state; stall_i is provided by the parent.
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
       state_q    <= Idle;
-      clk_cntr_q <= 16'h0;
     end else begin
-      state_q    <= stall ? state_q : state_d;
-      clk_cntr_q <= stall ? clk_cntr_q : clk_cntr_d;
+      state_q    <= stall_i ? state_q : state_d;
     end
   end
-
-  logic segment_rd_en, segment_rd_en_cpha0, segment_rd_en_cpha1;
 
   assign state_changing = (state_q != state_d);
-  assign byte_starting_cpha0 = ~sw_rst_i & state_changing &
-                               ((state_d == WaitLead) |
-                                (state_d == InternalClkLow & bit_cntr_q==0));
+
   assign bit_shifting_cpha0  = ~sw_rst_i & state_changing &
-                               (state_d == InternalClkLow & bit_cntr_q != 0);
+                               (state_d == InternalClkLow & !last_bit_i);
   assign byte_ending_cpha0   = ~sw_rst_i & state_changing &
-                               (state_q == InternalClkHigh & bit_cntr_q == 0);
+                               (state_q == InternalClkHigh & last_bit_i);
 
-  assign segment_rd_en_cpha0 = cmd_rd_en_q;
-
-  // We can calculate byte transitions for CPHA=1 by noting
-  // that in this implementation, the sck edges have a 1-1
-  // correspondence with FSM transitions.
-  // New bytes are loaded exactly one state transition behind the time
-  // when they would be loaded if CPHA=0
-  always_ff @(posedge clk_i or negedge rst_ni) begin
-    if (!rst_ni) begin
-      segment_rd_en_cpha1   <= 1'b0;
-    end else if (state_changing && !stall) begin
-      segment_rd_en_cpha1   <= segment_rd_en_cpha0;
-    end
-  end
-
-  // For CPHA=1, the launch and capture states flip roles, and data output
-  // does not begin in the WaitIdle state, when CSB first asserts. They
-  // otherwise look very similar to the CPHA=0 case.
-  assign byte_starting_cpha1 = ~sw_rst_i & state_changing &
-                                (state_d == InternalClkHigh & bit_cntr_q==0);
   assign bit_shifting_cpha1  = ~sw_rst_i & state_changing &
-                               (state_d == InternalClkHigh & bit_cntr_q != 0);
+                               (state_d == InternalClkHigh & !last_bit_i);
   assign byte_ending_cpha1   = ~sw_rst_i & state_changing &
-                               (state_q == InternalClkLow & bit_cntr_q == 0);
-
-
-  assign byte_starting = (cpha == 1'b0) ? byte_starting_cpha0 :
-                                          byte_starting_cpha1;
+                               (state_q == InternalClkLow & last_bit_i);
 
   assign byte_ending   = (cpha == 1'b0) ? byte_ending_cpha0 :
                                           byte_ending_cpha1;
@@ -385,154 +288,24 @@ module spi_host_fsm
   assign bit_shifting  = (cpha == 1'b0) ? bit_shifting_cpha0 :
                                           bit_shifting_cpha1;
 
-  assign speed_o       = cmd_speed_q;
+  assign speed_o       = cmd_speed_q_i;
 
-  assign segment_rd_en = (cpha == 1'b0) ? segment_rd_en_cpha0:
-                                          segment_rd_en_cpha1;
+  assign segment_rd_en = (cpha == 1'b0) ? cmd_rd_en_q_i :
+                                          segment_rd_en_cpha1_i;
 
-  assign byte_cntr_early = (cpha == 1'b0) ? byte_cntr_cpha0_d :
-                                            byte_cntr_cpha1_d;
-  assign byte_cntr_late  = (cpha == 1'b0) ? byte_cntr_cpha0_q :
-                                            byte_cntr_cpha1_q;
-
-  logic [2:0] shift_size;
-  logic [2:0] start_bit;
-
-  always_comb begin
-    if (!cmd_rd_en_d && !cmd_wr_en_d) begin
-      // direction == 0, means to send out
-      // a fixed number of pulses, NOT bytes.
-      // thus "last_bit" is always asserted,
-      // and the number of pulses is counted
-      // by byte_cntr_d.
-      shift_size = 0;
-      start_bit = 3'h0;
-    end else begin
-      unique case (cmd_speed_d)
-        Standard: begin
-          shift_size = 3'h1;
-          start_bit  = 3'h7;
-        end
-        Dual:     begin
-          shift_size = 3'h2;
-          start_bit  = 3'h6;
-        end
-        Quad:     begin
-          shift_size = 3'h4;
-          start_bit  = 3'h4;
-        end
-        default: begin
-          // Invalid_speed;
-          shift_size = 3'h1;
-          start_bit  = 3'h1;
-        end
-      endcase
-    end
-  end
-
-  assign bit_cntr_d = sw_rst_i         ? 3'h0 :
-                      !fsm_en          ? bit_cntr_q :
-                      byte_starting    ? start_bit :
-                      bit_shifting     ? bit_cntr_q - shift_size :
-                      bit_cntr_q;
-
-  assign last_bit  = (bit_cntr_q == 3'h0);
-  //
-  // The variable last_byte is only used for updating the FSM state.
-  // For CPHA=1 operation, either byte_cntr_cpha0_q or byte_cntr_cpha1_q
-  // can drive the FSM properly.  However, we explicitly choose
-  // byte_cntr_cpha0_q to avoid a combinational logic loop.
-  //
-  always_comb begin
-    if (cpha_q) begin
-      last_byte = (byte_cntr_cpha1_q == 20'h0);
-    end else begin
-      last_byte = (byte_cntr_cpha0_q == 20'h0);
-    end
-  end
-
-  // Note: when updating the byte_cntr in CPHA=0 mode with a new command value, the length must
-  // be pulled in directly from the command bus, cmd_len_d;
-  assign byte_cntr_cpha0_d = sw_rst_i    ? 20'h0 :
-                             !fsm_en     ? byte_cntr_cpha0_q :
-                             new_command ? cmd_len_d :
-                             byte_ending_cpha0 ? byte_cntr_cpha0_q - 1 :
-                             byte_cntr_cpha0_q;
-
-  assign byte_cntr_cpha1_d = sw_rst_i          ? 20'h0 :
-                             !fsm_en           ? byte_cntr_cpha1_q :
-                             new_command       ? cmd_len_d :
-                             byte_ending_cpha1 ? byte_cntr_cpha1_q - 1 :
-                             byte_cntr_cpha1_q;
-
-  always_comb begin
-    if(sw_rst_i) begin
-      wait_cntr_d = 4'b0;
-    end else if (!fsm_en) begin
-      wait_cntr_d = wait_cntr_q;
-    end else if (state_changing) begin
-      unique case (state_d)
-         WaitLead: begin
-           wait_cntr_d = csnlead;
-         end
-         WaitTrail: begin
-           wait_cntr_d = csntrail;
-         end
-         WaitIdle: begin
-           wait_cntr_d = csnidle;
-         end
-         CSBSwitch: begin
-           wait_cntr_d = csnidle;
-         end
-         default: begin
-           // Hold wait cntr to zero
-           // for states that don't use it
-           wait_cntr_d = 4'b0;
-         end
-      endcase
-    end else if (wait_cntr_q == 0) begin
-      wait_cntr_d = 4'h0;
-    end else begin
-      wait_cntr_d = wait_cntr_q - 1;
-    end
-  end
-
-  always_ff @(posedge clk_i or negedge rst_ni) begin
-    if (!rst_ni) begin
-      bit_cntr_q        <= 3'h0;
-      byte_cntr_cpha0_q <= 20'h0;
-      byte_cntr_cpha1_q <= 20'h0;
-      wait_cntr_q       <= 4'h0;
-    end else begin
-      bit_cntr_q        <= stall ? bit_cntr_q        : bit_cntr_d;
-      byte_cntr_cpha0_q <= stall ? byte_cntr_cpha0_q : byte_cntr_cpha0_d;
-      byte_cntr_cpha1_q <= stall ? byte_cntr_cpha1_q : byte_cntr_cpha1_d;
-      wait_cntr_q       <= stall ? wait_cntr_q       : wait_cntr_d;
-    end
-  end
-
-  assign wr_en_internal    = byte_starting & cmd_wr_en_d;
+  assign wr_en_internal    = byte_starting_i & cmd_wr_en_d;
   assign shift_en_internal = bit_shifting;
 
   assign rd_en_internal    = byte_ending & segment_rd_en;
-  assign sample_en_d       = byte_starting | shift_en_o;
   assign full_cyc_o        = full_cyc;
-  assign last_read_o       = (byte_cntr_late == 'h0) & rd_en_o & sr_rd_ready_i;
+  assign last_read_o       = last_byte_i & rd_en_o & sr_rd_ready_i;
 
-  assign last_write_o      = (byte_cntr_early == 'h0) & wr_en_o & sr_wr_ready_i;
+  assign last_write_o      = byte_cntr_early_zero_i & wr_en_o & sr_wr_ready_i;
 
-  always_ff @(posedge clk_i or negedge rst_ni) begin
-    if (!rst_ni) begin
-      sample_en_q <= 1'b0;
-      sample_en_q2 <= 1'b0;
-    end else begin
-      sample_en_q  <= (fsm_en && !stall) ? sample_en_d : sample_en_q;
-      sample_en_q2 <= (fsm_en && !stall) ? sample_en_q : sample_en_q2;
-    end
-  end
+  // sample_en pipeline is externalized; use registered values from parent
+  assign sample_en_internal = full_cyc_o ? sample_en_q2_i : sample_en_q_i;
 
-  assign sample_en_internal = full_cyc_o ? sample_en_q2 : sample_en_q;
-
+  // CSB: output combinational value; parent registers it
   always_comb begin
     unique case (state_d)
       WaitLead, InternalClkLow, InternalClkHigh, IdleCSBActive, WaitTrail:
@@ -542,69 +315,33 @@ module spi_host_fsm
     endcase
   end
 
+  for (genvar ii = 0; ii < NumCS; ii = ii + 1) begin : gen_csb_gen
+    assign csb_o[ii] = (csid != ii) ? 1'b1 : csb_single_d;
+  end : gen_csb_gen
+
+  // SCK: output combinational value; parent registers it
   assign sck_d = cpol ? (state_d != InternalClkHigh) :
                         (state_d == InternalClkHigh);
 
-  assign sck_o = sck_q;
+  assign sck_o = sck_d;
 
-  prim_flop_en u_sck_flop (
-    .clk_i,
-    .rst_ni,
-    .en_i(~stall),
-    .d_i(sck_d),
-    .q_o(sck_q)
-  );
-
-  for (genvar ii = 0; ii < NumCS; ii = ii + 1) begin : gen_csb_gen
-    always_ff @(posedge clk_i or negedge rst_ni) begin
-      if (!rst_ni) begin
-        csb_q[ii] <= 1'b1;
-      end else begin
-        csb_q[ii] <= (csid != ii) ? 1'b1 :
-                     !stall       ? csb_single_d :
-                     csb_q[ii];
-      end
-    end
-  end : gen_csb_gen
-
-  // When 'cmd_wr_en_q' deasserts, we need to stretch the enable used
-  // to drive sd_en_o[0] until the end of the bit period. This is because
-  // 'cmd_wr_en_q' can change up to 1/2 cycle before the end of the period
-  // (depending on cpol/cpha).
-  // The signal 'last_bit' is active in the final period, so use that to start
-  // stretching the enable, and 'byte_ending' marks the period end.
-  logic cmd_wr_en_last_bit;
-  always_ff @(posedge clk_i or negedge rst_ni) begin
-    if (!rst_ni) begin
-      cmd_wr_en_last_bit <= 1'b0;
-    end else if (cmd_wr_en_q & last_bit) begin
-      cmd_wr_en_last_bit <= 1'b1;
-    end else if (byte_ending) begin
-      cmd_wr_en_last_bit <= 1'b0;
-    end else begin // Stretching..
-      cmd_wr_en_last_bit <= cmd_wr_en_last_bit;
-    end
-  end
-
-  assign csb_o = csb_q;
-
+  // sd_en_o uses registered CSB from parent to match original timing
   always_comb begin
-    if (&csb_o) begin
+    if (&csb_q_i) begin
       sd_en_o[3:0] = 4'h0;
     end else begin
       unique case (speed_o)
         Standard: begin
-          // Observing 'last_bit' ensures we do not deassert the enable too early
-          sd_en_o[0]   = cmd_wr_en_q | cmd_wr_en_last_bit;
+          sd_en_o[0]   = cmd_wr_en_q_i | cmd_wr_en_last_bit_i;
           sd_en_o[1]   = 1'b0;
           sd_en_o[3:2] = 2'b00;
         end
         Dual:     begin
-          sd_en_o[1:0] = {2{cmd_wr_en_q}};
+          sd_en_o[1:0] = {2{cmd_wr_en_q_i}};
           sd_en_o[3:2] = 2'b00;
         end
         Quad:     begin
-          sd_en_o[3:0] = {4{cmd_wr_en_q}};
+          sd_en_o[3:0] = {4{cmd_wr_en_q_i}};
         end
         default: begin
           // invalid speed
@@ -615,30 +352,24 @@ module spi_host_fsm
   end
 
   //
-  // Assertions confirming valid user input.
+  // Assertions confirming valid datapath inputs.
   //
 
   // `ASSERT(BidirOnlyInStdMode_A,
-  //     cmd_speed_d == Standard || !(cmd_rd_en_d && cmd_wr_en_d),
+  //     command_i.segment.speed == Standard || !(command_i.segment.cmd_rd_en && command_i.segment.cmd_wr_en),
   //     clk_i, rst_ni)
-  // `ASSERT(ValidSpeed_A, cmd_speed_d != RsvdSpd, clk_i, rst_ni)
-  // `ASSERT(ValidCSID_A, csid < NumCS, clk_i, rst_ni)
+  // `ASSERT(ValidSpeed_A, command_i.segment.speed != RsvdSpd, clk_i, rst_ni)
+  // `ASSERT(ValidCSID_A, command_csid_i < NumCS, clk_i, rst_ni)
 
   // When WaitIdle completes (counter reaches 0) with no pending command and no stall,
   // the FSM must transition to Idle on the next cycle.
-  logic isFirstCycle;
-  always_ff @(posedge clk_i or negedge rst_ni) begin
-    if (!rst_ni) isFirstCycle <= 1'b1;
-    else         isFirstCycle <= 1'b0;
-  end
-
   `ASSERT(WaitIdleGoesToIdle_A,
-      (!isFirstCycle
+      (!is_first_cycle_i
        && $past(state_q == WaitIdle)
-       && $past(wait_cntr_q == 4'h0)
+       && $past(wait_cntr_zero_i)
        && $past(!command_valid_i)
-       && $past(fsm_en)
-       && $past(!stall)
+       && $past(fsm_en_i)
+       && $past(!stall_i)
        && !sw_rst_i)
       |-> state_q == Idle,
       clk_i, rst_ni)
