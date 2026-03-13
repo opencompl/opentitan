@@ -635,7 +635,6 @@ module spi_host_fsm
   `ASSERT(WaitIdleGoesToIdle_A,
       (!isFirstCycle
        && $past(state_q == WaitIdle)
-       && $past(wait_cntr_q == 4'h0)
        && $past(!command_valid_i)
        && $past(fsm_en)
        && $past(!stall)
