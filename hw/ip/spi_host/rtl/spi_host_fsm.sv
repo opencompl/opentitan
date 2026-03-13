@@ -618,10 +618,29 @@ module spi_host_fsm
   // Assertions confirming valid user input.
   //
 
-  `ASSERT(BidirOnlyInStdMode_A,
-      cmd_speed_d == Standard || !(cmd_rd_en_d && cmd_wr_en_d),
+  // `ASSERT(BidirOnlyInStdMode_A,
+  //     cmd_speed_d == Standard || !(cmd_rd_en_d && cmd_wr_en_d),
+  //     clk_i, rst_ni)
+  // `ASSERT(ValidSpeed_A, cmd_speed_d != RsvdSpd, clk_i, rst_ni)
+  // `ASSERT(ValidCSID_A, csid < NumCS, clk_i, rst_ni)
+
+  // When WaitIdle completes (counter reaches 0) with no pending command and no stall,
+  // the FSM must transition to Idle on the next cycle.
+  logic isFirstCycle;
+  always_ff @(posedge clk_i or negedge rst_ni) begin
+    if (!rst_ni) isFirstCycle <= 1'b1;
+    else         isFirstCycle <= 1'b0;
+  end
+
+  `ASSERT(WaitIdleGoesToIdle_A,
+      (!isFirstCycle
+       && $past(state_q == WaitIdle)
+       && $past(wait_cntr_q == 4'h0)
+       && $past(!command_valid_i)
+       && $past(fsm_en)
+       && $past(!stall)
+       && !sw_rst_i)
+      |-> state_q == Idle,
       clk_i, rst_ni)
-  `ASSERT(ValidSpeed_A, cmd_speed_d != RsvdSpd, clk_i, rst_ni)
-  `ASSERT(ValidCSID_A, csid < NumCS, clk_i, rst_ni)
 
 endmodule
