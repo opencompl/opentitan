@@ -1,7 +1,6 @@
 module {
   hw.module @i2c_target_fsm(in %clk_i : i1, in %rst_ni : i1, in %scl_i : i1, out scl_o : i1, in %sda_i : i1, out sda_o : i1, in %start_detect_i : i1, in %stop_detect_i : i1, out transmitting_o : i1, in %target_enable_i : i1, in %tx_fifo_rvalid_i : i1, out tx_fifo_rready_o : i1, in %tx_fifo_rdata_i : i8, out acq_fifo_wvalid_o : i1, out acq_fifo_wdata_o : i11, in %acq_fifo_depth_i : i7, out acq_fifo_full_o : i1, in %acq_fifo_rdata_i : i11, out target_idle_o : i1, in %t_r_i : i13, in %tsu_dat_i : i13, in %thd_dat_i : i13, in %nack_timeout_i : i31, in %nack_timeout_en_i : i1, in %nack_addr_after_timeout_i : i1, in %arbitration_lost_i : i1, in %bus_timeout_i : i1, in %unhandled_tx_stretch_event_i : i1, in %ack_ctrl_mode_i : i1, out auto_ack_cnt_o : i9, in %auto_ack_load_i : i1, in %auto_ack_load_value_i : i9, in %sw_nack_i : i1, out ack_ctrl_stretching_o : i1, out acq_fifo_next_data_o : i8, in %target_address0_i : i7, in %target_mask0_i : i7, in %target_address1_i : i7, in %target_mask1_i : i7, out event_target_nack_o : i1, out event_cmd_complete_o : i1, out event_tx_stretch_o : i1, out event_unexp_stop_o : i1, out event_tx_arbitration_lost_o : i1, out event_tx_bus_timeout_o : i1, out event_read_cmd_received_o : i1) {
     %true = hw.constant true
-    %c1_i7 = hw.constant 1 : i7
     %c0_i6 = hw.constant 0 : i6
     %c3_i7 = hw.constant 3 : i7
     %c-1_i9 = hw.constant -1 : i9
@@ -647,23 +646,15 @@ module {
     %583 = comb.mux %574, %c0_i5, %582 : i5
     %state_q = seq.compreg %583, %17 reset %18, %c0_i5 : i5  
     %sda_q = seq.compreg %358, %17 reset %18, %true : i1  
-    %584 = ltl.past %359, 1 : i1
-    %585 = comb.xor %584, %true : i1
-    %586 = comb.and bin %359, %585 : i1
-    %587 = ltl.delay %359, 1, 0 : i1
-    %588 = ltl.implication %586, %587 : i1, !ltl.sequence
-    verif.assert %588 : !ltl.property
-    %589 = comb.icmp eq %state_q, %c8_i5 : i5
-    %590 = comb.icmp ne %acq_fifo_depth_i, %c0_i7 : i7
-    %591 = comb.and %589, %590 : i1
-    %592 = comb.icmp eq %acq_fifo_depth_i, %c1_i7 : i7
-    %593 = comb.extract %acq_fifo_rdata_i from 0 : (i11) -> i1
-    %594 = comb.and %592, %593 : i1
-    %true_0 = hw.constant true
-    %595 = comb.xor %591, %true_0 : i1
-    %596 = comb.or %595, %594 : i1
-    %597 = builtin.unrealized_conversion_cast %596 : i1 to !ltl.property
-    verif.assert %596 : i1
+    %isFirstCycle = seq.compreg %false, %17 reset %18, %true : i1  
+    %584 = comb.xor %isFirstCycle, %true : i1
+    %_sh1 = seq.compreg sym @_sh1 %359, %17 : i1  
+    %585 = comb.icmp ult %_sh1, %359 : i1
+    %_sh1_0 = seq.compreg sym @_sh1 name "_sh1" %585, %17 : i1  
+    %586 = comb.and %584, %_sh1_0 : i1
+    %587 = comb.xor %586, %true : i1
+    %588 = comb.or %587, %359 : i1
+    verif.assert %588 : i1
     hw.output %359, %358, %360, %361, %388, %389, %398, %357, %auto_ack_cnt_q, %370, %input_byte, %86, %391, %570, %84, %396, %397, %372 : i1, i1, i1, i1, i1, i11, i1, i1, i9, i1, i8, i1, i1, i1, i1, i1, i1, i1
   }
 }

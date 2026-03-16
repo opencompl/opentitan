@@ -1,4 +1,9 @@
 module {
+  %false = hw.constant false
+  %false_0 = hw.constant false
+  %false_1 = hw.constant false
+  %false_2 = hw.constant false
+  %false_3 = hw.constant false
   fsm.machine @spi_host_fsm(%arg0: i1, %arg1: i1, %arg2: i2, %arg3: i1, %arg4: i1, %arg5: i20, %arg6: i1, %arg7: i16, %arg8: i4, %arg9: i4, %arg10: i4, %arg11: i1, %arg12: i1, %arg13: i1, %arg14: i1, %arg15: i1, %arg16: i1, %arg17: i1, %arg18: i1) -> (i1, i1, i1, i4, i1, i1, i1, i1, i1, i1, i2, i1, i1, i1, i1) attributes {initialState = "state_0"} {
     %csid_q = fsm.variable "csid_q" {initValue = false} : i1
     %cpol_q = fsm.variable "cpol_q" {initValue = false} : i1
@@ -12,7 +17,6 @@ module {
     %cmd_rd_en_q = fsm.variable "cmd_rd_en_q" {initValue = false} : i1
     %cmd_wr_en_q = fsm.variable "cmd_wr_en_q" {initValue = false} : i1
     %cmd_speed_q = fsm.variable "cmd_speed_q" {initValue = 0 : i2} : i2
-    %cmd_len_q = fsm.variable "cmd_len_q" {initValue = 0 : i20} : i20
     %clk_cntr_q = fsm.variable "clk_cntr_q" {initValue = 0 : i16} : i16
     %segment_rd_en_cpha1 = fsm.variable "segment_rd_en_cpha1" {initValue = false} : i1
     %bit_cntr_q = fsm.variable "bit_cntr_q" {initValue = 0 : i3} : i3
@@ -24,6 +28,17 @@ module {
     %u_sck_flop2Fq_o = fsm.variable "u_sck_flop/q_o" {initValue = false} : i1
     %csb_q = fsm.variable "csb_q" {initValue = true} : i1
     %cmd_wr_en_last_bit = fsm.variable "cmd_wr_en_last_bit" {initValue = false} : i1
+    %isFirstCycle = fsm.variable "isFirstCycle" {initValue = true} : i1
+    %false_4 = hw.constant false
+    %_sh1 = fsm.variable "_sh1" {initValue = false} : i1
+    %false_5 = hw.constant false
+    %_sh1_6 = fsm.variable "_sh1" {initValue = false} : i1
+    %false_7 = hw.constant false
+    %_sh1_8 = fsm.variable "_sh1" {initValue = false} : i1
+    %false_9 = hw.constant false
+    %_sh1_10 = fsm.variable "_sh1" {initValue = false} : i1
+    %false_11 = hw.constant false
+    %_sh1_12 = fsm.variable "_sh1" {initValue = false} : i1
     fsm.state @state_0 output {
       %c0_i4 = hw.constant 0 : i4
       %c0_i2 = hw.constant 0 : i2
@@ -33,9 +48,8 @@ module {
       %c1_i3 = hw.constant 1 : i3
       %c1_i2 = hw.constant 1 : i2
       %c-2_i2 = hw.constant -2 : i2
-      %c-1_i2 = hw.constant -1 : i2
       %true = hw.constant true
-      %false = hw.constant false
+      %false_13 = hw.constant false
       %0 = comb.icmp ne %arg13, %cpol_q : i1
       %1 = comb.icmp ne %arg12, %cpha_q : i1
       %2 = comb.icmp ne %arg11, %full_cyc_q : i1
@@ -44,9 +58,9 @@ module {
       %5 = comb.icmp ne %arg9, %csnlead_q : i4
       %6 = comb.icmp ne %arg7, %clkdiv_q : i16
       %7 = comb.or %0, %1, %2, %3, %4, %5, %6 : i1
-      %false_0 = hw.constant false
+      %false_14 = hw.constant false
       %8 = comb.xor %arg16, %true : i1
-      %false_1 = hw.constant false
+      %false_15 = hw.constant false
       %9 = comb.mux %7, %c-2_i3, %c1_i3 : i3
       %10 = comb.mux %arg15, %9, %c0_i3 : i3
       %11 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
@@ -59,8 +73,8 @@ module {
       %18 = comb.and %13, %17 : i1
       %19 = comb.xor %18, %true : i1
       %20 = comb.and %19, %14 : i1
-      %c0_i3_2 = hw.constant 0 : i3
-      %false_3 = hw.constant false
+      %c0_i3_16 = hw.constant 0 : i3
+      %false_17 = hw.constant false
       %21 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
       %22 = comb.or %cmd_wr_en_q, %cmd_wr_en_last_bit : i1
       %23 = comb.concat %c0_i3, %22 : i3, i1
@@ -79,65 +93,51 @@ module {
       %36 = comb.mux %35, %26, %34 : i4
       %37 = comb.and %21, %29 : i1
       %38 = comb.mux %37, %23, %36 : i4
+      %true_18 = hw.constant true
+      verif.assert %true_18 : i1
       %39 = comb.and %arg15, %20 : i1
-      %40 = comb.mux %39, %arg14, %csid_q : i1
-      %41 = comb.mux %39, %arg12, %cpha_q : i1
-      %42 = comb.mux %39, %arg11, %full_cyc_q : i1
-      %43 = comb.mux %39, %arg3, %cmd_wr_en_q : i1
-      %44 = comb.mux %39, %arg4, %cmd_rd_en_q : i1
-      %45 = comb.mux %39, %arg2, %cmd_speed_q : i2
-      %46 = comb.mux %18, %c0_i3_2, %16 : i3
-      %47 = comb.icmp ne %46, %c0_i3_2 : i3
-      %true_4 = hw.constant true
-      %48 = comb.xor %7, %true_4 : i1
-      %49 = comb.and %arg15, %48 : i1
-      %50 = comb.mux %14, %49, %11 : i1
-      %true_5 = hw.constant true
-      %51 = comb.xor %arg18, %true_5 : i1
-      %true_6 = hw.constant true
-      %52 = comb.xor %18, %true_6 : i1
-      %53 = comb.xor %41, %true : i1
-      %54 = comb.and %53, %13, %47, %52, %51, %50, %43 : i1
-      %55 = comb.mux %42, %sample_en_q2, %sample_en_q : i1
-      %56 = comb.icmp eq %arg2, %c0_i2 : i2
-      %57 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-      %58 = comb.mux %39, %56, %57 : i1
-      %59 = comb.and %44, %43 : i1
-      %60 = comb.xor %59, %true : i1
-      %61 = comb.or %58, %60 : i1
-      verif.assert %61 : i1
-      %62 = comb.icmp ne %45, %c-1_i2 : i2
-      verif.assert %62 : i1
-      %63 = comb.xor %40, %true : i1
-      verif.assert %63 : i1
-      %64 = comb.and %54, %8 : i1
-      %65 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
-      %66 = comb.icmp eq %arg5, %c0_i20 : i20
-      %67 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
-      %68 = comb.mux %39, %66, %67 : i1
-      %69 = comb.mux %17, %65, %68 : i1
-      %70 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
-      %71 = comb.icmp eq %arg5, %c0_i20 : i20
-      %72 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
-      %73 = comb.mux %39, %71, %72 : i1
-      %74 = comb.mux %17, %70, %73 : i1
-      %75 = comb.mux %53, %69, %74 : i1
-      %76 = comb.or %arg18, %75 : i1
-      %77 = comb.xor %64, %true : i1
-      %78 = comb.and %54, %77 : i1
-      %79 = comb.and %55, %77 : i1
-      %false_7 = hw.constant false
-      %80 = comb.and %20, %77 : i1
-      %81 = comb.and %76, %78, %arg16 : i1
-      fsm.output %80, %u_sck_flop2Fq_o, %csb_q, %38, %false_3, %81, %78, %false, %79, %false_7, %cmd_speed_q, %42, %false_1, %64, %false_0 : i1, i1, i1, i4, i1, i1, i1, i1, i1, i1, i2, i1, i1, i1, i1
+      %40 = comb.mux %39, %arg12, %cpha_q : i1
+      %41 = comb.mux %39, %arg11, %full_cyc_q : i1
+      %42 = comb.mux %39, %arg3, %cmd_wr_en_q : i1
+      %43 = comb.mux %18, %c0_i3_16, %16 : i3
+      %44 = comb.icmp ne %43, %c0_i3_16 : i3
+      %true_19 = hw.constant true
+      %45 = comb.xor %7, %true_19 : i1
+      %46 = comb.and %arg15, %45 : i1
+      %47 = comb.mux %14, %46, %11 : i1
+      %true_20 = hw.constant true
+      %48 = comb.xor %arg18, %true_20 : i1
+      %true_21 = hw.constant true
+      %49 = comb.xor %18, %true_21 : i1
+      %50 = comb.xor %40, %true : i1
+      %51 = comb.and %50, %13, %44, %49, %48, %47, %42 : i1
+      %52 = comb.mux %41, %sample_en_q2, %sample_en_q : i1
+      %53 = comb.and %51, %8 : i1
+      %54 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
+      %55 = comb.icmp eq %arg5, %c0_i20 : i20
+      %56 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
+      %57 = comb.mux %39, %55, %56 : i1
+      %58 = comb.mux %17, %54, %57 : i1
+      %59 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
+      %60 = comb.icmp eq %arg5, %c0_i20 : i20
+      %61 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
+      %62 = comb.mux %39, %60, %61 : i1
+      %63 = comb.mux %17, %59, %62 : i1
+      %64 = comb.mux %50, %58, %63 : i1
+      %65 = comb.or %arg18, %64 : i1
+      %66 = comb.xor %53, %true : i1
+      %67 = comb.and %51, %66 : i1
+      %68 = comb.and %52, %66 : i1
+      %false_22 = hw.constant false
+      %69 = comb.and %20, %66 : i1
+      %70 = comb.and %65, %67, %arg16 : i1
+      fsm.output %69, %u_sck_flop2Fq_o, %csb_q, %38, %false_17, %70, %67, %false_13, %68, %false_22, %cmd_speed_q, %41, %false_15, %53, %false_14 : i1, i1, i1, i4, i1, i1, i1, i1, i1, i1, i2, i1, i1, i1, i1
     } transitions {
       fsm.transition @state_6 guard {
         %c0_i4 = hw.constant 0 : i4
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp ne %arg13, %cpol_q : i1
         %1 = comb.icmp ne %arg12, %cpha_q : i1
@@ -153,58 +153,46 @@ module {
         %11 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %12 = comb.mux %11, %c1_i3, %c-2_i3 : i3
         %13 = comb.xor %arg18, %true : i1
-        %c0_i3_0 = hw.constant 0 : i3
+        %c0_i3_13 = hw.constant 0 : i3
         %14 = comb.and %arg1, %13 : i1
         %15 = comb.mux %14, %10, %12 : i3
         %16 = comb.mux %arg18, %c0_i3, %15 : i3
         %17 = comb.xor %arg1, %true : i1
         %18 = comb.and %13, %17 : i1
-        %19 = comb.mux %18, %c0_i3_0, %16 : i3
+        %19 = comb.mux %18, %c0_i3_13, %16 : i3
         %20 = comb.xor %18, %true : i1
-        %21 = comb.icmp ne %19, %c0_i3_0 : i3
-        %true_1 = hw.constant true
-        %22 = comb.xor %7, %true_1 : i1
+        %21 = comb.icmp ne %19, %c0_i3_13 : i3
+        %true_14 = hw.constant true
+        %22 = comb.xor %7, %true_14 : i1
         %23 = comb.and %arg15, %22 : i1
         %24 = comb.mux %14, %23, %11 : i1
-        %true_2 = hw.constant true
-        %25 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %26 = comb.xor %18, %true_3 : i1
+        %true_15 = hw.constant true
+        %25 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %26 = comb.xor %18, %true_16 : i1
+        %true_17 = hw.constant true
+        verif.assert %true_17 : i1
         %27 = comb.and %arg15, %20, %14 : i1
-        %28 = comb.mux %27, %arg14, %csid_q : i1
-        %29 = comb.mux %27, %arg12, %cpha_q : i1
-        %30 = comb.mux %27, %arg3, %cmd_wr_en_q : i1
-        %31 = comb.mux %27, %arg4, %cmd_rd_en_q : i1
-        %32 = comb.mux %27, %arg2, %cmd_speed_q : i2
-        %33 = comb.xor %29, %true : i1
-        %34 = comb.icmp eq %arg2, %c0_i2 : i2
-        %35 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %36 = comb.mux %27, %34, %35 : i1
-        %37 = comb.and %31, %30 : i1
-        %38 = comb.xor %37, %true : i1
-        %39 = comb.or %36, %38 : i1
-        verif.assert %39 : i1
-        %40 = comb.icmp ne %32, %c-1_i2 : i2
-        verif.assert %40 : i1
-        %41 = comb.xor %28, %true : i1
-        verif.assert %41 : i1
-        %42 = comb.and %33, %13, %21, %26, %25, %24, %30, %8 : i1
-        %43 = comb.or %42, %18 : i1
-        %44 = comb.and %arg15, %7 : i1
-        %true_4 = hw.constant true
-        %45 = comb.xor %11, %true_4 : i1
-        %46 = comb.mux %14, %44, %45 : i1
-        %true_5 = hw.constant true
-        %47 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %48 = comb.xor %43, %true_6 : i1
-        %49 = comb.and %48, %47, %46 : i1
-        fsm.return %49
+        %28 = comb.mux %27, %arg12, %cpha_q : i1
+        %29 = comb.mux %27, %arg3, %cmd_wr_en_q : i1
+        %30 = comb.xor %28, %true : i1
+        %31 = comb.and %30, %13, %21, %26, %25, %24, %29, %8 : i1
+        %32 = comb.or %31, %18 : i1
+        %33 = comb.and %arg15, %7 : i1
+        %true_18 = hw.constant true
+        %34 = comb.xor %11, %true_18 : i1
+        %35 = comb.mux %14, %33, %34 : i1
+        %true_19 = hw.constant true
+        %36 = comb.xor %arg18, %true_19 : i1
+        %true_20 = hw.constant true
+        %37 = comb.xor %32, %true_20 : i1
+        %38 = comb.and %37, %36, %35 : i1
+        fsm.return %38
       } action {
+        fsm.update %_sh1_10, %arg1 : i1
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
-        %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
-        %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
         %c-2_i3 = hw.constant -2 : i3
@@ -213,7 +201,6 @@ module {
         %c3_i3 = hw.constant 3 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i4 = hw.constant -1 : i4
         %true = hw.constant true
         %0 = comb.icmp ne %arg13, %cpol_q : i1
@@ -227,177 +214,149 @@ module {
         %8 = comb.xor %arg16, %true : i1
         %9 = comb.mux %7, %c-2_i3, %c1_i3 : i3
         %10 = comb.mux %arg15, %9, %c0_i3 : i3
-        %11 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %12 = comb.mux %11, %c1_i3, %c-2_i3 : i3
-        %13 = comb.xor %arg18, %true : i1
-        %14 = comb.and %arg1, %13 : i1
-        %15 = comb.mux %14, %10, %12 : i3
-        %16 = comb.mux %arg18, %c0_i3, %15 : i3
-        %17 = comb.xor %arg1, %true : i1
-        %18 = comb.and %13, %17 : i1
-        %19 = comb.xor %18, %true : i1
-        %c0_i3_0 = hw.constant 0 : i3
+        %11 = comb.xor %arg15, %true : i1
+        %false_14 = hw.constant false
+        %12 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
+        %13 = comb.mux %12, %c1_i3, %c-2_i3 : i3
+        %14 = comb.mux %arg1, %10, %13 : i3
+        %15 = comb.xor %arg1, %true : i1
+        %c0_i3_15 = hw.constant 0 : i3
+        %true_16 = hw.constant true
+        %16 = comb.xor %7, %true_16 : i1
+        %17 = comb.and %arg15, %16 : i1
+        %18 = comb.mux %arg1, %17, %12 : i1
+        %19 = comb.and %arg1, %18 : i1
         %20 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %21 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %22 = comb.or %arg18, %arg1 : i1
-        %23 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %24 = comb.and %cmd_wr_en_q, %20 : i1
-        %25 = comb.or %24, %cmd_wr_en_last_bit : i1
-        fsm.update %cmd_wr_en_last_bit, %25 : i1
-        %26 = comb.and %arg15, %19, %14 : i1
-        %27 = comb.mux %26, %arg14, %csid_q : i1
-        %28 = comb.mux %26, %arg13, %cpol_q : i1
-        %29 = comb.mux %26, %arg12, %cpha_q : i1
-        %30 = comb.mux %26, %arg8, %csnidle_q : i4
-        %31 = comb.mux %26, %arg9, %csnlead_q : i4
-        %32 = comb.mux %26, %arg3, %cmd_wr_en_q : i1
-        %33 = comb.mux %26, %arg4, %cmd_rd_en_q : i1
-        %34 = comb.mux %26, %arg2, %cmd_speed_q : i2
-        %35 = comb.mux %26, %arg7, %clk_cntr_q : i16
-        %36 = comb.mux %arg18, %c0_i16, %35 : i16
-        %37 = comb.mux %18, %c0_i3_0, %16 : i3
-        %38 = comb.icmp ne %37, %c0_i3_0 : i3
-        %true_1 = hw.constant true
-        %39 = comb.xor %7, %true_1 : i1
-        %40 = comb.and %arg15, %39 : i1
-        %41 = comb.mux %14, %40, %11 : i1
-        %true_2 = hw.constant true
-        %42 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %43 = comb.xor %18, %true_3 : i1
-        %44 = comb.xor %29, %true : i1
-        %45 = comb.and %44, %13, %38, %43, %42, %41 : i1
-        %46 = comb.xor %33, %true : i1
-        %47 = comb.xor %32, %true : i1
-        %48 = comb.and %46, %47 : i1
-        %49 = comb.icmp eq %arg2, %c0_i2 : i2
-        %50 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %51 = comb.mux %26, %49, %50 : i1
-        %52 = comb.icmp eq %arg2, %c1_i2 : i2
-        %53 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %54 = comb.mux %26, %52, %53 : i1
-        %55 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %56 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %57 = comb.mux %26, %55, %56 : i1
-        %58 = comb.mux %57, %c-4_i3, %c1_i3 : i3
-        %59 = comb.xor %48, %true : i1
-        %60 = comb.xor %51, %true : i1
-        %61 = comb.and %60, %59, %54 : i1
-        %62 = comb.mux %61, %c-2_i3, %58 : i3
-        %63 = comb.and %59, %51 : i1
-        %64 = comb.mux %63, %c-1_i3, %62 : i3
-        %65 = comb.mux %48, %c0_i3, %64 : i3
-        %66 = comb.mux %45, %65, %bit_cntr_q : i3
-        %67 = comb.mux %17, %bit_cntr_q, %66 : i3
-        %68 = comb.mux %arg18, %c0_i3, %67 : i3
-        %69 = comb.mux %26, %arg5, %byte_cntr_cpha0_q : i20
-        %70 = comb.mux %arg18, %c0_i20, %69 : i20
-        %71 = comb.mux %26, %arg5, %byte_cntr_cpha1_q : i20
-        %72 = comb.mux %arg18, %c0_i20, %71 : i20
-        %true_4 = hw.constant true
-        %73 = comb.xor %7, %true_4 : i1
-        %74 = comb.and %arg15, %73 : i1
-        %75 = comb.mux %14, %74, %11 : i1
-        %true_5 = hw.constant true
-        %76 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %77 = comb.xor %18, %true_6 : i1
-        %78 = comb.and %77, %76, %75 : i1
-        %79 = comb.and %arg15, %7 : i1
-        %true_7 = hw.constant true
-        %80 = comb.xor %11, %true_7 : i1
-        %81 = comb.mux %14, %79, %80 : i1
-        %true_8 = hw.constant true
-        %82 = comb.xor %arg18, %true_8 : i1
-        %true_9 = hw.constant true
-        %83 = comb.xor %18, %true_9 : i1
-        %84 = comb.and %38, %14 : i1
-        %85 = comb.xor %78, %true : i1
-        %86 = comb.and %85, %84 : i1
-        %87 = comb.and %86, %83, %82, %81 : i1
-        %88 = comb.mux %87, %30, %c0_i4 : i4
-        %89 = comb.and %84, %78 : i1
-        %90 = comb.mux %89, %31, %88 : i4
-        %91 = comb.mux %22, %90, %wait_cntr_q : i4
-        %92 = comb.mux %arg18, %c0_i4, %91 : i4
-        %93 = comb.xor %38, %true : i1
-        %94 = comb.and %23, %93, %14 : i1
-        %95 = comb.mux %94, %21, %92 : i4
-        %96 = comb.icmp ne %37, %c-4_i3 : i3
-        %97 = comb.and %85, %96 : i1
-        %98 = comb.icmp ne %37, %c3_i3 : i3
-        %99 = comb.and %28, %98 : i1
-        %100 = comb.icmp eq %arg2, %c0_i2 : i2
-        %101 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %102 = comb.mux %26, %100, %101 : i1
-        %103 = comb.and %33, %32 : i1
-        %104 = comb.xor %103, %true : i1
-        %105 = comb.or %102, %104 : i1
-        verif.assert %105 : i1
-        %106 = comb.icmp ne %34, %c-1_i2 : i2
-        verif.assert %106 : i1
-        %107 = comb.xor %27, %true : i1
-        verif.assert %107 : i1
-        %108 = comb.and %45, %32, %8 : i1
-        %109 = comb.mux %108, %clk_cntr_q, %36 : i16
-        %110 = comb.mux %108, %bit_cntr_q, %68 : i3
-        %111 = comb.mux %108, %byte_cntr_cpha0_q, %70 : i20
-        %112 = comb.mux %108, %byte_cntr_cpha1_q, %72 : i20
-        %113 = comb.mux %108, %wait_cntr_q, %95 : i4
-        fsm.update %wait_cntr_q, %113 : i4
-        fsm.update %byte_cntr_cpha1_q, %112 : i20
-        fsm.update %byte_cntr_cpha0_q, %111 : i20
-        fsm.update %bit_cntr_q, %110 : i3
-        fsm.update %clk_cntr_q, %109 : i16
-        %114 = comb.xor %108, %true : i1
-        %115 = comb.and %26, %114 : i1
-        %116 = comb.mux %115, %arg14, %csid_q : i1
-        %117 = comb.mux %115, %arg13, %cpol_q : i1
-        %118 = comb.mux %115, %arg12, %cpha_q : i1
-        %119 = comb.mux %115, %arg11, %full_cyc_q : i1
-        %120 = comb.mux %115, %arg8, %csnidle_q : i4
-        %121 = comb.mux %115, %arg9, %csnlead_q : i4
-        %122 = comb.mux %115, %arg10, %csntrail_q : i4
-        %123 = comb.mux %115, %arg7, %clkdiv_q : i16
-        %124 = comb.mux %115, %arg6, %csaat_q : i1
-        %125 = comb.mux %115, %arg3, %cmd_wr_en_q : i1
-        %126 = comb.mux %115, %arg4, %cmd_rd_en_q : i1
-        %127 = comb.mux %115, %arg2, %cmd_speed_q : i2
-        %128 = comb.mux %115, %arg5, %cmd_len_q : i20
-        %129 = comb.and %38, %114 : i1
-        %130 = comb.mux bin %129, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %131 = comb.and %arg1, %114 : i1
-        %132 = comb.mux %131, %45, %sample_en_q : i1
-        %133 = comb.mux %131, %sample_en_q, %sample_en_q2 : i1
-        %134 = comb.mux bin %108, %u_sck_flop2Fq_o, %99 : i1
-        %135 = comb.mux %114, %97, %csb_q : i1
-        %136 = comb.or %27, %135 : i1
-        fsm.update %csb_q, %136 : i1
-        fsm.update %u_sck_flop2Fq_o, %134 : i1
-        fsm.update %sample_en_q2, %133 : i1
-        fsm.update %sample_en_q, %132 : i1
-        fsm.update %segment_rd_en_cpha1, %130 : i1
-        fsm.update %cmd_len_q, %128 : i20
-        fsm.update %cmd_speed_q, %127 : i2
-        fsm.update %cmd_wr_en_q, %125 : i1
-        fsm.update %cmd_rd_en_q, %126 : i1
-        fsm.update %csaat_q, %124 : i1
-        fsm.update %clkdiv_q, %123 : i16
-        fsm.update %csntrail_q, %122 : i4
-        fsm.update %csnlead_q, %121 : i4
-        fsm.update %csnidle_q, %120 : i4
-        fsm.update %full_cyc_q, %119 : i1
-        fsm.update %cpha_q, %118 : i1
-        fsm.update %cpol_q, %117 : i1
-        fsm.update %csid_q, %116 : i1
+        %21 = comb.icmp eq %arg2, %c0_i2 : i2
+        %22 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %23 = comb.icmp eq %arg2, %c1_i2 : i2
+        %24 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %25 = comb.icmp eq %arg2, %c-2_i2 : i2
+        %26 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %27 = comb.and %arg15, %7 : i1
+        %true_17 = hw.constant true
+        %28 = comb.xor %12, %true_17 : i1
+        %29 = comb.mux %arg1, %27, %28 : i1
+        %30 = comb.add %wait_cntr_q, %c-1_i4 : i4
+        %31 = comb.xor %19, %true : i1
+        %32 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
+        %33 = comb.and %cmd_wr_en_q, %20 : i1
+        %34 = comb.or %33, %cmd_wr_en_last_bit : i1
+        %true_18 = hw.constant true
+        verif.assert %true_18 : i1
+        fsm.update %_sh1_8, %11 : i1
+        fsm.update %_sh1_6, %12 : i1
+        fsm.update %_sh1, %false_14 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        fsm.update %cmd_wr_en_last_bit, %34 : i1
+        %35 = comb.and %arg15, %arg1 : i1
+        %36 = comb.mux %35, %arg14, %csid_q : i1
+        %37 = comb.mux %35, %arg13, %cpol_q : i1
+        %38 = comb.mux %35, %arg12, %cpha_q : i1
+        %39 = comb.mux %35, %arg8, %csnidle_q : i4
+        %40 = comb.mux %35, %arg9, %csnlead_q : i4
+        %41 = comb.mux %35, %arg3, %cmd_wr_en_q : i1
+        %42 = comb.mux %35, %arg4, %cmd_rd_en_q : i1
+        %43 = comb.mux %15, %c0_i3_15, %14 : i3
+        %44 = comb.icmp ne %43, %c0_i3_15 : i3
+        %45 = comb.xor %38, %true : i1
+        %46 = comb.and %45, %44, %19 : i1
+        %47 = comb.xor %42, %true : i1
+        %48 = comb.xor %41, %true : i1
+        %49 = comb.and %47, %48 : i1
+        %50 = comb.mux %35, %21, %22 : i1
+        %51 = comb.mux %35, %23, %24 : i1
+        %52 = comb.mux %35, %25, %26 : i1
+        %53 = comb.mux %52, %c-4_i3, %c1_i3 : i3
+        %54 = comb.xor %49, %true : i1
+        %55 = comb.xor %50, %true : i1
+        %56 = comb.and %55, %54, %51 : i1
+        %57 = comb.mux %56, %c-2_i3, %53 : i3
+        %58 = comb.and %54, %50 : i1
+        %59 = comb.mux %58, %c-1_i3, %57 : i3
+        %60 = comb.mux %49, %c0_i3, %59 : i3
+        %61 = comb.and %44, %arg1 : i1
+        %62 = comb.and %31, %61, %29 : i1
+        %63 = comb.mux %62, %39, %c0_i4 : i4
+        %64 = comb.and %61, %19 : i1
+        %65 = comb.mux %64, %40, %63 : i4
+        %66 = comb.mux %arg1, %65, %wait_cntr_q : i4
+        %67 = comb.xor %44, %true : i1
+        %68 = comb.and %32, %67, %arg1 : i1
+        %69 = comb.mux %68, %30, %66 : i4
+        %70 = comb.icmp ne %43, %c-4_i3 : i3
+        %71 = comb.and %31, %70 : i1
+        %72 = comb.icmp ne %43, %c3_i3 : i3
+        %73 = comb.and %37, %72 : i1
+        %74 = comb.and %46, %41, %8 : i1
+        %true_19 = hw.constant true
+        %75 = comb.xor %35, %true_19 : i1
+        %76 = comb.or %74, %75 : i1
+        %77 = comb.mux %76, %clk_cntr_q, %arg7 : i16
+        %true_20 = hw.constant true
+        %78 = comb.xor %46, %true_20 : i1
+        %79 = comb.or %74, %78 : i1
+        %80 = comb.mux %79, %bit_cntr_q, %60 : i3
+        %true_21 = hw.constant true
+        %81 = comb.xor %35, %true_21 : i1
+        %82 = comb.or %74, %81 : i1
+        %83 = comb.mux %82, %byte_cntr_cpha0_q, %arg5 : i20
+        %true_22 = hw.constant true
+        %84 = comb.xor %35, %true_22 : i1
+        %85 = comb.or %74, %84 : i1
+        %86 = comb.mux %85, %byte_cntr_cpha1_q, %arg5 : i20
+        %87 = comb.mux %74, %wait_cntr_q, %69 : i4
+        %88 = comb.mux bin %74, %u_sck_flop2Fq_o, %73 : i1
+        fsm.update %u_sck_flop2Fq_o, %88 : i1
+        fsm.update %wait_cntr_q, %87 : i4
+        fsm.update %byte_cntr_cpha1_q, %86 : i20
+        fsm.update %byte_cntr_cpha0_q, %83 : i20
+        fsm.update %bit_cntr_q, %80 : i3
+        fsm.update %clk_cntr_q, %77 : i16
+        %89 = comb.xor %74, %true : i1
+        %90 = comb.and %35, %89 : i1
+        %91 = comb.mux %90, %arg14, %csid_q : i1
+        %92 = comb.mux %90, %arg13, %cpol_q : i1
+        %93 = comb.mux %90, %arg12, %cpha_q : i1
+        %94 = comb.mux %90, %arg11, %full_cyc_q : i1
+        %95 = comb.mux %90, %arg8, %csnidle_q : i4
+        %96 = comb.mux %90, %arg9, %csnlead_q : i4
+        %97 = comb.mux %90, %arg10, %csntrail_q : i4
+        %98 = comb.mux %90, %arg7, %clkdiv_q : i16
+        %99 = comb.mux %90, %arg6, %csaat_q : i1
+        %100 = comb.mux %90, %arg3, %cmd_wr_en_q : i1
+        %101 = comb.mux %90, %arg4, %cmd_rd_en_q : i1
+        %102 = comb.mux %90, %arg2, %cmd_speed_q : i2
+        %103 = comb.and %44, %89 : i1
+        %104 = comb.mux bin %103, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %105 = comb.and %arg1, %89 : i1
+        %106 = comb.mux %105, %46, %sample_en_q : i1
+        %107 = comb.mux %105, %sample_en_q, %sample_en_q2 : i1
+        %108 = comb.mux %89, %71, %csb_q : i1
+        %109 = comb.or %36, %108 : i1
+        fsm.update %_sh1_12, %89 : i1
+        fsm.update %csb_q, %109 : i1
+        fsm.update %sample_en_q2, %107 : i1
+        fsm.update %sample_en_q, %106 : i1
+        fsm.update %segment_rd_en_cpha1, %104 : i1
+        fsm.update %cmd_speed_q, %102 : i2
+        fsm.update %cmd_wr_en_q, %100 : i1
+        fsm.update %cmd_rd_en_q, %101 : i1
+        fsm.update %csaat_q, %99 : i1
+        fsm.update %clkdiv_q, %98 : i16
+        fsm.update %csntrail_q, %97 : i4
+        fsm.update %csnlead_q, %96 : i4
+        fsm.update %csnidle_q, %95 : i4
+        fsm.update %full_cyc_q, %94 : i1
+        fsm.update %cpha_q, %93 : i1
+        fsm.update %cpol_q, %92 : i1
+        fsm.update %csid_q, %91 : i1
       }
       fsm.transition @state_1 guard {
         %c0_i4 = hw.constant 0 : i4
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp ne %arg13, %cpol_q : i1
         %1 = comb.icmp ne %arg12, %cpha_q : i1
@@ -413,58 +372,46 @@ module {
         %11 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %12 = comb.mux %11, %c1_i3, %c-2_i3 : i3
         %13 = comb.xor %arg18, %true : i1
-        %c0_i3_0 = hw.constant 0 : i3
+        %c0_i3_13 = hw.constant 0 : i3
         %14 = comb.and %arg1, %13 : i1
         %15 = comb.mux %14, %10, %12 : i3
         %16 = comb.mux %arg18, %c0_i3, %15 : i3
         %17 = comb.xor %arg1, %true : i1
         %18 = comb.and %13, %17 : i1
-        %19 = comb.mux %18, %c0_i3_0, %16 : i3
+        %19 = comb.mux %18, %c0_i3_13, %16 : i3
         %20 = comb.xor %18, %true : i1
-        %21 = comb.icmp ne %19, %c0_i3_0 : i3
-        %true_1 = hw.constant true
-        %22 = comb.xor %7, %true_1 : i1
+        %21 = comb.icmp ne %19, %c0_i3_13 : i3
+        %true_14 = hw.constant true
+        %22 = comb.xor %7, %true_14 : i1
         %23 = comb.and %arg15, %22 : i1
         %24 = comb.mux %14, %23, %11 : i1
-        %true_2 = hw.constant true
-        %25 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %26 = comb.xor %18, %true_3 : i1
+        %true_15 = hw.constant true
+        %25 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %26 = comb.xor %18, %true_16 : i1
+        %true_17 = hw.constant true
+        verif.assert %true_17 : i1
         %27 = comb.and %arg15, %20, %14 : i1
-        %28 = comb.mux %27, %arg14, %csid_q : i1
-        %29 = comb.mux %27, %arg12, %cpha_q : i1
-        %30 = comb.mux %27, %arg3, %cmd_wr_en_q : i1
-        %31 = comb.mux %27, %arg4, %cmd_rd_en_q : i1
-        %32 = comb.mux %27, %arg2, %cmd_speed_q : i2
-        %33 = comb.xor %29, %true : i1
-        %34 = comb.icmp eq %arg2, %c0_i2 : i2
-        %35 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %36 = comb.mux %27, %34, %35 : i1
-        %37 = comb.and %31, %30 : i1
-        %38 = comb.xor %37, %true : i1
-        %39 = comb.or %36, %38 : i1
-        verif.assert %39 : i1
-        %40 = comb.icmp ne %32, %c-1_i2 : i2
-        verif.assert %40 : i1
-        %41 = comb.xor %28, %true : i1
-        verif.assert %41 : i1
-        %42 = comb.and %33, %13, %21, %26, %25, %24, %30, %8 : i1
-        %43 = comb.or %42, %18 : i1
-        %true_4 = hw.constant true
-        %44 = comb.xor %7, %true_4 : i1
-        %45 = comb.and %arg15, %44 : i1
-        %46 = comb.mux %14, %45, %11 : i1
-        %true_5 = hw.constant true
-        %47 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %48 = comb.xor %43, %true_6 : i1
-        %49 = comb.and %48, %47, %46 : i1
-        fsm.return %49
+        %28 = comb.mux %27, %arg12, %cpha_q : i1
+        %29 = comb.mux %27, %arg3, %cmd_wr_en_q : i1
+        %30 = comb.xor %28, %true : i1
+        %31 = comb.and %30, %13, %21, %26, %25, %24, %29, %8 : i1
+        %32 = comb.or %31, %18 : i1
+        %true_18 = hw.constant true
+        %33 = comb.xor %7, %true_18 : i1
+        %34 = comb.and %arg15, %33 : i1
+        %35 = comb.mux %14, %34, %11 : i1
+        %true_19 = hw.constant true
+        %36 = comb.xor %arg18, %true_19 : i1
+        %true_20 = hw.constant true
+        %37 = comb.xor %32, %true_20 : i1
+        %38 = comb.and %37, %36, %35 : i1
+        fsm.return %38
       } action {
+        fsm.update %_sh1_10, %arg1 : i1
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
-        %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
-        %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
         %c-2_i3 = hw.constant -2 : i3
@@ -473,7 +420,6 @@ module {
         %c3_i3 = hw.constant 3 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i4 = hw.constant -1 : i4
         %true = hw.constant true
         %0 = comb.icmp ne %arg13, %cpol_q : i1
@@ -487,176 +433,149 @@ module {
         %8 = comb.xor %arg16, %true : i1
         %9 = comb.mux %7, %c-2_i3, %c1_i3 : i3
         %10 = comb.mux %arg15, %9, %c0_i3 : i3
-        %11 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %12 = comb.mux %11, %c1_i3, %c-2_i3 : i3
-        %13 = comb.xor %arg18, %true : i1
-        %14 = comb.and %arg1, %13 : i1
-        %15 = comb.mux %14, %10, %12 : i3
-        %16 = comb.mux %arg18, %c0_i3, %15 : i3
-        %17 = comb.xor %arg1, %true : i1
-        %18 = comb.and %13, %17 : i1
-        %19 = comb.xor %18, %true : i1
-        %c0_i3_0 = hw.constant 0 : i3
+        %11 = comb.xor %arg15, %true : i1
+        %false_14 = hw.constant false
+        %12 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
+        %13 = comb.mux %12, %c1_i3, %c-2_i3 : i3
+        %14 = comb.mux %arg1, %10, %13 : i3
+        %15 = comb.xor %arg1, %true : i1
+        %c0_i3_15 = hw.constant 0 : i3
+        %true_16 = hw.constant true
+        %16 = comb.xor %7, %true_16 : i1
+        %17 = comb.and %arg15, %16 : i1
+        %18 = comb.mux %arg1, %17, %12 : i1
+        %19 = comb.and %arg1, %18 : i1
         %20 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %21 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %22 = comb.or %arg18, %arg1 : i1
-        %23 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %24 = comb.and %cmd_wr_en_q, %20 : i1
-        %25 = comb.or %24, %cmd_wr_en_last_bit : i1
-        fsm.update %cmd_wr_en_last_bit, %25 : i1
-        %26 = comb.and %arg15, %19, %14 : i1
-        %27 = comb.mux %26, %arg14, %csid_q : i1
-        %28 = comb.mux %26, %arg13, %cpol_q : i1
-        %29 = comb.mux %26, %arg12, %cpha_q : i1
-        %30 = comb.mux %26, %arg8, %csnidle_q : i4
-        %31 = comb.mux %26, %arg9, %csnlead_q : i4
-        %32 = comb.mux %26, %arg3, %cmd_wr_en_q : i1
-        %33 = comb.mux %26, %arg4, %cmd_rd_en_q : i1
-        %34 = comb.mux %26, %arg2, %cmd_speed_q : i2
-        %35 = comb.mux %26, %arg7, %clk_cntr_q : i16
-        %36 = comb.mux %arg18, %c0_i16, %35 : i16
-        %37 = comb.mux %18, %c0_i3_0, %16 : i3
-        %38 = comb.icmp ne %37, %c0_i3_0 : i3
-        %true_1 = hw.constant true
-        %39 = comb.xor %7, %true_1 : i1
-        %40 = comb.and %arg15, %39 : i1
-        %41 = comb.mux %14, %40, %11 : i1
-        %true_2 = hw.constant true
-        %42 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %43 = comb.xor %18, %true_3 : i1
-        %44 = comb.xor %29, %true : i1
-        %45 = comb.and %44, %13, %38, %43, %42, %41 : i1
-        %46 = comb.xor %33, %true : i1
-        %47 = comb.xor %32, %true : i1
-        %48 = comb.and %46, %47 : i1
-        %49 = comb.icmp eq %arg2, %c0_i2 : i2
-        %50 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %51 = comb.mux %26, %49, %50 : i1
-        %52 = comb.icmp eq %arg2, %c1_i2 : i2
-        %53 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %54 = comb.mux %26, %52, %53 : i1
-        %55 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %56 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %57 = comb.mux %26, %55, %56 : i1
-        %58 = comb.mux %57, %c-4_i3, %c1_i3 : i3
-        %59 = comb.xor %48, %true : i1
-        %60 = comb.xor %51, %true : i1
-        %61 = comb.and %60, %59, %54 : i1
-        %62 = comb.mux %61, %c-2_i3, %58 : i3
-        %63 = comb.and %59, %51 : i1
-        %64 = comb.mux %63, %c-1_i3, %62 : i3
-        %65 = comb.mux %48, %c0_i3, %64 : i3
-        %66 = comb.and %arg1, %45 : i1
-        %67 = comb.mux %66, %65, %bit_cntr_q : i3
-        %68 = comb.mux %arg18, %c0_i3, %67 : i3
-        %69 = comb.mux %26, %arg5, %byte_cntr_cpha0_q : i20
-        %70 = comb.mux %arg18, %c0_i20, %69 : i20
-        %71 = comb.mux %26, %arg5, %byte_cntr_cpha1_q : i20
-        %72 = comb.mux %arg18, %c0_i20, %71 : i20
-        %true_4 = hw.constant true
-        %73 = comb.xor %7, %true_4 : i1
-        %74 = comb.and %arg15, %73 : i1
-        %75 = comb.mux %14, %74, %11 : i1
-        %true_5 = hw.constant true
-        %76 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %77 = comb.xor %18, %true_6 : i1
-        %78 = comb.and %77, %76, %75 : i1
-        %79 = comb.and %arg15, %7 : i1
-        %true_7 = hw.constant true
-        %80 = comb.xor %11, %true_7 : i1
-        %81 = comb.mux %14, %79, %80 : i1
-        %true_8 = hw.constant true
-        %82 = comb.xor %arg18, %true_8 : i1
-        %true_9 = hw.constant true
-        %83 = comb.xor %18, %true_9 : i1
-        %84 = comb.and %38, %14 : i1
-        %85 = comb.xor %78, %true : i1
-        %86 = comb.and %85, %84, %83, %82, %81 : i1
-        %87 = comb.mux %86, %30, %c0_i4 : i4
-        %88 = comb.and %84, %78 : i1
-        %89 = comb.mux %88, %31, %87 : i4
-        %90 = comb.mux %22, %89, %wait_cntr_q : i4
-        %91 = comb.mux %arg18, %c0_i4, %90 : i4
-        %92 = comb.xor %38, %true : i1
-        %93 = comb.and %23, %92, %14 : i1
-        %94 = comb.mux %93, %21, %91 : i4
-        %95 = comb.icmp ne %37, %c-4_i3 : i3
-        %96 = comb.and %85, %95 : i1
-        %97 = comb.icmp ne %37, %c3_i3 : i3
-        %98 = comb.and %28, %97 : i1
-        %99 = comb.icmp eq %arg2, %c0_i2 : i2
-        %100 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %101 = comb.mux %26, %99, %100 : i1
-        %102 = comb.and %33, %32 : i1
-        %103 = comb.xor %102, %true : i1
-        %104 = comb.or %101, %103 : i1
-        verif.assert %104 : i1
-        %105 = comb.icmp ne %34, %c-1_i2 : i2
-        verif.assert %105 : i1
-        %106 = comb.xor %27, %true : i1
-        verif.assert %106 : i1
-        %107 = comb.and %45, %32, %8 : i1
-        %108 = comb.mux %107, %clk_cntr_q, %36 : i16
-        %109 = comb.mux %107, %bit_cntr_q, %68 : i3
-        %110 = comb.mux %107, %byte_cntr_cpha0_q, %70 : i20
-        %111 = comb.mux %107, %byte_cntr_cpha1_q, %72 : i20
-        %112 = comb.mux %107, %wait_cntr_q, %94 : i4
-        fsm.update %wait_cntr_q, %112 : i4
-        fsm.update %byte_cntr_cpha1_q, %111 : i20
-        fsm.update %byte_cntr_cpha0_q, %110 : i20
-        fsm.update %bit_cntr_q, %109 : i3
-        fsm.update %clk_cntr_q, %108 : i16
-        %113 = comb.xor %107, %true : i1
-        %114 = comb.and %26, %113 : i1
-        %115 = comb.mux %114, %arg14, %csid_q : i1
-        %116 = comb.mux %114, %arg13, %cpol_q : i1
-        %117 = comb.mux %114, %arg12, %cpha_q : i1
-        %118 = comb.mux %114, %arg11, %full_cyc_q : i1
-        %119 = comb.mux %114, %arg8, %csnidle_q : i4
-        %120 = comb.mux %114, %arg9, %csnlead_q : i4
-        %121 = comb.mux %114, %arg10, %csntrail_q : i4
-        %122 = comb.mux %114, %arg7, %clkdiv_q : i16
-        %123 = comb.mux %114, %arg6, %csaat_q : i1
-        %124 = comb.mux %114, %arg3, %cmd_wr_en_q : i1
-        %125 = comb.mux %114, %arg4, %cmd_rd_en_q : i1
-        %126 = comb.mux %114, %arg2, %cmd_speed_q : i2
-        %127 = comb.mux %114, %arg5, %cmd_len_q : i20
-        %128 = comb.and %38, %113 : i1
-        %129 = comb.mux bin %128, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %130 = comb.and %arg1, %113 : i1
-        %131 = comb.mux %130, %45, %sample_en_q : i1
-        %132 = comb.mux %130, %sample_en_q, %sample_en_q2 : i1
-        %133 = comb.mux bin %107, %u_sck_flop2Fq_o, %98 : i1
-        %134 = comb.mux %113, %96, %csb_q : i1
-        %135 = comb.or %27, %134 : i1
-        fsm.update %csb_q, %135 : i1
-        fsm.update %u_sck_flop2Fq_o, %133 : i1
-        fsm.update %sample_en_q2, %132 : i1
-        fsm.update %sample_en_q, %131 : i1
-        fsm.update %segment_rd_en_cpha1, %129 : i1
-        fsm.update %cmd_len_q, %127 : i20
-        fsm.update %cmd_speed_q, %126 : i2
-        fsm.update %cmd_wr_en_q, %124 : i1
-        fsm.update %cmd_rd_en_q, %125 : i1
-        fsm.update %csaat_q, %123 : i1
-        fsm.update %clkdiv_q, %122 : i16
-        fsm.update %csntrail_q, %121 : i4
-        fsm.update %csnlead_q, %120 : i4
-        fsm.update %csnidle_q, %119 : i4
-        fsm.update %full_cyc_q, %118 : i1
-        fsm.update %cpha_q, %117 : i1
-        fsm.update %cpol_q, %116 : i1
-        fsm.update %csid_q, %115 : i1
+        %21 = comb.icmp eq %arg2, %c0_i2 : i2
+        %22 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %23 = comb.icmp eq %arg2, %c1_i2 : i2
+        %24 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %25 = comb.icmp eq %arg2, %c-2_i2 : i2
+        %26 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %27 = comb.and %arg15, %7 : i1
+        %true_17 = hw.constant true
+        %28 = comb.xor %12, %true_17 : i1
+        %29 = comb.mux %arg1, %27, %28 : i1
+        %30 = comb.add %wait_cntr_q, %c-1_i4 : i4
+        %31 = comb.xor %19, %true : i1
+        %32 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
+        %33 = comb.and %cmd_wr_en_q, %20 : i1
+        %34 = comb.or %33, %cmd_wr_en_last_bit : i1
+        %true_18 = hw.constant true
+        verif.assert %true_18 : i1
+        fsm.update %_sh1_8, %11 : i1
+        fsm.update %_sh1_6, %12 : i1
+        fsm.update %_sh1, %false_14 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        fsm.update %cmd_wr_en_last_bit, %34 : i1
+        %35 = comb.and %arg15, %arg1 : i1
+        %36 = comb.mux %35, %arg14, %csid_q : i1
+        %37 = comb.mux %35, %arg13, %cpol_q : i1
+        %38 = comb.mux %35, %arg12, %cpha_q : i1
+        %39 = comb.mux %35, %arg8, %csnidle_q : i4
+        %40 = comb.mux %35, %arg9, %csnlead_q : i4
+        %41 = comb.mux %35, %arg3, %cmd_wr_en_q : i1
+        %42 = comb.mux %35, %arg4, %cmd_rd_en_q : i1
+        %43 = comb.mux %15, %c0_i3_15, %14 : i3
+        %44 = comb.icmp ne %43, %c0_i3_15 : i3
+        %45 = comb.xor %38, %true : i1
+        %46 = comb.and %45, %44, %19 : i1
+        %47 = comb.xor %42, %true : i1
+        %48 = comb.xor %41, %true : i1
+        %49 = comb.and %47, %48 : i1
+        %50 = comb.mux %35, %21, %22 : i1
+        %51 = comb.mux %35, %23, %24 : i1
+        %52 = comb.mux %35, %25, %26 : i1
+        %53 = comb.mux %52, %c-4_i3, %c1_i3 : i3
+        %54 = comb.xor %49, %true : i1
+        %55 = comb.xor %50, %true : i1
+        %56 = comb.and %55, %54, %51 : i1
+        %57 = comb.mux %56, %c-2_i3, %53 : i3
+        %58 = comb.and %54, %50 : i1
+        %59 = comb.mux %58, %c-1_i3, %57 : i3
+        %60 = comb.mux %49, %c0_i3, %59 : i3
+        %61 = comb.and %44, %arg1 : i1
+        %62 = comb.and %31, %61, %29 : i1
+        %63 = comb.mux %62, %39, %c0_i4 : i4
+        %64 = comb.and %61, %19 : i1
+        %65 = comb.mux %64, %40, %63 : i4
+        %66 = comb.mux %arg1, %65, %wait_cntr_q : i4
+        %67 = comb.xor %44, %true : i1
+        %68 = comb.and %32, %67, %arg1 : i1
+        %69 = comb.mux %68, %30, %66 : i4
+        %70 = comb.icmp ne %43, %c-4_i3 : i3
+        %71 = comb.and %31, %70 : i1
+        %72 = comb.icmp ne %43, %c3_i3 : i3
+        %73 = comb.and %37, %72 : i1
+        %74 = comb.and %46, %41, %8 : i1
+        %true_19 = hw.constant true
+        %75 = comb.xor %35, %true_19 : i1
+        %76 = comb.or %74, %75 : i1
+        %77 = comb.mux %76, %clk_cntr_q, %arg7 : i16
+        %true_20 = hw.constant true
+        %78 = comb.xor %46, %true_20 : i1
+        %79 = comb.or %74, %78 : i1
+        %80 = comb.mux %79, %bit_cntr_q, %60 : i3
+        %true_21 = hw.constant true
+        %81 = comb.xor %35, %true_21 : i1
+        %82 = comb.or %74, %81 : i1
+        %83 = comb.mux %82, %byte_cntr_cpha0_q, %arg5 : i20
+        %true_22 = hw.constant true
+        %84 = comb.xor %35, %true_22 : i1
+        %85 = comb.or %74, %84 : i1
+        %86 = comb.mux %85, %byte_cntr_cpha1_q, %arg5 : i20
+        %87 = comb.mux %74, %wait_cntr_q, %69 : i4
+        %88 = comb.mux bin %74, %u_sck_flop2Fq_o, %73 : i1
+        fsm.update %u_sck_flop2Fq_o, %88 : i1
+        fsm.update %wait_cntr_q, %87 : i4
+        fsm.update %byte_cntr_cpha1_q, %86 : i20
+        fsm.update %byte_cntr_cpha0_q, %83 : i20
+        fsm.update %bit_cntr_q, %80 : i3
+        fsm.update %clk_cntr_q, %77 : i16
+        %89 = comb.xor %74, %true : i1
+        %90 = comb.and %35, %89 : i1
+        %91 = comb.mux %90, %arg14, %csid_q : i1
+        %92 = comb.mux %90, %arg13, %cpol_q : i1
+        %93 = comb.mux %90, %arg12, %cpha_q : i1
+        %94 = comb.mux %90, %arg11, %full_cyc_q : i1
+        %95 = comb.mux %90, %arg8, %csnidle_q : i4
+        %96 = comb.mux %90, %arg9, %csnlead_q : i4
+        %97 = comb.mux %90, %arg10, %csntrail_q : i4
+        %98 = comb.mux %90, %arg7, %clkdiv_q : i16
+        %99 = comb.mux %90, %arg6, %csaat_q : i1
+        %100 = comb.mux %90, %arg3, %cmd_wr_en_q : i1
+        %101 = comb.mux %90, %arg4, %cmd_rd_en_q : i1
+        %102 = comb.mux %90, %arg2, %cmd_speed_q : i2
+        %103 = comb.and %44, %89 : i1
+        %104 = comb.mux bin %103, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %105 = comb.and %arg1, %89 : i1
+        %106 = comb.mux %105, %46, %sample_en_q : i1
+        %107 = comb.mux %105, %sample_en_q, %sample_en_q2 : i1
+        %108 = comb.mux %89, %71, %csb_q : i1
+        %109 = comb.or %36, %108 : i1
+        fsm.update %_sh1_12, %89 : i1
+        fsm.update %csb_q, %109 : i1
+        fsm.update %sample_en_q2, %107 : i1
+        fsm.update %sample_en_q, %106 : i1
+        fsm.update %segment_rd_en_cpha1, %104 : i1
+        fsm.update %cmd_speed_q, %102 : i2
+        fsm.update %cmd_wr_en_q, %100 : i1
+        fsm.update %cmd_rd_en_q, %101 : i1
+        fsm.update %csaat_q, %99 : i1
+        fsm.update %clkdiv_q, %98 : i16
+        fsm.update %csntrail_q, %97 : i4
+        fsm.update %csnlead_q, %96 : i4
+        fsm.update %csnidle_q, %95 : i4
+        fsm.update %full_cyc_q, %94 : i1
+        fsm.update %cpha_q, %93 : i1
+        fsm.update %cpol_q, %92 : i1
+        fsm.update %csid_q, %91 : i1
       }
       fsm.transition @state_0 guard {
         %c0_i4 = hw.constant 0 : i4
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp ne %arg13, %cpol_q : i1
         %1 = comb.icmp ne %arg12, %cpha_q : i1
@@ -672,48 +591,38 @@ module {
         %11 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %12 = comb.mux %11, %c1_i3, %c-2_i3 : i3
         %13 = comb.xor %arg18, %true : i1
-        %c0_i3_0 = hw.constant 0 : i3
+        %c0_i3_13 = hw.constant 0 : i3
         %14 = comb.and %arg1, %13 : i1
         %15 = comb.mux %14, %10, %12 : i3
         %16 = comb.mux %arg18, %c0_i3, %15 : i3
         %17 = comb.xor %arg1, %true : i1
         %18 = comb.and %13, %17 : i1
-        %19 = comb.mux %18, %c0_i3_0, %16 : i3
+        %19 = comb.mux %18, %c0_i3_13, %16 : i3
         %20 = comb.xor %18, %true : i1
-        %21 = comb.icmp ne %19, %c0_i3_0 : i3
-        %true_1 = hw.constant true
-        %22 = comb.xor %7, %true_1 : i1
+        %21 = comb.icmp ne %19, %c0_i3_13 : i3
+        %true_14 = hw.constant true
+        %22 = comb.xor %7, %true_14 : i1
         %23 = comb.and %arg15, %22 : i1
         %24 = comb.mux %14, %23, %11 : i1
-        %true_2 = hw.constant true
-        %25 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %26 = comb.xor %18, %true_3 : i1
+        %true_15 = hw.constant true
+        %25 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %26 = comb.xor %18, %true_16 : i1
+        %true_17 = hw.constant true
+        verif.assert %true_17 : i1
         %27 = comb.and %arg15, %20, %14 : i1
-        %28 = comb.mux %27, %arg14, %csid_q : i1
-        %29 = comb.mux %27, %arg12, %cpha_q : i1
-        %30 = comb.mux %27, %arg3, %cmd_wr_en_q : i1
-        %31 = comb.mux %27, %arg4, %cmd_rd_en_q : i1
-        %32 = comb.mux %27, %arg2, %cmd_speed_q : i2
-        %33 = comb.xor %29, %true : i1
-        %34 = comb.icmp eq %arg2, %c0_i2 : i2
-        %35 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %36 = comb.mux %27, %34, %35 : i1
-        %37 = comb.and %31, %30 : i1
-        %38 = comb.xor %37, %true : i1
-        %39 = comb.or %36, %38 : i1
-        verif.assert %39 : i1
-        %40 = comb.icmp ne %32, %c-1_i2 : i2
-        verif.assert %40 : i1
-        %41 = comb.xor %28, %true : i1
-        verif.assert %41 : i1
-        %42 = comb.and %33, %13, %21, %26, %25, %24, %30, %8 : i1
-        %true_4 = hw.constant true
-        %43 = comb.xor %arg15, %true_4 : i1
-        %44 = comb.and %14, %43 : i1
-        %45 = comb.or %42, %18, %arg18, %44 : i1
-        fsm.return %45
+        %28 = comb.mux %27, %arg12, %cpha_q : i1
+        %29 = comb.mux %27, %arg3, %cmd_wr_en_q : i1
+        %30 = comb.xor %28, %true : i1
+        %31 = comb.and %30, %13, %21, %26, %25, %24, %29, %8 : i1
+        %true_18 = hw.constant true
+        %32 = comb.xor %arg15, %true_18 : i1
+        %33 = comb.and %14, %32 : i1
+        %34 = comb.or %31, %18, %arg18, %33 : i1
+        fsm.return %34
       } action {
+        fsm.update %_sh1_10, %arg1 : i1
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
@@ -726,7 +635,6 @@ module {
         %c3_i3 = hw.constant 3 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i4 = hw.constant -1 : i4
         %true = hw.constant true
         %0 = comb.icmp ne %arg13, %cpol_q : i1
@@ -740,168 +648,155 @@ module {
         %8 = comb.xor %arg16, %true : i1
         %9 = comb.mux %7, %c-2_i3, %c1_i3 : i3
         %10 = comb.mux %arg15, %9, %c0_i3 : i3
-        %11 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %12 = comb.mux %11, %c1_i3, %c-2_i3 : i3
-        %13 = comb.xor %arg18, %true : i1
-        %14 = comb.and %arg1, %13 : i1
-        %15 = comb.mux %14, %10, %12 : i3
-        %16 = comb.mux %arg18, %c0_i3, %15 : i3
-        %17 = comb.xor %arg1, %true : i1
-        %18 = comb.and %13, %17 : i1
-        %19 = comb.xor %18, %true : i1
-        %c0_i3_0 = hw.constant 0 : i3
-        %20 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %21 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %22 = comb.or %arg18, %arg1 : i1
-        %23 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %24 = comb.and %cmd_wr_en_q, %20 : i1
-        %25 = comb.or %24, %cmd_wr_en_last_bit : i1
-        fsm.update %cmd_wr_en_last_bit, %25 : i1
-        %26 = comb.and %arg15, %19, %14 : i1
-        %27 = comb.mux %26, %arg14, %csid_q : i1
-        %28 = comb.mux %26, %arg13, %cpol_q : i1
-        %29 = comb.mux %26, %arg12, %cpha_q : i1
-        %30 = comb.mux %26, %arg8, %csnidle_q : i4
-        %31 = comb.mux %26, %arg9, %csnlead_q : i4
-        %32 = comb.mux %26, %arg3, %cmd_wr_en_q : i1
-        %33 = comb.mux %26, %arg4, %cmd_rd_en_q : i1
-        %34 = comb.mux %26, %arg2, %cmd_speed_q : i2
-        %35 = comb.mux %26, %arg7, %clk_cntr_q : i16
-        %36 = comb.mux %arg18, %c0_i16, %35 : i16
-        %37 = comb.mux %18, %c0_i3_0, %16 : i3
-        %38 = comb.icmp ne %37, %c0_i3_0 : i3
-        %true_1 = hw.constant true
-        %39 = comb.xor %7, %true_1 : i1
-        %40 = comb.and %arg15, %39 : i1
-        %41 = comb.mux %14, %40, %11 : i1
-        %true_2 = hw.constant true
-        %42 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %43 = comb.xor %18, %true_3 : i1
-        %44 = comb.xor %29, %true : i1
-        %45 = comb.and %44, %13, %38, %43, %42, %41 : i1
-        %46 = comb.xor %33, %true : i1
-        %47 = comb.xor %32, %true : i1
-        %48 = comb.and %46, %47 : i1
-        %49 = comb.icmp eq %arg2, %c0_i2 : i2
-        %50 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %51 = comb.mux %26, %49, %50 : i1
-        %52 = comb.icmp eq %arg2, %c1_i2 : i2
-        %53 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %54 = comb.mux %26, %52, %53 : i1
-        %55 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %56 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %57 = comb.mux %26, %55, %56 : i1
-        %58 = comb.mux %57, %c-4_i3, %c1_i3 : i3
-        %59 = comb.xor %48, %true : i1
+        %11 = comb.xor %arg15, %true : i1
+        %false_14 = hw.constant false
+        %12 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
+        %13 = comb.mux %12, %c1_i3, %c-2_i3 : i3
+        %14 = comb.xor %arg18, %true : i1
+        %15 = comb.and %arg1, %14 : i1
+        %16 = comb.mux %15, %10, %13 : i3
+        %17 = comb.mux %arg18, %c0_i3, %16 : i3
+        %18 = comb.xor %arg1, %true : i1
+        %19 = comb.and %14, %18 : i1
+        %20 = comb.xor %19, %true : i1
+        %c0_i3_15 = hw.constant 0 : i3
+        %true_16 = hw.constant true
+        %21 = comb.xor %7, %true_16 : i1
+        %22 = comb.and %arg15, %21 : i1
+        %23 = comb.mux %15, %22, %12 : i1
+        %true_17 = hw.constant true
+        %24 = comb.xor %arg18, %true_17 : i1
+        %true_18 = hw.constant true
+        %25 = comb.xor %19, %true_18 : i1
+        %26 = comb.and %25, %24, %23 : i1
+        %27 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %28 = comb.icmp eq %arg2, %c0_i2 : i2
+        %29 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %30 = comb.icmp eq %arg2, %c1_i2 : i2
+        %31 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %32 = comb.icmp eq %arg2, %c-2_i2 : i2
+        %33 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %34 = comb.and %arg15, %7 : i1
+        %true_19 = hw.constant true
+        %35 = comb.xor %12, %true_19 : i1
+        %36 = comb.mux %15, %34, %35 : i1
+        %true_20 = hw.constant true
+        %37 = comb.xor %arg18, %true_20 : i1
+        %true_21 = hw.constant true
+        %38 = comb.xor %19, %true_21 : i1
+        %39 = comb.add %wait_cntr_q, %c-1_i4 : i4
+        %40 = comb.xor %26, %true : i1
+        %41 = comb.or %arg18, %arg1 : i1
+        %42 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
+        %43 = comb.and %cmd_wr_en_q, %27 : i1
+        %44 = comb.or %43, %cmd_wr_en_last_bit : i1
+        %true_22 = hw.constant true
+        verif.assert %true_22 : i1
+        fsm.update %_sh1_8, %11 : i1
+        fsm.update %_sh1_6, %12 : i1
+        fsm.update %_sh1, %false_14 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        fsm.update %cmd_wr_en_last_bit, %44 : i1
+        %45 = comb.and %arg15, %20, %15 : i1
+        %46 = comb.mux %45, %arg14, %csid_q : i1
+        %47 = comb.mux %45, %arg13, %cpol_q : i1
+        %48 = comb.mux %45, %arg12, %cpha_q : i1
+        %49 = comb.mux %45, %arg8, %csnidle_q : i4
+        %50 = comb.mux %45, %arg9, %csnlead_q : i4
+        %51 = comb.mux %45, %arg3, %cmd_wr_en_q : i1
+        %52 = comb.mux %45, %arg4, %cmd_rd_en_q : i1
+        %53 = comb.mux %45, %arg7, %clk_cntr_q : i16
+        %54 = comb.mux %arg18, %c0_i16, %53 : i16
+        %55 = comb.mux %19, %c0_i3_15, %17 : i3
+        %56 = comb.icmp ne %55, %c0_i3_15 : i3
+        %57 = comb.xor %48, %true : i1
+        %58 = comb.and %57, %14, %56, %26 : i1
+        %59 = comb.xor %52, %true : i1
         %60 = comb.xor %51, %true : i1
-        %61 = comb.and %60, %59, %54 : i1
-        %62 = comb.mux %61, %c-2_i3, %58 : i3
-        %63 = comb.and %59, %51 : i1
-        %64 = comb.mux %63, %c-1_i3, %62 : i3
-        %65 = comb.mux %48, %c0_i3, %64 : i3
-        %66 = comb.and %arg1, %45 : i1
-        %67 = comb.mux %66, %65, %bit_cntr_q : i3
-        %68 = comb.mux %arg18, %c0_i3, %67 : i3
-        %69 = comb.mux %26, %arg5, %byte_cntr_cpha0_q : i20
-        %70 = comb.mux %arg18, %c0_i20, %69 : i20
-        %71 = comb.mux %26, %arg5, %byte_cntr_cpha1_q : i20
-        %72 = comb.mux %arg18, %c0_i20, %71 : i20
-        %true_4 = hw.constant true
-        %73 = comb.xor %7, %true_4 : i1
-        %74 = comb.and %arg15, %73 : i1
-        %75 = comb.mux %14, %74, %11 : i1
-        %true_5 = hw.constant true
-        %76 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %77 = comb.xor %18, %true_6 : i1
-        %78 = comb.and %77, %76, %75 : i1
-        %79 = comb.and %arg15, %7 : i1
-        %true_7 = hw.constant true
-        %80 = comb.xor %11, %true_7 : i1
-        %81 = comb.mux %14, %79, %80 : i1
-        %true_8 = hw.constant true
-        %82 = comb.xor %arg18, %true_8 : i1
-        %true_9 = hw.constant true
-        %83 = comb.xor %18, %true_9 : i1
-        %84 = comb.and %38, %14 : i1
-        %85 = comb.xor %78, %true : i1
-        %86 = comb.and %85, %84, %83, %82, %81 : i1
-        %87 = comb.mux %86, %30, %c0_i4 : i4
-        %88 = comb.and %84, %78 : i1
-        %89 = comb.mux %88, %31, %87 : i4
-        %90 = comb.mux %22, %89, %wait_cntr_q : i4
-        %91 = comb.mux %arg18, %c0_i4, %90 : i4
-        %92 = comb.xor %38, %true : i1
-        %93 = comb.and %23, %92, %14 : i1
-        %94 = comb.mux %93, %21, %91 : i4
-        %95 = comb.icmp ne %37, %c-4_i3 : i3
-        %96 = comb.and %85, %95 : i1
-        %97 = comb.icmp ne %37, %c3_i3 : i3
-        %98 = comb.and %28, %97 : i1
-        %99 = comb.icmp eq %arg2, %c0_i2 : i2
-        %100 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %101 = comb.mux %26, %99, %100 : i1
-        %102 = comb.and %33, %32 : i1
-        %103 = comb.xor %102, %true : i1
-        %104 = comb.or %101, %103 : i1
-        verif.assert %104 : i1
-        %105 = comb.icmp ne %34, %c-1_i2 : i2
-        verif.assert %105 : i1
-        %106 = comb.xor %27, %true : i1
-        verif.assert %106 : i1
-        %107 = comb.and %45, %32, %8 : i1
-        %108 = comb.mux %107, %clk_cntr_q, %36 : i16
-        %109 = comb.mux %107, %bit_cntr_q, %68 : i3
-        %110 = comb.mux %107, %byte_cntr_cpha0_q, %70 : i20
-        %111 = comb.mux %107, %byte_cntr_cpha1_q, %72 : i20
-        %112 = comb.mux %107, %wait_cntr_q, %94 : i4
-        fsm.update %wait_cntr_q, %112 : i4
-        fsm.update %byte_cntr_cpha1_q, %111 : i20
-        fsm.update %byte_cntr_cpha0_q, %110 : i20
-        fsm.update %bit_cntr_q, %109 : i3
-        fsm.update %clk_cntr_q, %108 : i16
-        %113 = comb.xor %107, %true : i1
-        %114 = comb.and %26, %113 : i1
-        %115 = comb.mux %114, %arg14, %csid_q : i1
-        %116 = comb.mux %114, %arg13, %cpol_q : i1
-        %117 = comb.mux %114, %arg12, %cpha_q : i1
-        %118 = comb.mux %114, %arg11, %full_cyc_q : i1
-        %119 = comb.mux %114, %arg8, %csnidle_q : i4
-        %120 = comb.mux %114, %arg9, %csnlead_q : i4
-        %121 = comb.mux %114, %arg10, %csntrail_q : i4
-        %122 = comb.mux %114, %arg7, %clkdiv_q : i16
-        %123 = comb.mux %114, %arg6, %csaat_q : i1
-        %124 = comb.mux %114, %arg3, %cmd_wr_en_q : i1
-        %125 = comb.mux %114, %arg4, %cmd_rd_en_q : i1
-        %126 = comb.mux %114, %arg2, %cmd_speed_q : i2
-        %127 = comb.mux %114, %arg5, %cmd_len_q : i20
-        %128 = comb.and %38, %113 : i1
-        %129 = comb.mux bin %128, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %130 = comb.and %arg1, %113 : i1
-        %131 = comb.mux %130, %45, %sample_en_q : i1
-        %132 = comb.mux %130, %sample_en_q, %sample_en_q2 : i1
-        %133 = comb.mux bin %107, %u_sck_flop2Fq_o, %98 : i1
-        %134 = comb.mux %113, %96, %csb_q : i1
-        %135 = comb.or %27, %134 : i1
-        fsm.update %csb_q, %135 : i1
-        fsm.update %u_sck_flop2Fq_o, %133 : i1
-        fsm.update %sample_en_q2, %132 : i1
-        fsm.update %sample_en_q, %131 : i1
-        fsm.update %segment_rd_en_cpha1, %129 : i1
-        fsm.update %cmd_len_q, %127 : i20
-        fsm.update %cmd_speed_q, %126 : i2
-        fsm.update %cmd_wr_en_q, %124 : i1
-        fsm.update %cmd_rd_en_q, %125 : i1
-        fsm.update %csaat_q, %123 : i1
-        fsm.update %clkdiv_q, %122 : i16
-        fsm.update %csntrail_q, %121 : i4
-        fsm.update %csnlead_q, %120 : i4
-        fsm.update %csnidle_q, %119 : i4
-        fsm.update %full_cyc_q, %118 : i1
-        fsm.update %cpha_q, %117 : i1
-        fsm.update %cpol_q, %116 : i1
-        fsm.update %csid_q, %115 : i1
+        %61 = comb.and %59, %60 : i1
+        %62 = comb.mux %45, %28, %29 : i1
+        %63 = comb.mux %45, %30, %31 : i1
+        %64 = comb.mux %45, %32, %33 : i1
+        %65 = comb.mux %64, %c-4_i3, %c1_i3 : i3
+        %66 = comb.xor %61, %true : i1
+        %67 = comb.xor %62, %true : i1
+        %68 = comb.and %67, %66, %63 : i1
+        %69 = comb.mux %68, %c-2_i3, %65 : i3
+        %70 = comb.and %66, %62 : i1
+        %71 = comb.mux %70, %c-1_i3, %69 : i3
+        %72 = comb.mux %61, %c0_i3, %71 : i3
+        %73 = comb.and %arg1, %58 : i1
+        %74 = comb.mux %73, %72, %bit_cntr_q : i3
+        %75 = comb.mux %arg18, %c0_i3, %74 : i3
+        %76 = comb.mux %45, %arg5, %byte_cntr_cpha0_q : i20
+        %77 = comb.mux %arg18, %c0_i20, %76 : i20
+        %78 = comb.mux %45, %arg5, %byte_cntr_cpha1_q : i20
+        %79 = comb.mux %arg18, %c0_i20, %78 : i20
+        %80 = comb.and %56, %15 : i1
+        %81 = comb.and %40, %80, %38, %37, %36 : i1
+        %82 = comb.mux %81, %49, %c0_i4 : i4
+        %83 = comb.and %80, %26 : i1
+        %84 = comb.mux %83, %50, %82 : i4
+        %85 = comb.mux %41, %84, %wait_cntr_q : i4
+        %86 = comb.mux %arg18, %c0_i4, %85 : i4
+        %87 = comb.xor %56, %true : i1
+        %88 = comb.and %42, %87, %15 : i1
+        %89 = comb.mux %88, %39, %86 : i4
+        %90 = comb.icmp ne %55, %c-4_i3 : i3
+        %91 = comb.and %40, %90 : i1
+        %92 = comb.icmp ne %55, %c3_i3 : i3
+        %93 = comb.and %47, %92 : i1
+        %94 = comb.and %58, %51, %8 : i1
+        %95 = comb.mux %94, %clk_cntr_q, %54 : i16
+        %96 = comb.mux %94, %bit_cntr_q, %75 : i3
+        %97 = comb.mux %94, %byte_cntr_cpha0_q, %77 : i20
+        %98 = comb.mux %94, %byte_cntr_cpha1_q, %79 : i20
+        %99 = comb.mux %94, %wait_cntr_q, %89 : i4
+        %100 = comb.mux bin %94, %u_sck_flop2Fq_o, %93 : i1
+        fsm.update %u_sck_flop2Fq_o, %100 : i1
+        fsm.update %wait_cntr_q, %99 : i4
+        fsm.update %byte_cntr_cpha1_q, %98 : i20
+        fsm.update %byte_cntr_cpha0_q, %97 : i20
+        fsm.update %bit_cntr_q, %96 : i3
+        fsm.update %clk_cntr_q, %95 : i16
+        %101 = comb.xor %94, %true : i1
+        %102 = comb.and %45, %101 : i1
+        %103 = comb.mux %102, %arg14, %csid_q : i1
+        %104 = comb.mux %102, %arg13, %cpol_q : i1
+        %105 = comb.mux %102, %arg12, %cpha_q : i1
+        %106 = comb.mux %102, %arg11, %full_cyc_q : i1
+        %107 = comb.mux %102, %arg8, %csnidle_q : i4
+        %108 = comb.mux %102, %arg9, %csnlead_q : i4
+        %109 = comb.mux %102, %arg10, %csntrail_q : i4
+        %110 = comb.mux %102, %arg7, %clkdiv_q : i16
+        %111 = comb.mux %102, %arg6, %csaat_q : i1
+        %112 = comb.mux %102, %arg3, %cmd_wr_en_q : i1
+        %113 = comb.mux %102, %arg4, %cmd_rd_en_q : i1
+        %114 = comb.mux %102, %arg2, %cmd_speed_q : i2
+        %115 = comb.and %56, %101 : i1
+        %116 = comb.mux bin %115, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %117 = comb.and %arg1, %101 : i1
+        %118 = comb.mux %117, %58, %sample_en_q : i1
+        %119 = comb.mux %117, %sample_en_q, %sample_en_q2 : i1
+        %120 = comb.mux %101, %91, %csb_q : i1
+        %121 = comb.or %46, %120 : i1
+        fsm.update %_sh1_12, %101 : i1
+        fsm.update %csb_q, %121 : i1
+        fsm.update %sample_en_q2, %119 : i1
+        fsm.update %sample_en_q, %118 : i1
+        fsm.update %segment_rd_en_cpha1, %116 : i1
+        fsm.update %cmd_speed_q, %114 : i2
+        fsm.update %cmd_wr_en_q, %112 : i1
+        fsm.update %cmd_rd_en_q, %113 : i1
+        fsm.update %csaat_q, %111 : i1
+        fsm.update %clkdiv_q, %110 : i16
+        fsm.update %csntrail_q, %109 : i4
+        fsm.update %csnlead_q, %108 : i4
+        fsm.update %csnidle_q, %107 : i4
+        fsm.update %full_cyc_q, %106 : i1
+        fsm.update %cpha_q, %105 : i1
+        fsm.update %cpol_q, %104 : i1
+        fsm.update %csid_q, %103 : i1
       }
     }
     fsm.state @state_1 output {
@@ -914,14 +809,13 @@ module {
       %c1_i3 = hw.constant 1 : i3
       %c1_i2 = hw.constant 1 : i2
       %c-2_i2 = hw.constant -2 : i2
-      %c-1_i2 = hw.constant -1 : i2
       %true = hw.constant true
-      %false = hw.constant false
-      %false_0 = hw.constant false
-      %true_1 = hw.constant true
+      %false_13 = hw.constant false
+      %false_14 = hw.constant false
+      %true_15 = hw.constant true
       %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
       %1 = comb.xor %arg16, %true : i1
-      %false_2 = hw.constant false
+      %false_16 = hw.constant false
       %2 = comb.and %arg1, %0 : i1
       %3 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
       %4 = comb.mux %3, %c1_i3, %c-2_i3 : i3
@@ -929,11 +823,11 @@ module {
       %6 = comb.and %2, %5 : i1
       %7 = comb.xor %2, %true : i1
       %8 = comb.and %5, %7 : i1
-      %c1_i3_3 = hw.constant 1 : i3
+      %c1_i3_17 = hw.constant 1 : i3
       %9 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
       %10 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
       %11 = comb.xor %cpha_q, %true : i1
-      %false_4 = hw.constant false
+      %false_18 = hw.constant false
       %12 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
       %13 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
       %14 = comb.mux %11, %12, %13 : i1
@@ -957,109 +851,97 @@ module {
       %32 = comb.mux %31, %22, %30 : i4
       %33 = comb.and %17, %25 : i1
       %34 = comb.mux %33, %19, %32 : i4
-      %35 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-      %36 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
+      %35 = comb.xor %isFirstCycle, %true : i1
+      %36 = comb.and %35, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %5 : i1
       %37 = comb.xor %36, %true : i1
-      %38 = comb.or %35, %37 : i1
-      verif.assert %38 : i1
-      %39 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-      verif.assert %39 : i1
-      %40 = comb.xor %csid_q, %true : i1
-      verif.assert %40 : i1
-      %false_5 = hw.constant false
-      %true_6 = hw.constant true
-      %41 = comb.concat %false_5, %3, %true_6 : i1, i1, i1
-      %42 = comb.mux %6, %41, %4 : i3
-      %43 = comb.mux %arg18, %c0_i3, %42 : i3
-      %44 = comb.mux %8, %c1_i3_3, %43 : i3
-      %45 = comb.icmp ne %44, %c1_i3_3 : i3
-      %46 = comb.and %5, %45 : i1
-      %47 = comb.xor %6, %3 : i1
-      %true_7 = hw.constant true
-      %48 = comb.xor %arg18, %true_7 : i1
-      %49 = comb.and %48, %47 : i1
-      %50 = comb.or %8, %49 : i1
-      %51 = comb.and %46, %50 : i1
-      %true_8 = hw.constant true
-      %52 = comb.xor %arg18, %true_8 : i1
-      %true_9 = hw.constant true
-      %53 = comb.xor %8, %true_9 : i1
-      %54 = comb.and %53, %52, %6, %3 : i1
-      %55 = comb.and %46, %54, %9 : i1
-      %56 = comb.mux %11, %51, %55 : i1
-      %57 = comb.and %56, %cmd_wr_en_q : i1
-      %58 = comb.and %57, %1 : i1
-      %59 = comb.xor %58, %true : i1
-      %60 = comb.and %57, %59 : i1
-      %61 = comb.and %16, %59 : i1
-      %62 = comb.and %cpha_q, %46, %54, %10, %59 : i1
-      %63 = comb.and %15, %60, %arg16 : i1
-      fsm.output %false_0, %u_sck_flop2Fq_o, %csb_q, %34, %false_4, %63, %60, %false, %61, %62, %cmd_speed_q, %full_cyc_q, %false_2, %58, %true_1 : i1, i1, i1, i4, i1, i1, i1, i1, i1, i1, i2, i1, i1, i1, i1
+      verif.assert %37 : i1
+      %false_19 = hw.constant false
+      %true_20 = hw.constant true
+      %38 = comb.concat %false_19, %3, %true_20 : i1, i1, i1
+      %39 = comb.mux %6, %38, %4 : i3
+      %40 = comb.mux %arg18, %c0_i3, %39 : i3
+      %41 = comb.mux %8, %c1_i3_17, %40 : i3
+      %42 = comb.icmp ne %41, %c1_i3_17 : i3
+      %43 = comb.and %5, %42 : i1
+      %44 = comb.xor %6, %3 : i1
+      %true_21 = hw.constant true
+      %45 = comb.xor %arg18, %true_21 : i1
+      %46 = comb.and %45, %44 : i1
+      %47 = comb.or %8, %46 : i1
+      %48 = comb.and %43, %47 : i1
+      %true_22 = hw.constant true
+      %49 = comb.xor %arg18, %true_22 : i1
+      %true_23 = hw.constant true
+      %50 = comb.xor %8, %true_23 : i1
+      %51 = comb.and %50, %49, %6, %3 : i1
+      %52 = comb.and %43, %51, %9 : i1
+      %53 = comb.mux %11, %48, %52 : i1
+      %54 = comb.and %53, %cmd_wr_en_q : i1
+      %55 = comb.and %54, %1 : i1
+      %56 = comb.xor %55, %true : i1
+      %57 = comb.and %54, %56 : i1
+      %58 = comb.and %16, %56 : i1
+      %59 = comb.and %cpha_q, %43, %51, %10, %56 : i1
+      %60 = comb.and %15, %57, %arg16 : i1
+      fsm.output %false_14, %u_sck_flop2Fq_o, %csb_q, %34, %false_18, %60, %57, %false_13, %58, %59, %cmd_speed_q, %full_cyc_q, %false_16, %55, %true_15 : i1, i1, i1, i4, i1, i1, i1, i1, i1, i1, i2, i1, i1, i1, i1
     } transitions {
       fsm.transition @state_6 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %1 = comb.xor %arg16, %true : i1
         %2 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %3 = comb.mux %2, %c1_i3, %c-2_i3 : i3
         %4 = comb.xor %arg18, %true : i1
-        %c1_i3_0 = hw.constant 1 : i3
+        %c1_i3_13 = hw.constant 1 : i3
         %5 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %6 = comb.and %arg1, %0 : i1
-        %7 = comb.and %6, %4 : i1
-        %false = hw.constant false
-        %true_1 = hw.constant true
-        %8 = comb.concat %false, %2, %true_1 : i1, i1, i1
-        %9 = comb.mux %7, %8, %3 : i3
-        %10 = comb.mux %arg18, %c0_i3, %9 : i3
-        %11 = comb.xor %6, %true : i1
-        %12 = comb.and %4, %11 : i1
-        %13 = comb.mux %12, %c1_i3_0, %10 : i3
-        %14 = comb.icmp ne %13, %c1_i3_0 : i3
+        %6 = comb.xor %isFirstCycle, %true : i1
+        %7 = comb.and %6, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %4 : i1
+        %8 = comb.xor %7, %true : i1
+        %9 = comb.and %arg1, %0 : i1
+        %10 = comb.and %9, %4 : i1
+        %false_14 = hw.constant false
+        %true_15 = hw.constant true
+        %11 = comb.concat %false_14, %2, %true_15 : i1, i1, i1
+        %12 = comb.mux %10, %11, %3 : i3
+        %13 = comb.mux %arg18, %c0_i3, %12 : i3
+        %14 = comb.xor %9, %true : i1
         %15 = comb.and %4, %14 : i1
-        %16 = comb.xor %7, %2 : i1
-        %true_2 = hw.constant true
-        %17 = comb.xor %arg18, %true_2 : i1
-        %18 = comb.and %17, %16 : i1
-        %19 = comb.or %12, %18 : i1
-        %20 = comb.and %15, %19 : i1
-        %true_3 = hw.constant true
-        %21 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %22 = comb.xor %12, %true_4 : i1
-        %23 = comb.and %15, %22, %21, %7, %2, %5 : i1
-        %24 = comb.xor %cpha_q, %true : i1
-        %25 = comb.mux %24, %20, %23 : i1
-        %26 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %27 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
-        %28 = comb.xor %27, %true : i1
-        %29 = comb.or %26, %28 : i1
-        verif.assert %29 : i1
-        %30 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-        verif.assert %30 : i1
-        %31 = comb.xor %csid_q, %true : i1
-        verif.assert %31 : i1
-        %32 = comb.and %25, %cmd_wr_en_q, %1 : i1
-        %33 = comb.or %32, %12 : i1
-        %true_5 = hw.constant true
-        %34 = comb.xor %2, %true_5 : i1
-        %true_6 = hw.constant true
-        %35 = comb.xor %7, %true_6 : i1
-        %true_7 = hw.constant true
-        %36 = comb.xor %arg18, %true_7 : i1
-        %true_8 = hw.constant true
-        %37 = comb.xor %33, %true_8 : i1
-        %38 = comb.and %37, %36, %35, %34 : i1
-        fsm.return %38
+        %16 = comb.mux %15, %c1_i3_13, %13 : i3
+        %17 = comb.icmp ne %16, %c1_i3_13 : i3
+        %18 = comb.and %4, %17 : i1
+        %19 = comb.xor %10, %2 : i1
+        %true_16 = hw.constant true
+        %20 = comb.xor %arg18, %true_16 : i1
+        %21 = comb.and %20, %19 : i1
+        %22 = comb.or %15, %21 : i1
+        %23 = comb.and %18, %22 : i1
+        %true_17 = hw.constant true
+        %24 = comb.xor %arg18, %true_17 : i1
+        %true_18 = hw.constant true
+        %25 = comb.xor %15, %true_18 : i1
+        %26 = comb.and %18, %25, %24, %10, %2, %5 : i1
+        verif.assert %8 : i1
+        %27 = comb.xor %cpha_q, %true : i1
+        %28 = comb.mux %27, %23, %26 : i1
+        %29 = comb.and %28, %cmd_wr_en_q, %1 : i1
+        %30 = comb.or %29, %15 : i1
+        %true_19 = hw.constant true
+        %31 = comb.xor %2, %true_19 : i1
+        %true_20 = hw.constant true
+        %32 = comb.xor %10, %true_20 : i1
+        %true_21 = hw.constant true
+        %33 = comb.xor %arg18, %true_21 : i1
+        %true_22 = hw.constant true
+        %34 = comb.xor %30, %true_22 : i1
+        %35 = comb.and %34, %33, %32, %31 : i1
+        fsm.return %35
       } action {
-        fsm.update %cmd_len_q, %cmd_len_q : i20
+        %false_13 = hw.constant false
         fsm.update %cmd_speed_q, %cmd_speed_q : i2
         fsm.update %cmd_wr_en_q, %cmd_wr_en_q : i1
         fsm.update %cmd_rd_en_q, %cmd_rd_en_q : i1
@@ -1072,20 +954,18 @@ module {
         fsm.update %cpha_q, %cpha_q : i1
         fsm.update %cpol_q, %cpol_q : i1
         fsm.update %csid_q, %csid_q : i1
+        %false_14 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
-        %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
         %c-4_i3 = hw.constant -4 : i3
         %c3_i3 = hw.constant 3 : i3
-        %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i16 = hw.constant -1 : i16
         %c-1_i4 = hw.constant -1 : i4
         %true = hw.constant true
@@ -1093,208 +973,137 @@ module {
         %1 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %2 = comb.add %clk_cntr_q, %c-1_i16 : i16
         %3 = comb.mux %1, %clkdiv_q, %2 : i16
-        %4 = comb.mux %0, %clk_cntr_q, %3 : i16
-        %5 = comb.mux %arg18, %c0_i16, %4 : i16
-        %6 = comb.xor %arg16, %true : i1
-        %7 = comb.and %arg1, %1 : i1
-        %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
-        %10 = comb.xor %arg18, %true : i1
-        %11 = comb.and %7, %10 : i1
-        %12 = comb.xor %7, %true : i1
-        %13 = comb.and %10, %12 : i1
-        %c1_i3_0 = hw.constant 1 : i3
-        %14 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %15 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
-        %16 = comb.xor %cpha_q, %true : i1
-        %17 = comb.xor %cmd_rd_en_q, %true : i1
-        %18 = comb.xor %cmd_wr_en_q, %true : i1
-        %19 = comb.and %17, %18 : i1
-        %20 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %21 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %22 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %23 = comb.mux %22, %c-4_i3, %c1_i3 : i3
-        %24 = comb.xor %19, %true : i1
-        %25 = comb.xor %20, %true : i1
-        %26 = comb.and %25, %24, %21 : i1
-        %27 = comb.mux %26, %c2_i3, %23 : i3
-        %28 = comb.mux %26, %c-2_i3, %23 : i3
-        %29 = comb.and %24, %20 : i1
-        %30 = comb.mux %29, %c1_i3, %27 : i3
-        %31 = comb.mux %29, %c-1_i3, %28 : i3
-        %32 = comb.mux %19, %c0_i3, %30 : i3
-        %33 = comb.mux %19, %c0_i3, %31 : i3
-        %34 = comb.sub %bit_cntr_q, %32 : i3
-        %35 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %36 = comb.or %arg18, %7 : i1
-        %37 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %38 = comb.and %cmd_wr_en_q, %14 : i1
-        %39 = comb.or %38, %cmd_wr_en_last_bit : i1
-        %40 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %41 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
-        %42 = comb.xor %41, %true : i1
-        %43 = comb.or %40, %42 : i1
-        verif.assert %43 : i1
-        %44 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-        verif.assert %44 : i1
-        %45 = comb.xor %csid_q, %true : i1
-        verif.assert %45 : i1
-        fsm.update %cmd_wr_en_last_bit, %39 : i1
-        %false = hw.constant false
-        %true_1 = hw.constant true
-        %46 = comb.concat %false, %8, %true_1 : i1, i1, i1
-        %47 = comb.mux %11, %46, %9 : i3
-        %48 = comb.mux %arg18, %c0_i3, %47 : i3
-        %49 = comb.mux %13, %c1_i3_0, %48 : i3
-        %50 = comb.icmp ne %49, %c1_i3_0 : i3
-        %51 = comb.and %10, %50 : i1
-        %52 = comb.xor %11, %8 : i1
-        %true_2 = hw.constant true
-        %53 = comb.xor %arg18, %true_2 : i1
-        %54 = comb.and %53, %52 : i1
-        %55 = comb.or %13, %54 : i1
-        %56 = comb.and %51, %55 : i1
-        %true_3 = hw.constant true
-        %57 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %58 = comb.xor %13, %true_4 : i1
-        %59 = comb.and %58, %57, %11, %8 : i1
-        %60 = comb.and %51, %59, %14 : i1
-        %61 = comb.mux %16, %56, %60 : i1
-        %62 = comb.and %cpha_q, %51, %59, %15 : i1
-        %63 = comb.mux %62, %34, %bit_cntr_q : i3
-        %64 = comb.mux %61, %33, %63 : i3
-        %65 = comb.mux %12, %bit_cntr_q, %64 : i3
-        %66 = comb.mux %arg18, %c0_i3, %65 : i3
-        %67 = comb.xor %11, %8 : i1
-        %true_5 = hw.constant true
-        %68 = comb.xor %arg18, %true_5 : i1
-        %69 = comb.and %68, %67 : i1
-        %70 = comb.or %13, %69 : i1
-        %true_6 = hw.constant true
-        %71 = comb.xor %8, %true_6 : i1
-        %true_7 = hw.constant true
-        %72 = comb.xor %11, %true_7 : i1
-        %true_8 = hw.constant true
-        %73 = comb.xor %arg18, %true_8 : i1
-        %true_9 = hw.constant true
-        %74 = comb.xor %13, %true_9 : i1
-        %75 = comb.and %50, %11 : i1
-        %76 = comb.xor %70, %true : i1
-        %77 = comb.and %76, %75 : i1
-        %78 = comb.and %77, %74, %73, %72, %71 : i1
-        %79 = comb.mux %78, %csnidle_q, %c0_i4 : i4
-        %80 = comb.and %75, %70 : i1
-        %81 = comb.mux %80, %csnlead_q, %79 : i4
-        %82 = comb.mux %36, %81, %wait_cntr_q : i4
-        %83 = comb.mux %arg18, %c0_i4, %82 : i4
-        %84 = comb.xor %50, %true : i1
-        %85 = comb.and %37, %84, %11 : i1
-        %86 = comb.mux %85, %35, %83 : i4
-        %true_10 = hw.constant true
-        %87 = comb.xor %arg18, %true_10 : i1
-        %true_11 = hw.constant true
-        %88 = comb.xor %13, %true_11 : i1
-        %89 = comb.icmp ne %49, %c-4_i3 : i3
-        %90 = comb.and %76, %88, %87, %11, %8 : i1
-        %91 = comb.xor %90, %true : i1
-        %92 = comb.and %76, %91, %89 : i1
-        %93 = comb.icmp ne %49, %c3_i3 : i3
-        %94 = comb.mux %cpol_q, %93, %59 : i1
-        %95 = comb.and %61, %cmd_wr_en_q, %6 : i1
-        %96 = comb.mux %95, %clk_cntr_q, %5 : i16
-        %97 = comb.mux %95, %bit_cntr_q, %66 : i3
-        %true_12 = hw.constant true
-        %98 = comb.xor %arg18, %true_12 : i1
-        %99 = comb.or %95, %98 : i1
-        %100 = comb.mux %99, %byte_cntr_cpha0_q, %c0_i20 : i20
-        %true_13 = hw.constant true
-        %101 = comb.xor %arg18, %true_13 : i1
-        %102 = comb.or %95, %101 : i1
-        %103 = comb.mux %102, %byte_cntr_cpha1_q, %c0_i20 : i20
-        %104 = comb.mux %95, %wait_cntr_q, %86 : i4
-        fsm.update %wait_cntr_q, %104 : i4
-        fsm.update %byte_cntr_cpha1_q, %103 : i20
-        fsm.update %byte_cntr_cpha0_q, %100 : i20
-        fsm.update %bit_cntr_q, %97 : i3
-        fsm.update %clk_cntr_q, %96 : i16
-        %105 = comb.xor %95, %true : i1
-        %106 = comb.and %62, %105 : i1
-        %107 = comb.and %50, %105 : i1
-        %108 = comb.mux bin %107, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %109 = comb.or %61, %106 : i1
-        %110 = comb.and %7, %105 : i1
-        %111 = comb.mux %110, %109, %sample_en_q : i1
-        %112 = comb.mux %110, %sample_en_q, %sample_en_q2 : i1
-        %113 = comb.mux bin %95, %u_sck_flop2Fq_o, %94 : i1
-        %114 = comb.mux %105, %92, %csb_q : i1
-        %115 = comb.or %csid_q, %114 : i1
-        fsm.update %csb_q, %115 : i1
-        fsm.update %u_sck_flop2Fq_o, %113 : i1
-        fsm.update %sample_en_q2, %112 : i1
-        fsm.update %sample_en_q, %111 : i1
-        fsm.update %segment_rd_en_cpha1, %108 : i1
+        %4 = comb.xor %arg16, %true : i1
+        %5 = comb.and %arg1, %1 : i1
+        %6 = comb.xor %arg15, %true : i1
+        %false_15 = hw.constant false
+        %c1_i3_16 = hw.constant 1 : i3
+        %7 = comb.mux %5, %c1_i3_16, %c-2_i3 : i3
+        %8 = comb.xor %5, %true : i1
+        %c1_i3_17 = hw.constant 1 : i3
+        %9 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %10 = comb.xor %cpha_q, %true : i1
+        %11 = comb.xor %cmd_rd_en_q, %true : i1
+        %12 = comb.xor %cmd_wr_en_q, %true : i1
+        %13 = comb.and %11, %12 : i1
+        %14 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %15 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %16 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %17 = comb.mux %16, %c-4_i3, %c1_i3 : i3
+        %18 = comb.xor %13, %true : i1
+        %19 = comb.xor %14, %true : i1
+        %20 = comb.and %19, %18, %15 : i1
+        %21 = comb.mux %20, %c-2_i3, %17 : i3
+        %22 = comb.and %18, %14 : i1
+        %23 = comb.mux %22, %c-1_i3, %21 : i3
+        %24 = comb.mux %13, %c0_i3, %23 : i3
+        %25 = comb.add %wait_cntr_q, %c-1_i4 : i4
+        %26 = comb.and %cmd_wr_en_q, %9 : i1
+        %27 = comb.or %26, %cmd_wr_en_last_bit : i1
+        %28 = comb.xor %isFirstCycle, %true : i1
+        %29 = comb.and %28, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %30 = comb.xor %29, %true : i1
+        verif.assert %30 : i1
+        fsm.update %_sh1_10, %5 : i1
+        fsm.update %_sh1_8, %6 : i1
+        fsm.update %_sh1_6, %false_13 : i1
+        fsm.update %_sh1, %false_15 : i1
+        fsm.update %isFirstCycle, %false_14 : i1
+        fsm.update %cmd_wr_en_last_bit, %27 : i1
+        %31 = comb.mux %8, %c1_i3_17, %7 : i3
+        %32 = comb.icmp ne %31, %c1_i3_17 : i3
+        %33 = comb.and %10, %32 : i1
+        %34 = comb.and %32, %5 : i1
+        %35 = comb.mux %34, %csnlead_q, %c0_i4 : i4
+        %36 = comb.mux %5, %35, %wait_cntr_q : i4
+        %37 = comb.xor %32, %true : i1
+        %38 = comb.and %37, %5 : i1
+        %39 = comb.mux %38, %25, %36 : i4
+        %40 = comb.icmp ne %31, %c3_i3 : i3
+        %41 = comb.and %cpol_q, %40 : i1
+        %42 = comb.and %33, %cmd_wr_en_q, %4 : i1
+        %43 = comb.or %42, %0 : i1
+        %44 = comb.mux %43, %clk_cntr_q, %3 : i16
+        %true_18 = hw.constant true
+        %45 = comb.xor %33, %true_18 : i1
+        %46 = comb.or %42, %8, %45 : i1
+        %47 = comb.mux %46, %bit_cntr_q, %24 : i3
+        %48 = comb.mux %42, %wait_cntr_q, %39 : i4
+        %49 = comb.mux bin %42, %u_sck_flop2Fq_o, %41 : i1
+        fsm.update %u_sck_flop2Fq_o, %49 : i1
+        fsm.update %wait_cntr_q, %48 : i4
+        fsm.update %byte_cntr_cpha1_q, %byte_cntr_cpha1_q : i20
+        fsm.update %byte_cntr_cpha0_q, %byte_cntr_cpha0_q : i20
+        fsm.update %bit_cntr_q, %47 : i3
+        fsm.update %clk_cntr_q, %44 : i16
+        %50 = comb.xor %42, %true : i1
+        %51 = comb.and %32, %50 : i1
+        %52 = comb.mux bin %51, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %53 = comb.and %5, %50 : i1
+        %54 = comb.mux %53, %33, %sample_en_q : i1
+        %55 = comb.mux %53, %sample_en_q, %sample_en_q2 : i1
+        %56 = comb.and %42, %csb_q : i1
+        %57 = comb.or %csid_q, %56 : i1
+        fsm.update %_sh1_12, %50 : i1
+        fsm.update %csb_q, %57 : i1
+        fsm.update %sample_en_q2, %55 : i1
+        fsm.update %sample_en_q, %54 : i1
+        fsm.update %segment_rd_en_cpha1, %52 : i1
       }
       fsm.transition @state_3 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %1 = comb.xor %arg16, %true : i1
         %2 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %3 = comb.mux %2, %c1_i3, %c-2_i3 : i3
         %4 = comb.xor %arg18, %true : i1
-        %c1_i3_0 = hw.constant 1 : i3
+        %c1_i3_13 = hw.constant 1 : i3
         %5 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %6 = comb.and %arg1, %0 : i1
-        %7 = comb.and %6, %4 : i1
-        %false = hw.constant false
-        %true_1 = hw.constant true
-        %8 = comb.concat %false, %2, %true_1 : i1, i1, i1
-        %9 = comb.mux %7, %8, %3 : i3
-        %10 = comb.mux %arg18, %c0_i3, %9 : i3
-        %11 = comb.xor %6, %true : i1
-        %12 = comb.and %4, %11 : i1
-        %13 = comb.mux %12, %c1_i3_0, %10 : i3
-        %14 = comb.icmp ne %13, %c1_i3_0 : i3
+        %6 = comb.xor %isFirstCycle, %true : i1
+        %7 = comb.and %6, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %4 : i1
+        %8 = comb.xor %7, %true : i1
+        %9 = comb.and %arg1, %0 : i1
+        %10 = comb.and %9, %4 : i1
+        %false_14 = hw.constant false
+        %true_15 = hw.constant true
+        %11 = comb.concat %false_14, %2, %true_15 : i1, i1, i1
+        %12 = comb.mux %10, %11, %3 : i3
+        %13 = comb.mux %arg18, %c0_i3, %12 : i3
+        %14 = comb.xor %9, %true : i1
         %15 = comb.and %4, %14 : i1
-        %16 = comb.xor %7, %2 : i1
-        %true_2 = hw.constant true
-        %17 = comb.xor %arg18, %true_2 : i1
-        %18 = comb.and %17, %16 : i1
-        %19 = comb.or %12, %18 : i1
-        %20 = comb.and %15, %19 : i1
-        %true_3 = hw.constant true
-        %21 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %22 = comb.xor %12, %true_4 : i1
-        %23 = comb.and %15, %22, %21, %7, %2, %5 : i1
-        %24 = comb.xor %cpha_q, %true : i1
-        %25 = comb.mux %24, %20, %23 : i1
-        %26 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %27 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
-        %28 = comb.xor %27, %true : i1
-        %29 = comb.or %26, %28 : i1
-        verif.assert %29 : i1
-        %30 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-        verif.assert %30 : i1
-        %31 = comb.xor %csid_q, %true : i1
-        verif.assert %31 : i1
-        %32 = comb.and %25, %cmd_wr_en_q, %1 : i1
-        %33 = comb.or %32, %12 : i1
-        %true_5 = hw.constant true
-        %34 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %35 = comb.xor %33, %true_6 : i1
-        %36 = comb.and %35, %34, %7, %2 : i1
-        fsm.return %36
+        %16 = comb.mux %15, %c1_i3_13, %13 : i3
+        %17 = comb.icmp ne %16, %c1_i3_13 : i3
+        %18 = comb.and %4, %17 : i1
+        %19 = comb.xor %10, %2 : i1
+        %true_16 = hw.constant true
+        %20 = comb.xor %arg18, %true_16 : i1
+        %21 = comb.and %20, %19 : i1
+        %22 = comb.or %15, %21 : i1
+        %23 = comb.and %18, %22 : i1
+        %true_17 = hw.constant true
+        %24 = comb.xor %arg18, %true_17 : i1
+        %true_18 = hw.constant true
+        %25 = comb.xor %15, %true_18 : i1
+        %26 = comb.and %18, %25, %24, %10, %2, %5 : i1
+        verif.assert %8 : i1
+        %27 = comb.xor %cpha_q, %true : i1
+        %28 = comb.mux %27, %23, %26 : i1
+        %29 = comb.and %28, %cmd_wr_en_q, %1 : i1
+        %30 = comb.or %29, %15 : i1
+        %true_19 = hw.constant true
+        %31 = comb.xor %arg18, %true_19 : i1
+        %true_20 = hw.constant true
+        %32 = comb.xor %30, %true_20 : i1
+        %33 = comb.and %32, %31, %10, %2 : i1
+        fsm.return %33
       } action {
-        fsm.update %cmd_len_q, %cmd_len_q : i20
+        %true = hw.constant true
+        %true_13 = hw.constant true
         fsm.update %cmd_speed_q, %cmd_speed_q : i2
         fsm.update %cmd_wr_en_q, %cmd_wr_en_q : i1
         fsm.update %cmd_rd_en_q, %cmd_rd_en_q : i1
@@ -1307,227 +1116,135 @@ module {
         fsm.update %cpha_q, %cpha_q : i1
         fsm.update %cpol_q, %cpol_q : i1
         fsm.update %csid_q, %csid_q : i1
+        %false_14 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
-        %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
-        %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
         %c-4_i3 = hw.constant -4 : i3
-        %c3_i3 = hw.constant 3 : i3
         %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
-        %c-1_i16 = hw.constant -1 : i16
-        %c-1_i4 = hw.constant -1 : i4
-        %true = hw.constant true
-        %0 = comb.xor %arg1, %true : i1
-        %1 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
-        %2 = comb.add %clk_cntr_q, %c-1_i16 : i16
-        %3 = comb.mux %1, %clkdiv_q, %2 : i16
-        %4 = comb.mux %0, %clk_cntr_q, %3 : i16
-        %5 = comb.mux %arg18, %c0_i16, %4 : i16
-        %6 = comb.xor %arg16, %true : i1
-        %7 = comb.and %arg1, %1 : i1
-        %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
-        %10 = comb.xor %arg18, %true : i1
-        %11 = comb.and %7, %10 : i1
-        %12 = comb.xor %7, %true : i1
-        %13 = comb.and %10, %12 : i1
-        %c1_i3_0 = hw.constant 1 : i3
-        %14 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %15 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
-        %16 = comb.xor %cpha_q, %true : i1
-        %17 = comb.xor %cmd_rd_en_q, %true : i1
-        %18 = comb.xor %cmd_wr_en_q, %true : i1
-        %19 = comb.and %17, %18 : i1
-        %20 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %21 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %22 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %23 = comb.mux %22, %c-4_i3, %c1_i3 : i3
-        %24 = comb.xor %19, %true : i1
-        %25 = comb.xor %20, %true : i1
-        %26 = comb.and %25, %24, %21 : i1
-        %27 = comb.mux %26, %c2_i3, %23 : i3
-        %28 = comb.mux %26, %c-2_i3, %23 : i3
-        %29 = comb.and %24, %20 : i1
-        %30 = comb.mux %29, %c1_i3, %27 : i3
-        %31 = comb.mux %29, %c-1_i3, %28 : i3
-        %32 = comb.mux %19, %c0_i3, %30 : i3
-        %33 = comb.mux %19, %c0_i3, %31 : i3
-        %34 = comb.sub %bit_cntr_q, %32 : i3
-        %35 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %36 = comb.or %arg18, %7 : i1
-        %37 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %38 = comb.and %cmd_wr_en_q, %14 : i1
-        %39 = comb.or %38, %cmd_wr_en_last_bit : i1
-        %40 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %41 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
-        %42 = comb.xor %41, %true : i1
-        %43 = comb.or %40, %42 : i1
-        verif.assert %43 : i1
-        %44 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-        verif.assert %44 : i1
-        %45 = comb.xor %csid_q, %true : i1
-        verif.assert %45 : i1
-        fsm.update %cmd_wr_en_last_bit, %39 : i1
-        %false = hw.constant false
-        %true_1 = hw.constant true
-        %46 = comb.concat %false, %8, %true_1 : i1, i1, i1
-        %47 = comb.mux %11, %46, %9 : i3
-        %48 = comb.mux %arg18, %c0_i3, %47 : i3
-        %49 = comb.mux %13, %c1_i3_0, %48 : i3
-        %50 = comb.icmp ne %49, %c1_i3_0 : i3
-        %51 = comb.and %10, %50 : i1
-        %52 = comb.xor %11, %8 : i1
-        %true_2 = hw.constant true
-        %53 = comb.xor %arg18, %true_2 : i1
-        %54 = comb.and %53, %52 : i1
-        %55 = comb.or %13, %54 : i1
-        %56 = comb.and %51, %55 : i1
-        %true_3 = hw.constant true
-        %57 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %58 = comb.xor %13, %true_4 : i1
-        %59 = comb.and %58, %57, %11, %8 : i1
-        %60 = comb.and %51, %59, %14 : i1
-        %61 = comb.mux %16, %56, %60 : i1
-        %62 = comb.and %cpha_q, %51, %59, %15 : i1
-        %63 = comb.mux %62, %34, %bit_cntr_q : i3
-        %64 = comb.mux %61, %33, %63 : i3
-        %65 = comb.mux %12, %bit_cntr_q, %64 : i3
-        %66 = comb.mux %arg18, %c0_i3, %65 : i3
-        %67 = comb.xor %11, %8 : i1
-        %true_5 = hw.constant true
-        %68 = comb.xor %arg18, %true_5 : i1
-        %69 = comb.and %68, %67 : i1
-        %70 = comb.or %13, %69 : i1
-        %true_6 = hw.constant true
-        %71 = comb.xor %8, %true_6 : i1
-        %true_7 = hw.constant true
-        %72 = comb.xor %11, %true_7 : i1
-        %true_8 = hw.constant true
-        %73 = comb.xor %arg18, %true_8 : i1
-        %true_9 = hw.constant true
-        %74 = comb.xor %13, %true_9 : i1
-        %75 = comb.and %50, %11 : i1
-        %76 = comb.xor %70, %true : i1
-        %77 = comb.and %76, %75, %74, %73, %72, %71 : i1
-        %78 = comb.mux %77, %csnidle_q, %c0_i4 : i4
-        %79 = comb.and %75, %70 : i1
-        %80 = comb.mux %79, %csnlead_q, %78 : i4
-        %81 = comb.mux %36, %80, %wait_cntr_q : i4
-        %82 = comb.mux %arg18, %c0_i4, %81 : i4
-        %83 = comb.xor %50, %true : i1
-        %84 = comb.and %37, %83, %11 : i1
-        %85 = comb.mux %84, %35, %82 : i4
-        %true_10 = hw.constant true
-        %86 = comb.xor %arg18, %true_10 : i1
-        %true_11 = hw.constant true
-        %87 = comb.xor %13, %true_11 : i1
-        %88 = comb.icmp ne %49, %c-4_i3 : i3
-        %89 = comb.and %76, %87, %86, %11, %8 : i1
-        %90 = comb.xor %89, %true : i1
-        %91 = comb.and %76, %90, %88 : i1
-        %92 = comb.icmp ne %49, %c3_i3 : i3
-        %93 = comb.mux %cpol_q, %92, %59 : i1
-        %94 = comb.and %61, %cmd_wr_en_q, %6 : i1
-        %95 = comb.mux %94, %clk_cntr_q, %5 : i16
-        %96 = comb.mux %94, %bit_cntr_q, %66 : i3
-        %true_12 = hw.constant true
-        %97 = comb.xor %arg18, %true_12 : i1
-        %98 = comb.or %94, %97 : i1
-        %99 = comb.mux %98, %byte_cntr_cpha0_q, %c0_i20 : i20
-        %true_13 = hw.constant true
-        %100 = comb.xor %arg18, %true_13 : i1
-        %101 = comb.or %94, %100 : i1
-        %102 = comb.mux %101, %byte_cntr_cpha1_q, %c0_i20 : i20
-        %103 = comb.mux %94, %wait_cntr_q, %85 : i4
-        fsm.update %wait_cntr_q, %103 : i4
-        fsm.update %byte_cntr_cpha1_q, %102 : i20
-        fsm.update %byte_cntr_cpha0_q, %99 : i20
-        fsm.update %bit_cntr_q, %96 : i3
-        fsm.update %clk_cntr_q, %95 : i16
-        %104 = comb.xor %94, %true : i1
-        %105 = comb.and %62, %104 : i1
-        %106 = comb.and %50, %104 : i1
-        %107 = comb.mux bin %106, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %108 = comb.or %61, %105 : i1
-        %109 = comb.and %7, %104 : i1
-        %110 = comb.mux %109, %108, %sample_en_q : i1
-        %111 = comb.mux %109, %sample_en_q, %sample_en_q2 : i1
-        %112 = comb.mux bin %94, %u_sck_flop2Fq_o, %93 : i1
-        %113 = comb.mux %104, %91, %csb_q : i1
-        %114 = comb.or %csid_q, %113 : i1
-        fsm.update %csb_q, %114 : i1
-        fsm.update %u_sck_flop2Fq_o, %112 : i1
-        fsm.update %sample_en_q2, %111 : i1
-        fsm.update %sample_en_q, %110 : i1
-        fsm.update %segment_rd_en_cpha1, %107 : i1
+        %true_15 = hw.constant true
+        %0 = comb.xor %arg16, %true_15 : i1
+        %1 = comb.xor %arg15, %true_15 : i1
+        %false_16 = hw.constant false
+        %2 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %3 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
+        %4 = comb.xor %cmd_rd_en_q, %true_15 : i1
+        %5 = comb.xor %cmd_wr_en_q, %true_15 : i1
+        %6 = comb.and %4, %5 : i1
+        %7 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %8 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %9 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %10 = comb.mux %9, %c-4_i3, %c1_i3 : i3
+        %11 = comb.xor %6, %true_15 : i1
+        %12 = comb.xor %7, %true_15 : i1
+        %13 = comb.and %12, %11, %8 : i1
+        %14 = comb.mux %13, %c2_i3, %10 : i3
+        %15 = comb.mux %13, %c-2_i3, %10 : i3
+        %16 = comb.and %11, %7 : i1
+        %17 = comb.mux %16, %c1_i3, %14 : i3
+        %18 = comb.mux %16, %c-1_i3, %15 : i3
+        %19 = comb.mux %6, %c0_i3, %17 : i3
+        %20 = comb.mux %6, %c0_i3, %18 : i3
+        %21 = comb.sub %bit_cntr_q, %19 : i3
+        %22 = comb.and %cmd_wr_en_q, %2 : i1
+        %23 = comb.or %22, %cmd_wr_en_last_bit : i1
+        %24 = comb.xor %isFirstCycle, %true_15 : i1
+        %25 = comb.and %24, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %26 = comb.xor %25, %true_15 : i1
+        verif.assert %26 : i1
+        fsm.update %_sh1_10, %true : i1
+        fsm.update %_sh1_8, %1 : i1
+        fsm.update %_sh1_6, %true_13 : i1
+        fsm.update %_sh1, %false_16 : i1
+        fsm.update %isFirstCycle, %false_14 : i1
+        fsm.update %cmd_wr_en_last_bit, %23 : i1
+        %27 = comb.and %cpha_q, %2 : i1
+        %28 = comb.and %cpha_q, %3 : i1
+        %29 = comb.mux %28, %21, %bit_cntr_q : i3
+        %30 = comb.mux %27, %20, %29 : i3
+        %true_17 = hw.constant true
+        %31 = comb.xor %cpol_q, %true_17 : i1
+        %32 = comb.and %27, %cmd_wr_en_q, %0 : i1
+        %33 = comb.mux %32, %clk_cntr_q, %clkdiv_q : i16
+        %34 = comb.mux %32, %bit_cntr_q, %30 : i3
+        %35 = comb.mux %32, %wait_cntr_q, %c0_i4 : i4
+        %36 = comb.mux bin %32, %u_sck_flop2Fq_o, %31 : i1
+        fsm.update %u_sck_flop2Fq_o, %36 : i1
+        fsm.update %wait_cntr_q, %35 : i4
+        fsm.update %byte_cntr_cpha1_q, %byte_cntr_cpha1_q : i20
+        fsm.update %byte_cntr_cpha0_q, %byte_cntr_cpha0_q : i20
+        fsm.update %bit_cntr_q, %34 : i3
+        fsm.update %clk_cntr_q, %33 : i16
+        %37 = comb.xor %32, %true_15 : i1
+        %38 = comb.and %28, %37 : i1
+        %39 = comb.mux bin %32, %segment_rd_en_cpha1, %cmd_rd_en_q : i1
+        %40 = comb.or %27, %38 : i1
+        %41 = comb.mux %37, %40, %sample_en_q : i1
+        %42 = comb.mux %37, %sample_en_q, %sample_en_q2 : i1
+        %43 = comb.and %32, %csb_q : i1
+        %44 = comb.or %csid_q, %43 : i1
+        fsm.update %_sh1_12, %37 : i1
+        fsm.update %csb_q, %44 : i1
+        fsm.update %sample_en_q2, %42 : i1
+        fsm.update %sample_en_q, %41 : i1
+        fsm.update %segment_rd_en_cpha1, %39 : i1
       }
       fsm.transition @state_1 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %1 = comb.xor %arg16, %true : i1
         %2 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %3 = comb.mux %2, %c1_i3, %c-2_i3 : i3
         %4 = comb.xor %arg18, %true : i1
-        %c1_i3_0 = hw.constant 1 : i3
+        %c1_i3_13 = hw.constant 1 : i3
         %5 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %6 = comb.and %arg1, %0 : i1
-        %7 = comb.and %6, %4 : i1
-        %false = hw.constant false
-        %true_1 = hw.constant true
-        %8 = comb.concat %false, %2, %true_1 : i1, i1, i1
-        %9 = comb.mux %7, %8, %3 : i3
-        %10 = comb.mux %arg18, %c0_i3, %9 : i3
-        %11 = comb.xor %6, %true : i1
-        %12 = comb.and %4, %11 : i1
-        %13 = comb.mux %12, %c1_i3_0, %10 : i3
-        %14 = comb.icmp ne %13, %c1_i3_0 : i3
+        %6 = comb.xor %isFirstCycle, %true : i1
+        %7 = comb.and %6, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %4 : i1
+        %8 = comb.xor %7, %true : i1
+        %9 = comb.and %arg1, %0 : i1
+        %10 = comb.and %9, %4 : i1
+        %false_14 = hw.constant false
+        %true_15 = hw.constant true
+        %11 = comb.concat %false_14, %2, %true_15 : i1, i1, i1
+        %12 = comb.mux %10, %11, %3 : i3
+        %13 = comb.mux %arg18, %c0_i3, %12 : i3
+        %14 = comb.xor %9, %true : i1
         %15 = comb.and %4, %14 : i1
-        %16 = comb.xor %7, %2 : i1
-        %true_2 = hw.constant true
-        %17 = comb.xor %arg18, %true_2 : i1
-        %18 = comb.and %17, %16 : i1
-        %19 = comb.or %12, %18 : i1
-        %20 = comb.and %15, %19 : i1
-        %true_3 = hw.constant true
-        %21 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %22 = comb.xor %12, %true_4 : i1
-        %23 = comb.and %15, %22, %21, %7, %2, %5 : i1
-        %24 = comb.xor %cpha_q, %true : i1
-        %25 = comb.mux %24, %20, %23 : i1
-        %26 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %27 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
-        %28 = comb.xor %27, %true : i1
-        %29 = comb.or %26, %28 : i1
-        verif.assert %29 : i1
-        %30 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-        verif.assert %30 : i1
-        %31 = comb.xor %csid_q, %true : i1
-        verif.assert %31 : i1
-        %32 = comb.and %25, %cmd_wr_en_q, %1 : i1
-        %33 = comb.xor %7, %2 : i1
-        %true_5 = hw.constant true
-        %34 = comb.xor %arg18, %true_5 : i1
-        %35 = comb.and %34, %33 : i1
-        %36 = comb.or %32, %12, %35 : i1
-        fsm.return %36
+        %16 = comb.mux %15, %c1_i3_13, %13 : i3
+        %17 = comb.icmp ne %16, %c1_i3_13 : i3
+        %18 = comb.and %4, %17 : i1
+        %19 = comb.xor %10, %2 : i1
+        %true_16 = hw.constant true
+        %20 = comb.xor %arg18, %true_16 : i1
+        %21 = comb.and %20, %19 : i1
+        %22 = comb.or %15, %21 : i1
+        %23 = comb.and %18, %22 : i1
+        %true_17 = hw.constant true
+        %24 = comb.xor %arg18, %true_17 : i1
+        %true_18 = hw.constant true
+        %25 = comb.xor %15, %true_18 : i1
+        %26 = comb.and %18, %25, %24, %10, %2, %5 : i1
+        verif.assert %8 : i1
+        %27 = comb.xor %cpha_q, %true : i1
+        %28 = comb.mux %27, %23, %26 : i1
+        %29 = comb.and %28, %cmd_wr_en_q, %1 : i1
+        %30 = comb.xor %10, %2 : i1
+        %true_19 = hw.constant true
+        %31 = comb.xor %arg18, %true_19 : i1
+        %32 = comb.and %31, %30 : i1
+        %33 = comb.or %29, %15, %32 : i1
+        fsm.return %33
       } action {
-        fsm.update %cmd_len_q, %cmd_len_q : i20
         fsm.update %cmd_speed_q, %cmd_speed_q : i2
         fsm.update %cmd_wr_en_q, %cmd_wr_en_q : i1
         fsm.update %cmd_rd_en_q, %cmd_rd_en_q : i1
@@ -1540,6 +1257,7 @@ module {
         fsm.update %cpha_q, %cpha_q : i1
         fsm.update %cpol_q, %cpol_q : i1
         fsm.update %csid_q, %csid_q : i1
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
@@ -1553,7 +1271,6 @@ module {
         %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i16 = hw.constant -1 : i16
         %c-1_i4 = hw.constant -1 : i4
         %true = hw.constant true
@@ -1565,142 +1282,136 @@ module {
         %5 = comb.mux %arg18, %c0_i16, %4 : i16
         %6 = comb.xor %arg16, %true : i1
         %7 = comb.and %arg1, %1 : i1
-        %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
-        %10 = comb.xor %arg18, %true : i1
-        %11 = comb.and %7, %10 : i1
-        %12 = comb.xor %7, %true : i1
-        %13 = comb.and %10, %12 : i1
-        %c1_i3_0 = hw.constant 1 : i3
-        %14 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %15 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
-        %16 = comb.xor %cpha_q, %true : i1
-        %17 = comb.xor %cmd_rd_en_q, %true : i1
-        %18 = comb.xor %cmd_wr_en_q, %true : i1
-        %19 = comb.and %17, %18 : i1
-        %20 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %21 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %22 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %23 = comb.mux %22, %c-4_i3, %c1_i3 : i3
-        %24 = comb.xor %19, %true : i1
-        %25 = comb.xor %20, %true : i1
-        %26 = comb.and %25, %24, %21 : i1
-        %27 = comb.mux %26, %c2_i3, %23 : i3
-        %28 = comb.mux %26, %c-2_i3, %23 : i3
-        %29 = comb.and %24, %20 : i1
-        %30 = comb.mux %29, %c1_i3, %27 : i3
-        %31 = comb.mux %29, %c-1_i3, %28 : i3
-        %32 = comb.mux %19, %c0_i3, %30 : i3
-        %33 = comb.mux %19, %c0_i3, %31 : i3
-        %34 = comb.sub %bit_cntr_q, %32 : i3
-        %35 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %36 = comb.or %arg18, %7 : i1
-        %37 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %38 = comb.and %cmd_wr_en_q, %14 : i1
-        %39 = comb.or %38, %cmd_wr_en_last_bit : i1
-        %40 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %41 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
-        %42 = comb.xor %41, %true : i1
-        %43 = comb.or %40, %42 : i1
-        verif.assert %43 : i1
-        %44 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-        verif.assert %44 : i1
-        %45 = comb.xor %csid_q, %true : i1
-        verif.assert %45 : i1
-        fsm.update %cmd_wr_en_last_bit, %39 : i1
-        %false = hw.constant false
-        %true_1 = hw.constant true
-        %46 = comb.concat %false, %8, %true_1 : i1, i1, i1
-        %47 = comb.mux %11, %46, %9 : i3
-        %48 = comb.mux %arg18, %c0_i3, %47 : i3
-        %49 = comb.mux %13, %c1_i3_0, %48 : i3
-        %50 = comb.icmp ne %49, %c1_i3_0 : i3
-        %51 = comb.and %10, %50 : i1
-        %52 = comb.xor %11, %8 : i1
-        %true_2 = hw.constant true
-        %53 = comb.xor %arg18, %true_2 : i1
-        %54 = comb.and %53, %52 : i1
-        %55 = comb.or %13, %54 : i1
-        %56 = comb.and %51, %55 : i1
-        %true_3 = hw.constant true
-        %57 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %58 = comb.xor %13, %true_4 : i1
-        %59 = comb.and %58, %57, %11, %8 : i1
-        %60 = comb.and %51, %59, %14 : i1
-        %61 = comb.mux %16, %56, %60 : i1
-        %62 = comb.and %cpha_q, %51, %59, %15 : i1
-        %63 = comb.mux %62, %34, %bit_cntr_q : i3
-        %64 = comb.mux %61, %33, %63 : i3
-        %65 = comb.mux %12, %bit_cntr_q, %64 : i3
-        %66 = comb.mux %arg18, %c0_i3, %65 : i3
-        %67 = comb.xor %11, %8 : i1
-        %true_5 = hw.constant true
-        %68 = comb.xor %arg18, %true_5 : i1
-        %69 = comb.and %68, %67 : i1
-        %70 = comb.or %13, %69 : i1
-        %true_6 = hw.constant true
-        %71 = comb.xor %8, %true_6 : i1
-        %true_7 = hw.constant true
-        %72 = comb.xor %11, %true_7 : i1
-        %true_8 = hw.constant true
-        %73 = comb.xor %arg18, %true_8 : i1
-        %true_9 = hw.constant true
-        %74 = comb.xor %13, %true_9 : i1
-        %75 = comb.and %50, %11 : i1
-        %76 = comb.xor %70, %true : i1
-        %77 = comb.and %76, %75, %74, %73, %72, %71 : i1
-        %78 = comb.mux %77, %csnidle_q, %c0_i4 : i4
-        %79 = comb.and %75, %70 : i1
-        %80 = comb.mux %79, %csnlead_q, %78 : i4
-        %81 = comb.mux %36, %80, %wait_cntr_q : i4
-        %82 = comb.mux %arg18, %c0_i4, %81 : i4
-        %83 = comb.xor %50, %true : i1
-        %84 = comb.and %37, %83, %11 : i1
-        %85 = comb.mux %84, %35, %82 : i4
-        %true_10 = hw.constant true
-        %86 = comb.xor %arg18, %true_10 : i1
-        %true_11 = hw.constant true
-        %87 = comb.xor %13, %true_11 : i1
-        %88 = comb.icmp ne %49, %c-4_i3 : i3
-        %89 = comb.and %76, %87, %86, %11, %8 : i1
-        %90 = comb.xor %89, %true : i1
-        %91 = comb.and %76, %90, %88 : i1
-        %92 = comb.icmp ne %49, %c3_i3 : i3
-        %93 = comb.mux %cpol_q, %92, %59 : i1
-        %94 = comb.and %61, %cmd_wr_en_q, %6 : i1
-        %95 = comb.mux %94, %clk_cntr_q, %5 : i16
-        %96 = comb.mux %94, %bit_cntr_q, %66 : i3
-        %true_12 = hw.constant true
-        %97 = comb.xor %arg18, %true_12 : i1
-        %98 = comb.or %94, %97 : i1
-        %99 = comb.mux %98, %byte_cntr_cpha0_q, %c0_i20 : i20
-        %true_13 = hw.constant true
-        %100 = comb.xor %arg18, %true_13 : i1
-        %101 = comb.or %94, %100 : i1
-        %102 = comb.mux %101, %byte_cntr_cpha1_q, %c0_i20 : i20
-        %103 = comb.mux %94, %wait_cntr_q, %85 : i4
-        fsm.update %wait_cntr_q, %103 : i4
-        fsm.update %byte_cntr_cpha1_q, %102 : i20
-        fsm.update %byte_cntr_cpha0_q, %99 : i20
-        fsm.update %bit_cntr_q, %96 : i3
-        fsm.update %clk_cntr_q, %95 : i16
-        %104 = comb.xor %94, %true : i1
-        %105 = comb.and %62, %104 : i1
-        %106 = comb.and %50, %104 : i1
-        %107 = comb.mux bin %106, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %108 = comb.or %61, %105 : i1
-        %109 = comb.and %7, %104 : i1
-        %110 = comb.mux %109, %108, %sample_en_q : i1
-        %111 = comb.mux %109, %sample_en_q, %sample_en_q2 : i1
-        %112 = comb.mux bin %94, %u_sck_flop2Fq_o, %93 : i1
-        %113 = comb.mux %104, %91, %csb_q : i1
-        %114 = comb.or %csid_q, %113 : i1
-        fsm.update %csb_q, %114 : i1
-        fsm.update %u_sck_flop2Fq_o, %112 : i1
-        fsm.update %sample_en_q2, %111 : i1
-        fsm.update %sample_en_q, %110 : i1
-        fsm.update %segment_rd_en_cpha1, %107 : i1
+        %8 = comb.xor %arg15, %true : i1
+        %false_14 = hw.constant false
+        %9 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
+        %10 = comb.mux %9, %c1_i3, %c-2_i3 : i3
+        %11 = comb.xor %arg18, %true : i1
+        %12 = comb.and %7, %11 : i1
+        %false_15 = hw.constant false
+        %true_16 = hw.constant true
+        %13 = comb.concat %false_15, %9, %true_16 : i1, i1, i1
+        %14 = comb.mux %12, %13, %10 : i3
+        %15 = comb.mux %arg18, %c0_i3, %14 : i3
+        %16 = comb.xor %7, %true : i1
+        %17 = comb.and %11, %16 : i1
+        %c1_i3_17 = hw.constant 1 : i3
+        %18 = comb.xor %12, %9 : i1
+        %true_18 = hw.constant true
+        %19 = comb.xor %arg18, %true_18 : i1
+        %20 = comb.and %19, %18 : i1
+        %21 = comb.or %17, %20 : i1
+        %22 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %23 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
+        %true_19 = hw.constant true
+        %24 = comb.xor %arg18, %true_19 : i1
+        %true_20 = hw.constant true
+        %25 = comb.xor %17, %true_20 : i1
+        %26 = comb.and %25, %24, %12, %9 : i1
+        %27 = comb.xor %cpha_q, %true : i1
+        %28 = comb.xor %cmd_rd_en_q, %true : i1
+        %29 = comb.xor %cmd_wr_en_q, %true : i1
+        %30 = comb.and %28, %29 : i1
+        %31 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %32 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %33 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %34 = comb.mux %33, %c-4_i3, %c1_i3 : i3
+        %35 = comb.xor %30, %true : i1
+        %36 = comb.xor %31, %true : i1
+        %37 = comb.and %36, %35, %32 : i1
+        %38 = comb.mux %37, %c2_i3, %34 : i3
+        %39 = comb.mux %37, %c-2_i3, %34 : i3
+        %40 = comb.and %35, %31 : i1
+        %41 = comb.mux %40, %c1_i3, %38 : i3
+        %42 = comb.mux %40, %c-1_i3, %39 : i3
+        %43 = comb.mux %30, %c0_i3, %41 : i3
+        %44 = comb.mux %30, %c0_i3, %42 : i3
+        %45 = comb.sub %bit_cntr_q, %43 : i3
+        %true_21 = hw.constant true
+        %46 = comb.xor %9, %true_21 : i1
+        %true_22 = hw.constant true
+        %47 = comb.xor %12, %true_22 : i1
+        %true_23 = hw.constant true
+        %48 = comb.xor %arg18, %true_23 : i1
+        %true_24 = hw.constant true
+        %49 = comb.xor %17, %true_24 : i1
+        %50 = comb.add %wait_cntr_q, %c-1_i4 : i4
+        %51 = comb.xor %21, %true : i1
+        %52 = comb.or %arg18, %7 : i1
+        %53 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
+        %true_25 = hw.constant true
+        %54 = comb.xor %arg18, %true_25 : i1
+        %true_26 = hw.constant true
+        %55 = comb.xor %arg18, %true_26 : i1
+        %56 = comb.and %51, %26 : i1
+        %57 = comb.xor %56, %true : i1
+        %58 = comb.and %cmd_wr_en_q, %22 : i1
+        %59 = comb.or %58, %cmd_wr_en_last_bit : i1
+        %60 = comb.xor %isFirstCycle, %true : i1
+        %61 = comb.and %60, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %11 : i1
+        %62 = comb.xor %61, %true : i1
+        verif.assert %62 : i1
+        fsm.update %_sh1_10, %7 : i1
+        fsm.update %_sh1_8, %8 : i1
+        fsm.update %_sh1_6, %9 : i1
+        fsm.update %_sh1, %false_14 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        fsm.update %cmd_wr_en_last_bit, %59 : i1
+        %63 = comb.mux %17, %c1_i3_17, %15 : i3
+        %64 = comb.icmp ne %63, %c1_i3_17 : i3
+        %65 = comb.and %11, %64 : i1
+        %66 = comb.and %65, %21 : i1
+        %67 = comb.and %65, %26, %22 : i1
+        %68 = comb.mux %27, %66, %67 : i1
+        %69 = comb.and %cpha_q, %65, %26, %23 : i1
+        %70 = comb.mux %69, %45, %bit_cntr_q : i3
+        %71 = comb.mux %68, %44, %70 : i3
+        %72 = comb.mux %16, %bit_cntr_q, %71 : i3
+        %73 = comb.mux %arg18, %c0_i3, %72 : i3
+        %74 = comb.and %64, %12 : i1
+        %75 = comb.and %51, %74, %49, %48, %47, %46 : i1
+        %76 = comb.mux %75, %csnidle_q, %c0_i4 : i4
+        %77 = comb.and %74, %21 : i1
+        %78 = comb.mux %77, %csnlead_q, %76 : i4
+        %79 = comb.mux %52, %78, %wait_cntr_q : i4
+        %80 = comb.mux %arg18, %c0_i4, %79 : i4
+        %81 = comb.xor %64, %true : i1
+        %82 = comb.and %53, %81, %12 : i1
+        %83 = comb.mux %82, %50, %80 : i4
+        %84 = comb.icmp ne %63, %c-4_i3 : i3
+        %85 = comb.and %51, %57, %84 : i1
+        %86 = comb.icmp ne %63, %c3_i3 : i3
+        %87 = comb.mux %cpol_q, %86, %26 : i1
+        %88 = comb.and %68, %cmd_wr_en_q, %6 : i1
+        %89 = comb.mux %88, %clk_cntr_q, %5 : i16
+        %90 = comb.mux %88, %bit_cntr_q, %73 : i3
+        %91 = comb.or %88, %54 : i1
+        %92 = comb.mux %91, %byte_cntr_cpha0_q, %c0_i20 : i20
+        %93 = comb.or %88, %55 : i1
+        %94 = comb.mux %93, %byte_cntr_cpha1_q, %c0_i20 : i20
+        %95 = comb.mux %88, %wait_cntr_q, %83 : i4
+        %96 = comb.mux bin %88, %u_sck_flop2Fq_o, %87 : i1
+        fsm.update %u_sck_flop2Fq_o, %96 : i1
+        fsm.update %wait_cntr_q, %95 : i4
+        fsm.update %byte_cntr_cpha1_q, %94 : i20
+        fsm.update %byte_cntr_cpha0_q, %92 : i20
+        fsm.update %bit_cntr_q, %90 : i3
+        fsm.update %clk_cntr_q, %89 : i16
+        %97 = comb.xor %88, %true : i1
+        %98 = comb.and %69, %97 : i1
+        %99 = comb.and %64, %97 : i1
+        %100 = comb.mux bin %99, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %101 = comb.or %68, %98 : i1
+        %102 = comb.and %7, %97 : i1
+        %103 = comb.mux %102, %101, %sample_en_q : i1
+        %104 = comb.mux %102, %sample_en_q, %sample_en_q2 : i1
+        %105 = comb.mux %97, %85, %csb_q : i1
+        %106 = comb.or %csid_q, %105 : i1
+        fsm.update %_sh1_12, %97 : i1
+        fsm.update %csb_q, %106 : i1
+        fsm.update %sample_en_q2, %104 : i1
+        fsm.update %sample_en_q, %103 : i1
+        fsm.update %segment_rd_en_cpha1, %100 : i1
       }
     }
     fsm.state @state_6 output {
@@ -1713,14 +1424,13 @@ module {
       %c1_i3 = hw.constant 1 : i3
       %c1_i2 = hw.constant 1 : i2
       %c-2_i2 = hw.constant -2 : i2
-      %c-1_i2 = hw.constant -1 : i2
       %true = hw.constant true
-      %false = hw.constant false
-      %false_0 = hw.constant false
-      %true_1 = hw.constant true
+      %false_13 = hw.constant false
+      %false_14 = hw.constant false
+      %true_15 = hw.constant true
       %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
       %1 = comb.xor %arg16, %true : i1
-      %false_2 = hw.constant false
+      %false_16 = hw.constant false
       %2 = comb.and %arg1, %0 : i1
       %3 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
       %4 = comb.mux %3, %c1_i3, %c-2_i3 : i3
@@ -1728,9 +1438,9 @@ module {
       %6 = comb.mux %arg18, %c0_i3, %4 : i3
       %7 = comb.xor %2, %true : i1
       %8 = comb.and %5, %7 : i1
-      %c-2_i3_3 = hw.constant -2 : i3
+      %c-2_i3_17 = hw.constant -2 : i3
       %9 = comb.xor %cpha_q, %true : i1
-      %false_4 = hw.constant false
+      %false_18 = hw.constant false
       %10 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
       %11 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
       %12 = comb.mux %9, %10, %11 : i1
@@ -1754,76 +1464,62 @@ module {
       %30 = comb.mux %29, %20, %28 : i4
       %31 = comb.and %15, %23 : i1
       %32 = comb.mux %31, %17, %30 : i4
-      %33 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-      %34 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
+      %33 = comb.xor %isFirstCycle, %true : i1
+      %34 = comb.and %33, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %5 : i1
       %35 = comb.xor %34, %true : i1
-      %36 = comb.or %33, %35 : i1
-      verif.assert %36 : i1
-      %37 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-      verif.assert %37 : i1
-      %38 = comb.xor %csid_q, %true : i1
-      verif.assert %38 : i1
-      %39 = comb.mux %8, %c-2_i3_3, %6 : i3
-      %40 = comb.icmp ne %39, %c-2_i3_3 : i3
-      %true_5 = hw.constant true
-      %41 = comb.xor %arg18, %true_5 : i1
-      %true_6 = hw.constant true
-      %42 = comb.xor %8, %true_6 : i1
-      %43 = comb.and %9, %5, %40, %42, %41, %3, %cmd_wr_en_q : i1
-      %44 = comb.and %43, %1 : i1
-      %45 = comb.xor %44, %true : i1
-      %46 = comb.and %43, %45 : i1
-      %47 = comb.and %14, %45 : i1
-      %false_7 = hw.constant false
-      %48 = comb.and %13, %46, %arg16 : i1
-      fsm.output %false_0, %u_sck_flop2Fq_o, %csb_q, %32, %false_4, %48, %46, %false, %47, %false_7, %cmd_speed_q, %full_cyc_q, %false_2, %44, %true_1 : i1, i1, i1, i4, i1, i1, i1, i1, i1, i1, i2, i1, i1, i1, i1
+      verif.assert %35 : i1
+      %36 = comb.mux %8, %c-2_i3_17, %6 : i3
+      %37 = comb.icmp ne %36, %c-2_i3_17 : i3
+      %true_19 = hw.constant true
+      %38 = comb.xor %arg18, %true_19 : i1
+      %true_20 = hw.constant true
+      %39 = comb.xor %8, %true_20 : i1
+      %40 = comb.and %9, %5, %37, %39, %38, %3, %cmd_wr_en_q : i1
+      %41 = comb.and %40, %1 : i1
+      %42 = comb.xor %41, %true : i1
+      %43 = comb.and %40, %42 : i1
+      %44 = comb.and %14, %42 : i1
+      %false_21 = hw.constant false
+      %45 = comb.and %13, %43, %arg16 : i1
+      fsm.output %false_14, %u_sck_flop2Fq_o, %csb_q, %32, %false_18, %45, %43, %false_13, %44, %false_21, %cmd_speed_q, %full_cyc_q, %false_16, %41, %true_15 : i1, i1, i1, i4, i1, i1, i1, i1, i1, i1, i2, i1, i1, i1, i1
     } transitions {
       fsm.transition @state_6 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %1 = comb.xor %arg16, %true : i1
         %2 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %3 = comb.mux %2, %c1_i3, %c-2_i3 : i3
         %4 = comb.xor %arg18, %true : i1
-        %c-2_i3_0 = hw.constant -2 : i3
-        %5 = comb.and %arg1, %0 : i1
-        %6 = comb.mux %arg18, %c0_i3, %3 : i3
-        %7 = comb.xor %5, %true : i1
-        %8 = comb.and %4, %7 : i1
-        %9 = comb.mux %8, %c-2_i3_0, %6 : i3
-        %10 = comb.icmp ne %9, %c-2_i3_0 : i3
-        %true_1 = hw.constant true
-        %11 = comb.xor %arg18, %true_1 : i1
-        %true_2 = hw.constant true
-        %12 = comb.xor %8, %true_2 : i1
-        %13 = comb.xor %cpha_q, %true : i1
-        %14 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %15 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
-        %16 = comb.xor %15, %true : i1
-        %17 = comb.or %14, %16 : i1
-        verif.assert %17 : i1
-        %18 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-        verif.assert %18 : i1
-        %19 = comb.xor %csid_q, %true : i1
-        verif.assert %19 : i1
-        %20 = comb.and %13, %4, %10, %12, %11, %2, %cmd_wr_en_q, %1 : i1
-        %21 = comb.or %20, %8 : i1
-        %true_3 = hw.constant true
-        %22 = comb.xor %2, %true_3 : i1
-        %true_4 = hw.constant true
-        %23 = comb.xor %arg18, %true_4 : i1
-        %24 = comb.and %23, %22 : i1
-        %25 = comb.or %21, %24 : i1
-        fsm.return %25
+        %c-2_i3_13 = hw.constant -2 : i3
+        %5 = comb.xor %isFirstCycle, %true : i1
+        %6 = comb.and %5, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %4 : i1
+        %7 = comb.xor %6, %true : i1
+        %8 = comb.and %arg1, %0 : i1
+        %9 = comb.mux %arg18, %c0_i3, %3 : i3
+        %10 = comb.xor %8, %true : i1
+        %11 = comb.and %4, %10 : i1
+        %12 = comb.mux %11, %c-2_i3_13, %9 : i3
+        %13 = comb.icmp ne %12, %c-2_i3_13 : i3
+        %true_14 = hw.constant true
+        %14 = comb.xor %arg18, %true_14 : i1
+        %true_15 = hw.constant true
+        %15 = comb.xor %11, %true_15 : i1
+        verif.assert %7 : i1
+        %16 = comb.xor %cpha_q, %true : i1
+        %17 = comb.and %16, %4, %13, %15, %14, %2, %cmd_wr_en_q, %1 : i1
+        %true_16 = hw.constant true
+        %18 = comb.xor %2, %true_16 : i1
+        %true_17 = hw.constant true
+        %19 = comb.xor %arg18, %true_17 : i1
+        %20 = comb.and %19, %18 : i1
+        %21 = comb.or %17, %11, %20 : i1
+        fsm.return %21
       } action {
-        fsm.update %cmd_len_q, %cmd_len_q : i20
         fsm.update %cmd_speed_q, %cmd_speed_q : i2
         fsm.update %cmd_wr_en_q, %cmd_wr_en_q : i1
         fsm.update %cmd_rd_en_q, %cmd_rd_en_q : i1
@@ -1836,6 +1532,7 @@ module {
         fsm.update %cpha_q, %cpha_q : i1
         fsm.update %cpol_q, %cpol_q : i1
         fsm.update %csid_q, %csid_q : i1
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
@@ -1848,7 +1545,6 @@ module {
         %c3_i3 = hw.constant 3 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i16 = hw.constant -1 : i16
         %c-1_i4 = hw.constant -1 : i4
         %true = hw.constant true
@@ -1860,159 +1556,150 @@ module {
         %5 = comb.mux %arg18, %c0_i16, %4 : i16
         %6 = comb.xor %arg16, %true : i1
         %7 = comb.and %arg1, %1 : i1
-        %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
-        %10 = comb.xor %arg18, %true : i1
-        %11 = comb.and %7, %10 : i1
-        %12 = comb.mux %arg18, %c0_i3, %9 : i3
-        %13 = comb.xor %7, %true : i1
-        %14 = comb.and %10, %13 : i1
-        %c-2_i3_0 = hw.constant -2 : i3
-        %15 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %16 = comb.xor %cpha_q, %true : i1
-        %17 = comb.xor %cmd_rd_en_q, %true : i1
-        %18 = comb.xor %cmd_wr_en_q, %true : i1
-        %19 = comb.and %17, %18 : i1
-        %20 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %21 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %22 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %23 = comb.mux %22, %c-4_i3, %c1_i3 : i3
-        %24 = comb.xor %19, %true : i1
-        %25 = comb.xor %20, %true : i1
-        %26 = comb.and %25, %24, %21 : i1
-        %27 = comb.mux %26, %c-2_i3, %23 : i3
-        %28 = comb.and %24, %20 : i1
-        %29 = comb.mux %28, %c-1_i3, %27 : i3
-        %30 = comb.mux %19, %c0_i3, %29 : i3
-        %31 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %32 = comb.or %arg18, %7 : i1
-        %33 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %34 = comb.and %cmd_wr_en_q, %15 : i1
-        %35 = comb.or %34, %cmd_wr_en_last_bit : i1
-        %36 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %37 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
-        %38 = comb.xor %37, %true : i1
-        %39 = comb.or %36, %38 : i1
-        verif.assert %39 : i1
-        %40 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-        verif.assert %40 : i1
-        %41 = comb.xor %csid_q, %true : i1
-        verif.assert %41 : i1
-        fsm.update %cmd_wr_en_last_bit, %35 : i1
-        %42 = comb.mux %14, %c-2_i3_0, %12 : i3
-        %43 = comb.icmp ne %42, %c-2_i3_0 : i3
-        %true_1 = hw.constant true
-        %44 = comb.xor %arg18, %true_1 : i1
-        %true_2 = hw.constant true
-        %45 = comb.xor %14, %true_2 : i1
-        %46 = comb.and %16, %10, %43, %45, %44, %8 : i1
-        %47 = comb.mux %46, %30, %bit_cntr_q : i3
-        %48 = comb.mux %13, %bit_cntr_q, %47 : i3
-        %49 = comb.mux %arg18, %c0_i3, %48 : i3
-        %true_3 = hw.constant true
-        %50 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %51 = comb.xor %14, %true_4 : i1
-        %52 = comb.and %51, %50, %8 : i1
-        %true_5 = hw.constant true
-        %53 = comb.xor %8, %true_5 : i1
-        %true_6 = hw.constant true
-        %54 = comb.xor %arg18, %true_6 : i1
-        %55 = comb.and %54, %53 : i1
-        %56 = comb.or %14, %55 : i1
-        %57 = comb.and %43, %11 : i1
-        %58 = comb.xor %52, %true : i1
-        %59 = comb.and %58, %57 : i1
-        %60 = comb.and %59, %56 : i1
-        %61 = comb.mux %60, %csnidle_q, %c0_i4 : i4
-        %62 = comb.and %57, %52 : i1
-        %63 = comb.mux %62, %csnlead_q, %61 : i4
-        %64 = comb.mux %32, %63, %wait_cntr_q : i4
-        %65 = comb.mux %arg18, %c0_i4, %64 : i4
-        %66 = comb.xor %43, %true : i1
-        %67 = comb.and %33, %66, %11 : i1
-        %68 = comb.mux %67, %31, %65 : i4
-        %69 = comb.icmp ne %42, %c-4_i3 : i3
-        %70 = comb.and %58, %69 : i1
-        %71 = comb.icmp ne %42, %c3_i3 : i3
-        %72 = comb.and %cpol_q, %71 : i1
-        %73 = comb.and %46, %cmd_wr_en_q, %6 : i1
-        %74 = comb.mux %73, %clk_cntr_q, %5 : i16
-        %75 = comb.mux %73, %bit_cntr_q, %49 : i3
-        %true_7 = hw.constant true
-        %76 = comb.xor %arg18, %true_7 : i1
-        %77 = comb.or %73, %76 : i1
-        %78 = comb.mux %77, %byte_cntr_cpha0_q, %c0_i20 : i20
-        %true_8 = hw.constant true
-        %79 = comb.xor %arg18, %true_8 : i1
-        %80 = comb.or %73, %79 : i1
-        %81 = comb.mux %80, %byte_cntr_cpha1_q, %c0_i20 : i20
-        %82 = comb.mux %73, %wait_cntr_q, %68 : i4
-        fsm.update %wait_cntr_q, %82 : i4
-        fsm.update %byte_cntr_cpha1_q, %81 : i20
-        fsm.update %byte_cntr_cpha0_q, %78 : i20
-        fsm.update %bit_cntr_q, %75 : i3
-        fsm.update %clk_cntr_q, %74 : i16
-        %83 = comb.xor %73, %true : i1
-        %84 = comb.and %43, %83 : i1
-        %85 = comb.mux bin %84, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %86 = comb.and %7, %83 : i1
-        %87 = comb.mux %86, %46, %sample_en_q : i1
-        %88 = comb.mux %86, %sample_en_q, %sample_en_q2 : i1
-        %89 = comb.mux bin %73, %u_sck_flop2Fq_o, %72 : i1
-        %90 = comb.mux %83, %70, %csb_q : i1
-        %91 = comb.or %csid_q, %90 : i1
-        fsm.update %csb_q, %91 : i1
-        fsm.update %u_sck_flop2Fq_o, %89 : i1
-        fsm.update %sample_en_q2, %88 : i1
-        fsm.update %sample_en_q, %87 : i1
-        fsm.update %segment_rd_en_cpha1, %85 : i1
+        %8 = comb.xor %arg15, %true : i1
+        %false_14 = hw.constant false
+        %9 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
+        %10 = comb.mux %9, %c1_i3, %c-2_i3 : i3
+        %11 = comb.xor %arg18, %true : i1
+        %12 = comb.and %7, %11 : i1
+        %13 = comb.mux %arg18, %c0_i3, %10 : i3
+        %14 = comb.xor %7, %true : i1
+        %15 = comb.and %11, %14 : i1
+        %c-2_i3_15 = hw.constant -2 : i3
+        %true_16 = hw.constant true
+        %16 = comb.xor %arg18, %true_16 : i1
+        %true_17 = hw.constant true
+        %17 = comb.xor %15, %true_17 : i1
+        %18 = comb.and %17, %16, %9 : i1
+        %19 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %20 = comb.xor %cpha_q, %true : i1
+        %21 = comb.xor %cmd_rd_en_q, %true : i1
+        %22 = comb.xor %cmd_wr_en_q, %true : i1
+        %23 = comb.and %21, %22 : i1
+        %24 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %25 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %26 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %27 = comb.mux %26, %c-4_i3, %c1_i3 : i3
+        %28 = comb.xor %23, %true : i1
+        %29 = comb.xor %24, %true : i1
+        %30 = comb.and %29, %28, %25 : i1
+        %31 = comb.mux %30, %c-2_i3, %27 : i3
+        %32 = comb.and %28, %24 : i1
+        %33 = comb.mux %32, %c-1_i3, %31 : i3
+        %34 = comb.mux %23, %c0_i3, %33 : i3
+        %true_18 = hw.constant true
+        %35 = comb.xor %9, %true_18 : i1
+        %true_19 = hw.constant true
+        %36 = comb.xor %arg18, %true_19 : i1
+        %37 = comb.and %36, %35 : i1
+        %38 = comb.or %15, %37 : i1
+        %39 = comb.add %wait_cntr_q, %c-1_i4 : i4
+        %40 = comb.xor %18, %true : i1
+        %41 = comb.or %arg18, %7 : i1
+        %42 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
+        %true_20 = hw.constant true
+        %43 = comb.xor %arg18, %true_20 : i1
+        %true_21 = hw.constant true
+        %44 = comb.xor %arg18, %true_21 : i1
+        %45 = comb.and %cmd_wr_en_q, %19 : i1
+        %46 = comb.or %45, %cmd_wr_en_last_bit : i1
+        %47 = comb.xor %isFirstCycle, %true : i1
+        %48 = comb.and %47, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %11 : i1
+        %49 = comb.xor %48, %true : i1
+        verif.assert %49 : i1
+        fsm.update %_sh1_10, %7 : i1
+        fsm.update %_sh1_8, %8 : i1
+        fsm.update %_sh1_6, %9 : i1
+        fsm.update %_sh1, %false_14 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        fsm.update %cmd_wr_en_last_bit, %46 : i1
+        %50 = comb.mux %15, %c-2_i3_15, %13 : i3
+        %51 = comb.icmp ne %50, %c-2_i3_15 : i3
+        %52 = comb.and %20, %11, %51, %18 : i1
+        %53 = comb.and %7, %52 : i1
+        %54 = comb.mux %53, %34, %bit_cntr_q : i3
+        %55 = comb.mux %arg18, %c0_i3, %54 : i3
+        %56 = comb.and %51, %12 : i1
+        %57 = comb.and %40, %56, %38 : i1
+        %58 = comb.mux %57, %csnidle_q, %c0_i4 : i4
+        %59 = comb.and %56, %18 : i1
+        %60 = comb.mux %59, %csnlead_q, %58 : i4
+        %61 = comb.mux %41, %60, %wait_cntr_q : i4
+        %62 = comb.mux %arg18, %c0_i4, %61 : i4
+        %63 = comb.xor %51, %true : i1
+        %64 = comb.and %42, %63, %12 : i1
+        %65 = comb.mux %64, %39, %62 : i4
+        %66 = comb.icmp ne %50, %c-4_i3 : i3
+        %67 = comb.and %40, %66 : i1
+        %68 = comb.icmp ne %50, %c3_i3 : i3
+        %69 = comb.and %cpol_q, %68 : i1
+        %70 = comb.and %52, %cmd_wr_en_q, %6 : i1
+        %71 = comb.mux %70, %clk_cntr_q, %5 : i16
+        %72 = comb.mux %70, %bit_cntr_q, %55 : i3
+        %73 = comb.or %70, %43 : i1
+        %74 = comb.mux %73, %byte_cntr_cpha0_q, %c0_i20 : i20
+        %75 = comb.or %70, %44 : i1
+        %76 = comb.mux %75, %byte_cntr_cpha1_q, %c0_i20 : i20
+        %77 = comb.mux %70, %wait_cntr_q, %65 : i4
+        %78 = comb.mux bin %70, %u_sck_flop2Fq_o, %69 : i1
+        fsm.update %u_sck_flop2Fq_o, %78 : i1
+        fsm.update %wait_cntr_q, %77 : i4
+        fsm.update %byte_cntr_cpha1_q, %76 : i20
+        fsm.update %byte_cntr_cpha0_q, %74 : i20
+        fsm.update %bit_cntr_q, %72 : i3
+        fsm.update %clk_cntr_q, %71 : i16
+        %79 = comb.xor %70, %true : i1
+        %80 = comb.and %51, %79 : i1
+        %81 = comb.mux bin %80, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %82 = comb.and %7, %79 : i1
+        %83 = comb.mux %82, %52, %sample_en_q : i1
+        %84 = comb.mux %82, %sample_en_q, %sample_en_q2 : i1
+        %85 = comb.mux %79, %67, %csb_q : i1
+        %86 = comb.or %csid_q, %85 : i1
+        fsm.update %_sh1_12, %79 : i1
+        fsm.update %csb_q, %86 : i1
+        fsm.update %sample_en_q2, %84 : i1
+        fsm.update %sample_en_q, %83 : i1
+        fsm.update %segment_rd_en_cpha1, %81 : i1
       }
       fsm.transition @state_1 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %1 = comb.xor %arg16, %true : i1
         %2 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %3 = comb.mux %2, %c1_i3, %c-2_i3 : i3
         %4 = comb.xor %arg18, %true : i1
-        %c-2_i3_0 = hw.constant -2 : i3
-        %5 = comb.and %arg1, %0 : i1
-        %6 = comb.mux %arg18, %c0_i3, %3 : i3
-        %7 = comb.xor %5, %true : i1
-        %8 = comb.and %4, %7 : i1
-        %9 = comb.mux %8, %c-2_i3_0, %6 : i3
-        %10 = comb.icmp ne %9, %c-2_i3_0 : i3
-        %true_1 = hw.constant true
-        %11 = comb.xor %arg18, %true_1 : i1
-        %true_2 = hw.constant true
-        %12 = comb.xor %8, %true_2 : i1
-        %13 = comb.xor %cpha_q, %true : i1
-        %14 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %15 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
-        %16 = comb.xor %15, %true : i1
-        %17 = comb.or %14, %16 : i1
-        verif.assert %17 : i1
-        %18 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-        verif.assert %18 : i1
-        %19 = comb.xor %csid_q, %true : i1
-        verif.assert %19 : i1
-        %20 = comb.and %13, %4, %10, %12, %11, %2, %cmd_wr_en_q, %1 : i1
-        %21 = comb.or %20, %8 : i1
-        %true_3 = hw.constant true
-        %22 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %23 = comb.xor %21, %true_4 : i1
-        %24 = comb.and %23, %22, %2 : i1
-        fsm.return %24
+        %c-2_i3_13 = hw.constant -2 : i3
+        %5 = comb.xor %isFirstCycle, %true : i1
+        %6 = comb.and %5, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %4 : i1
+        %7 = comb.xor %6, %true : i1
+        %8 = comb.and %arg1, %0 : i1
+        %9 = comb.mux %arg18, %c0_i3, %3 : i3
+        %10 = comb.xor %8, %true : i1
+        %11 = comb.and %4, %10 : i1
+        %12 = comb.mux %11, %c-2_i3_13, %9 : i3
+        %13 = comb.icmp ne %12, %c-2_i3_13 : i3
+        %true_14 = hw.constant true
+        %14 = comb.xor %arg18, %true_14 : i1
+        %true_15 = hw.constant true
+        %15 = comb.xor %11, %true_15 : i1
+        verif.assert %7 : i1
+        %16 = comb.xor %cpha_q, %true : i1
+        %17 = comb.and %16, %4, %13, %15, %14, %2, %cmd_wr_en_q, %1 : i1
+        %18 = comb.or %17, %11 : i1
+        %true_16 = hw.constant true
+        %19 = comb.xor %arg18, %true_16 : i1
+        %true_17 = hw.constant true
+        %20 = comb.xor %18, %true_17 : i1
+        %21 = comb.and %20, %19, %2 : i1
+        fsm.return %21
       } action {
-        fsm.update %cmd_len_q, %cmd_len_q : i20
+        %true = hw.constant true
         fsm.update %cmd_speed_q, %cmd_speed_q : i2
         fsm.update %cmd_wr_en_q, %cmd_wr_en_q : i1
         fsm.update %cmd_rd_en_q, %cmd_rd_en_q : i1
@@ -2025,10 +1712,10 @@ module {
         fsm.update %cpha_q, %cpha_q : i1
         fsm.update %cpol_q, %cpol_q : i1
         fsm.update %csid_q, %csid_q : i1
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
-        %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
         %c-2_i3 = hw.constant -2 : i3
@@ -2037,168 +1724,125 @@ module {
         %c3_i3 = hw.constant 3 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i16 = hw.constant -1 : i16
-        %c-1_i4 = hw.constant -1 : i4
-        %true = hw.constant true
-        %0 = comb.xor %arg1, %true : i1
+        %true_14 = hw.constant true
+        %0 = comb.xor %arg1, %true_14 : i1
         %1 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %2 = comb.add %clk_cntr_q, %c-1_i16 : i16
         %3 = comb.mux %1, %clkdiv_q, %2 : i16
-        %4 = comb.mux %0, %clk_cntr_q, %3 : i16
-        %5 = comb.mux %arg18, %c0_i16, %4 : i16
-        %6 = comb.xor %arg16, %true : i1
-        %7 = comb.and %arg1, %1 : i1
-        %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
-        %10 = comb.xor %arg18, %true : i1
-        %11 = comb.and %7, %10 : i1
-        %12 = comb.mux %arg18, %c0_i3, %9 : i3
-        %13 = comb.xor %7, %true : i1
-        %14 = comb.and %10, %13 : i1
-        %c-2_i3_0 = hw.constant -2 : i3
-        %15 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %16 = comb.xor %cpha_q, %true : i1
-        %17 = comb.xor %cmd_rd_en_q, %true : i1
-        %18 = comb.xor %cmd_wr_en_q, %true : i1
-        %19 = comb.and %17, %18 : i1
-        %20 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %21 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %22 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %23 = comb.mux %22, %c-4_i3, %c1_i3 : i3
-        %24 = comb.xor %19, %true : i1
-        %25 = comb.xor %20, %true : i1
-        %26 = comb.and %25, %24, %21 : i1
-        %27 = comb.mux %26, %c-2_i3, %23 : i3
-        %28 = comb.and %24, %20 : i1
-        %29 = comb.mux %28, %c-1_i3, %27 : i3
-        %30 = comb.mux %19, %c0_i3, %29 : i3
-        %31 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %32 = comb.or %arg18, %7 : i1
-        %33 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %34 = comb.and %cmd_wr_en_q, %15 : i1
-        %35 = comb.or %34, %cmd_wr_en_last_bit : i1
-        %36 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %37 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
-        %38 = comb.xor %37, %true : i1
-        %39 = comb.or %36, %38 : i1
-        verif.assert %39 : i1
-        %40 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-        verif.assert %40 : i1
-        %41 = comb.xor %csid_q, %true : i1
-        verif.assert %41 : i1
-        fsm.update %cmd_wr_en_last_bit, %35 : i1
-        %42 = comb.mux %14, %c-2_i3_0, %12 : i3
-        %43 = comb.icmp ne %42, %c-2_i3_0 : i3
-        %true_1 = hw.constant true
-        %44 = comb.xor %arg18, %true_1 : i1
-        %true_2 = hw.constant true
-        %45 = comb.xor %14, %true_2 : i1
-        %46 = comb.and %16, %10, %43, %45, %44, %8 : i1
-        %47 = comb.and %7, %46 : i1
-        %48 = comb.mux %47, %30, %bit_cntr_q : i3
-        %49 = comb.mux %arg18, %c0_i3, %48 : i3
-        %true_3 = hw.constant true
-        %50 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %51 = comb.xor %14, %true_4 : i1
-        %52 = comb.and %51, %50, %8 : i1
-        %true_5 = hw.constant true
-        %53 = comb.xor %8, %true_5 : i1
-        %true_6 = hw.constant true
-        %54 = comb.xor %arg18, %true_6 : i1
-        %55 = comb.and %54, %53 : i1
-        %56 = comb.or %14, %55 : i1
-        %57 = comb.and %43, %11 : i1
-        %58 = comb.xor %52, %true : i1
-        %59 = comb.and %58, %57, %56 : i1
-        %60 = comb.mux %59, %csnidle_q, %c0_i4 : i4
-        %61 = comb.and %57, %52 : i1
-        %62 = comb.mux %61, %csnlead_q, %60 : i4
-        %63 = comb.mux %32, %62, %wait_cntr_q : i4
-        %64 = comb.mux %arg18, %c0_i4, %63 : i4
-        %65 = comb.xor %43, %true : i1
-        %66 = comb.and %33, %65, %11 : i1
-        %67 = comb.mux %66, %31, %64 : i4
-        %68 = comb.icmp ne %42, %c-4_i3 : i3
-        %69 = comb.and %58, %68 : i1
-        %70 = comb.icmp ne %42, %c3_i3 : i3
-        %71 = comb.and %cpol_q, %70 : i1
-        %72 = comb.and %46, %cmd_wr_en_q, %6 : i1
-        %73 = comb.mux %72, %clk_cntr_q, %5 : i16
-        %74 = comb.mux %72, %bit_cntr_q, %49 : i3
-        %true_7 = hw.constant true
-        %75 = comb.xor %arg18, %true_7 : i1
-        %76 = comb.or %72, %75 : i1
-        %77 = comb.mux %76, %byte_cntr_cpha0_q, %c0_i20 : i20
-        %true_8 = hw.constant true
-        %78 = comb.xor %arg18, %true_8 : i1
-        %79 = comb.or %72, %78 : i1
-        %80 = comb.mux %79, %byte_cntr_cpha1_q, %c0_i20 : i20
-        %81 = comb.mux %72, %wait_cntr_q, %67 : i4
-        fsm.update %wait_cntr_q, %81 : i4
-        fsm.update %byte_cntr_cpha1_q, %80 : i20
-        fsm.update %byte_cntr_cpha0_q, %77 : i20
-        fsm.update %bit_cntr_q, %74 : i3
-        fsm.update %clk_cntr_q, %73 : i16
-        %82 = comb.xor %72, %true : i1
-        %83 = comb.and %43, %82 : i1
-        %84 = comb.mux bin %83, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %85 = comb.and %7, %82 : i1
-        %86 = comb.mux %85, %46, %sample_en_q : i1
-        %87 = comb.mux %85, %sample_en_q, %sample_en_q2 : i1
-        %88 = comb.mux bin %72, %u_sck_flop2Fq_o, %71 : i1
-        %89 = comb.mux %82, %69, %csb_q : i1
-        %90 = comb.or %csid_q, %89 : i1
-        fsm.update %csb_q, %90 : i1
-        fsm.update %u_sck_flop2Fq_o, %88 : i1
-        fsm.update %sample_en_q2, %87 : i1
-        fsm.update %sample_en_q, %86 : i1
-        fsm.update %segment_rd_en_cpha1, %84 : i1
+        %4 = comb.xor %arg16, %true_14 : i1
+        %5 = comb.and %arg1, %1 : i1
+        %6 = comb.xor %arg15, %true_14 : i1
+        %false_15 = hw.constant false
+        %7 = comb.xor %5, %true_14 : i1
+        %c-2_i3_16 = hw.constant -2 : i3
+        %8 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %9 = comb.xor %cpha_q, %true_14 : i1
+        %10 = comb.xor %cmd_rd_en_q, %true_14 : i1
+        %11 = comb.xor %cmd_wr_en_q, %true_14 : i1
+        %12 = comb.and %10, %11 : i1
+        %13 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %14 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %15 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %16 = comb.mux %15, %c-4_i3, %c1_i3 : i3
+        %17 = comb.xor %12, %true_14 : i1
+        %18 = comb.xor %13, %true_14 : i1
+        %19 = comb.and %18, %17, %14 : i1
+        %20 = comb.mux %19, %c-2_i3, %16 : i3
+        %21 = comb.and %17, %13 : i1
+        %22 = comb.mux %21, %c-1_i3, %20 : i3
+        %23 = comb.mux %12, %c0_i3, %22 : i3
+        %24 = comb.xor %5, %true_14 : i1
+        %25 = comb.and %cmd_wr_en_q, %8 : i1
+        %26 = comb.or %25, %cmd_wr_en_last_bit : i1
+        %27 = comb.xor %isFirstCycle, %true_14 : i1
+        %28 = comb.and %27, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %29 = comb.xor %28, %true_14 : i1
+        verif.assert %29 : i1
+        fsm.update %_sh1_10, %5 : i1
+        fsm.update %_sh1_8, %6 : i1
+        fsm.update %_sh1_6, %true : i1
+        fsm.update %_sh1, %false_15 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        fsm.update %cmd_wr_en_last_bit, %26 : i1
+        %30 = comb.mux %7, %c-2_i3_16, %c1_i3 : i3
+        %31 = comb.icmp ne %30, %c-2_i3_16 : i3
+        %32 = comb.and %9, %31, %5 : i1
+        %33 = comb.and %31, %5 : i1
+        %34 = comb.and %24, %33, %7 : i1
+        %35 = comb.mux %34, %csnidle_q, %c0_i4 : i4
+        %36 = comb.mux %33, %csnlead_q, %35 : i4
+        %37 = comb.icmp ne %30, %c-4_i3 : i3
+        %38 = comb.and %24, %37 : i1
+        %39 = comb.icmp ne %30, %c3_i3 : i3
+        %40 = comb.and %cpol_q, %39 : i1
+        %41 = comb.and %32, %cmd_wr_en_q, %4 : i1
+        %42 = comb.or %41, %0 : i1
+        %43 = comb.mux %42, %clk_cntr_q, %3 : i16
+        %true_17 = hw.constant true
+        %44 = comb.xor %32, %true_17 : i1
+        %45 = comb.or %41, %44 : i1
+        %46 = comb.mux %45, %bit_cntr_q, %23 : i3
+        %true_18 = hw.constant true
+        %47 = comb.xor %5, %true_18 : i1
+        %48 = comb.or %41, %47 : i1
+        %49 = comb.mux %48, %wait_cntr_q, %36 : i4
+        %50 = comb.mux bin %41, %u_sck_flop2Fq_o, %40 : i1
+        fsm.update %u_sck_flop2Fq_o, %50 : i1
+        fsm.update %wait_cntr_q, %49 : i4
+        fsm.update %byte_cntr_cpha1_q, %byte_cntr_cpha1_q : i20
+        fsm.update %byte_cntr_cpha0_q, %byte_cntr_cpha0_q : i20
+        fsm.update %bit_cntr_q, %46 : i3
+        fsm.update %clk_cntr_q, %43 : i16
+        %51 = comb.xor %41, %true_14 : i1
+        %52 = comb.and %31, %51 : i1
+        %53 = comb.mux bin %52, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %54 = comb.and %5, %51 : i1
+        %55 = comb.mux %54, %32, %sample_en_q : i1
+        %56 = comb.mux %54, %sample_en_q, %sample_en_q2 : i1
+        %57 = comb.mux %51, %38, %csb_q : i1
+        %58 = comb.or %csid_q, %57 : i1
+        fsm.update %_sh1_12, %51 : i1
+        fsm.update %csb_q, %58 : i1
+        fsm.update %sample_en_q2, %56 : i1
+        fsm.update %sample_en_q, %55 : i1
+        fsm.update %segment_rd_en_cpha1, %53 : i1
       }
       fsm.transition @state_0 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %1 = comb.xor %arg16, %true : i1
         %2 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %3 = comb.mux %2, %c1_i3, %c-2_i3 : i3
         %4 = comb.xor %arg18, %true : i1
-        %c-2_i3_0 = hw.constant -2 : i3
-        %5 = comb.and %arg1, %0 : i1
-        %6 = comb.mux %arg18, %c0_i3, %3 : i3
-        %7 = comb.xor %5, %true : i1
-        %8 = comb.and %4, %7 : i1
-        %9 = comb.mux %8, %c-2_i3_0, %6 : i3
-        %10 = comb.icmp ne %9, %c-2_i3_0 : i3
-        %true_1 = hw.constant true
-        %11 = comb.xor %arg18, %true_1 : i1
-        %true_2 = hw.constant true
-        %12 = comb.xor %8, %true_2 : i1
-        %13 = comb.xor %cpha_q, %true : i1
-        %14 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %15 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
-        %16 = comb.xor %15, %true : i1
-        %17 = comb.or %14, %16 : i1
-        verif.assert %17 : i1
-        %18 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-        verif.assert %18 : i1
-        %19 = comb.xor %csid_q, %true : i1
-        verif.assert %19 : i1
-        %20 = comb.and %13, %4, %10, %12, %11, %2, %cmd_wr_en_q, %1 : i1
-        %21 = comb.or %20, %8 : i1
-        %true_3 = hw.constant true
-        %22 = comb.xor %21, %true_3 : i1
-        %23 = comb.and %22, %arg18 : i1
-        fsm.return %23
+        %c-2_i3_13 = hw.constant -2 : i3
+        %5 = comb.xor %isFirstCycle, %true : i1
+        %6 = comb.and %5, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %4 : i1
+        %7 = comb.xor %6, %true : i1
+        %8 = comb.and %arg1, %0 : i1
+        %9 = comb.mux %arg18, %c0_i3, %3 : i3
+        %10 = comb.xor %8, %true : i1
+        %11 = comb.and %4, %10 : i1
+        %12 = comb.mux %11, %c-2_i3_13, %9 : i3
+        %13 = comb.icmp ne %12, %c-2_i3_13 : i3
+        %true_14 = hw.constant true
+        %14 = comb.xor %arg18, %true_14 : i1
+        %true_15 = hw.constant true
+        %15 = comb.xor %11, %true_15 : i1
+        verif.assert %7 : i1
+        %16 = comb.xor %cpha_q, %true : i1
+        %17 = comb.and %16, %4, %13, %15, %14, %2, %cmd_wr_en_q, %1 : i1
+        %18 = comb.or %17, %11 : i1
+        %true_16 = hw.constant true
+        %19 = comb.xor %18, %true_16 : i1
+        %20 = comb.and %19, %arg18 : i1
+        fsm.return %20
       } action {
-        fsm.update %cmd_len_q, %cmd_len_q : i20
         fsm.update %cmd_speed_q, %cmd_speed_q : i2
         fsm.update %cmd_wr_en_q, %cmd_wr_en_q : i1
         fsm.update %cmd_rd_en_q, %cmd_rd_en_q : i1
@@ -2211,136 +1855,45 @@ module {
         fsm.update %cpha_q, %cpha_q : i1
         fsm.update %cpol_q, %cpol_q : i1
         fsm.update %csid_q, %csid_q : i1
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
-        %c-1_i3 = hw.constant -1 : i3
-        %c-2_i3 = hw.constant -2 : i3
-        %c1_i3 = hw.constant 1 : i3
-        %c-4_i3 = hw.constant -4 : i3
-        %c3_i3 = hw.constant 3 : i3
-        %c1_i2 = hw.constant 1 : i2
-        %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
-        %c-1_i16 = hw.constant -1 : i16
-        %c-1_i4 = hw.constant -1 : i4
         %true = hw.constant true
-        %0 = comb.xor %arg1, %true : i1
-        %1 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
-        %2 = comb.add %clk_cntr_q, %c-1_i16 : i16
-        %3 = comb.mux %1, %clkdiv_q, %2 : i16
-        %4 = comb.mux %0, %clk_cntr_q, %3 : i16
-        %5 = comb.mux %arg18, %c0_i16, %4 : i16
-        %6 = comb.xor %arg16, %true : i1
-        %7 = comb.and %arg1, %1 : i1
-        %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
-        %10 = comb.xor %arg18, %true : i1
-        %11 = comb.and %7, %10 : i1
-        %12 = comb.mux %arg18, %c0_i3, %9 : i3
-        %13 = comb.xor %7, %true : i1
-        %14 = comb.and %10, %13 : i1
-        %c-2_i3_0 = hw.constant -2 : i3
-        %15 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %16 = comb.xor %cpha_q, %true : i1
-        %17 = comb.xor %cmd_rd_en_q, %true : i1
-        %18 = comb.xor %cmd_wr_en_q, %true : i1
-        %19 = comb.and %17, %18 : i1
-        %20 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %21 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %22 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %23 = comb.mux %22, %c-4_i3, %c1_i3 : i3
-        %24 = comb.xor %19, %true : i1
-        %25 = comb.xor %20, %true : i1
-        %26 = comb.and %25, %24, %21 : i1
-        %27 = comb.mux %26, %c-2_i3, %23 : i3
-        %28 = comb.and %24, %20 : i1
-        %29 = comb.mux %28, %c-1_i3, %27 : i3
-        %30 = comb.mux %19, %c0_i3, %29 : i3
-        %31 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %32 = comb.or %arg18, %7 : i1
-        %33 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %34 = comb.and %cmd_wr_en_q, %15 : i1
-        %35 = comb.or %34, %cmd_wr_en_last_bit : i1
-        %36 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %37 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
-        %38 = comb.xor %37, %true : i1
-        %39 = comb.or %36, %38 : i1
-        verif.assert %39 : i1
-        %40 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-        verif.assert %40 : i1
-        %41 = comb.xor %csid_q, %true : i1
-        verif.assert %41 : i1
-        fsm.update %cmd_wr_en_last_bit, %35 : i1
-        %42 = comb.mux %14, %c-2_i3_0, %12 : i3
-        %43 = comb.icmp ne %42, %c-2_i3_0 : i3
-        %true_1 = hw.constant true
-        %44 = comb.xor %arg18, %true_1 : i1
-        %true_2 = hw.constant true
-        %45 = comb.xor %14, %true_2 : i1
-        %46 = comb.and %16, %10, %43, %45, %44, %8 : i1
-        %47 = comb.and %7, %46 : i1
-        %48 = comb.mux %47, %30, %bit_cntr_q : i3
-        %49 = comb.mux %arg18, %c0_i3, %48 : i3
-        %true_3 = hw.constant true
-        %50 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %51 = comb.xor %14, %true_4 : i1
-        %52 = comb.and %51, %50, %8 : i1
-        %true_5 = hw.constant true
-        %53 = comb.xor %8, %true_5 : i1
-        %true_6 = hw.constant true
-        %54 = comb.xor %arg18, %true_6 : i1
-        %55 = comb.and %54, %53 : i1
-        %56 = comb.or %14, %55 : i1
-        %57 = comb.and %43, %11 : i1
-        %58 = comb.xor %52, %true : i1
-        %59 = comb.and %58, %57, %56 : i1
-        %60 = comb.mux %59, %csnidle_q, %c0_i4 : i4
-        %61 = comb.and %57, %52 : i1
-        %62 = comb.mux %61, %csnlead_q, %60 : i4
-        %63 = comb.mux %32, %62, %wait_cntr_q : i4
-        %64 = comb.mux %arg18, %c0_i4, %63 : i4
-        %65 = comb.xor %43, %true : i1
-        %66 = comb.and %33, %65, %11 : i1
-        %67 = comb.mux %66, %31, %64 : i4
-        %68 = comb.icmp ne %42, %c-4_i3 : i3
-        %69 = comb.and %58, %68 : i1
-        %70 = comb.icmp ne %42, %c3_i3 : i3
-        %71 = comb.and %cpol_q, %70 : i1
-        %72 = comb.and %46, %cmd_wr_en_q, %6 : i1
-        %73 = comb.mux %72, %clk_cntr_q, %5 : i16
-        %74 = comb.mux %72, %bit_cntr_q, %49 : i3
-        %true_7 = hw.constant true
-        %75 = comb.xor %arg18, %true_7 : i1
-        %76 = comb.or %72, %75 : i1
-        %77 = comb.mux %76, %byte_cntr_cpha0_q, %c0_i20 : i20
-        %true_8 = hw.constant true
-        %78 = comb.xor %arg18, %true_8 : i1
-        %79 = comb.or %72, %78 : i1
-        %80 = comb.mux %79, %byte_cntr_cpha1_q, %c0_i20 : i20
-        %81 = comb.mux %72, %wait_cntr_q, %67 : i4
-        fsm.update %wait_cntr_q, %81 : i4
-        fsm.update %byte_cntr_cpha1_q, %80 : i20
-        fsm.update %byte_cntr_cpha0_q, %77 : i20
-        fsm.update %bit_cntr_q, %74 : i3
-        fsm.update %clk_cntr_q, %73 : i16
-        %82 = comb.xor %72, %true : i1
-        %83 = comb.and %43, %82 : i1
-        %84 = comb.mux bin %83, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %85 = comb.and %7, %82 : i1
-        %86 = comb.mux %85, %46, %sample_en_q : i1
-        %87 = comb.mux %85, %sample_en_q, %sample_en_q2 : i1
-        %88 = comb.mux bin %72, %u_sck_flop2Fq_o, %71 : i1
-        %89 = comb.mux %82, %69, %csb_q : i1
-        %90 = comb.or %csid_q, %89 : i1
-        fsm.update %csb_q, %90 : i1
-        fsm.update %u_sck_flop2Fq_o, %88 : i1
-        fsm.update %sample_en_q2, %87 : i1
-        fsm.update %sample_en_q, %86 : i1
-        fsm.update %segment_rd_en_cpha1, %84 : i1
+        %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
+        %1 = comb.and %arg1, %0 : i1
+        %2 = comb.xor %arg15, %true : i1
+        %false_14 = hw.constant false
+        %3 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
+        %4 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %5 = comb.and %cmd_wr_en_q, %4 : i1
+        %6 = comb.or %5, %cmd_wr_en_last_bit : i1
+        %true_15 = hw.constant true
+        verif.assert %true_15 : i1
+        fsm.update %_sh1_10, %1 : i1
+        fsm.update %_sh1_8, %2 : i1
+        fsm.update %_sh1_6, %3 : i1
+        fsm.update %_sh1, %false_14 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        fsm.update %cmd_wr_en_last_bit, %6 : i1
+        fsm.update %u_sck_flop2Fq_o, %cpol_q : i1
+        fsm.update %wait_cntr_q, %c0_i4 : i4
+        fsm.update %byte_cntr_cpha1_q, %c0_i20 : i20
+        fsm.update %byte_cntr_cpha0_q, %c0_i20 : i20
+        fsm.update %bit_cntr_q, %c0_i3 : i3
+        fsm.update %clk_cntr_q, %c0_i16 : i16
+        %true_16 = hw.constant true
+        %true_17 = hw.constant true
+        %7 = comb.xor %1, %true_17 : i1
+        %8 = comb.and %7, %sample_en_q : i1
+        %9 = comb.mux %1, %sample_en_q, %sample_en_q2 : i1
+        %true_18 = hw.constant true
+        fsm.update %_sh1_12, %true_16 : i1
+        fsm.update %csb_q, %true_18 : i1
+        fsm.update %sample_en_q2, %9 : i1
+        fsm.update %sample_en_q, %8 : i1
+        fsm.update %segment_rd_en_cpha1, %cmd_rd_en_q : i1
       }
     }
     fsm.state @state_3 output {
@@ -2356,10 +1909,9 @@ module {
       %c2_i3 = hw.constant 2 : i3
       %c1_i2 = hw.constant 1 : i2
       %c-2_i2 = hw.constant -2 : i2
-      %c-1_i2 = hw.constant -1 : i2
       %c-1_i20 = hw.constant -1 : i20
       %true = hw.constant true
-      %true_0 = hw.constant true
+      %true_13 = hw.constant true
       %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
       %1 = comb.xor %arg16, %true : i1
       %2 = comb.xor %arg17, %true : i1
@@ -2403,107 +1955,96 @@ module {
       %39 = comb.mux %38, %29, %37 : i4
       %40 = comb.and %24, %32 : i1
       %41 = comb.mux %40, %26, %39 : i4
-      %42 = comb.xor %20, %true : i1
-      %43 = comb.icmp ne %22, %c0_i20 : i20
-      %44 = comb.or %42, %43, %cpha_q : i1
-      %45 = comb.and %15, %44 : i1
-      %46 = comb.mux %45, %c2_i3, %13 : i3
-      %47 = comb.xor %44, %true : i1
-      %48 = comb.and %47, %15 : i1
-      %49 = comb.mux %48, %16, %46 : i3
-      %50 = comb.mux %arg18, %c0_i3, %49 : i3
-      %51 = comb.mux %18, %c3_i3, %50 : i3
-      %52 = comb.and %19, %48, %csaat_q, %10 : i1
-      %53 = comb.icmp ne %51, %c3_i3 : i3
-      %54 = comb.and %14, %53 : i1
-      %true_1 = hw.constant true
-      %55 = comb.xor %45, %true_1 : i1
-      %true_2 = hw.constant true
-      %56 = comb.xor %48, %true_2 : i1
-      %true_3 = hw.constant true
-      %57 = comb.xor %arg18, %true_3 : i1
-      %true_4 = hw.constant true
-      %58 = comb.xor %18, %true_4 : i1
-      %59 = comb.and %58, %57, %56, %55, %11 : i1
-      %true_5 = hw.constant true
-      %60 = comb.xor %cpha_q, %true_5 : i1
-      %61 = comb.and %csaat_q, %8, %60 : i1
-      %62 = comb.mux %48, %61, %45 : i1
-      %true_6 = hw.constant true
-      %63 = comb.xor %arg18, %true_6 : i1
-      %true_7 = hw.constant true
-      %64 = comb.xor %18, %true_7 : i1
-      %65 = comb.and %64, %63, %62 : i1
-      %66 = comb.and %65, %20 : i1
-      %67 = comb.or %59, %66 : i1
-      %68 = comb.and %54, %67 : i1
-      %69 = comb.and %54, %65, %21 : i1
-      %70 = comb.and %54, %20 : i1
-      %true_8 = hw.constant true
-      %71 = comb.xor %arg18, %true_8 : i1
-      %72 = comb.and %71, %48, %csaat_q, %8, %cpha_q : i1
-      %73 = comb.or %18, %72 : i1
-      %74 = comb.and %54, %73, %20 : i1
-      %75 = comb.and %54, %73, %21 : i1
-      %76 = comb.and %arg15, %52 : i1
-      %77 = comb.mux %76, %arg14, %csid_q : i1
-      %78 = comb.mux %76, %arg12, %cpha_q : i1
-      %79 = comb.mux %76, %arg11, %full_cyc_q : i1
-      %80 = comb.mux %76, %arg3, %cmd_wr_en_q : i1
-      %81 = comb.mux %76, %arg4, %cmd_rd_en_q : i1
-      %82 = comb.mux %76, %arg2, %cmd_speed_q : i2
-      %83 = comb.xor %78, %true : i1
-      %84 = comb.mux %83, %68, %74 : i1
-      %85 = comb.mux %83, %69, %75 : i1
+      %42 = comb.xor %isFirstCycle, %true : i1
+      %43 = comb.and %42, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %14 : i1
+      %44 = comb.xor %43, %true : i1
+      verif.assert %44 : i1
+      %45 = comb.xor %20, %true : i1
+      %46 = comb.icmp ne %22, %c0_i20 : i20
+      %47 = comb.or %45, %46, %cpha_q : i1
+      %48 = comb.and %15, %47 : i1
+      %49 = comb.mux %48, %c2_i3, %13 : i3
+      %50 = comb.xor %47, %true : i1
+      %51 = comb.and %50, %15 : i1
+      %52 = comb.mux %51, %16, %49 : i3
+      %53 = comb.mux %arg18, %c0_i3, %52 : i3
+      %54 = comb.mux %18, %c3_i3, %53 : i3
+      %55 = comb.and %19, %51, %csaat_q, %10 : i1
+      %56 = comb.icmp ne %54, %c3_i3 : i3
+      %57 = comb.and %14, %56 : i1
+      %true_14 = hw.constant true
+      %58 = comb.xor %48, %true_14 : i1
+      %true_15 = hw.constant true
+      %59 = comb.xor %51, %true_15 : i1
+      %true_16 = hw.constant true
+      %60 = comb.xor %arg18, %true_16 : i1
+      %true_17 = hw.constant true
+      %61 = comb.xor %18, %true_17 : i1
+      %62 = comb.and %61, %60, %59, %58, %11 : i1
+      %true_18 = hw.constant true
+      %63 = comb.xor %cpha_q, %true_18 : i1
+      %64 = comb.and %csaat_q, %8, %63 : i1
+      %65 = comb.mux %51, %64, %48 : i1
+      %true_19 = hw.constant true
+      %66 = comb.xor %arg18, %true_19 : i1
+      %true_20 = hw.constant true
+      %67 = comb.xor %18, %true_20 : i1
+      %68 = comb.and %67, %66, %65 : i1
+      %69 = comb.and %68, %20 : i1
+      %70 = comb.or %62, %69 : i1
+      %71 = comb.and %57, %70 : i1
+      %72 = comb.and %57, %68, %21 : i1
+      %73 = comb.and %57, %20 : i1
+      %true_21 = hw.constant true
+      %74 = comb.xor %arg18, %true_21 : i1
+      %75 = comb.and %74, %51, %csaat_q, %8, %cpha_q : i1
+      %76 = comb.or %18, %75 : i1
+      %77 = comb.and %57, %76, %20 : i1
+      %78 = comb.and %57, %76, %21 : i1
+      %79 = comb.and %arg15, %55 : i1
+      %80 = comb.mux %79, %arg12, %cpha_q : i1
+      %81 = comb.mux %79, %arg11, %full_cyc_q : i1
+      %82 = comb.mux %79, %arg3, %cmd_wr_en_q : i1
+      %83 = comb.xor %80, %true : i1
+      %84 = comb.mux %83, %71, %77 : i1
+      %85 = comb.mux %83, %72, %78 : i1
       %86 = comb.mux %83, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-      %87 = comb.and %84, %80 : i1
-      %88 = comb.and %83, %70, %86 : i1
+      %87 = comb.and %84, %82 : i1
+      %88 = comb.and %83, %73, %86 : i1
       %89 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
       %90 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
       %91 = comb.mux %83, %89, %90 : i1
-      %92 = comb.mux %79, %sample_en_q2, %sample_en_q : i1
-      %93 = comb.icmp eq %arg2, %c0_i2 : i2
-      %94 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-      %95 = comb.mux %76, %93, %94 : i1
-      %96 = comb.and %81, %80 : i1
-      %97 = comb.xor %96, %true : i1
-      %98 = comb.or %95, %97 : i1
-      verif.assert %98 : i1
-      %99 = comb.icmp ne %82, %c-1_i2 : i2
-      verif.assert %99 : i1
-      %100 = comb.xor %77, %true : i1
-      verif.assert %100 : i1
-      %101 = comb.and %87, %1 : i1
-      %102 = comb.and %88, %2 : i1
-      %103 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
-      %104 = comb.icmp eq %arg5, %c0_i20 : i20
-      %105 = comb.icmp eq %23, %c0_i20 : i20
-      %106 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
-      %107 = comb.mux %70, %105, %106 : i1
-      %108 = comb.mux %76, %104, %107 : i1
-      %109 = comb.mux %17, %103, %108 : i1
-      %110 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
-      %111 = comb.icmp eq %arg5, %c0_i20 : i20
-      %112 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
-      %113 = comb.mux %76, %111, %112 : i1
-      %114 = comb.mux %17, %110, %113 : i1
-      %115 = comb.mux %83, %109, %114 : i1
-      %116 = comb.or %arg18, %115 : i1
-      %117 = comb.or %102, %101 : i1
-      %118 = comb.xor %117, %true : i1
-      %119 = comb.and %87, %118 : i1
-      %120 = comb.and %88, %118 : i1
-      %121 = comb.and %92, %118 : i1
-      %122 = comb.and %85, %118 : i1
-      %123 = comb.and %52, %118 : i1
-      %124 = comb.and %91, %120, %arg17 : i1
-      %125 = comb.and %116, %119, %arg16 : i1
-      fsm.output %123, %u_sck_flop2Fq_o, %csb_q, %41, %124, %125, %119, %120, %121, %122, %cmd_speed_q, %79, %102, %101, %true_0 : i1, i1, i1, i4, i1, i1, i1, i1, i1, i1, i2, i1, i1, i1, i1
+      %92 = comb.mux %81, %sample_en_q2, %sample_en_q : i1
+      %93 = comb.and %87, %1 : i1
+      %94 = comb.and %88, %2 : i1
+      %95 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
+      %96 = comb.icmp eq %arg5, %c0_i20 : i20
+      %97 = comb.icmp eq %23, %c0_i20 : i20
+      %98 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
+      %99 = comb.mux %73, %97, %98 : i1
+      %100 = comb.mux %79, %96, %99 : i1
+      %101 = comb.mux %17, %95, %100 : i1
+      %102 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
+      %103 = comb.icmp eq %arg5, %c0_i20 : i20
+      %104 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
+      %105 = comb.mux %79, %103, %104 : i1
+      %106 = comb.mux %17, %102, %105 : i1
+      %107 = comb.mux %83, %101, %106 : i1
+      %108 = comb.or %arg18, %107 : i1
+      %109 = comb.or %94, %93 : i1
+      %110 = comb.xor %109, %true : i1
+      %111 = comb.and %87, %110 : i1
+      %112 = comb.and %88, %110 : i1
+      %113 = comb.and %92, %110 : i1
+      %114 = comb.and %85, %110 : i1
+      %115 = comb.and %55, %110 : i1
+      %116 = comb.and %91, %112, %arg17 : i1
+      %117 = comb.and %108, %111, %arg16 : i1
+      fsm.output %115, %u_sck_flop2Fq_o, %csb_q, %41, %116, %117, %111, %112, %113, %114, %cmd_speed_q, %81, %94, %93, %true_13 : i1, i1, i1, i4, i1, i1, i1, i1, i1, i1, i2, i1, i1, i1, i1
     } transitions {
       fsm.transition @state_7 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
@@ -2512,7 +2053,6 @@ module {
         %c-4_i3 = hw.constant -4 : i3
         %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %1 = comb.xor %arg16, %true : i1
@@ -2532,405 +2072,145 @@ module {
         %c3_i3 = hw.constant 3 : i3
         %15 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
         %16 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
-        %17 = comb.and %arg1, %0 : i1
-        %18 = comb.xor %15, %true : i1
-        %19 = comb.icmp ne %16, %c0_i20 : i20
-        %20 = comb.or %18, %19, %cpha_q : i1
-        %21 = comb.and %17, %13 : i1
-        %22 = comb.and %21, %20 : i1
-        %23 = comb.mux %22, %c2_i3, %12 : i3
-        %24 = comb.xor %20, %true : i1
-        %25 = comb.and %24, %21 : i1
-        %26 = comb.mux %25, %14, %23 : i3
-        %27 = comb.mux %arg18, %c0_i3, %26 : i3
-        %28 = comb.xor %17, %true : i1
-        %29 = comb.and %13, %28 : i1
-        %30 = comb.mux %29, %c3_i3, %27 : i3
-        %31 = comb.xor %29, %true : i1
-        %32 = comb.icmp ne %30, %c3_i3 : i3
-        %33 = comb.and %13, %32 : i1
-        %true_0 = hw.constant true
-        %34 = comb.xor %22, %true_0 : i1
-        %true_1 = hw.constant true
-        %35 = comb.xor %25, %true_1 : i1
-        %true_2 = hw.constant true
-        %36 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %37 = comb.xor %29, %true_3 : i1
-        %38 = comb.and %37, %36, %35, %34, %10 : i1
-        %true_4 = hw.constant true
-        %39 = comb.xor %cpha_q, %true_4 : i1
-        %40 = comb.and %csaat_q, %7, %39 : i1
-        %41 = comb.mux %25, %40, %22 : i1
-        %true_5 = hw.constant true
-        %42 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %43 = comb.xor %29, %true_6 : i1
-        %44 = comb.and %43, %42, %41, %15 : i1
-        %45 = comb.or %38, %44 : i1
-        %46 = comb.and %33, %45 : i1
-        %true_7 = hw.constant true
-        %47 = comb.xor %arg18, %true_7 : i1
-        %48 = comb.and %47, %25, %csaat_q, %7, %cpha_q : i1
-        %49 = comb.or %29, %48 : i1
-        %50 = comb.and %33, %49, %15 : i1
-        %51 = comb.and %arg15, %31, %25, %csaat_q, %9 : i1
-        %52 = comb.mux %51, %arg14, %csid_q : i1
-        %53 = comb.mux %51, %arg12, %cpha_q : i1
-        %54 = comb.mux %51, %arg3, %cmd_wr_en_q : i1
-        %55 = comb.mux %51, %arg4, %cmd_rd_en_q : i1
-        %56 = comb.mux %51, %arg2, %cmd_speed_q : i2
-        %57 = comb.xor %53, %true : i1
-        %58 = comb.mux %57, %46, %50 : i1
-        %59 = comb.mux %57, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %60 = comb.icmp eq %arg2, %c0_i2 : i2
-        %61 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %62 = comb.mux %51, %60, %61 : i1
-        %63 = comb.and %55, %54 : i1
-        %64 = comb.xor %63, %true : i1
-        %65 = comb.or %62, %64 : i1
-        verif.assert %65 : i1
-        %66 = comb.icmp ne %56, %c-1_i2 : i2
-        verif.assert %66 : i1
-        %67 = comb.xor %52, %true : i1
-        verif.assert %67 : i1
-        %68 = comb.and %58, %54, %1 : i1
-        %69 = comb.and %57, %33, %15, %59, %2 : i1
-        %70 = comb.or %69, %68 : i1
-        %71 = comb.or %70, %29 : i1
-        %72 = comb.extract %5 from 0 : (i3) -> i2
-        %c-1_i2_8 = hw.constant -1 : i2
-        %73 = comb.icmp eq %72, %c-1_i2_8 : i2
-        %true_9 = hw.constant true
-        %74 = comb.xor %7, %true_9 : i1
-        %true_10 = hw.constant true
-        %75 = comb.xor %arg18, %true_10 : i1
-        %true_11 = hw.constant true
-        %76 = comb.xor %71, %true_11 : i1
-        %77 = comb.and %76, %75, %25, %csaat_q, %74, %73 : i1
-        fsm.return %77
-      } action {
-        %c0_i4 = hw.constant 0 : i4
-        %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
-        %c0_i20 = hw.constant 0 : i20
-        %c0_i3 = hw.constant 0 : i3
-        %c-1_i3 = hw.constant -1 : i3
-        %c-2_i3 = hw.constant -2 : i3
-        %c1_i3 = hw.constant 1 : i3
-        %c-4_i3 = hw.constant -4 : i3
-        %c3_i3 = hw.constant 3 : i3
-        %c2_i3 = hw.constant 2 : i3
-        %c1_i2 = hw.constant 1 : i2
-        %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
-        %c-1_i16 = hw.constant -1 : i16
-        %c-1_i20 = hw.constant -1 : i20
-        %c-1_i4 = hw.constant -1 : i4
-        %true = hw.constant true
-        %0 = comb.xor %arg1, %true : i1
-        %1 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
-        %2 = comb.add %clk_cntr_q, %c-1_i16 : i16
-        %3 = comb.xor %arg16, %true : i1
-        %4 = comb.xor %arg17, %true : i1
-        %5 = comb.and %arg1, %1 : i1
-        %6 = comb.concat %c1_i2, %cpha_q : i2, i1
-        %7 = comb.xor %arg15, %true : i1
-        %8 = comb.mux %7, %c-1_i3, %c-4_i3 : i3
-        %9 = comb.icmp eq %arg14, %csid_q : i1
-        %10 = comb.and %9, %arg15 : i1
-        %11 = comb.mux %10, %6, %8 : i3
-        %12 = comb.or %10, %7 : i1
-        %13 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %14 = comb.xor %csaat_q, %true : i1
-        %15 = comb.mux %13, %c1_i3, %c-2_i3 : i3
-        %16 = comb.xor %arg18, %true : i1
-        %17 = comb.and %5, %16 : i1
-        %18 = comb.mux %14, %c-4_i3, %11 : i3
-        %19 = comb.xor %5, %true : i1
-        %20 = comb.and %16, %19 : i1
-        %21 = comb.xor %20, %true : i1
-        %c3_i3_0 = hw.constant 3 : i3
-        %22 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %23 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
-        %24 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
-        %25 = comb.add %byte_cntr_cpha0_q, %c-1_i20 : i20
-        %26 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %27 = comb.or %arg18, %5 : i1
-        %28 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %29 = comb.and %cmd_wr_en_q, %22 : i1
-        %30 = comb.xor %22, %true : i1
-        %31 = comb.icmp ne %24, %c0_i20 : i20
-        %32 = comb.or %30, %31, %cpha_q : i1
-        %33 = comb.and %17, %32 : i1
-        %34 = comb.mux %33, %c2_i3, %15 : i3
-        %35 = comb.xor %32, %true : i1
-        %36 = comb.and %35, %17 : i1
-        %37 = comb.mux %36, %18, %34 : i3
-        %38 = comb.mux %arg18, %c0_i3, %37 : i3
-        %39 = comb.mux %20, %c3_i3_0, %38 : i3
-        %40 = comb.icmp ne %39, %c3_i3_0 : i3
-        %41 = comb.and %16, %40 : i1
-        %true_1 = hw.constant true
-        %42 = comb.xor %33, %true_1 : i1
-        %true_2 = hw.constant true
-        %43 = comb.xor %36, %true_2 : i1
-        %true_3 = hw.constant true
-        %44 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %45 = comb.xor %20, %true_4 : i1
-        %46 = comb.and %45, %44, %43, %42, %13 : i1
-        %true_5 = hw.constant true
-        %47 = comb.xor %cpha_q, %true_5 : i1
-        %48 = comb.and %csaat_q, %10, %47 : i1
-        %49 = comb.mux %36, %48, %33 : i1
-        %true_6 = hw.constant true
-        %50 = comb.xor %arg18, %true_6 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %20, %true_7 : i1
-        %52 = comb.and %51, %50, %49 : i1
-        %53 = comb.and %52, %22 : i1
-        %54 = comb.or %46, %53 : i1
-        %55 = comb.and %41, %54 : i1
-        %56 = comb.and %41, %52, %23 : i1
-        %57 = comb.and %41, %22 : i1
-        %true_8 = hw.constant true
-        %58 = comb.xor %arg18, %true_8 : i1
-        %59 = comb.and %58, %36, %csaat_q, %10, %cpha_q : i1
-        %60 = comb.or %20, %59 : i1
-        %61 = comb.and %41, %60, %22 : i1
-        %62 = comb.and %41, %60, %23 : i1
-        %63 = comb.mux %57, %25, %byte_cntr_cpha0_q : i20
-        %true_9 = hw.constant true
-        %64 = comb.xor %33, %true_9 : i1
-        %true_10 = hw.constant true
-        %65 = comb.xor %36, %true_10 : i1
-        %true_11 = hw.constant true
-        %66 = comb.xor %arg18, %true_11 : i1
-        %true_12 = hw.constant true
-        %67 = comb.xor %20, %true_12 : i1
-        %68 = comb.and %67, %66, %65, %64, %13 : i1
-        %69 = comb.extract %8 from 0 : (i3) -> i2
-        %c0_i2_13 = hw.constant 0 : i2
-        %70 = comb.icmp eq %69, %c0_i2_13 : i2
+        %17 = comb.xor %isFirstCycle, %true : i1
+        %18 = comb.and %17, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %13 : i1
+        %19 = comb.xor %18, %true : i1
+        %20 = comb.and %arg1, %0 : i1
+        %21 = comb.xor %15, %true : i1
+        %22 = comb.icmp ne %16, %c0_i20 : i20
+        %23 = comb.or %21, %22, %cpha_q : i1
+        %24 = comb.and %20, %13 : i1
+        %25 = comb.and %24, %23 : i1
+        %26 = comb.mux %25, %c2_i3, %12 : i3
+        %27 = comb.xor %23, %true : i1
+        %28 = comb.and %27, %24 : i1
+        %29 = comb.mux %28, %14, %26 : i3
+        %30 = comb.mux %arg18, %c0_i3, %29 : i3
+        %31 = comb.xor %20, %true : i1
+        %32 = comb.and %13, %31 : i1
+        %33 = comb.mux %32, %c3_i3, %30 : i3
+        %34 = comb.xor %32, %true : i1
+        %35 = comb.icmp ne %33, %c3_i3 : i3
+        %36 = comb.and %13, %35 : i1
+        %true_13 = hw.constant true
+        %37 = comb.xor %25, %true_13 : i1
         %true_14 = hw.constant true
-        %71 = comb.xor %10, %true_14 : i1
-        %72 = comb.and %71, %70 : i1
-        %73 = comb.or %14, %72 : i1
+        %38 = comb.xor %28, %true_14 : i1
         %true_15 = hw.constant true
-        %74 = comb.xor %arg18, %true_15 : i1
+        %39 = comb.xor %arg18, %true_15 : i1
         %true_16 = hw.constant true
-        %75 = comb.xor %20, %true_16 : i1
-        %76 = comb.and %75, %74, %36, %73 : i1
-        %77 = comb.extract %8 from 0 : (i3) -> i2
-        %c1_i2_17 = hw.constant 1 : i2
-        %78 = comb.icmp eq %77, %c1_i2_17 : i2
+        %40 = comb.xor %32, %true_16 : i1
+        %41 = comb.and %40, %39, %38, %37, %10 : i1
+        %true_17 = hw.constant true
+        %42 = comb.xor %cpha_q, %true_17 : i1
+        %43 = comb.and %csaat_q, %7, %42 : i1
+        %44 = comb.mux %28, %43, %25 : i1
         %true_18 = hw.constant true
-        %79 = comb.xor %10, %true_18 : i1
+        %45 = comb.xor %arg18, %true_18 : i1
         %true_19 = hw.constant true
-        %80 = comb.xor %arg18, %true_19 : i1
+        %46 = comb.xor %32, %true_19 : i1
+        %47 = comb.and %46, %45, %44, %15 : i1
+        %48 = comb.or %41, %47 : i1
+        %49 = comb.and %36, %48 : i1
         %true_20 = hw.constant true
-        %81 = comb.xor %20, %true_20 : i1
-        %82 = comb.and %81, %80, %36, %csaat_q, %79, %78 : i1
-        %83 = comb.extract %8 from 0 : (i3) -> i2
-        %c-2_i2_21 = hw.constant -2 : i2
-        %84 = comb.icmp eq %83, %c-2_i2_21 : i2
+        %50 = comb.xor %arg18, %true_20 : i1
+        %51 = comb.and %50, %28, %csaat_q, %7, %cpha_q : i1
+        %52 = comb.or %32, %51 : i1
+        %53 = comb.and %36, %52, %15 : i1
+        verif.assert %19 : i1
+        %54 = comb.and %arg15, %34, %28, %csaat_q, %9 : i1
+        %55 = comb.mux %54, %arg12, %cpha_q : i1
+        %56 = comb.mux %54, %arg3, %cmd_wr_en_q : i1
+        %57 = comb.xor %55, %true : i1
+        %58 = comb.mux %57, %49, %53 : i1
+        %59 = comb.mux %57, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %60 = comb.and %58, %56, %1 : i1
+        %61 = comb.and %57, %36, %15, %59, %2 : i1
+        %62 = comb.or %61, %60, %32 : i1
+        %63 = comb.extract %5 from 0 : (i3) -> i2
+        %c-1_i2 = hw.constant -1 : i2
+        %64 = comb.icmp eq %63, %c-1_i2 : i2
+        %true_21 = hw.constant true
+        %65 = comb.xor %7, %true_21 : i1
         %true_22 = hw.constant true
-        %85 = comb.xor %10, %true_22 : i1
-        %86 = comb.and %csaat_q, %85, %84 : i1
+        %66 = comb.xor %arg18, %true_22 : i1
         %true_23 = hw.constant true
-        %87 = comb.xor %13, %true_23 : i1
-        %true_24 = hw.constant true
-        %88 = comb.xor %33, %true_24 : i1
-        %89 = comb.and %88, %87 : i1
-        %90 = comb.mux %36, %86, %89 : i1
-        %true_25 = hw.constant true
-        %91 = comb.xor %arg18, %true_25 : i1
-        %true_26 = hw.constant true
-        %92 = comb.xor %20, %true_26 : i1
-        %93 = comb.and %40, %17 : i1
-        %94 = comb.xor %68, %true : i1
-        %95 = comb.and %94, %93 : i1
-        %96 = comb.xor %76, %true : i1
-        %97 = comb.and %96, %95 : i1
-        %98 = comb.xor %82, %true : i1
-        %99 = comb.and %98, %97, %92, %91, %90 : i1
-        %100 = comb.and %97, %82 : i1
-        %101 = comb.or %100, %99 : i1
-        %102 = comb.and %95, %76 : i1
-        %103 = comb.and %93, %68 : i1
-        %104 = comb.xor %40, %true : i1
-        %105 = comb.and %28, %104, %17 : i1
-        %true_27 = hw.constant true
-        %106 = comb.xor %cpha_q, %true_27 : i1
-        %107 = comb.and %csaat_q, %10, %106 : i1
-        %108 = comb.mux %36, %107, %33 : i1
-        %true_28 = hw.constant true
-        %109 = comb.xor %arg18, %true_28 : i1
-        %true_29 = hw.constant true
-        %110 = comb.xor %20, %true_29 : i1
-        %111 = comb.and %110, %109, %108 : i1
-        %true_30 = hw.constant true
-        %112 = comb.xor %arg18, %true_30 : i1
-        %113 = comb.and %112, %36, %csaat_q, %10, %cpha_q : i1
-        %114 = comb.or %20, %113 : i1
-        %115 = comb.extract %8 from 0 : (i3) -> i2
-        %c-1_i2_31 = hw.constant -1 : i2
-        %116 = comb.icmp eq %115, %c-1_i2_31 : i2
-        %true_32 = hw.constant true
-        %117 = comb.xor %10, %true_32 : i1
-        %true_33 = hw.constant true
-        %118 = comb.xor %arg18, %true_33 : i1
-        %true_34 = hw.constant true
-        %119 = comb.xor %20, %true_34 : i1
-        %120 = comb.icmp ne %39, %c-4_i3 : i3
-        %121 = comb.xor %111, %true : i1
-        %122 = comb.and %121, %94 : i1
-        %123 = comb.xor %114, %true : i1
-        %124 = comb.and %123, %122, %119, %118, %36, %csaat_q, %117, %116 : i1
-        %125 = comb.xor %124, %true : i1
-        %126 = comb.and %122, %114 : i1
-        %127 = comb.xor %126, %true : i1
-        %128 = comb.and %94, %111 : i1
-        %129 = comb.xor %128, %true : i1
-        %130 = comb.and %94, %129, %127, %125, %120 : i1
-        %131 = comb.icmp ne %39, %c3_i3 : i3
-        %132 = comb.and %arg15, %21, %36, %csaat_q, %12 : i1
-        %133 = comb.mux %132, %arg14, %csid_q : i1
-        %134 = comb.mux %132, %arg13, %cpol_q : i1
-        %135 = comb.mux %132, %arg12, %cpha_q : i1
-        %136 = comb.mux %132, %arg8, %csnidle_q : i4
-        %137 = comb.mux %132, %arg9, %csnlead_q : i4
-        %138 = comb.mux %132, %arg10, %csntrail_q : i4
-        %139 = comb.mux %132, %arg7, %clkdiv_q : i16
-        %140 = comb.mux %132, %arg3, %cmd_wr_en_q : i1
-        %141 = comb.mux %132, %arg4, %cmd_rd_en_q : i1
-        %142 = comb.mux %132, %arg2, %cmd_speed_q : i2
-        %143 = comb.mux %1, %139, %2 : i16
-        %144 = comb.mux %132, %arg7, %143 : i16
-        %145 = comb.mux %0, %clk_cntr_q, %144 : i16
-        %146 = comb.mux %arg18, %c0_i16, %145 : i16
-        %147 = comb.xor %135, %true : i1
-        %148 = comb.mux %147, %55, %61 : i1
-        %149 = comb.and %147, %57 : i1
-        %150 = comb.mux %147, %56, %62 : i1
-        %151 = comb.mux %147, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %152 = comb.xor %141, %true : i1
-        %153 = comb.xor %140, %true : i1
-        %154 = comb.and %152, %153 : i1
-        %155 = comb.icmp eq %arg2, %c0_i2 : i2
-        %156 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %157 = comb.mux %132, %155, %156 : i1
-        %158 = comb.icmp eq %arg2, %c1_i2 : i2
-        %159 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %160 = comb.mux %132, %158, %159 : i1
-        %161 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %162 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %163 = comb.mux %132, %161, %162 : i1
-        %164 = comb.mux %163, %c-4_i3, %c1_i3 : i3
-        %165 = comb.xor %154, %true : i1
-        %166 = comb.xor %157, %true : i1
-        %167 = comb.and %166, %165, %160 : i1
-        %168 = comb.mux %167, %c2_i3, %164 : i3
-        %169 = comb.mux %167, %c-2_i3, %164 : i3
-        %170 = comb.and %165, %157 : i1
-        %171 = comb.mux %170, %c1_i3, %168 : i3
-        %172 = comb.mux %170, %c-1_i3, %169 : i3
-        %173 = comb.mux %154, %c0_i3, %171 : i3
-        %174 = comb.mux %154, %c0_i3, %172 : i3
-        %175 = comb.sub %bit_cntr_q, %173 : i3
-        %176 = comb.mux %150, %175, %bit_cntr_q : i3
-        %177 = comb.mux %148, %174, %176 : i3
-        %178 = comb.mux %19, %bit_cntr_q, %177 : i3
-        %179 = comb.mux %arg18, %c0_i3, %178 : i3
-        %180 = comb.mux %132, %arg5, %63 : i20
-        %181 = comb.mux %19, %byte_cntr_cpha0_q, %180 : i20
-        %182 = comb.mux %arg18, %c0_i20, %181 : i20
-        %183 = comb.mux %132, %arg5, %byte_cntr_cpha1_q : i20
-        %184 = comb.mux %arg18, %c0_i20, %183 : i20
-        %185 = comb.mux %101, %136, %c0_i4 : i4
-        %186 = comb.mux %102, %138, %185 : i4
-        %187 = comb.mux %103, %137, %186 : i4
-        %188 = comb.mux %27, %187, %wait_cntr_q : i4
-        %189 = comb.mux %arg18, %c0_i4, %188 : i4
-        %190 = comb.mux %105, %26, %189 : i4
-        %191 = comb.mux %134, %131, %60 : i1
-        %192 = comb.xor %149, %true : i1
-        %193 = comb.and %192, %cmd_wr_en_last_bit : i1
-        %194 = comb.or %29, %193 : i1
-        %195 = comb.icmp eq %arg2, %c0_i2 : i2
-        %196 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %197 = comb.mux %132, %195, %196 : i1
-        %198 = comb.and %141, %140 : i1
-        %199 = comb.xor %198, %true : i1
-        %200 = comb.or %197, %199 : i1
-        verif.assert %200 : i1
-        %201 = comb.icmp ne %142, %c-1_i2 : i2
-        verif.assert %201 : i1
-        %202 = comb.xor %133, %true : i1
-        verif.assert %202 : i1
-        fsm.update %cmd_wr_en_last_bit, %194 : i1
-        %203 = comb.and %148, %140, %3 : i1
-        %204 = comb.and %149, %151, %4 : i1
-        %205 = comb.or %204, %203 : i1
-        %206 = comb.xor %205, %true : i1
-        %207 = comb.and %150, %206 : i1
-        %208 = comb.and %132, %206 : i1
-        %209 = comb.mux %208, %arg14, %csid_q : i1
-        %210 = comb.mux %208, %arg13, %cpol_q : i1
-        %211 = comb.mux %208, %arg12, %cpha_q : i1
-        %212 = comb.mux %208, %arg11, %full_cyc_q : i1
-        %213 = comb.mux %208, %arg8, %csnidle_q : i4
-        %214 = comb.mux %208, %arg9, %csnlead_q : i4
-        %215 = comb.mux %208, %arg10, %csntrail_q : i4
-        %216 = comb.mux %208, %arg7, %clkdiv_q : i16
-        %217 = comb.mux %208, %arg6, %csaat_q : i1
-        %218 = comb.mux %208, %arg3, %cmd_wr_en_q : i1
-        %219 = comb.mux %208, %arg4, %cmd_rd_en_q : i1
-        %220 = comb.mux %208, %arg2, %cmd_speed_q : i2
-        %221 = comb.mux %208, %arg5, %cmd_len_q : i20
-        %222 = comb.mux %205, %clk_cntr_q, %146 : i16
-        %223 = comb.and %40, %206 : i1
-        %224 = comb.mux bin %223, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %225 = comb.mux %205, %bit_cntr_q, %179 : i3
-        %226 = comb.mux %205, %byte_cntr_cpha0_q, %182 : i20
-        %227 = comb.mux %205, %byte_cntr_cpha1_q, %184 : i20
-        %228 = comb.mux %205, %wait_cntr_q, %190 : i4
-        %229 = comb.or %148, %207 : i1
-        %230 = comb.and %5, %206 : i1
-        %231 = comb.mux %230, %229, %sample_en_q : i1
-        %232 = comb.mux %230, %sample_en_q, %sample_en_q2 : i1
-        %233 = comb.mux bin %205, %u_sck_flop2Fq_o, %191 : i1
-        %234 = comb.mux %206, %130, %csb_q : i1
-        %235 = comb.or %133, %234 : i1
-        fsm.update %csb_q, %235 : i1
-        fsm.update %u_sck_flop2Fq_o, %233 : i1
-        fsm.update %sample_en_q2, %232 : i1
-        fsm.update %sample_en_q, %231 : i1
-        fsm.update %wait_cntr_q, %228 : i4
-        fsm.update %byte_cntr_cpha1_q, %227 : i20
-        fsm.update %byte_cntr_cpha0_q, %226 : i20
-        fsm.update %bit_cntr_q, %225 : i3
-        fsm.update %segment_rd_en_cpha1, %224 : i1
-        fsm.update %clk_cntr_q, %222 : i16
-        fsm.update %cmd_len_q, %221 : i20
-        fsm.update %cmd_speed_q, %220 : i2
-        fsm.update %cmd_wr_en_q, %218 : i1
-        fsm.update %cmd_rd_en_q, %219 : i1
-        fsm.update %csaat_q, %217 : i1
-        fsm.update %clkdiv_q, %216 : i16
-        fsm.update %csntrail_q, %215 : i4
-        fsm.update %csnlead_q, %214 : i4
-        fsm.update %csnidle_q, %213 : i4
-        fsm.update %full_cyc_q, %212 : i1
-        fsm.update %cpha_q, %211 : i1
-        fsm.update %cpol_q, %210 : i1
-        fsm.update %csid_q, %209 : i1
+        %67 = comb.xor %62, %true_23 : i1
+        %68 = comb.and %67, %66, %28, %csaat_q, %65, %64 : i1
+        fsm.return %68
+      } action {
+        %true = hw.constant true
+        %true_13 = hw.constant true
+        %false_14 = hw.constant false
+        %c0_i4 = hw.constant 0 : i4
+        %c0_i3 = hw.constant 0 : i3
+        %c-1_i20 = hw.constant -1 : i20
+        %true_15 = hw.constant true
+        %0 = comb.xor %arg17, %true_15 : i1
+        %1 = comb.xor %arg15, %true_15 : i1
+        %false_16 = hw.constant false
+        %2 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
+        %3 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %4 = comb.add %byte_cntr_cpha0_q, %c-1_i20 : i20
+        %5 = comb.and %cmd_wr_en_q, %3 : i1
+        %6 = comb.xor %isFirstCycle, %true_15 : i1
+        %7 = comb.and %6, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %8 = comb.xor %7, %true_15 : i1
+        verif.assert %8 : i1
+        fsm.update %_sh1_10, %true : i1
+        fsm.update %_sh1_8, %1 : i1
+        fsm.update %_sh1_6, %2 : i1
+        fsm.update %_sh1, %false_16 : i1
+        fsm.update %isFirstCycle, %false_14 : i1
+        %9 = comb.xor %cpha_q, %true_15 : i1
+        %10 = comb.and %9, %3 : i1
+        %11 = comb.mux %9, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %12 = comb.mux %arg15, %csntrail_q, %c0_i4 : i4
+        %13 = comb.xor %10, %true_15 : i1
+        %14 = comb.and %13, %cmd_wr_en_last_bit : i1
+        %15 = comb.or %5, %14 : i1
+        fsm.update %cmd_wr_en_last_bit, %15 : i1
+        %16 = comb.and %10, %11, %0 : i1
+        %17 = comb.xor %16, %true_15 : i1
+        %18 = comb.mux %16, %clk_cntr_q, %clkdiv_q : i16
+        %19 = comb.mux bin %16, %segment_rd_en_cpha1, %cmd_rd_en_q : i1
+        %true_17 = hw.constant true
+        %20 = comb.xor %3, %true_17 : i1
+        %21 = comb.or %16, %20 : i1
+        %22 = comb.mux %21, %byte_cntr_cpha0_q, %4 : i20
+        %23 = comb.mux %16, %wait_cntr_q, %12 : i4
+        %24 = comb.and %16, %sample_en_q : i1
+        %25 = comb.mux %17, %sample_en_q, %sample_en_q2 : i1
+        %26 = comb.mux bin %16, %u_sck_flop2Fq_o, %cpol_q : i1
+        %27 = comb.and %16, %csb_q : i1
+        %28 = comb.or %csid_q, %27 : i1
+        fsm.update %_sh1_12, %17 : i1
+        fsm.update %csb_q, %28 : i1
+        fsm.update %u_sck_flop2Fq_o, %26 : i1
+        fsm.update %sample_en_q2, %25 : i1
+        fsm.update %sample_en_q, %24 : i1
+        fsm.update %wait_cntr_q, %23 : i4
+        fsm.update %byte_cntr_cpha1_q, %byte_cntr_cpha1_q : i20
+        fsm.update %byte_cntr_cpha0_q, %22 : i20
+        fsm.update %bit_cntr_q, %bit_cntr_q : i3
+        fsm.update %segment_rd_en_cpha1, %19 : i1
+        fsm.update %clk_cntr_q, %18 : i16
+        fsm.update %cmd_speed_q, %cmd_speed_q : i2
+        fsm.update %cmd_wr_en_q, %cmd_wr_en_q : i1
+        fsm.update %cmd_rd_en_q, %cmd_rd_en_q : i1
+        fsm.update %true_13, %true_13 : i1
+        fsm.update %clkdiv_q, %clkdiv_q : i16
+        fsm.update %csntrail_q, %csntrail_q : i4
+        fsm.update %csnlead_q, %csnlead_q : i4
+        fsm.update %csnidle_q, %csnidle_q : i4
+        fsm.update %full_cyc_q, %full_cyc_q : i1
+        fsm.update %cpha_q, %cpha_q : i1
+        fsm.update %cpol_q, %cpol_q : i1
+        fsm.update %csid_q, %csid_q : i1
       }
       fsm.transition @state_6 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
@@ -2939,7 +2219,6 @@ module {
         %c-4_i3 = hw.constant -4 : i3
         %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %1 = comb.xor %arg16, %true : i1
@@ -2959,90 +2238,81 @@ module {
         %c3_i3 = hw.constant 3 : i3
         %15 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
         %16 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
-        %17 = comb.and %arg1, %0 : i1
-        %18 = comb.xor %15, %true : i1
-        %19 = comb.icmp ne %16, %c0_i20 : i20
-        %20 = comb.or %18, %19, %cpha_q : i1
-        %21 = comb.and %17, %13 : i1
-        %22 = comb.and %21, %20 : i1
-        %23 = comb.mux %22, %c2_i3, %12 : i3
-        %24 = comb.xor %20, %true : i1
-        %25 = comb.and %24, %21 : i1
-        %26 = comb.mux %25, %14, %23 : i3
-        %27 = comb.mux %arg18, %c0_i3, %26 : i3
-        %28 = comb.xor %17, %true : i1
-        %29 = comb.and %13, %28 : i1
-        %30 = comb.mux %29, %c3_i3, %27 : i3
-        %31 = comb.xor %29, %true : i1
-        %32 = comb.icmp ne %30, %c3_i3 : i3
-        %33 = comb.and %13, %32 : i1
-        %true_0 = hw.constant true
-        %34 = comb.xor %22, %true_0 : i1
-        %true_1 = hw.constant true
-        %35 = comb.xor %25, %true_1 : i1
-        %true_2 = hw.constant true
-        %36 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %37 = comb.xor %29, %true_3 : i1
-        %38 = comb.and %37, %36, %35, %34, %10 : i1
-        %true_4 = hw.constant true
-        %39 = comb.xor %cpha_q, %true_4 : i1
-        %40 = comb.and %csaat_q, %7, %39 : i1
-        %41 = comb.mux %25, %40, %22 : i1
-        %true_5 = hw.constant true
-        %42 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %43 = comb.xor %29, %true_6 : i1
-        %44 = comb.and %43, %42, %41, %15 : i1
-        %45 = comb.or %38, %44 : i1
-        %46 = comb.and %33, %45 : i1
-        %true_7 = hw.constant true
-        %47 = comb.xor %arg18, %true_7 : i1
-        %48 = comb.and %47, %25, %csaat_q, %7, %cpha_q : i1
-        %49 = comb.or %29, %48 : i1
-        %50 = comb.and %33, %49, %15 : i1
-        %51 = comb.and %arg15, %31, %25, %csaat_q, %9 : i1
-        %52 = comb.mux %51, %arg14, %csid_q : i1
-        %53 = comb.mux %51, %arg12, %cpha_q : i1
-        %54 = comb.mux %51, %arg3, %cmd_wr_en_q : i1
-        %55 = comb.mux %51, %arg4, %cmd_rd_en_q : i1
-        %56 = comb.mux %51, %arg2, %cmd_speed_q : i2
-        %57 = comb.xor %53, %true : i1
-        %58 = comb.mux %57, %46, %50 : i1
+        %17 = comb.xor %isFirstCycle, %true : i1
+        %18 = comb.and %17, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %13 : i1
+        %19 = comb.xor %18, %true : i1
+        %20 = comb.and %arg1, %0 : i1
+        %21 = comb.xor %15, %true : i1
+        %22 = comb.icmp ne %16, %c0_i20 : i20
+        %23 = comb.or %21, %22, %cpha_q : i1
+        %24 = comb.and %20, %13 : i1
+        %25 = comb.and %24, %23 : i1
+        %26 = comb.mux %25, %c2_i3, %12 : i3
+        %27 = comb.xor %23, %true : i1
+        %28 = comb.and %27, %24 : i1
+        %29 = comb.mux %28, %14, %26 : i3
+        %30 = comb.mux %arg18, %c0_i3, %29 : i3
+        %31 = comb.xor %20, %true : i1
+        %32 = comb.and %13, %31 : i1
+        %33 = comb.mux %32, %c3_i3, %30 : i3
+        %34 = comb.xor %32, %true : i1
+        %35 = comb.icmp ne %33, %c3_i3 : i3
+        %36 = comb.and %13, %35 : i1
+        %true_13 = hw.constant true
+        %37 = comb.xor %25, %true_13 : i1
+        %true_14 = hw.constant true
+        %38 = comb.xor %28, %true_14 : i1
+        %true_15 = hw.constant true
+        %39 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %40 = comb.xor %32, %true_16 : i1
+        %41 = comb.and %40, %39, %38, %37, %10 : i1
+        %true_17 = hw.constant true
+        %42 = comb.xor %cpha_q, %true_17 : i1
+        %43 = comb.and %csaat_q, %7, %42 : i1
+        %44 = comb.mux %28, %43, %25 : i1
+        %true_18 = hw.constant true
+        %45 = comb.xor %arg18, %true_18 : i1
+        %true_19 = hw.constant true
+        %46 = comb.xor %32, %true_19 : i1
+        %47 = comb.and %46, %45, %44, %15 : i1
+        %48 = comb.or %41, %47 : i1
+        %49 = comb.and %36, %48 : i1
+        %true_20 = hw.constant true
+        %50 = comb.xor %arg18, %true_20 : i1
+        %51 = comb.and %50, %28, %csaat_q, %7, %cpha_q : i1
+        %52 = comb.or %32, %51 : i1
+        %53 = comb.and %36, %52, %15 : i1
+        verif.assert %19 : i1
+        %54 = comb.and %arg15, %34, %28, %csaat_q, %9 : i1
+        %55 = comb.mux %54, %arg12, %cpha_q : i1
+        %56 = comb.mux %54, %arg3, %cmd_wr_en_q : i1
+        %57 = comb.xor %55, %true : i1
+        %58 = comb.mux %57, %49, %53 : i1
         %59 = comb.mux %57, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %60 = comb.icmp eq %arg2, %c0_i2 : i2
-        %61 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %62 = comb.mux %51, %60, %61 : i1
-        %63 = comb.and %55, %54 : i1
-        %64 = comb.xor %63, %true : i1
-        %65 = comb.or %62, %64 : i1
-        verif.assert %65 : i1
-        %66 = comb.icmp ne %56, %c-1_i2 : i2
-        verif.assert %66 : i1
-        %67 = comb.xor %52, %true : i1
-        verif.assert %67 : i1
-        %68 = comb.and %58, %54, %1 : i1
-        %69 = comb.and %57, %33, %15, %59, %2 : i1
-        %70 = comb.or %69, %68, %29 : i1
-        %71 = comb.extract %5 from 0 : (i3) -> i2
+        %60 = comb.and %58, %56, %1 : i1
+        %61 = comb.and %57, %36, %15, %59, %2 : i1
+        %62 = comb.or %61, %60, %32 : i1
+        %63 = comb.extract %5 from 0 : (i3) -> i2
         %c-2_i2 = hw.constant -2 : i2
-        %72 = comb.icmp eq %71, %c-2_i2 : i2
-        %true_8 = hw.constant true
-        %73 = comb.xor %7, %true_8 : i1
-        %74 = comb.and %csaat_q, %73, %72 : i1
-        %true_9 = hw.constant true
-        %75 = comb.xor %10, %true_9 : i1
-        %true_10 = hw.constant true
-        %76 = comb.xor %22, %true_10 : i1
-        %77 = comb.and %76, %75 : i1
-        %78 = comb.mux %25, %74, %77 : i1
-        %true_11 = hw.constant true
-        %79 = comb.xor %arg18, %true_11 : i1
-        %true_12 = hw.constant true
-        %80 = comb.xor %70, %true_12 : i1
-        %81 = comb.and %80, %79, %78 : i1
-        fsm.return %81
+        %64 = comb.icmp eq %63, %c-2_i2 : i2
+        %true_21 = hw.constant true
+        %65 = comb.xor %7, %true_21 : i1
+        %66 = comb.and %csaat_q, %65, %64 : i1
+        %true_22 = hw.constant true
+        %67 = comb.xor %10, %true_22 : i1
+        %true_23 = hw.constant true
+        %68 = comb.xor %25, %true_23 : i1
+        %69 = comb.and %68, %67 : i1
+        %70 = comb.mux %28, %66, %69 : i1
+        %true_24 = hw.constant true
+        %71 = comb.xor %arg18, %true_24 : i1
+        %true_25 = hw.constant true
+        %72 = comb.xor %62, %true_25 : i1
+        %73 = comb.and %72, %71, %70 : i1
+        fsm.return %73
       } action {
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
@@ -3056,7 +2326,6 @@ module {
         %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i16 = hw.constant -1 : i16
         %c-1_i20 = hw.constant -1 : i20
         %c-1_i4 = hw.constant -1 : i4
@@ -3074,296 +2343,234 @@ module {
         %10 = comb.and %9, %arg15 : i1
         %11 = comb.mux %10, %6, %8 : i3
         %12 = comb.or %10, %7 : i1
+        %false_14 = hw.constant false
         %13 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %14 = comb.xor %csaat_q, %true : i1
         %15 = comb.mux %13, %c1_i3, %c-2_i3 : i3
-        %16 = comb.xor %arg18, %true : i1
-        %17 = comb.and %5, %16 : i1
-        %18 = comb.mux %14, %c-4_i3, %11 : i3
-        %19 = comb.xor %5, %true : i1
-        %20 = comb.and %16, %19 : i1
-        %21 = comb.xor %20, %true : i1
-        %c3_i3_0 = hw.constant 3 : i3
-        %22 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %23 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
-        %24 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
-        %25 = comb.add %byte_cntr_cpha0_q, %c-1_i20 : i20
-        %26 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %27 = comb.or %arg18, %5 : i1
-        %28 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %29 = comb.and %cmd_wr_en_q, %22 : i1
-        %30 = comb.xor %22, %true : i1
-        %31 = comb.icmp ne %24, %c0_i20 : i20
-        %32 = comb.or %30, %31, %cpha_q : i1
-        %33 = comb.and %17, %32 : i1
-        %34 = comb.mux %33, %c2_i3, %15 : i3
-        %35 = comb.xor %32, %true : i1
-        %36 = comb.and %35, %17 : i1
-        %37 = comb.mux %36, %18, %34 : i3
-        %38 = comb.mux %arg18, %c0_i3, %37 : i3
-        %39 = comb.mux %20, %c3_i3_0, %38 : i3
-        %40 = comb.icmp ne %39, %c3_i3_0 : i3
-        %41 = comb.and %16, %40 : i1
-        %true_1 = hw.constant true
-        %42 = comb.xor %33, %true_1 : i1
-        %true_2 = hw.constant true
-        %43 = comb.xor %36, %true_2 : i1
-        %true_3 = hw.constant true
-        %44 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %45 = comb.xor %20, %true_4 : i1
-        %46 = comb.and %45, %44, %43, %42, %13 : i1
-        %true_5 = hw.constant true
-        %47 = comb.xor %cpha_q, %true_5 : i1
-        %48 = comb.and %csaat_q, %10, %47 : i1
-        %49 = comb.mux %36, %48, %33 : i1
-        %true_6 = hw.constant true
-        %50 = comb.xor %arg18, %true_6 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %20, %true_7 : i1
-        %52 = comb.and %51, %50, %49 : i1
-        %53 = comb.and %52, %22 : i1
-        %54 = comb.or %46, %53 : i1
-        %55 = comb.and %41, %54 : i1
-        %56 = comb.and %41, %52, %23 : i1
-        %57 = comb.and %41, %22 : i1
-        %true_8 = hw.constant true
-        %58 = comb.xor %arg18, %true_8 : i1
-        %59 = comb.and %58, %36, %csaat_q, %10, %cpha_q : i1
-        %60 = comb.or %20, %59 : i1
-        %61 = comb.and %41, %60, %22 : i1
-        %62 = comb.and %41, %60, %23 : i1
-        %63 = comb.mux %57, %25, %byte_cntr_cpha0_q : i20
-        %true_9 = hw.constant true
-        %64 = comb.xor %33, %true_9 : i1
-        %true_10 = hw.constant true
-        %65 = comb.xor %36, %true_10 : i1
-        %true_11 = hw.constant true
-        %66 = comb.xor %arg18, %true_11 : i1
-        %true_12 = hw.constant true
-        %67 = comb.xor %20, %true_12 : i1
-        %68 = comb.and %67, %66, %65, %64, %13 : i1
-        %69 = comb.extract %8 from 0 : (i3) -> i2
-        %c0_i2_13 = hw.constant 0 : i2
-        %70 = comb.icmp eq %69, %c0_i2_13 : i2
-        %true_14 = hw.constant true
-        %71 = comb.xor %10, %true_14 : i1
-        %72 = comb.and %71, %70 : i1
-        %73 = comb.or %14, %72 : i1
-        %true_15 = hw.constant true
-        %74 = comb.xor %arg18, %true_15 : i1
+        %16 = comb.mux %14, %c-4_i3, %11 : i3
+        %17 = comb.xor %5, %true : i1
+        %c3_i3_15 = hw.constant 3 : i3
         %true_16 = hw.constant true
-        %75 = comb.xor %20, %true_16 : i1
-        %76 = comb.and %75, %74, %36, %73 : i1
-        %77 = comb.extract %8 from 0 : (i3) -> i2
-        %c1_i2_17 = hw.constant 1 : i2
-        %78 = comb.icmp eq %77, %c1_i2_17 : i2
+        %true_17 = hw.constant true
         %true_18 = hw.constant true
-        %79 = comb.xor %10, %true_18 : i1
-        %true_19 = hw.constant true
-        %80 = comb.xor %arg18, %true_19 : i1
+        %18 = comb.xor %cpha_q, %true_18 : i1
+        %19 = comb.and %csaat_q, %10, %18 : i1
+        %20 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %21 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
+        %22 = comb.icmp eq %arg2, %c0_i2 : i2
+        %23 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %24 = comb.icmp eq %arg2, %c1_i2 : i2
+        %25 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %26 = comb.icmp eq %arg2, %c-2_i2 : i2
+        %27 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %28 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
+        %29 = comb.add %byte_cntr_cpha0_q, %c-1_i20 : i20
+        %30 = comb.extract %8 from 0 : (i3) -> i2
+        %c0_i2_19 = hw.constant 0 : i2
+        %31 = comb.icmp eq %30, %c0_i2_19 : i2
         %true_20 = hw.constant true
-        %81 = comb.xor %20, %true_20 : i1
-        %82 = comb.and %81, %80, %36, %csaat_q, %79, %78 : i1
-        %83 = comb.extract %8 from 0 : (i3) -> i2
-        %c-2_i2_21 = hw.constant -2 : i2
-        %84 = comb.icmp eq %83, %c-2_i2_21 : i2
+        %32 = comb.xor %10, %true_20 : i1
+        %33 = comb.and %32, %31 : i1
+        %34 = comb.or %14, %33 : i1
+        %35 = comb.extract %8 from 0 : (i3) -> i2
+        %c1_i2_21 = hw.constant 1 : i2
+        %36 = comb.icmp eq %35, %c1_i2_21 : i2
         %true_22 = hw.constant true
-        %85 = comb.xor %10, %true_22 : i1
-        %86 = comb.and %csaat_q, %85, %84 : i1
-        %true_23 = hw.constant true
-        %87 = comb.xor %13, %true_23 : i1
+        %37 = comb.xor %10, %true_22 : i1
+        %38 = comb.extract %8 from 0 : (i3) -> i2
+        %c-2_i2_23 = hw.constant -2 : i2
+        %39 = comb.icmp eq %38, %c-2_i2_23 : i2
         %true_24 = hw.constant true
-        %88 = comb.xor %33, %true_24 : i1
-        %89 = comb.and %88, %87 : i1
-        %90 = comb.mux %36, %86, %89 : i1
+        %40 = comb.xor %10, %true_24 : i1
+        %41 = comb.and %csaat_q, %40, %39 : i1
         %true_25 = hw.constant true
-        %91 = comb.xor %arg18, %true_25 : i1
+        %42 = comb.xor %13, %true_25 : i1
         %true_26 = hw.constant true
-        %92 = comb.xor %20, %true_26 : i1
-        %93 = comb.and %40, %17 : i1
-        %94 = comb.xor %68, %true : i1
-        %95 = comb.and %94, %93 : i1
-        %96 = comb.xor %76, %true : i1
-        %97 = comb.and %96, %95 : i1
-        %98 = comb.xor %82, %true : i1
-        %99 = comb.and %98, %97, %92, %91, %90 : i1
-        %100 = comb.and %97, %82 : i1
-        %101 = comb.or %100, %99 : i1
-        %102 = comb.and %95, %76 : i1
-        %103 = comb.and %93, %68 : i1
-        %104 = comb.xor %40, %true : i1
-        %105 = comb.and %28, %104, %17 : i1
+        %43 = comb.add %wait_cntr_q, %c-1_i4 : i4
+        %44 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
+        %45 = comb.extract %8 from 0 : (i3) -> i2
+        %c-1_i2 = hw.constant -1 : i2
+        %46 = comb.icmp eq %45, %c-1_i2 : i2
         %true_27 = hw.constant true
-        %106 = comb.xor %cpha_q, %true_27 : i1
-        %107 = comb.and %csaat_q, %10, %106 : i1
-        %108 = comb.mux %36, %107, %33 : i1
+        %47 = comb.xor %10, %true_27 : i1
+        %48 = comb.and %cmd_wr_en_q, %20 : i1
+        %49 = comb.xor %isFirstCycle, %true : i1
+        %50 = comb.and %49, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %51 = comb.xor %50, %true : i1
+        verif.assert %51 : i1
+        fsm.update %_sh1_10, %5 : i1
+        fsm.update %_sh1_8, %7 : i1
+        fsm.update %_sh1_6, %13 : i1
+        fsm.update %_sh1, %false_14 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        %52 = comb.xor %20, %true : i1
+        %53 = comb.icmp ne %28, %c0_i20 : i20
+        %54 = comb.or %52, %53, %cpha_q : i1
+        %55 = comb.and %5, %54 : i1
+        %56 = comb.mux %55, %c2_i3, %15 : i3
+        %57 = comb.xor %54, %true : i1
+        %58 = comb.and %57, %5 : i1
+        %59 = comb.mux %58, %16, %56 : i3
+        %60 = comb.mux %17, %c3_i3_15, %59 : i3
+        %61 = comb.icmp ne %60, %c3_i3_15 : i3
+        %62 = comb.xor %55, %true_16 : i1
+        %63 = comb.xor %58, %true_17 : i1
+        %64 = comb.and %5, %63, %62, %13 : i1
+        %65 = comb.mux %58, %19, %55 : i1
+        %66 = comb.and %5, %65 : i1
+        %67 = comb.and %66, %20 : i1
+        %68 = comb.or %64, %67 : i1
+        %69 = comb.and %61, %68 : i1
+        %70 = comb.and %61, %66, %21 : i1
+        %71 = comb.and %61, %20 : i1
+        %72 = comb.and %58, %csaat_q, %10, %cpha_q : i1
+        %73 = comb.or %17, %72 : i1
+        %74 = comb.and %61, %73, %20 : i1
+        %75 = comb.and %61, %73, %21 : i1
+        %76 = comb.mux %71, %29, %byte_cntr_cpha0_q : i20
+        %77 = comb.and %58, %34 : i1
+        %78 = comb.and %58, %csaat_q, %37, %36 : i1
+        %79 = comb.xor %55, %true_26 : i1
+        %80 = comb.and %79, %42 : i1
+        %81 = comb.mux %58, %41, %80 : i1
+        %82 = comb.and %61, %5 : i1
+        %83 = comb.xor %64, %true : i1
+        %84 = comb.and %83, %82 : i1
+        %85 = comb.xor %77, %true : i1
+        %86 = comb.and %85, %84 : i1
+        %87 = comb.xor %78, %true : i1
+        %88 = comb.and %87, %86, %81 : i1
+        %89 = comb.and %86, %78 : i1
+        %90 = comb.or %89, %88 : i1
+        %91 = comb.and %84, %77 : i1
+        %92 = comb.and %82, %64 : i1
+        %93 = comb.xor %61, %true : i1
+        %94 = comb.and %44, %93, %5 : i1
+        %95 = comb.icmp ne %60, %c-4_i3 : i3
+        %96 = comb.xor %66, %true : i1
+        %97 = comb.and %96, %83 : i1
+        %98 = comb.xor %73, %true : i1
+        %99 = comb.and %98, %97, %58, %csaat_q, %47, %46 : i1
+        %100 = comb.xor %99, %true : i1
+        %101 = comb.and %97, %73 : i1
+        %102 = comb.xor %101, %true : i1
+        %103 = comb.and %83, %66 : i1
+        %104 = comb.xor %103, %true : i1
+        %105 = comb.and %83, %104, %102, %100, %95 : i1
+        %106 = comb.icmp ne %60, %c3_i3 : i3
+        %107 = comb.and %arg15, %58, %csaat_q, %12 : i1
+        %108 = comb.mux %107, %arg14, %csid_q : i1
+        %109 = comb.mux %107, %arg13, %cpol_q : i1
+        %110 = comb.mux %107, %arg12, %cpha_q : i1
+        %111 = comb.mux %107, %arg8, %csnidle_q : i4
+        %112 = comb.mux %107, %arg9, %csnlead_q : i4
+        %113 = comb.mux %107, %arg10, %csntrail_q : i4
+        %114 = comb.mux %107, %arg7, %clkdiv_q : i16
+        %115 = comb.mux %107, %arg3, %cmd_wr_en_q : i1
+        %116 = comb.mux %107, %arg4, %cmd_rd_en_q : i1
+        %117 = comb.mux %1, %114, %2 : i16
+        %118 = comb.mux %107, %arg7, %117 : i16
+        %119 = comb.xor %110, %true : i1
+        %120 = comb.mux %119, %69, %74 : i1
+        %121 = comb.and %119, %71 : i1
+        %122 = comb.mux %119, %70, %75 : i1
+        %123 = comb.mux %119, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %124 = comb.xor %116, %true : i1
+        %125 = comb.xor %115, %true : i1
+        %126 = comb.and %124, %125 : i1
+        %127 = comb.mux %107, %22, %23 : i1
+        %128 = comb.mux %107, %24, %25 : i1
+        %129 = comb.mux %107, %26, %27 : i1
+        %130 = comb.mux %129, %c-4_i3, %c1_i3 : i3
+        %131 = comb.xor %126, %true : i1
+        %132 = comb.xor %127, %true : i1
+        %133 = comb.and %132, %131, %128 : i1
+        %134 = comb.mux %133, %c2_i3, %130 : i3
+        %135 = comb.mux %133, %c-2_i3, %130 : i3
+        %136 = comb.and %131, %127 : i1
+        %137 = comb.mux %136, %c1_i3, %134 : i3
+        %138 = comb.mux %136, %c-1_i3, %135 : i3
+        %139 = comb.mux %126, %c0_i3, %137 : i3
+        %140 = comb.mux %126, %c0_i3, %138 : i3
+        %141 = comb.sub %bit_cntr_q, %139 : i3
+        %142 = comb.mux %122, %141, %bit_cntr_q : i3
+        %143 = comb.mux %120, %140, %142 : i3
+        %144 = comb.mux %107, %arg5, %76 : i20
+        %145 = comb.mux %90, %111, %c0_i4 : i4
+        %146 = comb.mux %91, %113, %145 : i4
+        %147 = comb.mux %92, %112, %146 : i4
+        %148 = comb.mux %5, %147, %wait_cntr_q : i4
+        %149 = comb.mux %94, %43, %148 : i4
+        %150 = comb.mux %109, %106, %73 : i1
+        %151 = comb.xor %121, %true : i1
+        %152 = comb.and %151, %cmd_wr_en_last_bit : i1
+        %153 = comb.or %48, %152 : i1
+        fsm.update %cmd_wr_en_last_bit, %153 : i1
+        %154 = comb.and %120, %115, %3 : i1
+        %155 = comb.and %121, %123, %4 : i1
+        %156 = comb.or %155, %154 : i1
+        %157 = comb.xor %156, %true : i1
+        %158 = comb.and %122, %157 : i1
+        %159 = comb.and %107, %157 : i1
+        %160 = comb.mux %159, %arg14, %csid_q : i1
+        %161 = comb.mux %159, %arg13, %cpol_q : i1
+        %162 = comb.mux %159, %arg12, %cpha_q : i1
+        %163 = comb.mux %159, %arg11, %full_cyc_q : i1
+        %164 = comb.mux %159, %arg8, %csnidle_q : i4
+        %165 = comb.mux %159, %arg9, %csnlead_q : i4
+        %166 = comb.mux %159, %arg10, %csntrail_q : i4
+        %167 = comb.mux %159, %arg7, %clkdiv_q : i16
+        %168 = comb.mux %159, %arg6, %csaat_q : i1
+        %169 = comb.mux %159, %arg3, %cmd_wr_en_q : i1
+        %170 = comb.mux %159, %arg4, %cmd_rd_en_q : i1
+        %171 = comb.mux %159, %arg2, %cmd_speed_q : i2
+        %172 = comb.or %156, %0 : i1
+        %173 = comb.mux %172, %clk_cntr_q, %118 : i16
+        %174 = comb.and %61, %157 : i1
+        %175 = comb.mux bin %174, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %176 = comb.or %156, %17 : i1
+        %177 = comb.mux %176, %bit_cntr_q, %143 : i3
+        %178 = comb.or %156, %17 : i1
+        %179 = comb.mux %178, %byte_cntr_cpha0_q, %144 : i20
         %true_28 = hw.constant true
-        %109 = comb.xor %arg18, %true_28 : i1
-        %true_29 = hw.constant true
-        %110 = comb.xor %20, %true_29 : i1
-        %111 = comb.and %110, %109, %108 : i1
-        %true_30 = hw.constant true
-        %112 = comb.xor %arg18, %true_30 : i1
-        %113 = comb.and %112, %36, %csaat_q, %10, %cpha_q : i1
-        %114 = comb.or %20, %113 : i1
-        %115 = comb.extract %8 from 0 : (i3) -> i2
-        %c-1_i2_31 = hw.constant -1 : i2
-        %116 = comb.icmp eq %115, %c-1_i2_31 : i2
-        %true_32 = hw.constant true
-        %117 = comb.xor %10, %true_32 : i1
-        %true_33 = hw.constant true
-        %118 = comb.xor %arg18, %true_33 : i1
-        %true_34 = hw.constant true
-        %119 = comb.xor %20, %true_34 : i1
-        %120 = comb.icmp ne %39, %c-4_i3 : i3
-        %121 = comb.xor %111, %true : i1
-        %122 = comb.and %121, %94 : i1
-        %123 = comb.xor %114, %true : i1
-        %124 = comb.and %123, %122, %119, %118, %36, %csaat_q, %117, %116 : i1
-        %125 = comb.xor %124, %true : i1
-        %126 = comb.and %122, %114 : i1
-        %127 = comb.xor %126, %true : i1
-        %128 = comb.and %94, %111 : i1
-        %129 = comb.xor %128, %true : i1
-        %130 = comb.and %94, %129, %127, %125, %120 : i1
-        %131 = comb.icmp ne %39, %c3_i3 : i3
-        %132 = comb.and %arg15, %21, %36, %csaat_q, %12 : i1
-        %133 = comb.mux %132, %arg14, %csid_q : i1
-        %134 = comb.mux %132, %arg13, %cpol_q : i1
-        %135 = comb.mux %132, %arg12, %cpha_q : i1
-        %136 = comb.mux %132, %arg8, %csnidle_q : i4
-        %137 = comb.mux %132, %arg9, %csnlead_q : i4
-        %138 = comb.mux %132, %arg10, %csntrail_q : i4
-        %139 = comb.mux %132, %arg7, %clkdiv_q : i16
-        %140 = comb.mux %132, %arg3, %cmd_wr_en_q : i1
-        %141 = comb.mux %132, %arg4, %cmd_rd_en_q : i1
-        %142 = comb.mux %132, %arg2, %cmd_speed_q : i2
-        %143 = comb.mux %1, %139, %2 : i16
-        %144 = comb.mux %132, %arg7, %143 : i16
-        %145 = comb.mux %0, %clk_cntr_q, %144 : i16
-        %146 = comb.mux %arg18, %c0_i16, %145 : i16
-        %147 = comb.xor %135, %true : i1
-        %148 = comb.mux %147, %55, %61 : i1
-        %149 = comb.and %147, %57 : i1
-        %150 = comb.mux %147, %56, %62 : i1
-        %151 = comb.mux %147, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %152 = comb.xor %141, %true : i1
-        %153 = comb.xor %140, %true : i1
-        %154 = comb.and %152, %153 : i1
-        %155 = comb.icmp eq %arg2, %c0_i2 : i2
-        %156 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %157 = comb.mux %132, %155, %156 : i1
-        %158 = comb.icmp eq %arg2, %c1_i2 : i2
-        %159 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %160 = comb.mux %132, %158, %159 : i1
-        %161 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %162 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %163 = comb.mux %132, %161, %162 : i1
-        %164 = comb.mux %163, %c-4_i3, %c1_i3 : i3
-        %165 = comb.xor %154, %true : i1
-        %166 = comb.xor %157, %true : i1
-        %167 = comb.and %166, %165, %160 : i1
-        %168 = comb.mux %167, %c2_i3, %164 : i3
-        %169 = comb.mux %167, %c-2_i3, %164 : i3
-        %170 = comb.and %165, %157 : i1
-        %171 = comb.mux %170, %c1_i3, %168 : i3
-        %172 = comb.mux %170, %c-1_i3, %169 : i3
-        %173 = comb.mux %154, %c0_i3, %171 : i3
-        %174 = comb.mux %154, %c0_i3, %172 : i3
-        %175 = comb.sub %bit_cntr_q, %173 : i3
-        %176 = comb.mux %150, %175, %bit_cntr_q : i3
-        %177 = comb.mux %148, %174, %176 : i3
-        %178 = comb.mux %19, %bit_cntr_q, %177 : i3
-        %179 = comb.mux %arg18, %c0_i3, %178 : i3
-        %180 = comb.mux %132, %arg5, %63 : i20
-        %181 = comb.mux %19, %byte_cntr_cpha0_q, %180 : i20
-        %182 = comb.mux %arg18, %c0_i20, %181 : i20
-        %183 = comb.mux %132, %arg5, %byte_cntr_cpha1_q : i20
-        %184 = comb.mux %arg18, %c0_i20, %183 : i20
-        %185 = comb.mux %101, %136, %c0_i4 : i4
-        %186 = comb.mux %102, %138, %185 : i4
-        %187 = comb.mux %103, %137, %186 : i4
-        %188 = comb.mux %27, %187, %wait_cntr_q : i4
-        %189 = comb.mux %arg18, %c0_i4, %188 : i4
-        %190 = comb.mux %105, %26, %189 : i4
-        %191 = comb.mux %134, %131, %60 : i1
-        %192 = comb.xor %149, %true : i1
-        %193 = comb.and %192, %cmd_wr_en_last_bit : i1
-        %194 = comb.or %29, %193 : i1
-        %195 = comb.icmp eq %arg2, %c0_i2 : i2
-        %196 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %197 = comb.mux %132, %195, %196 : i1
-        %198 = comb.and %141, %140 : i1
-        %199 = comb.xor %198, %true : i1
-        %200 = comb.or %197, %199 : i1
-        verif.assert %200 : i1
-        %201 = comb.icmp ne %142, %c-1_i2 : i2
-        verif.assert %201 : i1
-        %202 = comb.xor %133, %true : i1
-        verif.assert %202 : i1
-        fsm.update %cmd_wr_en_last_bit, %194 : i1
-        %203 = comb.and %148, %140, %3 : i1
-        %204 = comb.and %149, %151, %4 : i1
-        %205 = comb.or %204, %203 : i1
-        %206 = comb.xor %205, %true : i1
-        %207 = comb.and %150, %206 : i1
-        %208 = comb.and %132, %206 : i1
-        %209 = comb.mux %208, %arg14, %csid_q : i1
-        %210 = comb.mux %208, %arg13, %cpol_q : i1
-        %211 = comb.mux %208, %arg12, %cpha_q : i1
-        %212 = comb.mux %208, %arg11, %full_cyc_q : i1
-        %213 = comb.mux %208, %arg8, %csnidle_q : i4
-        %214 = comb.mux %208, %arg9, %csnlead_q : i4
-        %215 = comb.mux %208, %arg10, %csntrail_q : i4
-        %216 = comb.mux %208, %arg7, %clkdiv_q : i16
-        %217 = comb.mux %208, %arg6, %csaat_q : i1
-        %218 = comb.mux %208, %arg3, %cmd_wr_en_q : i1
-        %219 = comb.mux %208, %arg4, %cmd_rd_en_q : i1
-        %220 = comb.mux %208, %arg2, %cmd_speed_q : i2
-        %221 = comb.mux %208, %arg5, %cmd_len_q : i20
-        %222 = comb.mux %205, %clk_cntr_q, %146 : i16
-        %223 = comb.and %40, %206 : i1
-        %224 = comb.mux bin %223, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %225 = comb.mux %205, %bit_cntr_q, %179 : i3
-        %226 = comb.mux %205, %byte_cntr_cpha0_q, %182 : i20
-        %227 = comb.mux %205, %byte_cntr_cpha1_q, %184 : i20
-        %228 = comb.mux %205, %wait_cntr_q, %190 : i4
-        %229 = comb.or %148, %207 : i1
-        %230 = comb.and %5, %206 : i1
-        %231 = comb.mux %230, %229, %sample_en_q : i1
-        %232 = comb.mux %230, %sample_en_q, %sample_en_q2 : i1
-        %233 = comb.mux bin %205, %u_sck_flop2Fq_o, %191 : i1
-        %234 = comb.mux %206, %130, %csb_q : i1
-        %235 = comb.or %133, %234 : i1
-        fsm.update %csb_q, %235 : i1
-        fsm.update %u_sck_flop2Fq_o, %233 : i1
-        fsm.update %sample_en_q2, %232 : i1
-        fsm.update %sample_en_q, %231 : i1
-        fsm.update %wait_cntr_q, %228 : i4
-        fsm.update %byte_cntr_cpha1_q, %227 : i20
-        fsm.update %byte_cntr_cpha0_q, %226 : i20
-        fsm.update %bit_cntr_q, %225 : i3
-        fsm.update %segment_rd_en_cpha1, %224 : i1
-        fsm.update %clk_cntr_q, %222 : i16
-        fsm.update %cmd_len_q, %221 : i20
-        fsm.update %cmd_speed_q, %220 : i2
-        fsm.update %cmd_wr_en_q, %218 : i1
-        fsm.update %cmd_rd_en_q, %219 : i1
-        fsm.update %csaat_q, %217 : i1
-        fsm.update %clkdiv_q, %216 : i16
-        fsm.update %csntrail_q, %215 : i4
-        fsm.update %csnlead_q, %214 : i4
-        fsm.update %csnidle_q, %213 : i4
-        fsm.update %full_cyc_q, %212 : i1
-        fsm.update %cpha_q, %211 : i1
-        fsm.update %cpol_q, %210 : i1
-        fsm.update %csid_q, %209 : i1
+        %180 = comb.xor %107, %true_28 : i1
+        %181 = comb.or %156, %180 : i1
+        %182 = comb.mux %181, %byte_cntr_cpha1_q, %arg5 : i20
+        %183 = comb.mux %156, %wait_cntr_q, %149 : i4
+        %184 = comb.or %120, %158 : i1
+        %185 = comb.and %5, %157 : i1
+        %186 = comb.mux %185, %184, %sample_en_q : i1
+        %187 = comb.mux %185, %sample_en_q, %sample_en_q2 : i1
+        %188 = comb.mux bin %156, %u_sck_flop2Fq_o, %150 : i1
+        %189 = comb.mux %157, %105, %csb_q : i1
+        %190 = comb.or %108, %189 : i1
+        fsm.update %_sh1_12, %157 : i1
+        fsm.update %csb_q, %190 : i1
+        fsm.update %u_sck_flop2Fq_o, %188 : i1
+        fsm.update %sample_en_q2, %187 : i1
+        fsm.update %sample_en_q, %186 : i1
+        fsm.update %wait_cntr_q, %183 : i4
+        fsm.update %byte_cntr_cpha1_q, %182 : i20
+        fsm.update %byte_cntr_cpha0_q, %179 : i20
+        fsm.update %bit_cntr_q, %177 : i3
+        fsm.update %segment_rd_en_cpha1, %175 : i1
+        fsm.update %clk_cntr_q, %173 : i16
+        fsm.update %cmd_speed_q, %171 : i2
+        fsm.update %cmd_wr_en_q, %169 : i1
+        fsm.update %cmd_rd_en_q, %170 : i1
+        fsm.update %csaat_q, %168 : i1
+        fsm.update %clkdiv_q, %167 : i16
+        fsm.update %csntrail_q, %166 : i4
+        fsm.update %csnlead_q, %165 : i4
+        fsm.update %csnidle_q, %164 : i4
+        fsm.update %full_cyc_q, %163 : i1
+        fsm.update %cpha_q, %162 : i1
+        fsm.update %cpol_q, %161 : i1
+        fsm.update %csid_q, %160 : i1
       }
       fsm.transition @state_3 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
@@ -3372,7 +2579,6 @@ module {
         %c-4_i3 = hw.constant -4 : i3
         %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %1 = comb.xor %arg16, %true : i1
@@ -3392,76 +2598,67 @@ module {
         %c3_i3 = hw.constant 3 : i3
         %15 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
         %16 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
-        %17 = comb.and %arg1, %0 : i1
-        %18 = comb.xor %15, %true : i1
-        %19 = comb.icmp ne %16, %c0_i20 : i20
-        %20 = comb.or %18, %19, %cpha_q : i1
-        %21 = comb.and %17, %13 : i1
-        %22 = comb.and %21, %20 : i1
-        %23 = comb.mux %22, %c2_i3, %12 : i3
-        %24 = comb.xor %20, %true : i1
-        %25 = comb.and %24, %21 : i1
-        %26 = comb.mux %25, %14, %23 : i3
-        %27 = comb.mux %arg18, %c0_i3, %26 : i3
-        %28 = comb.xor %17, %true : i1
-        %29 = comb.and %13, %28 : i1
-        %30 = comb.mux %29, %c3_i3, %27 : i3
-        %31 = comb.xor %29, %true : i1
-        %32 = comb.icmp ne %30, %c3_i3 : i3
-        %33 = comb.and %13, %32 : i1
-        %true_0 = hw.constant true
-        %34 = comb.xor %22, %true_0 : i1
-        %true_1 = hw.constant true
-        %35 = comb.xor %25, %true_1 : i1
-        %true_2 = hw.constant true
-        %36 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %37 = comb.xor %29, %true_3 : i1
-        %38 = comb.and %37, %36, %35, %34, %10 : i1
-        %true_4 = hw.constant true
-        %39 = comb.xor %cpha_q, %true_4 : i1
-        %40 = comb.and %csaat_q, %7, %39 : i1
-        %41 = comb.mux %25, %40, %22 : i1
-        %true_5 = hw.constant true
-        %42 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %43 = comb.xor %29, %true_6 : i1
-        %44 = comb.and %43, %42, %41, %15 : i1
-        %45 = comb.or %38, %44 : i1
-        %46 = comb.and %33, %45 : i1
-        %true_7 = hw.constant true
-        %47 = comb.xor %arg18, %true_7 : i1
-        %48 = comb.and %47, %25, %csaat_q, %7, %cpha_q : i1
-        %49 = comb.or %29, %48 : i1
-        %50 = comb.and %33, %49, %15 : i1
-        %51 = comb.and %arg15, %31, %25, %csaat_q, %9 : i1
-        %52 = comb.mux %51, %arg14, %csid_q : i1
-        %53 = comb.mux %51, %arg12, %cpha_q : i1
-        %54 = comb.mux %51, %arg3, %cmd_wr_en_q : i1
-        %55 = comb.mux %51, %arg4, %cmd_rd_en_q : i1
-        %56 = comb.mux %51, %arg2, %cmd_speed_q : i2
-        %57 = comb.xor %53, %true : i1
-        %58 = comb.mux %57, %46, %50 : i1
+        %17 = comb.xor %isFirstCycle, %true : i1
+        %18 = comb.and %17, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %13 : i1
+        %19 = comb.xor %18, %true : i1
+        %20 = comb.and %arg1, %0 : i1
+        %21 = comb.xor %15, %true : i1
+        %22 = comb.icmp ne %16, %c0_i20 : i20
+        %23 = comb.or %21, %22, %cpha_q : i1
+        %24 = comb.and %20, %13 : i1
+        %25 = comb.and %24, %23 : i1
+        %26 = comb.mux %25, %c2_i3, %12 : i3
+        %27 = comb.xor %23, %true : i1
+        %28 = comb.and %27, %24 : i1
+        %29 = comb.mux %28, %14, %26 : i3
+        %30 = comb.mux %arg18, %c0_i3, %29 : i3
+        %31 = comb.xor %20, %true : i1
+        %32 = comb.and %13, %31 : i1
+        %33 = comb.mux %32, %c3_i3, %30 : i3
+        %34 = comb.xor %32, %true : i1
+        %35 = comb.icmp ne %33, %c3_i3 : i3
+        %36 = comb.and %13, %35 : i1
+        %true_13 = hw.constant true
+        %37 = comb.xor %25, %true_13 : i1
+        %true_14 = hw.constant true
+        %38 = comb.xor %28, %true_14 : i1
+        %true_15 = hw.constant true
+        %39 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %40 = comb.xor %32, %true_16 : i1
+        %41 = comb.and %40, %39, %38, %37, %10 : i1
+        %true_17 = hw.constant true
+        %42 = comb.xor %cpha_q, %true_17 : i1
+        %43 = comb.and %csaat_q, %7, %42 : i1
+        %44 = comb.mux %28, %43, %25 : i1
+        %true_18 = hw.constant true
+        %45 = comb.xor %arg18, %true_18 : i1
+        %true_19 = hw.constant true
+        %46 = comb.xor %32, %true_19 : i1
+        %47 = comb.and %46, %45, %44, %15 : i1
+        %48 = comb.or %41, %47 : i1
+        %49 = comb.and %36, %48 : i1
+        %true_20 = hw.constant true
+        %50 = comb.xor %arg18, %true_20 : i1
+        %51 = comb.and %50, %28, %csaat_q, %7, %cpha_q : i1
+        %52 = comb.or %32, %51 : i1
+        %53 = comb.and %36, %52, %15 : i1
+        verif.assert %19 : i1
+        %54 = comb.and %arg15, %34, %28, %csaat_q, %9 : i1
+        %55 = comb.mux %54, %arg12, %cpha_q : i1
+        %56 = comb.mux %54, %arg3, %cmd_wr_en_q : i1
+        %57 = comb.xor %55, %true : i1
+        %58 = comb.mux %57, %49, %53 : i1
         %59 = comb.mux %57, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %60 = comb.icmp eq %arg2, %c0_i2 : i2
-        %61 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %62 = comb.mux %51, %60, %61 : i1
-        %63 = comb.and %55, %54 : i1
-        %64 = comb.xor %63, %true : i1
-        %65 = comb.or %62, %64 : i1
-        verif.assert %65 : i1
-        %66 = comb.icmp ne %56, %c-1_i2 : i2
-        verif.assert %66 : i1
-        %67 = comb.xor %52, %true : i1
-        verif.assert %67 : i1
-        %68 = comb.and %58, %54, %1 : i1
-        %69 = comb.and %57, %33, %15, %59, %2 : i1
-        %true_8 = hw.constant true
-        %70 = comb.xor %arg18, %true_8 : i1
-        %71 = comb.and %70, %25, %csaat_q, %7, %cpha_q : i1
-        %72 = comb.or %69, %68, %29, %71 : i1
-        fsm.return %72
+        %60 = comb.and %58, %56, %1 : i1
+        %61 = comb.and %57, %36, %15, %59, %2 : i1
+        %true_21 = hw.constant true
+        %62 = comb.xor %arg18, %true_21 : i1
+        %63 = comb.and %62, %28, %csaat_q, %7, %cpha_q : i1
+        %64 = comb.or %61, %60, %32, %63 : i1
+        fsm.return %64
       } action {
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
@@ -3475,7 +2672,6 @@ module {
         %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i16 = hw.constant -1 : i16
         %c-1_i20 = hw.constant -1 : i20
         %c-1_i4 = hw.constant -1 : i4
@@ -3493,6 +2689,7 @@ module {
         %10 = comb.and %9, %arg15 : i1
         %11 = comb.mux %10, %6, %8 : i3
         %12 = comb.or %10, %7 : i1
+        %false_14 = hw.constant false
         %13 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %14 = comb.xor %csaat_q, %true : i1
         %15 = comb.mux %13, %c1_i3, %c-2_i3 : i3
@@ -3502,287 +2699,260 @@ module {
         %19 = comb.xor %5, %true : i1
         %20 = comb.and %16, %19 : i1
         %21 = comb.xor %20, %true : i1
-        %c3_i3_0 = hw.constant 3 : i3
-        %22 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %23 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
-        %24 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
-        %25 = comb.add %byte_cntr_cpha0_q, %c-1_i20 : i20
-        %26 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %27 = comb.or %arg18, %5 : i1
-        %28 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %29 = comb.and %cmd_wr_en_q, %22 : i1
-        %30 = comb.xor %22, %true : i1
-        %31 = comb.icmp ne %24, %c0_i20 : i20
-        %32 = comb.or %30, %31, %cpha_q : i1
-        %33 = comb.and %17, %32 : i1
-        %34 = comb.mux %33, %c2_i3, %15 : i3
-        %35 = comb.xor %32, %true : i1
-        %36 = comb.and %35, %17 : i1
-        %37 = comb.mux %36, %18, %34 : i3
-        %38 = comb.mux %arg18, %c0_i3, %37 : i3
-        %39 = comb.mux %20, %c3_i3_0, %38 : i3
-        %40 = comb.icmp ne %39, %c3_i3_0 : i3
-        %41 = comb.and %16, %40 : i1
-        %true_1 = hw.constant true
-        %42 = comb.xor %33, %true_1 : i1
-        %true_2 = hw.constant true
-        %43 = comb.xor %36, %true_2 : i1
-        %true_3 = hw.constant true
-        %44 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %45 = comb.xor %20, %true_4 : i1
-        %46 = comb.and %45, %44, %43, %42, %13 : i1
-        %true_5 = hw.constant true
-        %47 = comb.xor %cpha_q, %true_5 : i1
-        %48 = comb.and %csaat_q, %10, %47 : i1
-        %49 = comb.mux %36, %48, %33 : i1
-        %true_6 = hw.constant true
-        %50 = comb.xor %arg18, %true_6 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %20, %true_7 : i1
-        %52 = comb.and %51, %50, %49 : i1
-        %53 = comb.and %52, %22 : i1
-        %54 = comb.or %46, %53 : i1
-        %55 = comb.and %41, %54 : i1
-        %56 = comb.and %41, %52, %23 : i1
-        %57 = comb.and %41, %22 : i1
-        %true_8 = hw.constant true
-        %58 = comb.xor %arg18, %true_8 : i1
-        %59 = comb.and %58, %36, %csaat_q, %10, %cpha_q : i1
-        %60 = comb.or %20, %59 : i1
-        %61 = comb.and %41, %60, %22 : i1
-        %62 = comb.and %41, %60, %23 : i1
-        %63 = comb.mux %57, %25, %byte_cntr_cpha0_q : i20
-        %true_9 = hw.constant true
-        %64 = comb.xor %33, %true_9 : i1
-        %true_10 = hw.constant true
-        %65 = comb.xor %36, %true_10 : i1
-        %true_11 = hw.constant true
-        %66 = comb.xor %arg18, %true_11 : i1
-        %true_12 = hw.constant true
-        %67 = comb.xor %20, %true_12 : i1
-        %68 = comb.and %67, %66, %65, %64, %13 : i1
-        %69 = comb.extract %8 from 0 : (i3) -> i2
-        %c0_i2_13 = hw.constant 0 : i2
-        %70 = comb.icmp eq %69, %c0_i2_13 : i2
-        %true_14 = hw.constant true
-        %71 = comb.xor %10, %true_14 : i1
-        %72 = comb.and %71, %70 : i1
-        %73 = comb.or %14, %72 : i1
-        %true_15 = hw.constant true
-        %74 = comb.xor %arg18, %true_15 : i1
+        %c3_i3_15 = hw.constant 3 : i3
         %true_16 = hw.constant true
-        %75 = comb.xor %20, %true_16 : i1
-        %76 = comb.and %75, %74, %36, %73 : i1
-        %77 = comb.extract %8 from 0 : (i3) -> i2
-        %c1_i2_17 = hw.constant 1 : i2
-        %78 = comb.icmp eq %77, %c1_i2_17 : i2
+        %true_17 = hw.constant true
         %true_18 = hw.constant true
-        %79 = comb.xor %10, %true_18 : i1
+        %22 = comb.xor %arg18, %true_18 : i1
         %true_19 = hw.constant true
-        %80 = comb.xor %arg18, %true_19 : i1
+        %23 = comb.xor %20, %true_19 : i1
         %true_20 = hw.constant true
-        %81 = comb.xor %20, %true_20 : i1
-        %82 = comb.and %81, %80, %36, %csaat_q, %79, %78 : i1
-        %83 = comb.extract %8 from 0 : (i3) -> i2
-        %c-2_i2_21 = hw.constant -2 : i2
-        %84 = comb.icmp eq %83, %c-2_i2_21 : i2
+        %24 = comb.xor %cpha_q, %true_20 : i1
+        %25 = comb.and %csaat_q, %10, %24 : i1
+        %true_21 = hw.constant true
+        %26 = comb.xor %arg18, %true_21 : i1
         %true_22 = hw.constant true
-        %85 = comb.xor %10, %true_22 : i1
-        %86 = comb.and %csaat_q, %85, %84 : i1
+        %27 = comb.xor %20, %true_22 : i1
+        %28 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %29 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
         %true_23 = hw.constant true
-        %87 = comb.xor %13, %true_23 : i1
-        %true_24 = hw.constant true
-        %88 = comb.xor %33, %true_24 : i1
-        %89 = comb.and %88, %87 : i1
-        %90 = comb.mux %36, %86, %89 : i1
+        %30 = comb.xor %arg18, %true_23 : i1
+        %31 = comb.icmp eq %arg2, %c0_i2 : i2
+        %32 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %33 = comb.icmp eq %arg2, %c1_i2 : i2
+        %34 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %35 = comb.icmp eq %arg2, %c-2_i2 : i2
+        %36 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %37 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
+        %38 = comb.add %byte_cntr_cpha0_q, %c-1_i20 : i20
+        %39 = comb.extract %8 from 0 : (i3) -> i2
+        %c0_i2_24 = hw.constant 0 : i2
+        %40 = comb.icmp eq %39, %c0_i2_24 : i2
         %true_25 = hw.constant true
-        %91 = comb.xor %arg18, %true_25 : i1
+        %41 = comb.xor %10, %true_25 : i1
+        %42 = comb.and %41, %40 : i1
+        %43 = comb.or %14, %42 : i1
         %true_26 = hw.constant true
-        %92 = comb.xor %20, %true_26 : i1
-        %93 = comb.and %40, %17 : i1
-        %94 = comb.xor %68, %true : i1
-        %95 = comb.and %94, %93 : i1
-        %96 = comb.xor %76, %true : i1
-        %97 = comb.and %96, %95 : i1
-        %98 = comb.xor %82, %true : i1
-        %99 = comb.and %98, %97, %92, %91, %90 : i1
-        %100 = comb.and %97, %82 : i1
-        %101 = comb.or %100, %99 : i1
-        %102 = comb.and %95, %76 : i1
-        %103 = comb.and %93, %68 : i1
-        %104 = comb.xor %40, %true : i1
-        %105 = comb.and %28, %104, %17 : i1
+        %44 = comb.xor %arg18, %true_26 : i1
         %true_27 = hw.constant true
-        %106 = comb.xor %cpha_q, %true_27 : i1
-        %107 = comb.and %csaat_q, %10, %106 : i1
-        %108 = comb.mux %36, %107, %33 : i1
-        %true_28 = hw.constant true
-        %109 = comb.xor %arg18, %true_28 : i1
+        %45 = comb.xor %20, %true_27 : i1
+        %46 = comb.extract %8 from 0 : (i3) -> i2
+        %c1_i2_28 = hw.constant 1 : i2
+        %47 = comb.icmp eq %46, %c1_i2_28 : i2
         %true_29 = hw.constant true
-        %110 = comb.xor %20, %true_29 : i1
-        %111 = comb.and %110, %109, %108 : i1
+        %48 = comb.xor %10, %true_29 : i1
         %true_30 = hw.constant true
-        %112 = comb.xor %arg18, %true_30 : i1
-        %113 = comb.and %112, %36, %csaat_q, %10, %cpha_q : i1
-        %114 = comb.or %20, %113 : i1
-        %115 = comb.extract %8 from 0 : (i3) -> i2
-        %c-1_i2_31 = hw.constant -1 : i2
-        %116 = comb.icmp eq %115, %c-1_i2_31 : i2
-        %true_32 = hw.constant true
-        %117 = comb.xor %10, %true_32 : i1
+        %49 = comb.xor %arg18, %true_30 : i1
+        %true_31 = hw.constant true
+        %50 = comb.xor %20, %true_31 : i1
+        %51 = comb.extract %8 from 0 : (i3) -> i2
+        %c-2_i2_32 = hw.constant -2 : i2
+        %52 = comb.icmp eq %51, %c-2_i2_32 : i2
         %true_33 = hw.constant true
-        %118 = comb.xor %arg18, %true_33 : i1
+        %53 = comb.xor %10, %true_33 : i1
+        %54 = comb.and %csaat_q, %53, %52 : i1
         %true_34 = hw.constant true
-        %119 = comb.xor %20, %true_34 : i1
-        %120 = comb.icmp ne %39, %c-4_i3 : i3
-        %121 = comb.xor %111, %true : i1
-        %122 = comb.and %121, %94 : i1
-        %123 = comb.xor %114, %true : i1
-        %124 = comb.and %123, %122, %119, %118, %36, %csaat_q, %117, %116 : i1
-        %125 = comb.xor %124, %true : i1
-        %126 = comb.and %122, %114 : i1
-        %127 = comb.xor %126, %true : i1
-        %128 = comb.and %94, %111 : i1
-        %129 = comb.xor %128, %true : i1
-        %130 = comb.and %94, %129, %127, %125, %120 : i1
-        %131 = comb.icmp ne %39, %c3_i3 : i3
-        %132 = comb.and %arg15, %21, %36, %csaat_q, %12 : i1
-        %133 = comb.mux %132, %arg14, %csid_q : i1
-        %134 = comb.mux %132, %arg13, %cpol_q : i1
-        %135 = comb.mux %132, %arg12, %cpha_q : i1
-        %136 = comb.mux %132, %arg8, %csnidle_q : i4
-        %137 = comb.mux %132, %arg9, %csnlead_q : i4
-        %138 = comb.mux %132, %arg10, %csntrail_q : i4
-        %139 = comb.mux %132, %arg7, %clkdiv_q : i16
-        %140 = comb.mux %132, %arg3, %cmd_wr_en_q : i1
-        %141 = comb.mux %132, %arg4, %cmd_rd_en_q : i1
-        %142 = comb.mux %132, %arg2, %cmd_speed_q : i2
-        %143 = comb.mux %1, %139, %2 : i16
-        %144 = comb.mux %132, %arg7, %143 : i16
-        %145 = comb.mux %0, %clk_cntr_q, %144 : i16
-        %146 = comb.mux %arg18, %c0_i16, %145 : i16
+        %55 = comb.xor %13, %true_34 : i1
+        %true_35 = hw.constant true
+        %true_36 = hw.constant true
+        %56 = comb.xor %arg18, %true_36 : i1
+        %true_37 = hw.constant true
+        %57 = comb.xor %20, %true_37 : i1
+        %58 = comb.add %wait_cntr_q, %c-1_i4 : i4
+        %59 = comb.or %arg18, %5 : i1
+        %60 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
+        %61 = comb.extract %8 from 0 : (i3) -> i2
+        %c-1_i2 = hw.constant -1 : i2
+        %62 = comb.icmp eq %61, %c-1_i2 : i2
+        %true_38 = hw.constant true
+        %63 = comb.xor %10, %true_38 : i1
+        %true_39 = hw.constant true
+        %64 = comb.xor %arg18, %true_39 : i1
+        %true_40 = hw.constant true
+        %65 = comb.xor %20, %true_40 : i1
+        %66 = comb.and %cmd_wr_en_q, %28 : i1
+        %67 = comb.xor %isFirstCycle, %true : i1
+        %68 = comb.and %67, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %16 : i1
+        %69 = comb.xor %68, %true : i1
+        verif.assert %69 : i1
+        fsm.update %_sh1_10, %5 : i1
+        fsm.update %_sh1_8, %7 : i1
+        fsm.update %_sh1_6, %13 : i1
+        fsm.update %_sh1, %false_14 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        %70 = comb.xor %28, %true : i1
+        %71 = comb.icmp ne %37, %c0_i20 : i20
+        %72 = comb.or %70, %71, %cpha_q : i1
+        %73 = comb.and %17, %72 : i1
+        %74 = comb.mux %73, %c2_i3, %15 : i3
+        %75 = comb.xor %72, %true : i1
+        %76 = comb.and %75, %17 : i1
+        %77 = comb.mux %76, %18, %74 : i3
+        %78 = comb.mux %arg18, %c0_i3, %77 : i3
+        %79 = comb.mux %20, %c3_i3_15, %78 : i3
+        %80 = comb.icmp ne %79, %c3_i3_15 : i3
+        %81 = comb.and %16, %80 : i1
+        %82 = comb.xor %73, %true_16 : i1
+        %83 = comb.xor %76, %true_17 : i1
+        %84 = comb.and %23, %22, %83, %82, %13 : i1
+        %85 = comb.mux %76, %25, %73 : i1
+        %86 = comb.and %27, %26, %85 : i1
+        %87 = comb.and %86, %28 : i1
+        %88 = comb.or %84, %87 : i1
+        %89 = comb.and %81, %88 : i1
+        %90 = comb.and %81, %86, %29 : i1
+        %91 = comb.and %81, %28 : i1
+        %92 = comb.and %30, %76, %csaat_q, %10, %cpha_q : i1
+        %93 = comb.or %20, %92 : i1
+        %94 = comb.and %81, %93, %28 : i1
+        %95 = comb.and %81, %93, %29 : i1
+        %96 = comb.mux %91, %38, %byte_cntr_cpha0_q : i20
+        %97 = comb.and %45, %44, %76, %43 : i1
+        %98 = comb.and %50, %49, %76, %csaat_q, %48, %47 : i1
+        %99 = comb.xor %73, %true_35 : i1
+        %100 = comb.and %99, %55 : i1
+        %101 = comb.mux %76, %54, %100 : i1
+        %102 = comb.and %80, %17 : i1
+        %103 = comb.xor %84, %true : i1
+        %104 = comb.and %103, %102 : i1
+        %105 = comb.xor %97, %true : i1
+        %106 = comb.and %105, %104 : i1
+        %107 = comb.xor %98, %true : i1
+        %108 = comb.and %107, %106, %57, %56, %101 : i1
+        %109 = comb.and %106, %98 : i1
+        %110 = comb.or %109, %108 : i1
+        %111 = comb.and %104, %97 : i1
+        %112 = comb.and %102, %84 : i1
+        %113 = comb.xor %80, %true : i1
+        %114 = comb.and %60, %113, %17 : i1
+        %115 = comb.icmp ne %79, %c-4_i3 : i3
+        %116 = comb.xor %86, %true : i1
+        %117 = comb.and %116, %103 : i1
+        %118 = comb.xor %93, %true : i1
+        %119 = comb.and %118, %117, %65, %64, %76, %csaat_q, %63, %62 : i1
+        %120 = comb.xor %119, %true : i1
+        %121 = comb.and %117, %93 : i1
+        %122 = comb.xor %121, %true : i1
+        %123 = comb.and %103, %86 : i1
+        %124 = comb.xor %123, %true : i1
+        %125 = comb.and %103, %124, %122, %120, %115 : i1
+        %126 = comb.icmp ne %79, %c3_i3 : i3
+        %127 = comb.and %arg15, %21, %76, %csaat_q, %12 : i1
+        %128 = comb.mux %127, %arg14, %csid_q : i1
+        %129 = comb.mux %127, %arg13, %cpol_q : i1
+        %130 = comb.mux %127, %arg12, %cpha_q : i1
+        %131 = comb.mux %127, %arg8, %csnidle_q : i4
+        %132 = comb.mux %127, %arg9, %csnlead_q : i4
+        %133 = comb.mux %127, %arg10, %csntrail_q : i4
+        %134 = comb.mux %127, %arg7, %clkdiv_q : i16
+        %135 = comb.mux %127, %arg3, %cmd_wr_en_q : i1
+        %136 = comb.mux %127, %arg4, %cmd_rd_en_q : i1
+        %137 = comb.mux %1, %134, %2 : i16
+        %138 = comb.mux %127, %arg7, %137 : i16
+        %139 = comb.mux %0, %clk_cntr_q, %138 : i16
+        %140 = comb.mux %arg18, %c0_i16, %139 : i16
+        %141 = comb.xor %130, %true : i1
+        %142 = comb.mux %141, %89, %94 : i1
+        %143 = comb.and %141, %91 : i1
+        %144 = comb.mux %141, %90, %95 : i1
+        %145 = comb.mux %141, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %146 = comb.xor %136, %true : i1
         %147 = comb.xor %135, %true : i1
-        %148 = comb.mux %147, %55, %61 : i1
-        %149 = comb.and %147, %57 : i1
-        %150 = comb.mux %147, %56, %62 : i1
-        %151 = comb.mux %147, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %152 = comb.xor %141, %true : i1
-        %153 = comb.xor %140, %true : i1
-        %154 = comb.and %152, %153 : i1
-        %155 = comb.icmp eq %arg2, %c0_i2 : i2
-        %156 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %157 = comb.mux %132, %155, %156 : i1
-        %158 = comb.icmp eq %arg2, %c1_i2 : i2
-        %159 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %160 = comb.mux %132, %158, %159 : i1
-        %161 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %162 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %163 = comb.mux %132, %161, %162 : i1
-        %164 = comb.mux %163, %c-4_i3, %c1_i3 : i3
-        %165 = comb.xor %154, %true : i1
-        %166 = comb.xor %157, %true : i1
-        %167 = comb.and %166, %165, %160 : i1
-        %168 = comb.mux %167, %c2_i3, %164 : i3
-        %169 = comb.mux %167, %c-2_i3, %164 : i3
-        %170 = comb.and %165, %157 : i1
-        %171 = comb.mux %170, %c1_i3, %168 : i3
-        %172 = comb.mux %170, %c-1_i3, %169 : i3
-        %173 = comb.mux %154, %c0_i3, %171 : i3
-        %174 = comb.mux %154, %c0_i3, %172 : i3
-        %175 = comb.sub %bit_cntr_q, %173 : i3
-        %176 = comb.mux %150, %175, %bit_cntr_q : i3
-        %177 = comb.mux %148, %174, %176 : i3
-        %178 = comb.mux %19, %bit_cntr_q, %177 : i3
-        %179 = comb.mux %arg18, %c0_i3, %178 : i3
-        %180 = comb.mux %132, %arg5, %63 : i20
-        %181 = comb.mux %19, %byte_cntr_cpha0_q, %180 : i20
-        %182 = comb.mux %arg18, %c0_i20, %181 : i20
-        %183 = comb.mux %132, %arg5, %byte_cntr_cpha1_q : i20
-        %184 = comb.mux %arg18, %c0_i20, %183 : i20
-        %185 = comb.mux %101, %136, %c0_i4 : i4
-        %186 = comb.mux %102, %138, %185 : i4
-        %187 = comb.mux %103, %137, %186 : i4
-        %188 = comb.mux %27, %187, %wait_cntr_q : i4
-        %189 = comb.mux %arg18, %c0_i4, %188 : i4
-        %190 = comb.mux %105, %26, %189 : i4
-        %191 = comb.mux %134, %131, %60 : i1
-        %192 = comb.xor %149, %true : i1
-        %193 = comb.and %192, %cmd_wr_en_last_bit : i1
-        %194 = comb.or %29, %193 : i1
-        %195 = comb.icmp eq %arg2, %c0_i2 : i2
-        %196 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %197 = comb.mux %132, %195, %196 : i1
-        %198 = comb.and %141, %140 : i1
-        %199 = comb.xor %198, %true : i1
-        %200 = comb.or %197, %199 : i1
-        verif.assert %200 : i1
-        %201 = comb.icmp ne %142, %c-1_i2 : i2
-        verif.assert %201 : i1
-        %202 = comb.xor %133, %true : i1
-        verif.assert %202 : i1
-        fsm.update %cmd_wr_en_last_bit, %194 : i1
-        %203 = comb.and %148, %140, %3 : i1
-        %204 = comb.and %149, %151, %4 : i1
-        %205 = comb.or %204, %203 : i1
-        %206 = comb.xor %205, %true : i1
-        %207 = comb.and %150, %206 : i1
-        %208 = comb.and %132, %206 : i1
-        %209 = comb.mux %208, %arg14, %csid_q : i1
-        %210 = comb.mux %208, %arg13, %cpol_q : i1
-        %211 = comb.mux %208, %arg12, %cpha_q : i1
-        %212 = comb.mux %208, %arg11, %full_cyc_q : i1
-        %213 = comb.mux %208, %arg8, %csnidle_q : i4
-        %214 = comb.mux %208, %arg9, %csnlead_q : i4
-        %215 = comb.mux %208, %arg10, %csntrail_q : i4
-        %216 = comb.mux %208, %arg7, %clkdiv_q : i16
-        %217 = comb.mux %208, %arg6, %csaat_q : i1
-        %218 = comb.mux %208, %arg3, %cmd_wr_en_q : i1
-        %219 = comb.mux %208, %arg4, %cmd_rd_en_q : i1
-        %220 = comb.mux %208, %arg2, %cmd_speed_q : i2
-        %221 = comb.mux %208, %arg5, %cmd_len_q : i20
-        %222 = comb.mux %205, %clk_cntr_q, %146 : i16
-        %223 = comb.and %40, %206 : i1
-        %224 = comb.mux bin %223, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %225 = comb.mux %205, %bit_cntr_q, %179 : i3
-        %226 = comb.mux %205, %byte_cntr_cpha0_q, %182 : i20
-        %227 = comb.mux %205, %byte_cntr_cpha1_q, %184 : i20
-        %228 = comb.mux %205, %wait_cntr_q, %190 : i4
-        %229 = comb.or %148, %207 : i1
-        %230 = comb.and %5, %206 : i1
-        %231 = comb.mux %230, %229, %sample_en_q : i1
-        %232 = comb.mux %230, %sample_en_q, %sample_en_q2 : i1
-        %233 = comb.mux bin %205, %u_sck_flop2Fq_o, %191 : i1
-        %234 = comb.mux %206, %130, %csb_q : i1
-        %235 = comb.or %133, %234 : i1
-        fsm.update %csb_q, %235 : i1
-        fsm.update %u_sck_flop2Fq_o, %233 : i1
-        fsm.update %sample_en_q2, %232 : i1
-        fsm.update %sample_en_q, %231 : i1
-        fsm.update %wait_cntr_q, %228 : i4
-        fsm.update %byte_cntr_cpha1_q, %227 : i20
-        fsm.update %byte_cntr_cpha0_q, %226 : i20
-        fsm.update %bit_cntr_q, %225 : i3
-        fsm.update %segment_rd_en_cpha1, %224 : i1
-        fsm.update %clk_cntr_q, %222 : i16
-        fsm.update %cmd_len_q, %221 : i20
-        fsm.update %cmd_speed_q, %220 : i2
-        fsm.update %cmd_wr_en_q, %218 : i1
-        fsm.update %cmd_rd_en_q, %219 : i1
-        fsm.update %csaat_q, %217 : i1
-        fsm.update %clkdiv_q, %216 : i16
-        fsm.update %csntrail_q, %215 : i4
-        fsm.update %csnlead_q, %214 : i4
-        fsm.update %csnidle_q, %213 : i4
-        fsm.update %full_cyc_q, %212 : i1
-        fsm.update %cpha_q, %211 : i1
-        fsm.update %cpol_q, %210 : i1
-        fsm.update %csid_q, %209 : i1
+        %148 = comb.and %146, %147 : i1
+        %149 = comb.mux %127, %31, %32 : i1
+        %150 = comb.mux %127, %33, %34 : i1
+        %151 = comb.mux %127, %35, %36 : i1
+        %152 = comb.mux %151, %c-4_i3, %c1_i3 : i3
+        %153 = comb.xor %148, %true : i1
+        %154 = comb.xor %149, %true : i1
+        %155 = comb.and %154, %153, %150 : i1
+        %156 = comb.mux %155, %c2_i3, %152 : i3
+        %157 = comb.mux %155, %c-2_i3, %152 : i3
+        %158 = comb.and %153, %149 : i1
+        %159 = comb.mux %158, %c1_i3, %156 : i3
+        %160 = comb.mux %158, %c-1_i3, %157 : i3
+        %161 = comb.mux %148, %c0_i3, %159 : i3
+        %162 = comb.mux %148, %c0_i3, %160 : i3
+        %163 = comb.sub %bit_cntr_q, %161 : i3
+        %164 = comb.mux %144, %163, %bit_cntr_q : i3
+        %165 = comb.mux %142, %162, %164 : i3
+        %166 = comb.mux %19, %bit_cntr_q, %165 : i3
+        %167 = comb.mux %arg18, %c0_i3, %166 : i3
+        %168 = comb.mux %127, %arg5, %96 : i20
+        %169 = comb.mux %19, %byte_cntr_cpha0_q, %168 : i20
+        %170 = comb.mux %arg18, %c0_i20, %169 : i20
+        %171 = comb.mux %127, %arg5, %byte_cntr_cpha1_q : i20
+        %172 = comb.mux %arg18, %c0_i20, %171 : i20
+        %173 = comb.mux %110, %131, %c0_i4 : i4
+        %174 = comb.mux %111, %133, %173 : i4
+        %175 = comb.mux %112, %132, %174 : i4
+        %176 = comb.mux %59, %175, %wait_cntr_q : i4
+        %177 = comb.mux %arg18, %c0_i4, %176 : i4
+        %178 = comb.mux %114, %58, %177 : i4
+        %179 = comb.mux %129, %126, %93 : i1
+        %180 = comb.xor %143, %true : i1
+        %181 = comb.and %180, %cmd_wr_en_last_bit : i1
+        %182 = comb.or %66, %181 : i1
+        fsm.update %cmd_wr_en_last_bit, %182 : i1
+        %183 = comb.and %142, %135, %3 : i1
+        %184 = comb.and %143, %145, %4 : i1
+        %185 = comb.or %184, %183 : i1
+        %186 = comb.xor %185, %true : i1
+        %187 = comb.and %144, %186 : i1
+        %188 = comb.and %127, %186 : i1
+        %189 = comb.mux %188, %arg14, %csid_q : i1
+        %190 = comb.mux %188, %arg13, %cpol_q : i1
+        %191 = comb.mux %188, %arg12, %cpha_q : i1
+        %192 = comb.mux %188, %arg11, %full_cyc_q : i1
+        %193 = comb.mux %188, %arg8, %csnidle_q : i4
+        %194 = comb.mux %188, %arg9, %csnlead_q : i4
+        %195 = comb.mux %188, %arg10, %csntrail_q : i4
+        %196 = comb.mux %188, %arg7, %clkdiv_q : i16
+        %197 = comb.mux %188, %arg6, %csaat_q : i1
+        %198 = comb.mux %188, %arg3, %cmd_wr_en_q : i1
+        %199 = comb.mux %188, %arg4, %cmd_rd_en_q : i1
+        %200 = comb.mux %188, %arg2, %cmd_speed_q : i2
+        %201 = comb.mux %185, %clk_cntr_q, %140 : i16
+        %202 = comb.and %80, %186 : i1
+        %203 = comb.mux bin %202, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %204 = comb.mux %185, %bit_cntr_q, %167 : i3
+        %205 = comb.mux %185, %byte_cntr_cpha0_q, %170 : i20
+        %206 = comb.mux %185, %byte_cntr_cpha1_q, %172 : i20
+        %207 = comb.mux %185, %wait_cntr_q, %178 : i4
+        %208 = comb.or %142, %187 : i1
+        %209 = comb.and %5, %186 : i1
+        %210 = comb.mux %209, %208, %sample_en_q : i1
+        %211 = comb.mux %209, %sample_en_q, %sample_en_q2 : i1
+        %212 = comb.mux bin %185, %u_sck_flop2Fq_o, %179 : i1
+        %213 = comb.mux %186, %125, %csb_q : i1
+        %214 = comb.or %128, %213 : i1
+        fsm.update %_sh1_12, %186 : i1
+        fsm.update %csb_q, %214 : i1
+        fsm.update %u_sck_flop2Fq_o, %212 : i1
+        fsm.update %sample_en_q2, %211 : i1
+        fsm.update %sample_en_q, %210 : i1
+        fsm.update %wait_cntr_q, %207 : i4
+        fsm.update %byte_cntr_cpha1_q, %206 : i20
+        fsm.update %byte_cntr_cpha0_q, %205 : i20
+        fsm.update %bit_cntr_q, %204 : i3
+        fsm.update %segment_rd_en_cpha1, %203 : i1
+        fsm.update %clk_cntr_q, %201 : i16
+        fsm.update %cmd_speed_q, %200 : i2
+        fsm.update %cmd_wr_en_q, %198 : i1
+        fsm.update %cmd_rd_en_q, %199 : i1
+        fsm.update %csaat_q, %197 : i1
+        fsm.update %clkdiv_q, %196 : i16
+        fsm.update %csntrail_q, %195 : i4
+        fsm.update %csnlead_q, %194 : i4
+        fsm.update %csnidle_q, %193 : i4
+        fsm.update %full_cyc_q, %192 : i1
+        fsm.update %cpha_q, %191 : i1
+        fsm.update %cpol_q, %190 : i1
+        fsm.update %csid_q, %189 : i1
       }
       fsm.transition @state_2 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
@@ -3791,7 +2961,6 @@ module {
         %c-4_i3 = hw.constant -4 : i3
         %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %1 = comb.xor %arg16, %true : i1
@@ -3811,82 +2980,73 @@ module {
         %c3_i3 = hw.constant 3 : i3
         %15 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
         %16 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
-        %17 = comb.and %arg1, %0 : i1
-        %18 = comb.xor %15, %true : i1
-        %19 = comb.icmp ne %16, %c0_i20 : i20
-        %20 = comb.or %18, %19, %cpha_q : i1
-        %21 = comb.and %17, %13 : i1
-        %22 = comb.and %21, %20 : i1
-        %23 = comb.mux %22, %c2_i3, %12 : i3
-        %24 = comb.xor %20, %true : i1
-        %25 = comb.and %24, %21 : i1
-        %26 = comb.mux %25, %14, %23 : i3
-        %27 = comb.mux %arg18, %c0_i3, %26 : i3
-        %28 = comb.xor %17, %true : i1
-        %29 = comb.and %13, %28 : i1
-        %30 = comb.mux %29, %c3_i3, %27 : i3
-        %31 = comb.xor %29, %true : i1
-        %32 = comb.icmp ne %30, %c3_i3 : i3
-        %33 = comb.and %13, %32 : i1
-        %true_0 = hw.constant true
-        %34 = comb.xor %22, %true_0 : i1
-        %true_1 = hw.constant true
-        %35 = comb.xor %25, %true_1 : i1
-        %true_2 = hw.constant true
-        %36 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %37 = comb.xor %29, %true_3 : i1
-        %38 = comb.and %37, %36, %35, %34, %10 : i1
-        %true_4 = hw.constant true
-        %39 = comb.xor %cpha_q, %true_4 : i1
-        %40 = comb.and %csaat_q, %7, %39 : i1
-        %41 = comb.mux %25, %40, %22 : i1
-        %true_5 = hw.constant true
-        %42 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %43 = comb.xor %29, %true_6 : i1
-        %44 = comb.and %43, %42, %41, %15 : i1
-        %45 = comb.or %38, %44 : i1
-        %46 = comb.and %33, %45 : i1
-        %true_7 = hw.constant true
-        %47 = comb.xor %arg18, %true_7 : i1
-        %48 = comb.and %47, %25, %csaat_q, %7, %cpha_q : i1
-        %49 = comb.or %29, %48 : i1
-        %50 = comb.and %33, %49, %15 : i1
-        %51 = comb.and %arg15, %31, %25, %csaat_q, %9 : i1
-        %52 = comb.mux %51, %arg14, %csid_q : i1
-        %53 = comb.mux %51, %arg12, %cpha_q : i1
-        %54 = comb.mux %51, %arg3, %cmd_wr_en_q : i1
-        %55 = comb.mux %51, %arg4, %cmd_rd_en_q : i1
-        %56 = comb.mux %51, %arg2, %cmd_speed_q : i2
-        %57 = comb.xor %53, %true : i1
-        %58 = comb.mux %57, %46, %50 : i1
+        %17 = comb.xor %isFirstCycle, %true : i1
+        %18 = comb.and %17, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %13 : i1
+        %19 = comb.xor %18, %true : i1
+        %20 = comb.and %arg1, %0 : i1
+        %21 = comb.xor %15, %true : i1
+        %22 = comb.icmp ne %16, %c0_i20 : i20
+        %23 = comb.or %21, %22, %cpha_q : i1
+        %24 = comb.and %20, %13 : i1
+        %25 = comb.and %24, %23 : i1
+        %26 = comb.mux %25, %c2_i3, %12 : i3
+        %27 = comb.xor %23, %true : i1
+        %28 = comb.and %27, %24 : i1
+        %29 = comb.mux %28, %14, %26 : i3
+        %30 = comb.mux %arg18, %c0_i3, %29 : i3
+        %31 = comb.xor %20, %true : i1
+        %32 = comb.and %13, %31 : i1
+        %33 = comb.mux %32, %c3_i3, %30 : i3
+        %34 = comb.xor %32, %true : i1
+        %35 = comb.icmp ne %33, %c3_i3 : i3
+        %36 = comb.and %13, %35 : i1
+        %true_13 = hw.constant true
+        %37 = comb.xor %25, %true_13 : i1
+        %true_14 = hw.constant true
+        %38 = comb.xor %28, %true_14 : i1
+        %true_15 = hw.constant true
+        %39 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %40 = comb.xor %32, %true_16 : i1
+        %41 = comb.and %40, %39, %38, %37, %10 : i1
+        %true_17 = hw.constant true
+        %42 = comb.xor %cpha_q, %true_17 : i1
+        %43 = comb.and %csaat_q, %7, %42 : i1
+        %44 = comb.mux %28, %43, %25 : i1
+        %true_18 = hw.constant true
+        %45 = comb.xor %arg18, %true_18 : i1
+        %true_19 = hw.constant true
+        %46 = comb.xor %32, %true_19 : i1
+        %47 = comb.and %46, %45, %44, %15 : i1
+        %48 = comb.or %41, %47 : i1
+        %49 = comb.and %36, %48 : i1
+        %true_20 = hw.constant true
+        %50 = comb.xor %arg18, %true_20 : i1
+        %51 = comb.and %50, %28, %csaat_q, %7, %cpha_q : i1
+        %52 = comb.or %32, %51 : i1
+        %53 = comb.and %36, %52, %15 : i1
+        verif.assert %19 : i1
+        %54 = comb.and %arg15, %34, %28, %csaat_q, %9 : i1
+        %55 = comb.mux %54, %arg12, %cpha_q : i1
+        %56 = comb.mux %54, %arg3, %cmd_wr_en_q : i1
+        %57 = comb.xor %55, %true : i1
+        %58 = comb.mux %57, %49, %53 : i1
         %59 = comb.mux %57, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %60 = comb.icmp eq %arg2, %c0_i2 : i2
-        %61 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %62 = comb.mux %51, %60, %61 : i1
-        %63 = comb.and %55, %54 : i1
-        %64 = comb.xor %63, %true : i1
-        %65 = comb.or %62, %64 : i1
-        verif.assert %65 : i1
-        %66 = comb.icmp ne %56, %c-1_i2 : i2
-        verif.assert %66 : i1
-        %67 = comb.xor %52, %true : i1
-        verif.assert %67 : i1
-        %68 = comb.and %58, %54, %1 : i1
-        %69 = comb.and %57, %33, %15, %59, %2 : i1
-        %70 = comb.or %69, %68, %29 : i1
-        %true_8 = hw.constant true
-        %71 = comb.xor %cpha_q, %true_8 : i1
-        %72 = comb.and %csaat_q, %7, %71 : i1
-        %73 = comb.mux %25, %72, %22 : i1
-        %true_9 = hw.constant true
-        %74 = comb.xor %arg18, %true_9 : i1
-        %true_10 = hw.constant true
-        %75 = comb.xor %70, %true_10 : i1
-        %76 = comb.and %75, %74, %73 : i1
-        fsm.return %76
+        %60 = comb.and %58, %56, %1 : i1
+        %61 = comb.and %57, %36, %15, %59, %2 : i1
+        %62 = comb.or %61, %60, %32 : i1
+        %true_21 = hw.constant true
+        %63 = comb.xor %cpha_q, %true_21 : i1
+        %64 = comb.and %csaat_q, %7, %63 : i1
+        %65 = comb.mux %28, %64, %25 : i1
+        %true_22 = hw.constant true
+        %66 = comb.xor %arg18, %true_22 : i1
+        %true_23 = hw.constant true
+        %67 = comb.xor %62, %true_23 : i1
+        %68 = comb.and %67, %66, %65 : i1
+        fsm.return %68
       } action {
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
@@ -3900,7 +3060,6 @@ module {
         %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i16 = hw.constant -1 : i16
         %c-1_i20 = hw.constant -1 : i20
         %c-1_i4 = hw.constant -1 : i4
@@ -3918,296 +3077,234 @@ module {
         %10 = comb.and %9, %arg15 : i1
         %11 = comb.mux %10, %6, %8 : i3
         %12 = comb.or %10, %7 : i1
+        %false_14 = hw.constant false
         %13 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %14 = comb.xor %csaat_q, %true : i1
         %15 = comb.mux %13, %c1_i3, %c-2_i3 : i3
-        %16 = comb.xor %arg18, %true : i1
-        %17 = comb.and %5, %16 : i1
-        %18 = comb.mux %14, %c-4_i3, %11 : i3
-        %19 = comb.xor %5, %true : i1
-        %20 = comb.and %16, %19 : i1
-        %21 = comb.xor %20, %true : i1
-        %c3_i3_0 = hw.constant 3 : i3
-        %22 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %23 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
-        %24 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
-        %25 = comb.add %byte_cntr_cpha0_q, %c-1_i20 : i20
-        %26 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %27 = comb.or %arg18, %5 : i1
-        %28 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %29 = comb.and %cmd_wr_en_q, %22 : i1
-        %30 = comb.xor %22, %true : i1
-        %31 = comb.icmp ne %24, %c0_i20 : i20
-        %32 = comb.or %30, %31, %cpha_q : i1
-        %33 = comb.and %17, %32 : i1
-        %34 = comb.mux %33, %c2_i3, %15 : i3
-        %35 = comb.xor %32, %true : i1
-        %36 = comb.and %35, %17 : i1
-        %37 = comb.mux %36, %18, %34 : i3
-        %38 = comb.mux %arg18, %c0_i3, %37 : i3
-        %39 = comb.mux %20, %c3_i3_0, %38 : i3
-        %40 = comb.icmp ne %39, %c3_i3_0 : i3
-        %41 = comb.and %16, %40 : i1
-        %true_1 = hw.constant true
-        %42 = comb.xor %33, %true_1 : i1
-        %true_2 = hw.constant true
-        %43 = comb.xor %36, %true_2 : i1
-        %true_3 = hw.constant true
-        %44 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %45 = comb.xor %20, %true_4 : i1
-        %46 = comb.and %45, %44, %43, %42, %13 : i1
-        %true_5 = hw.constant true
-        %47 = comb.xor %cpha_q, %true_5 : i1
-        %48 = comb.and %csaat_q, %10, %47 : i1
-        %49 = comb.mux %36, %48, %33 : i1
-        %true_6 = hw.constant true
-        %50 = comb.xor %arg18, %true_6 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %20, %true_7 : i1
-        %52 = comb.and %51, %50, %49 : i1
-        %53 = comb.and %52, %22 : i1
-        %54 = comb.or %46, %53 : i1
-        %55 = comb.and %41, %54 : i1
-        %56 = comb.and %41, %52, %23 : i1
-        %57 = comb.and %41, %22 : i1
-        %true_8 = hw.constant true
-        %58 = comb.xor %arg18, %true_8 : i1
-        %59 = comb.and %58, %36, %csaat_q, %10, %cpha_q : i1
-        %60 = comb.or %20, %59 : i1
-        %61 = comb.and %41, %60, %22 : i1
-        %62 = comb.and %41, %60, %23 : i1
-        %63 = comb.mux %57, %25, %byte_cntr_cpha0_q : i20
-        %true_9 = hw.constant true
-        %64 = comb.xor %33, %true_9 : i1
-        %true_10 = hw.constant true
-        %65 = comb.xor %36, %true_10 : i1
-        %true_11 = hw.constant true
-        %66 = comb.xor %arg18, %true_11 : i1
-        %true_12 = hw.constant true
-        %67 = comb.xor %20, %true_12 : i1
-        %68 = comb.and %67, %66, %65, %64, %13 : i1
-        %69 = comb.extract %8 from 0 : (i3) -> i2
-        %c0_i2_13 = hw.constant 0 : i2
-        %70 = comb.icmp eq %69, %c0_i2_13 : i2
-        %true_14 = hw.constant true
-        %71 = comb.xor %10, %true_14 : i1
-        %72 = comb.and %71, %70 : i1
-        %73 = comb.or %14, %72 : i1
-        %true_15 = hw.constant true
-        %74 = comb.xor %arg18, %true_15 : i1
+        %16 = comb.mux %14, %c-4_i3, %11 : i3
+        %17 = comb.xor %5, %true : i1
+        %c3_i3_15 = hw.constant 3 : i3
         %true_16 = hw.constant true
-        %75 = comb.xor %20, %true_16 : i1
-        %76 = comb.and %75, %74, %36, %73 : i1
-        %77 = comb.extract %8 from 0 : (i3) -> i2
-        %c1_i2_17 = hw.constant 1 : i2
-        %78 = comb.icmp eq %77, %c1_i2_17 : i2
+        %true_17 = hw.constant true
         %true_18 = hw.constant true
-        %79 = comb.xor %10, %true_18 : i1
-        %true_19 = hw.constant true
-        %80 = comb.xor %arg18, %true_19 : i1
+        %18 = comb.xor %cpha_q, %true_18 : i1
+        %19 = comb.and %csaat_q, %10, %18 : i1
+        %20 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %21 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
+        %22 = comb.icmp eq %arg2, %c0_i2 : i2
+        %23 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %24 = comb.icmp eq %arg2, %c1_i2 : i2
+        %25 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %26 = comb.icmp eq %arg2, %c-2_i2 : i2
+        %27 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %28 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
+        %29 = comb.add %byte_cntr_cpha0_q, %c-1_i20 : i20
+        %30 = comb.extract %8 from 0 : (i3) -> i2
+        %c0_i2_19 = hw.constant 0 : i2
+        %31 = comb.icmp eq %30, %c0_i2_19 : i2
         %true_20 = hw.constant true
-        %81 = comb.xor %20, %true_20 : i1
-        %82 = comb.and %81, %80, %36, %csaat_q, %79, %78 : i1
-        %83 = comb.extract %8 from 0 : (i3) -> i2
-        %c-2_i2_21 = hw.constant -2 : i2
-        %84 = comb.icmp eq %83, %c-2_i2_21 : i2
+        %32 = comb.xor %10, %true_20 : i1
+        %33 = comb.and %32, %31 : i1
+        %34 = comb.or %14, %33 : i1
+        %35 = comb.extract %8 from 0 : (i3) -> i2
+        %c1_i2_21 = hw.constant 1 : i2
+        %36 = comb.icmp eq %35, %c1_i2_21 : i2
         %true_22 = hw.constant true
-        %85 = comb.xor %10, %true_22 : i1
-        %86 = comb.and %csaat_q, %85, %84 : i1
-        %true_23 = hw.constant true
-        %87 = comb.xor %13, %true_23 : i1
+        %37 = comb.xor %10, %true_22 : i1
+        %38 = comb.extract %8 from 0 : (i3) -> i2
+        %c-2_i2_23 = hw.constant -2 : i2
+        %39 = comb.icmp eq %38, %c-2_i2_23 : i2
         %true_24 = hw.constant true
-        %88 = comb.xor %33, %true_24 : i1
-        %89 = comb.and %88, %87 : i1
-        %90 = comb.mux %36, %86, %89 : i1
+        %40 = comb.xor %10, %true_24 : i1
+        %41 = comb.and %csaat_q, %40, %39 : i1
         %true_25 = hw.constant true
-        %91 = comb.xor %arg18, %true_25 : i1
+        %42 = comb.xor %13, %true_25 : i1
         %true_26 = hw.constant true
-        %92 = comb.xor %20, %true_26 : i1
-        %93 = comb.and %40, %17 : i1
-        %94 = comb.xor %68, %true : i1
-        %95 = comb.and %94, %93 : i1
-        %96 = comb.xor %76, %true : i1
-        %97 = comb.and %96, %95 : i1
-        %98 = comb.xor %82, %true : i1
-        %99 = comb.and %98, %97, %92, %91, %90 : i1
-        %100 = comb.and %97, %82 : i1
-        %101 = comb.or %100, %99 : i1
-        %102 = comb.and %95, %76 : i1
-        %103 = comb.and %93, %68 : i1
-        %104 = comb.xor %40, %true : i1
-        %105 = comb.and %28, %104, %17 : i1
+        %43 = comb.add %wait_cntr_q, %c-1_i4 : i4
+        %44 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
+        %45 = comb.extract %8 from 0 : (i3) -> i2
+        %c-1_i2 = hw.constant -1 : i2
+        %46 = comb.icmp eq %45, %c-1_i2 : i2
         %true_27 = hw.constant true
-        %106 = comb.xor %cpha_q, %true_27 : i1
-        %107 = comb.and %csaat_q, %10, %106 : i1
-        %108 = comb.mux %36, %107, %33 : i1
+        %47 = comb.xor %10, %true_27 : i1
+        %48 = comb.and %cmd_wr_en_q, %20 : i1
+        %49 = comb.xor %isFirstCycle, %true : i1
+        %50 = comb.and %49, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %51 = comb.xor %50, %true : i1
+        verif.assert %51 : i1
+        fsm.update %_sh1_10, %5 : i1
+        fsm.update %_sh1_8, %7 : i1
+        fsm.update %_sh1_6, %13 : i1
+        fsm.update %_sh1, %false_14 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        %52 = comb.xor %20, %true : i1
+        %53 = comb.icmp ne %28, %c0_i20 : i20
+        %54 = comb.or %52, %53, %cpha_q : i1
+        %55 = comb.and %5, %54 : i1
+        %56 = comb.mux %55, %c2_i3, %15 : i3
+        %57 = comb.xor %54, %true : i1
+        %58 = comb.and %57, %5 : i1
+        %59 = comb.mux %58, %16, %56 : i3
+        %60 = comb.mux %17, %c3_i3_15, %59 : i3
+        %61 = comb.icmp ne %60, %c3_i3_15 : i3
+        %62 = comb.xor %55, %true_16 : i1
+        %63 = comb.xor %58, %true_17 : i1
+        %64 = comb.and %5, %63, %62, %13 : i1
+        %65 = comb.mux %58, %19, %55 : i1
+        %66 = comb.and %5, %65 : i1
+        %67 = comb.and %66, %20 : i1
+        %68 = comb.or %64, %67 : i1
+        %69 = comb.and %61, %68 : i1
+        %70 = comb.and %61, %66, %21 : i1
+        %71 = comb.and %61, %20 : i1
+        %72 = comb.and %58, %csaat_q, %10, %cpha_q : i1
+        %73 = comb.or %17, %72 : i1
+        %74 = comb.and %61, %73, %20 : i1
+        %75 = comb.and %61, %73, %21 : i1
+        %76 = comb.mux %71, %29, %byte_cntr_cpha0_q : i20
+        %77 = comb.and %58, %34 : i1
+        %78 = comb.and %58, %csaat_q, %37, %36 : i1
+        %79 = comb.xor %55, %true_26 : i1
+        %80 = comb.and %79, %42 : i1
+        %81 = comb.mux %58, %41, %80 : i1
+        %82 = comb.and %61, %5 : i1
+        %83 = comb.xor %64, %true : i1
+        %84 = comb.and %83, %82 : i1
+        %85 = comb.xor %77, %true : i1
+        %86 = comb.and %85, %84 : i1
+        %87 = comb.xor %78, %true : i1
+        %88 = comb.and %87, %86, %81 : i1
+        %89 = comb.and %86, %78 : i1
+        %90 = comb.or %89, %88 : i1
+        %91 = comb.and %84, %77 : i1
+        %92 = comb.and %82, %64 : i1
+        %93 = comb.xor %61, %true : i1
+        %94 = comb.and %44, %93, %5 : i1
+        %95 = comb.icmp ne %60, %c-4_i3 : i3
+        %96 = comb.xor %66, %true : i1
+        %97 = comb.and %96, %83 : i1
+        %98 = comb.xor %73, %true : i1
+        %99 = comb.and %98, %97, %58, %csaat_q, %47, %46 : i1
+        %100 = comb.xor %99, %true : i1
+        %101 = comb.and %97, %73 : i1
+        %102 = comb.xor %101, %true : i1
+        %103 = comb.and %83, %66 : i1
+        %104 = comb.xor %103, %true : i1
+        %105 = comb.and %83, %104, %102, %100, %95 : i1
+        %106 = comb.icmp ne %60, %c3_i3 : i3
+        %107 = comb.and %arg15, %58, %csaat_q, %12 : i1
+        %108 = comb.mux %107, %arg14, %csid_q : i1
+        %109 = comb.mux %107, %arg13, %cpol_q : i1
+        %110 = comb.mux %107, %arg12, %cpha_q : i1
+        %111 = comb.mux %107, %arg8, %csnidle_q : i4
+        %112 = comb.mux %107, %arg9, %csnlead_q : i4
+        %113 = comb.mux %107, %arg10, %csntrail_q : i4
+        %114 = comb.mux %107, %arg7, %clkdiv_q : i16
+        %115 = comb.mux %107, %arg3, %cmd_wr_en_q : i1
+        %116 = comb.mux %107, %arg4, %cmd_rd_en_q : i1
+        %117 = comb.mux %1, %114, %2 : i16
+        %118 = comb.mux %107, %arg7, %117 : i16
+        %119 = comb.xor %110, %true : i1
+        %120 = comb.mux %119, %69, %74 : i1
+        %121 = comb.and %119, %71 : i1
+        %122 = comb.mux %119, %70, %75 : i1
+        %123 = comb.mux %119, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %124 = comb.xor %116, %true : i1
+        %125 = comb.xor %115, %true : i1
+        %126 = comb.and %124, %125 : i1
+        %127 = comb.mux %107, %22, %23 : i1
+        %128 = comb.mux %107, %24, %25 : i1
+        %129 = comb.mux %107, %26, %27 : i1
+        %130 = comb.mux %129, %c-4_i3, %c1_i3 : i3
+        %131 = comb.xor %126, %true : i1
+        %132 = comb.xor %127, %true : i1
+        %133 = comb.and %132, %131, %128 : i1
+        %134 = comb.mux %133, %c2_i3, %130 : i3
+        %135 = comb.mux %133, %c-2_i3, %130 : i3
+        %136 = comb.and %131, %127 : i1
+        %137 = comb.mux %136, %c1_i3, %134 : i3
+        %138 = comb.mux %136, %c-1_i3, %135 : i3
+        %139 = comb.mux %126, %c0_i3, %137 : i3
+        %140 = comb.mux %126, %c0_i3, %138 : i3
+        %141 = comb.sub %bit_cntr_q, %139 : i3
+        %142 = comb.mux %122, %141, %bit_cntr_q : i3
+        %143 = comb.mux %120, %140, %142 : i3
+        %144 = comb.mux %107, %arg5, %76 : i20
+        %145 = comb.mux %90, %111, %c0_i4 : i4
+        %146 = comb.mux %91, %113, %145 : i4
+        %147 = comb.mux %92, %112, %146 : i4
+        %148 = comb.mux %5, %147, %wait_cntr_q : i4
+        %149 = comb.mux %94, %43, %148 : i4
+        %150 = comb.mux %109, %106, %73 : i1
+        %151 = comb.xor %121, %true : i1
+        %152 = comb.and %151, %cmd_wr_en_last_bit : i1
+        %153 = comb.or %48, %152 : i1
+        fsm.update %cmd_wr_en_last_bit, %153 : i1
+        %154 = comb.and %120, %115, %3 : i1
+        %155 = comb.and %121, %123, %4 : i1
+        %156 = comb.or %155, %154 : i1
+        %157 = comb.xor %156, %true : i1
+        %158 = comb.and %122, %157 : i1
+        %159 = comb.and %107, %157 : i1
+        %160 = comb.mux %159, %arg14, %csid_q : i1
+        %161 = comb.mux %159, %arg13, %cpol_q : i1
+        %162 = comb.mux %159, %arg12, %cpha_q : i1
+        %163 = comb.mux %159, %arg11, %full_cyc_q : i1
+        %164 = comb.mux %159, %arg8, %csnidle_q : i4
+        %165 = comb.mux %159, %arg9, %csnlead_q : i4
+        %166 = comb.mux %159, %arg10, %csntrail_q : i4
+        %167 = comb.mux %159, %arg7, %clkdiv_q : i16
+        %168 = comb.mux %159, %arg6, %csaat_q : i1
+        %169 = comb.mux %159, %arg3, %cmd_wr_en_q : i1
+        %170 = comb.mux %159, %arg4, %cmd_rd_en_q : i1
+        %171 = comb.mux %159, %arg2, %cmd_speed_q : i2
+        %172 = comb.or %156, %0 : i1
+        %173 = comb.mux %172, %clk_cntr_q, %118 : i16
+        %174 = comb.and %61, %157 : i1
+        %175 = comb.mux bin %174, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %176 = comb.or %156, %17 : i1
+        %177 = comb.mux %176, %bit_cntr_q, %143 : i3
+        %178 = comb.or %156, %17 : i1
+        %179 = comb.mux %178, %byte_cntr_cpha0_q, %144 : i20
         %true_28 = hw.constant true
-        %109 = comb.xor %arg18, %true_28 : i1
-        %true_29 = hw.constant true
-        %110 = comb.xor %20, %true_29 : i1
-        %111 = comb.and %110, %109, %108 : i1
-        %true_30 = hw.constant true
-        %112 = comb.xor %arg18, %true_30 : i1
-        %113 = comb.and %112, %36, %csaat_q, %10, %cpha_q : i1
-        %114 = comb.or %20, %113 : i1
-        %115 = comb.extract %8 from 0 : (i3) -> i2
-        %c-1_i2_31 = hw.constant -1 : i2
-        %116 = comb.icmp eq %115, %c-1_i2_31 : i2
-        %true_32 = hw.constant true
-        %117 = comb.xor %10, %true_32 : i1
-        %true_33 = hw.constant true
-        %118 = comb.xor %arg18, %true_33 : i1
-        %true_34 = hw.constant true
-        %119 = comb.xor %20, %true_34 : i1
-        %120 = comb.icmp ne %39, %c-4_i3 : i3
-        %121 = comb.xor %111, %true : i1
-        %122 = comb.and %121, %94 : i1
-        %123 = comb.xor %114, %true : i1
-        %124 = comb.and %123, %122, %119, %118, %36, %csaat_q, %117, %116 : i1
-        %125 = comb.xor %124, %true : i1
-        %126 = comb.and %122, %114 : i1
-        %127 = comb.xor %126, %true : i1
-        %128 = comb.and %94, %111 : i1
-        %129 = comb.xor %128, %true : i1
-        %130 = comb.and %94, %129, %127, %125, %120 : i1
-        %131 = comb.icmp ne %39, %c3_i3 : i3
-        %132 = comb.and %arg15, %21, %36, %csaat_q, %12 : i1
-        %133 = comb.mux %132, %arg14, %csid_q : i1
-        %134 = comb.mux %132, %arg13, %cpol_q : i1
-        %135 = comb.mux %132, %arg12, %cpha_q : i1
-        %136 = comb.mux %132, %arg8, %csnidle_q : i4
-        %137 = comb.mux %132, %arg9, %csnlead_q : i4
-        %138 = comb.mux %132, %arg10, %csntrail_q : i4
-        %139 = comb.mux %132, %arg7, %clkdiv_q : i16
-        %140 = comb.mux %132, %arg3, %cmd_wr_en_q : i1
-        %141 = comb.mux %132, %arg4, %cmd_rd_en_q : i1
-        %142 = comb.mux %132, %arg2, %cmd_speed_q : i2
-        %143 = comb.mux %1, %139, %2 : i16
-        %144 = comb.mux %132, %arg7, %143 : i16
-        %145 = comb.mux %0, %clk_cntr_q, %144 : i16
-        %146 = comb.mux %arg18, %c0_i16, %145 : i16
-        %147 = comb.xor %135, %true : i1
-        %148 = comb.mux %147, %55, %61 : i1
-        %149 = comb.and %147, %57 : i1
-        %150 = comb.mux %147, %56, %62 : i1
-        %151 = comb.mux %147, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %152 = comb.xor %141, %true : i1
-        %153 = comb.xor %140, %true : i1
-        %154 = comb.and %152, %153 : i1
-        %155 = comb.icmp eq %arg2, %c0_i2 : i2
-        %156 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %157 = comb.mux %132, %155, %156 : i1
-        %158 = comb.icmp eq %arg2, %c1_i2 : i2
-        %159 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %160 = comb.mux %132, %158, %159 : i1
-        %161 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %162 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %163 = comb.mux %132, %161, %162 : i1
-        %164 = comb.mux %163, %c-4_i3, %c1_i3 : i3
-        %165 = comb.xor %154, %true : i1
-        %166 = comb.xor %157, %true : i1
-        %167 = comb.and %166, %165, %160 : i1
-        %168 = comb.mux %167, %c2_i3, %164 : i3
-        %169 = comb.mux %167, %c-2_i3, %164 : i3
-        %170 = comb.and %165, %157 : i1
-        %171 = comb.mux %170, %c1_i3, %168 : i3
-        %172 = comb.mux %170, %c-1_i3, %169 : i3
-        %173 = comb.mux %154, %c0_i3, %171 : i3
-        %174 = comb.mux %154, %c0_i3, %172 : i3
-        %175 = comb.sub %bit_cntr_q, %173 : i3
-        %176 = comb.mux %150, %175, %bit_cntr_q : i3
-        %177 = comb.mux %148, %174, %176 : i3
-        %178 = comb.mux %19, %bit_cntr_q, %177 : i3
-        %179 = comb.mux %arg18, %c0_i3, %178 : i3
-        %180 = comb.mux %132, %arg5, %63 : i20
-        %181 = comb.mux %19, %byte_cntr_cpha0_q, %180 : i20
-        %182 = comb.mux %arg18, %c0_i20, %181 : i20
-        %183 = comb.mux %132, %arg5, %byte_cntr_cpha1_q : i20
-        %184 = comb.mux %arg18, %c0_i20, %183 : i20
-        %185 = comb.mux %101, %136, %c0_i4 : i4
-        %186 = comb.mux %102, %138, %185 : i4
-        %187 = comb.mux %103, %137, %186 : i4
-        %188 = comb.mux %27, %187, %wait_cntr_q : i4
-        %189 = comb.mux %arg18, %c0_i4, %188 : i4
-        %190 = comb.mux %105, %26, %189 : i4
-        %191 = comb.mux %134, %131, %60 : i1
-        %192 = comb.xor %149, %true : i1
-        %193 = comb.and %192, %cmd_wr_en_last_bit : i1
-        %194 = comb.or %29, %193 : i1
-        %195 = comb.icmp eq %arg2, %c0_i2 : i2
-        %196 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %197 = comb.mux %132, %195, %196 : i1
-        %198 = comb.and %141, %140 : i1
-        %199 = comb.xor %198, %true : i1
-        %200 = comb.or %197, %199 : i1
-        verif.assert %200 : i1
-        %201 = comb.icmp ne %142, %c-1_i2 : i2
-        verif.assert %201 : i1
-        %202 = comb.xor %133, %true : i1
-        verif.assert %202 : i1
-        fsm.update %cmd_wr_en_last_bit, %194 : i1
-        %203 = comb.and %148, %140, %3 : i1
-        %204 = comb.and %149, %151, %4 : i1
-        %205 = comb.or %204, %203 : i1
-        %206 = comb.xor %205, %true : i1
-        %207 = comb.and %150, %206 : i1
-        %208 = comb.and %132, %206 : i1
-        %209 = comb.mux %208, %arg14, %csid_q : i1
-        %210 = comb.mux %208, %arg13, %cpol_q : i1
-        %211 = comb.mux %208, %arg12, %cpha_q : i1
-        %212 = comb.mux %208, %arg11, %full_cyc_q : i1
-        %213 = comb.mux %208, %arg8, %csnidle_q : i4
-        %214 = comb.mux %208, %arg9, %csnlead_q : i4
-        %215 = comb.mux %208, %arg10, %csntrail_q : i4
-        %216 = comb.mux %208, %arg7, %clkdiv_q : i16
-        %217 = comb.mux %208, %arg6, %csaat_q : i1
-        %218 = comb.mux %208, %arg3, %cmd_wr_en_q : i1
-        %219 = comb.mux %208, %arg4, %cmd_rd_en_q : i1
-        %220 = comb.mux %208, %arg2, %cmd_speed_q : i2
-        %221 = comb.mux %208, %arg5, %cmd_len_q : i20
-        %222 = comb.mux %205, %clk_cntr_q, %146 : i16
-        %223 = comb.and %40, %206 : i1
-        %224 = comb.mux bin %223, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %225 = comb.mux %205, %bit_cntr_q, %179 : i3
-        %226 = comb.mux %205, %byte_cntr_cpha0_q, %182 : i20
-        %227 = comb.mux %205, %byte_cntr_cpha1_q, %184 : i20
-        %228 = comb.mux %205, %wait_cntr_q, %190 : i4
-        %229 = comb.or %148, %207 : i1
-        %230 = comb.and %5, %206 : i1
-        %231 = comb.mux %230, %229, %sample_en_q : i1
-        %232 = comb.mux %230, %sample_en_q, %sample_en_q2 : i1
-        %233 = comb.mux bin %205, %u_sck_flop2Fq_o, %191 : i1
-        %234 = comb.mux %206, %130, %csb_q : i1
-        %235 = comb.or %133, %234 : i1
-        fsm.update %csb_q, %235 : i1
-        fsm.update %u_sck_flop2Fq_o, %233 : i1
-        fsm.update %sample_en_q2, %232 : i1
-        fsm.update %sample_en_q, %231 : i1
-        fsm.update %wait_cntr_q, %228 : i4
-        fsm.update %byte_cntr_cpha1_q, %227 : i20
-        fsm.update %byte_cntr_cpha0_q, %226 : i20
-        fsm.update %bit_cntr_q, %225 : i3
-        fsm.update %segment_rd_en_cpha1, %224 : i1
-        fsm.update %clk_cntr_q, %222 : i16
-        fsm.update %cmd_len_q, %221 : i20
-        fsm.update %cmd_speed_q, %220 : i2
-        fsm.update %cmd_wr_en_q, %218 : i1
-        fsm.update %cmd_rd_en_q, %219 : i1
-        fsm.update %csaat_q, %217 : i1
-        fsm.update %clkdiv_q, %216 : i16
-        fsm.update %csntrail_q, %215 : i4
-        fsm.update %csnlead_q, %214 : i4
-        fsm.update %csnidle_q, %213 : i4
-        fsm.update %full_cyc_q, %212 : i1
-        fsm.update %cpha_q, %211 : i1
-        fsm.update %cpol_q, %210 : i1
-        fsm.update %csid_q, %209 : i1
+        %180 = comb.xor %107, %true_28 : i1
+        %181 = comb.or %156, %180 : i1
+        %182 = comb.mux %181, %byte_cntr_cpha1_q, %arg5 : i20
+        %183 = comb.mux %156, %wait_cntr_q, %149 : i4
+        %184 = comb.or %120, %158 : i1
+        %185 = comb.and %5, %157 : i1
+        %186 = comb.mux %185, %184, %sample_en_q : i1
+        %187 = comb.mux %185, %sample_en_q, %sample_en_q2 : i1
+        %188 = comb.mux bin %156, %u_sck_flop2Fq_o, %150 : i1
+        %189 = comb.mux %157, %105, %csb_q : i1
+        %190 = comb.or %108, %189 : i1
+        fsm.update %_sh1_12, %157 : i1
+        fsm.update %csb_q, %190 : i1
+        fsm.update %u_sck_flop2Fq_o, %188 : i1
+        fsm.update %sample_en_q2, %187 : i1
+        fsm.update %sample_en_q, %186 : i1
+        fsm.update %wait_cntr_q, %183 : i4
+        fsm.update %byte_cntr_cpha1_q, %182 : i20
+        fsm.update %byte_cntr_cpha0_q, %179 : i20
+        fsm.update %bit_cntr_q, %177 : i3
+        fsm.update %segment_rd_en_cpha1, %175 : i1
+        fsm.update %clk_cntr_q, %173 : i16
+        fsm.update %cmd_speed_q, %171 : i2
+        fsm.update %cmd_wr_en_q, %169 : i1
+        fsm.update %cmd_rd_en_q, %170 : i1
+        fsm.update %csaat_q, %168 : i1
+        fsm.update %clkdiv_q, %167 : i16
+        fsm.update %csntrail_q, %166 : i4
+        fsm.update %csnlead_q, %165 : i4
+        fsm.update %csnidle_q, %164 : i4
+        fsm.update %full_cyc_q, %163 : i1
+        fsm.update %cpha_q, %162 : i1
+        fsm.update %cpol_q, %161 : i1
+        fsm.update %csid_q, %160 : i1
       }
       fsm.transition @state_1 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
@@ -4216,7 +3313,6 @@ module {
         %c-4_i3 = hw.constant -4 : i3
         %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %1 = comb.xor %arg16, %true : i1
@@ -4236,82 +3332,74 @@ module {
         %c3_i3 = hw.constant 3 : i3
         %15 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
         %16 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
-        %17 = comb.and %arg1, %0 : i1
-        %18 = comb.xor %15, %true : i1
-        %19 = comb.icmp ne %16, %c0_i20 : i20
-        %20 = comb.or %18, %19, %cpha_q : i1
-        %21 = comb.and %17, %13 : i1
-        %22 = comb.and %21, %20 : i1
-        %23 = comb.mux %22, %c2_i3, %12 : i3
-        %24 = comb.xor %20, %true : i1
-        %25 = comb.and %24, %21 : i1
-        %26 = comb.mux %25, %14, %23 : i3
-        %27 = comb.mux %arg18, %c0_i3, %26 : i3
-        %28 = comb.xor %17, %true : i1
-        %29 = comb.and %13, %28 : i1
-        %30 = comb.mux %29, %c3_i3, %27 : i3
-        %31 = comb.xor %29, %true : i1
-        %32 = comb.icmp ne %30, %c3_i3 : i3
-        %33 = comb.and %13, %32 : i1
-        %true_0 = hw.constant true
-        %34 = comb.xor %22, %true_0 : i1
-        %true_1 = hw.constant true
-        %35 = comb.xor %25, %true_1 : i1
-        %true_2 = hw.constant true
-        %36 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %37 = comb.xor %29, %true_3 : i1
-        %38 = comb.and %37, %36, %35, %34, %10 : i1
-        %true_4 = hw.constant true
-        %39 = comb.xor %cpha_q, %true_4 : i1
-        %40 = comb.and %csaat_q, %7, %39 : i1
-        %41 = comb.mux %25, %40, %22 : i1
-        %true_5 = hw.constant true
-        %42 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %43 = comb.xor %29, %true_6 : i1
-        %44 = comb.and %43, %42, %41, %15 : i1
-        %45 = comb.or %38, %44 : i1
-        %46 = comb.and %33, %45 : i1
-        %true_7 = hw.constant true
-        %47 = comb.xor %arg18, %true_7 : i1
-        %48 = comb.and %47, %25, %csaat_q, %7, %cpha_q : i1
-        %49 = comb.or %29, %48 : i1
-        %50 = comb.and %33, %49, %15 : i1
-        %51 = comb.and %arg15, %31, %25, %csaat_q, %9 : i1
-        %52 = comb.mux %51, %arg14, %csid_q : i1
-        %53 = comb.mux %51, %arg12, %cpha_q : i1
-        %54 = comb.mux %51, %arg3, %cmd_wr_en_q : i1
-        %55 = comb.mux %51, %arg4, %cmd_rd_en_q : i1
-        %56 = comb.mux %51, %arg2, %cmd_speed_q : i2
-        %57 = comb.xor %53, %true : i1
-        %58 = comb.mux %57, %46, %50 : i1
+        %17 = comb.xor %isFirstCycle, %true : i1
+        %18 = comb.and %17, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %13 : i1
+        %19 = comb.xor %18, %true : i1
+        %20 = comb.and %arg1, %0 : i1
+        %21 = comb.xor %15, %true : i1
+        %22 = comb.icmp ne %16, %c0_i20 : i20
+        %23 = comb.or %21, %22, %cpha_q : i1
+        %24 = comb.and %20, %13 : i1
+        %25 = comb.and %24, %23 : i1
+        %26 = comb.mux %25, %c2_i3, %12 : i3
+        %27 = comb.xor %23, %true : i1
+        %28 = comb.and %27, %24 : i1
+        %29 = comb.mux %28, %14, %26 : i3
+        %30 = comb.mux %arg18, %c0_i3, %29 : i3
+        %31 = comb.xor %20, %true : i1
+        %32 = comb.and %13, %31 : i1
+        %33 = comb.mux %32, %c3_i3, %30 : i3
+        %34 = comb.xor %32, %true : i1
+        %35 = comb.icmp ne %33, %c3_i3 : i3
+        %36 = comb.and %13, %35 : i1
+        %true_13 = hw.constant true
+        %37 = comb.xor %25, %true_13 : i1
+        %true_14 = hw.constant true
+        %38 = comb.xor %28, %true_14 : i1
+        %true_15 = hw.constant true
+        %39 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %40 = comb.xor %32, %true_16 : i1
+        %41 = comb.and %40, %39, %38, %37, %10 : i1
+        %true_17 = hw.constant true
+        %42 = comb.xor %cpha_q, %true_17 : i1
+        %43 = comb.and %csaat_q, %7, %42 : i1
+        %44 = comb.mux %28, %43, %25 : i1
+        %true_18 = hw.constant true
+        %45 = comb.xor %arg18, %true_18 : i1
+        %true_19 = hw.constant true
+        %46 = comb.xor %32, %true_19 : i1
+        %47 = comb.and %46, %45, %44, %15 : i1
+        %48 = comb.or %41, %47 : i1
+        %49 = comb.and %36, %48 : i1
+        %true_20 = hw.constant true
+        %50 = comb.xor %arg18, %true_20 : i1
+        %51 = comb.and %50, %28, %csaat_q, %7, %cpha_q : i1
+        %52 = comb.or %32, %51 : i1
+        %53 = comb.and %36, %52, %15 : i1
+        verif.assert %19 : i1
+        %54 = comb.and %arg15, %34, %28, %csaat_q, %9 : i1
+        %55 = comb.mux %54, %arg12, %cpha_q : i1
+        %56 = comb.mux %54, %arg3, %cmd_wr_en_q : i1
+        %57 = comb.xor %55, %true : i1
+        %58 = comb.mux %57, %49, %53 : i1
         %59 = comb.mux %57, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %60 = comb.icmp eq %arg2, %c0_i2 : i2
-        %61 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %62 = comb.mux %51, %60, %61 : i1
-        %63 = comb.and %55, %54 : i1
-        %64 = comb.xor %63, %true : i1
-        %65 = comb.or %62, %64 : i1
-        verif.assert %65 : i1
-        %66 = comb.icmp ne %56, %c-1_i2 : i2
-        verif.assert %66 : i1
-        %67 = comb.xor %52, %true : i1
-        verif.assert %67 : i1
-        %68 = comb.and %58, %54, %1 : i1
-        %69 = comb.and %57, %33, %15, %59, %2 : i1
-        %70 = comb.or %69, %68, %29 : i1
-        %true_8 = hw.constant true
-        %71 = comb.xor %22, %true_8 : i1
-        %true_9 = hw.constant true
-        %72 = comb.xor %25, %true_9 : i1
-        %true_10 = hw.constant true
-        %73 = comb.xor %arg18, %true_10 : i1
-        %true_11 = hw.constant true
-        %74 = comb.xor %70, %true_11 : i1
-        %75 = comb.and %74, %73, %72, %71, %10 : i1
-        fsm.return %75
+        %60 = comb.and %58, %56, %1 : i1
+        %61 = comb.and %57, %36, %15, %59, %2 : i1
+        %62 = comb.or %61, %60, %32 : i1
+        %true_21 = hw.constant true
+        %63 = comb.xor %25, %true_21 : i1
+        %true_22 = hw.constant true
+        %64 = comb.xor %28, %true_22 : i1
+        %true_23 = hw.constant true
+        %65 = comb.xor %arg18, %true_23 : i1
+        %true_24 = hw.constant true
+        %66 = comb.xor %62, %true_24 : i1
+        %67 = comb.and %66, %65, %64, %63, %10 : i1
+        fsm.return %67
       } action {
+        %true = hw.constant true
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
@@ -4325,309 +3413,234 @@ module {
         %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i16 = hw.constant -1 : i16
         %c-1_i20 = hw.constant -1 : i20
-        %c-1_i4 = hw.constant -1 : i4
-        %true = hw.constant true
-        %0 = comb.xor %arg1, %true : i1
+        %true_14 = hw.constant true
+        %0 = comb.xor %arg1, %true_14 : i1
         %1 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %2 = comb.add %clk_cntr_q, %c-1_i16 : i16
-        %3 = comb.xor %arg16, %true : i1
-        %4 = comb.xor %arg17, %true : i1
+        %3 = comb.xor %arg16, %true_14 : i1
+        %4 = comb.xor %arg17, %true_14 : i1
         %5 = comb.and %arg1, %1 : i1
         %6 = comb.concat %c1_i2, %cpha_q : i2, i1
-        %7 = comb.xor %arg15, %true : i1
+        %7 = comb.xor %arg15, %true_14 : i1
         %8 = comb.mux %7, %c-1_i3, %c-4_i3 : i3
         %9 = comb.icmp eq %arg14, %csid_q : i1
         %10 = comb.and %9, %arg15 : i1
         %11 = comb.mux %10, %6, %8 : i3
         %12 = comb.or %10, %7 : i1
-        %13 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %14 = comb.xor %csaat_q, %true : i1
-        %15 = comb.mux %13, %c1_i3, %c-2_i3 : i3
-        %16 = comb.xor %arg18, %true : i1
-        %17 = comb.and %5, %16 : i1
-        %18 = comb.mux %14, %c-4_i3, %11 : i3
-        %19 = comb.xor %5, %true : i1
-        %20 = comb.and %16, %19 : i1
-        %21 = comb.xor %20, %true : i1
-        %c3_i3_0 = hw.constant 3 : i3
-        %22 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %23 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
-        %24 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
-        %25 = comb.add %byte_cntr_cpha0_q, %c-1_i20 : i20
-        %26 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %27 = comb.or %arg18, %5 : i1
-        %28 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %29 = comb.and %cmd_wr_en_q, %22 : i1
-        %30 = comb.xor %22, %true : i1
-        %31 = comb.icmp ne %24, %c0_i20 : i20
-        %32 = comb.or %30, %31, %cpha_q : i1
-        %33 = comb.and %17, %32 : i1
-        %34 = comb.mux %33, %c2_i3, %15 : i3
-        %35 = comb.xor %32, %true : i1
-        %36 = comb.and %35, %17 : i1
-        %37 = comb.mux %36, %18, %34 : i3
-        %38 = comb.mux %arg18, %c0_i3, %37 : i3
-        %39 = comb.mux %20, %c3_i3_0, %38 : i3
-        %40 = comb.icmp ne %39, %c3_i3_0 : i3
-        %41 = comb.and %16, %40 : i1
-        %true_1 = hw.constant true
-        %42 = comb.xor %33, %true_1 : i1
-        %true_2 = hw.constant true
-        %43 = comb.xor %36, %true_2 : i1
-        %true_3 = hw.constant true
-        %44 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %45 = comb.xor %20, %true_4 : i1
-        %46 = comb.and %45, %44, %43, %42, %13 : i1
-        %true_5 = hw.constant true
-        %47 = comb.xor %cpha_q, %true_5 : i1
-        %48 = comb.and %csaat_q, %10, %47 : i1
-        %49 = comb.mux %36, %48, %33 : i1
-        %true_6 = hw.constant true
-        %50 = comb.xor %arg18, %true_6 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %20, %true_7 : i1
-        %52 = comb.and %51, %50, %49 : i1
-        %53 = comb.and %52, %22 : i1
-        %54 = comb.or %46, %53 : i1
-        %55 = comb.and %41, %54 : i1
-        %56 = comb.and %41, %52, %23 : i1
-        %57 = comb.and %41, %22 : i1
-        %true_8 = hw.constant true
-        %58 = comb.xor %arg18, %true_8 : i1
-        %59 = comb.and %58, %36, %csaat_q, %10, %cpha_q : i1
-        %60 = comb.or %20, %59 : i1
-        %61 = comb.and %41, %60, %22 : i1
-        %62 = comb.and %41, %60, %23 : i1
-        %63 = comb.mux %57, %25, %byte_cntr_cpha0_q : i20
-        %true_9 = hw.constant true
-        %64 = comb.xor %33, %true_9 : i1
-        %true_10 = hw.constant true
-        %65 = comb.xor %36, %true_10 : i1
-        %true_11 = hw.constant true
-        %66 = comb.xor %arg18, %true_11 : i1
-        %true_12 = hw.constant true
-        %67 = comb.xor %20, %true_12 : i1
-        %68 = comb.and %67, %66, %65, %64, %13 : i1
-        %69 = comb.extract %8 from 0 : (i3) -> i2
-        %c0_i2_13 = hw.constant 0 : i2
-        %70 = comb.icmp eq %69, %c0_i2_13 : i2
-        %true_14 = hw.constant true
-        %71 = comb.xor %10, %true_14 : i1
-        %72 = comb.and %71, %70 : i1
-        %73 = comb.or %14, %72 : i1
-        %true_15 = hw.constant true
-        %74 = comb.xor %arg18, %true_15 : i1
-        %true_16 = hw.constant true
-        %75 = comb.xor %20, %true_16 : i1
-        %76 = comb.and %75, %74, %36, %73 : i1
-        %77 = comb.extract %8 from 0 : (i3) -> i2
-        %c1_i2_17 = hw.constant 1 : i2
-        %78 = comb.icmp eq %77, %c1_i2_17 : i2
+        %false_15 = hw.constant false
+        %13 = comb.xor %csaat_q, %true_14 : i1
+        %14 = comb.mux %13, %c-4_i3, %11 : i3
+        %15 = comb.xor %5, %true_14 : i1
+        %c3_i3_16 = hw.constant 3 : i3
+        %true_17 = hw.constant true
         %true_18 = hw.constant true
-        %79 = comb.xor %10, %true_18 : i1
         %true_19 = hw.constant true
-        %80 = comb.xor %arg18, %true_19 : i1
-        %true_20 = hw.constant true
-        %81 = comb.xor %20, %true_20 : i1
-        %82 = comb.and %81, %80, %36, %csaat_q, %79, %78 : i1
-        %83 = comb.extract %8 from 0 : (i3) -> i2
-        %c-2_i2_21 = hw.constant -2 : i2
-        %84 = comb.icmp eq %83, %c-2_i2_21 : i2
-        %true_22 = hw.constant true
-        %85 = comb.xor %10, %true_22 : i1
-        %86 = comb.and %csaat_q, %85, %84 : i1
+        %16 = comb.xor %cpha_q, %true_19 : i1
+        %17 = comb.and %csaat_q, %10, %16 : i1
+        %18 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %19 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
+        %20 = comb.icmp eq %arg2, %c0_i2 : i2
+        %21 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %22 = comb.icmp eq %arg2, %c1_i2 : i2
+        %23 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %24 = comb.icmp eq %arg2, %c-2_i2 : i2
+        %25 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %26 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
+        %27 = comb.add %byte_cntr_cpha0_q, %c-1_i20 : i20
+        %28 = comb.extract %8 from 0 : (i3) -> i2
+        %c0_i2_20 = hw.constant 0 : i2
+        %29 = comb.icmp eq %28, %c0_i2_20 : i2
+        %true_21 = hw.constant true
+        %30 = comb.xor %10, %true_21 : i1
+        %31 = comb.and %30, %29 : i1
+        %32 = comb.or %13, %31 : i1
+        %33 = comb.extract %8 from 0 : (i3) -> i2
+        %c1_i2_22 = hw.constant 1 : i2
+        %34 = comb.icmp eq %33, %c1_i2_22 : i2
         %true_23 = hw.constant true
-        %87 = comb.xor %13, %true_23 : i1
-        %true_24 = hw.constant true
-        %88 = comb.xor %33, %true_24 : i1
-        %89 = comb.and %88, %87 : i1
-        %90 = comb.mux %36, %86, %89 : i1
+        %35 = comb.xor %10, %true_23 : i1
+        %36 = comb.extract %8 from 0 : (i3) -> i2
+        %c-2_i2_24 = hw.constant -2 : i2
+        %37 = comb.icmp eq %36, %c-2_i2_24 : i2
         %true_25 = hw.constant true
-        %91 = comb.xor %arg18, %true_25 : i1
+        %38 = comb.xor %10, %true_25 : i1
+        %39 = comb.extract %8 from 0 : (i3) -> i2
+        %c-1_i2 = hw.constant -1 : i2
+        %40 = comb.icmp eq %39, %c-1_i2 : i2
         %true_26 = hw.constant true
-        %92 = comb.xor %20, %true_26 : i1
-        %93 = comb.and %40, %17 : i1
-        %94 = comb.xor %68, %true : i1
-        %95 = comb.and %94, %93 : i1
-        %96 = comb.xor %76, %true : i1
-        %97 = comb.and %96, %95 : i1
-        %98 = comb.xor %82, %true : i1
-        %99 = comb.and %98, %97, %92, %91, %90 : i1
-        %100 = comb.and %97, %82 : i1
-        %101 = comb.or %100, %99 : i1
-        %102 = comb.and %95, %76 : i1
-        %103 = comb.and %93, %68 : i1
-        %104 = comb.xor %40, %true : i1
-        %105 = comb.and %28, %104, %17 : i1
+        %41 = comb.xor %10, %true_26 : i1
+        %42 = comb.and %cmd_wr_en_q, %18 : i1
+        %43 = comb.xor %isFirstCycle, %true_14 : i1
+        %44 = comb.and %43, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %45 = comb.xor %44, %true_14 : i1
+        verif.assert %45 : i1
+        fsm.update %_sh1_10, %5 : i1
+        fsm.update %_sh1_8, %7 : i1
+        fsm.update %_sh1_6, %true : i1
+        fsm.update %_sh1, %false_15 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        %46 = comb.xor %18, %true_14 : i1
+        %47 = comb.icmp ne %26, %c0_i20 : i20
+        %48 = comb.or %46, %47, %cpha_q : i1
+        %49 = comb.and %5, %48 : i1
+        %50 = comb.mux %49, %c2_i3, %c1_i3 : i3
+        %51 = comb.xor %48, %true_14 : i1
+        %52 = comb.and %51, %5 : i1
+        %53 = comb.mux %52, %14, %50 : i3
+        %54 = comb.mux %15, %c3_i3_16, %53 : i3
+        %55 = comb.icmp ne %54, %c3_i3_16 : i3
+        %56 = comb.xor %49, %true_17 : i1
+        %57 = comb.xor %52, %true_18 : i1
+        %58 = comb.and %5, %57, %56 : i1
+        %59 = comb.mux %52, %17, %49 : i1
+        %60 = comb.and %5, %59 : i1
+        %61 = comb.and %60, %18 : i1
+        %62 = comb.or %58, %61 : i1
+        %63 = comb.and %55, %62 : i1
+        %64 = comb.and %55, %60, %19 : i1
+        %65 = comb.and %55, %18 : i1
+        %66 = comb.and %52, %csaat_q, %10, %cpha_q : i1
+        %67 = comb.or %15, %66 : i1
+        %68 = comb.and %55, %67, %18 : i1
+        %69 = comb.and %55, %67, %19 : i1
+        %70 = comb.mux %65, %27, %byte_cntr_cpha0_q : i20
+        %71 = comb.and %52, %32 : i1
+        %72 = comb.and %52, %csaat_q, %35, %34 : i1
+        %73 = comb.and %55, %5 : i1
+        %74 = comb.xor %58, %true_14 : i1
+        %75 = comb.and %74, %73 : i1
+        %76 = comb.xor %71, %true_14 : i1
+        %77 = comb.and %76, %75 : i1
+        %78 = comb.xor %72, %true_14 : i1
+        %79 = comb.and %78, %77, %52, %csaat_q, %38, %37 : i1
+        %80 = comb.and %77, %72 : i1
+        %81 = comb.or %80, %79 : i1
+        %82 = comb.and %75, %71 : i1
+        %83 = comb.and %73, %58 : i1
+        %84 = comb.icmp ne %54, %c-4_i3 : i3
+        %85 = comb.xor %60, %true_14 : i1
+        %86 = comb.and %85, %74 : i1
+        %87 = comb.xor %67, %true_14 : i1
+        %88 = comb.and %87, %86, %52, %csaat_q, %41, %40 : i1
+        %89 = comb.xor %88, %true_14 : i1
+        %90 = comb.and %86, %67 : i1
+        %91 = comb.xor %90, %true_14 : i1
+        %92 = comb.and %74, %60 : i1
+        %93 = comb.xor %92, %true_14 : i1
+        %94 = comb.and %74, %93, %91, %89, %84 : i1
+        %95 = comb.icmp ne %54, %c3_i3 : i3
+        %96 = comb.and %arg15, %52, %csaat_q, %12 : i1
+        %97 = comb.mux %96, %arg14, %csid_q : i1
+        %98 = comb.mux %96, %arg13, %cpol_q : i1
+        %99 = comb.mux %96, %arg12, %cpha_q : i1
+        %100 = comb.mux %96, %arg8, %csnidle_q : i4
+        %101 = comb.mux %96, %arg9, %csnlead_q : i4
+        %102 = comb.mux %96, %arg10, %csntrail_q : i4
+        %103 = comb.mux %96, %arg7, %clkdiv_q : i16
+        %104 = comb.mux %96, %arg3, %cmd_wr_en_q : i1
+        %105 = comb.mux %96, %arg4, %cmd_rd_en_q : i1
+        %106 = comb.mux %1, %103, %2 : i16
+        %107 = comb.mux %96, %arg7, %106 : i16
+        %108 = comb.xor %99, %true_14 : i1
+        %109 = comb.mux %108, %63, %68 : i1
+        %110 = comb.and %108, %65 : i1
+        %111 = comb.mux %108, %64, %69 : i1
+        %112 = comb.mux %108, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %113 = comb.xor %105, %true_14 : i1
+        %114 = comb.xor %104, %true_14 : i1
+        %115 = comb.and %113, %114 : i1
+        %116 = comb.mux %96, %20, %21 : i1
+        %117 = comb.mux %96, %22, %23 : i1
+        %118 = comb.mux %96, %24, %25 : i1
+        %119 = comb.mux %118, %c-4_i3, %c1_i3 : i3
+        %120 = comb.xor %115, %true_14 : i1
+        %121 = comb.xor %116, %true_14 : i1
+        %122 = comb.and %121, %120, %117 : i1
+        %123 = comb.mux %122, %c2_i3, %119 : i3
+        %124 = comb.mux %122, %c-2_i3, %119 : i3
+        %125 = comb.and %120, %116 : i1
+        %126 = comb.mux %125, %c1_i3, %123 : i3
+        %127 = comb.mux %125, %c-1_i3, %124 : i3
+        %128 = comb.mux %115, %c0_i3, %126 : i3
+        %129 = comb.mux %115, %c0_i3, %127 : i3
+        %130 = comb.sub %bit_cntr_q, %128 : i3
+        %131 = comb.mux %111, %130, %bit_cntr_q : i3
+        %132 = comb.mux %109, %129, %131 : i3
+        %133 = comb.mux %96, %arg5, %70 : i20
+        %134 = comb.mux %81, %100, %c0_i4 : i4
+        %135 = comb.mux %82, %102, %134 : i4
+        %136 = comb.mux %83, %101, %135 : i4
+        %137 = comb.mux %98, %95, %67 : i1
+        %138 = comb.xor %110, %true_14 : i1
+        %139 = comb.and %138, %cmd_wr_en_last_bit : i1
+        %140 = comb.or %42, %139 : i1
+        fsm.update %cmd_wr_en_last_bit, %140 : i1
+        %141 = comb.and %109, %104, %3 : i1
+        %142 = comb.and %110, %112, %4 : i1
+        %143 = comb.or %142, %141 : i1
+        %144 = comb.xor %143, %true_14 : i1
+        %145 = comb.and %111, %144 : i1
+        %146 = comb.and %96, %144 : i1
+        %147 = comb.mux %146, %arg14, %csid_q : i1
+        %148 = comb.mux %146, %arg13, %cpol_q : i1
+        %149 = comb.mux %146, %arg12, %cpha_q : i1
+        %150 = comb.mux %146, %arg11, %full_cyc_q : i1
+        %151 = comb.mux %146, %arg8, %csnidle_q : i4
+        %152 = comb.mux %146, %arg9, %csnlead_q : i4
+        %153 = comb.mux %146, %arg10, %csntrail_q : i4
+        %154 = comb.mux %146, %arg7, %clkdiv_q : i16
+        %155 = comb.mux %146, %arg6, %csaat_q : i1
+        %156 = comb.mux %146, %arg3, %cmd_wr_en_q : i1
+        %157 = comb.mux %146, %arg4, %cmd_rd_en_q : i1
+        %158 = comb.mux %146, %arg2, %cmd_speed_q : i2
+        %159 = comb.or %143, %0 : i1
+        %160 = comb.mux %159, %clk_cntr_q, %107 : i16
+        %161 = comb.and %55, %144 : i1
+        %162 = comb.mux bin %161, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %163 = comb.or %143, %15 : i1
+        %164 = comb.mux %163, %bit_cntr_q, %132 : i3
+        %165 = comb.or %143, %15 : i1
+        %166 = comb.mux %165, %byte_cntr_cpha0_q, %133 : i20
         %true_27 = hw.constant true
-        %106 = comb.xor %cpha_q, %true_27 : i1
-        %107 = comb.and %csaat_q, %10, %106 : i1
-        %108 = comb.mux %36, %107, %33 : i1
+        %167 = comb.xor %96, %true_27 : i1
+        %168 = comb.or %143, %167 : i1
+        %169 = comb.mux %168, %byte_cntr_cpha1_q, %arg5 : i20
         %true_28 = hw.constant true
-        %109 = comb.xor %arg18, %true_28 : i1
-        %true_29 = hw.constant true
-        %110 = comb.xor %20, %true_29 : i1
-        %111 = comb.and %110, %109, %108 : i1
-        %true_30 = hw.constant true
-        %112 = comb.xor %arg18, %true_30 : i1
-        %113 = comb.and %112, %36, %csaat_q, %10, %cpha_q : i1
-        %114 = comb.or %20, %113 : i1
-        %115 = comb.extract %8 from 0 : (i3) -> i2
-        %c-1_i2_31 = hw.constant -1 : i2
-        %116 = comb.icmp eq %115, %c-1_i2_31 : i2
-        %true_32 = hw.constant true
-        %117 = comb.xor %10, %true_32 : i1
-        %true_33 = hw.constant true
-        %118 = comb.xor %arg18, %true_33 : i1
-        %true_34 = hw.constant true
-        %119 = comb.xor %20, %true_34 : i1
-        %120 = comb.icmp ne %39, %c-4_i3 : i3
-        %121 = comb.xor %111, %true : i1
-        %122 = comb.and %121, %94 : i1
-        %123 = comb.xor %114, %true : i1
-        %124 = comb.and %123, %122, %119, %118, %36, %csaat_q, %117, %116 : i1
-        %125 = comb.xor %124, %true : i1
-        %126 = comb.and %122, %114 : i1
-        %127 = comb.xor %126, %true : i1
-        %128 = comb.and %94, %111 : i1
-        %129 = comb.xor %128, %true : i1
-        %130 = comb.and %94, %129, %127, %125, %120 : i1
-        %131 = comb.icmp ne %39, %c3_i3 : i3
-        %132 = comb.and %arg15, %21, %36, %csaat_q, %12 : i1
-        %133 = comb.mux %132, %arg14, %csid_q : i1
-        %134 = comb.mux %132, %arg13, %cpol_q : i1
-        %135 = comb.mux %132, %arg12, %cpha_q : i1
-        %136 = comb.mux %132, %arg8, %csnidle_q : i4
-        %137 = comb.mux %132, %arg9, %csnlead_q : i4
-        %138 = comb.mux %132, %arg10, %csntrail_q : i4
-        %139 = comb.mux %132, %arg7, %clkdiv_q : i16
-        %140 = comb.mux %132, %arg3, %cmd_wr_en_q : i1
-        %141 = comb.mux %132, %arg4, %cmd_rd_en_q : i1
-        %142 = comb.mux %132, %arg2, %cmd_speed_q : i2
-        %143 = comb.mux %1, %139, %2 : i16
-        %144 = comb.mux %132, %arg7, %143 : i16
-        %145 = comb.mux %0, %clk_cntr_q, %144 : i16
-        %146 = comb.mux %arg18, %c0_i16, %145 : i16
-        %147 = comb.xor %135, %true : i1
-        %148 = comb.mux %147, %55, %61 : i1
-        %149 = comb.and %147, %57 : i1
-        %150 = comb.mux %147, %56, %62 : i1
-        %151 = comb.mux %147, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %152 = comb.xor %141, %true : i1
-        %153 = comb.xor %140, %true : i1
-        %154 = comb.and %152, %153 : i1
-        %155 = comb.icmp eq %arg2, %c0_i2 : i2
-        %156 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %157 = comb.mux %132, %155, %156 : i1
-        %158 = comb.icmp eq %arg2, %c1_i2 : i2
-        %159 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %160 = comb.mux %132, %158, %159 : i1
-        %161 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %162 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %163 = comb.mux %132, %161, %162 : i1
-        %164 = comb.mux %163, %c-4_i3, %c1_i3 : i3
-        %165 = comb.xor %154, %true : i1
-        %166 = comb.xor %157, %true : i1
-        %167 = comb.and %166, %165, %160 : i1
-        %168 = comb.mux %167, %c2_i3, %164 : i3
-        %169 = comb.mux %167, %c-2_i3, %164 : i3
-        %170 = comb.and %165, %157 : i1
-        %171 = comb.mux %170, %c1_i3, %168 : i3
-        %172 = comb.mux %170, %c-1_i3, %169 : i3
-        %173 = comb.mux %154, %c0_i3, %171 : i3
-        %174 = comb.mux %154, %c0_i3, %172 : i3
-        %175 = comb.sub %bit_cntr_q, %173 : i3
-        %176 = comb.mux %150, %175, %bit_cntr_q : i3
-        %177 = comb.mux %148, %174, %176 : i3
-        %178 = comb.mux %19, %bit_cntr_q, %177 : i3
-        %179 = comb.mux %arg18, %c0_i3, %178 : i3
-        %180 = comb.mux %132, %arg5, %63 : i20
-        %181 = comb.mux %19, %byte_cntr_cpha0_q, %180 : i20
-        %182 = comb.mux %arg18, %c0_i20, %181 : i20
-        %183 = comb.mux %132, %arg5, %byte_cntr_cpha1_q : i20
-        %184 = comb.mux %arg18, %c0_i20, %183 : i20
-        %185 = comb.mux %101, %136, %c0_i4 : i4
-        %186 = comb.mux %102, %138, %185 : i4
-        %187 = comb.mux %103, %137, %186 : i4
-        %188 = comb.mux %27, %187, %wait_cntr_q : i4
-        %189 = comb.mux %arg18, %c0_i4, %188 : i4
-        %190 = comb.mux %105, %26, %189 : i4
-        %191 = comb.mux %134, %131, %60 : i1
-        %192 = comb.xor %149, %true : i1
-        %193 = comb.and %192, %cmd_wr_en_last_bit : i1
-        %194 = comb.or %29, %193 : i1
-        %195 = comb.icmp eq %arg2, %c0_i2 : i2
-        %196 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %197 = comb.mux %132, %195, %196 : i1
-        %198 = comb.and %141, %140 : i1
-        %199 = comb.xor %198, %true : i1
-        %200 = comb.or %197, %199 : i1
-        verif.assert %200 : i1
-        %201 = comb.icmp ne %142, %c-1_i2 : i2
-        verif.assert %201 : i1
-        %202 = comb.xor %133, %true : i1
-        verif.assert %202 : i1
-        fsm.update %cmd_wr_en_last_bit, %194 : i1
-        %203 = comb.and %148, %140, %3 : i1
-        %204 = comb.and %149, %151, %4 : i1
-        %205 = comb.or %204, %203 : i1
-        %206 = comb.xor %205, %true : i1
-        %207 = comb.and %150, %206 : i1
-        %208 = comb.and %132, %206 : i1
-        %209 = comb.mux %208, %arg14, %csid_q : i1
-        %210 = comb.mux %208, %arg13, %cpol_q : i1
-        %211 = comb.mux %208, %arg12, %cpha_q : i1
-        %212 = comb.mux %208, %arg11, %full_cyc_q : i1
-        %213 = comb.mux %208, %arg8, %csnidle_q : i4
-        %214 = comb.mux %208, %arg9, %csnlead_q : i4
-        %215 = comb.mux %208, %arg10, %csntrail_q : i4
-        %216 = comb.mux %208, %arg7, %clkdiv_q : i16
-        %217 = comb.mux %208, %arg6, %csaat_q : i1
-        %218 = comb.mux %208, %arg3, %cmd_wr_en_q : i1
-        %219 = comb.mux %208, %arg4, %cmd_rd_en_q : i1
-        %220 = comb.mux %208, %arg2, %cmd_speed_q : i2
-        %221 = comb.mux %208, %arg5, %cmd_len_q : i20
-        %222 = comb.mux %205, %clk_cntr_q, %146 : i16
-        %223 = comb.and %40, %206 : i1
-        %224 = comb.mux bin %223, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %225 = comb.mux %205, %bit_cntr_q, %179 : i3
-        %226 = comb.mux %205, %byte_cntr_cpha0_q, %182 : i20
-        %227 = comb.mux %205, %byte_cntr_cpha1_q, %184 : i20
-        %228 = comb.mux %205, %wait_cntr_q, %190 : i4
-        %229 = comb.or %148, %207 : i1
-        %230 = comb.and %5, %206 : i1
-        %231 = comb.mux %230, %229, %sample_en_q : i1
-        %232 = comb.mux %230, %sample_en_q, %sample_en_q2 : i1
-        %233 = comb.mux bin %205, %u_sck_flop2Fq_o, %191 : i1
-        %234 = comb.mux %206, %130, %csb_q : i1
-        %235 = comb.or %133, %234 : i1
-        fsm.update %csb_q, %235 : i1
-        fsm.update %u_sck_flop2Fq_o, %233 : i1
-        fsm.update %sample_en_q2, %232 : i1
-        fsm.update %sample_en_q, %231 : i1
-        fsm.update %wait_cntr_q, %228 : i4
-        fsm.update %byte_cntr_cpha1_q, %227 : i20
-        fsm.update %byte_cntr_cpha0_q, %226 : i20
-        fsm.update %bit_cntr_q, %225 : i3
-        fsm.update %segment_rd_en_cpha1, %224 : i1
-        fsm.update %clk_cntr_q, %222 : i16
-        fsm.update %cmd_len_q, %221 : i20
-        fsm.update %cmd_speed_q, %220 : i2
-        fsm.update %cmd_wr_en_q, %218 : i1
-        fsm.update %cmd_rd_en_q, %219 : i1
-        fsm.update %csaat_q, %217 : i1
-        fsm.update %clkdiv_q, %216 : i16
-        fsm.update %csntrail_q, %215 : i4
-        fsm.update %csnlead_q, %214 : i4
-        fsm.update %csnidle_q, %213 : i4
-        fsm.update %full_cyc_q, %212 : i1
-        fsm.update %cpha_q, %211 : i1
-        fsm.update %cpol_q, %210 : i1
-        fsm.update %csid_q, %209 : i1
+        %170 = comb.xor %5, %true_28 : i1
+        %171 = comb.or %143, %170 : i1
+        %172 = comb.mux %171, %wait_cntr_q, %136 : i4
+        %173 = comb.or %109, %145 : i1
+        %174 = comb.and %5, %144 : i1
+        %175 = comb.mux %174, %173, %sample_en_q : i1
+        %176 = comb.mux %174, %sample_en_q, %sample_en_q2 : i1
+        %177 = comb.mux bin %143, %u_sck_flop2Fq_o, %137 : i1
+        %178 = comb.mux %144, %94, %csb_q : i1
+        %179 = comb.or %97, %178 : i1
+        fsm.update %_sh1_12, %144 : i1
+        fsm.update %csb_q, %179 : i1
+        fsm.update %u_sck_flop2Fq_o, %177 : i1
+        fsm.update %sample_en_q2, %176 : i1
+        fsm.update %sample_en_q, %175 : i1
+        fsm.update %wait_cntr_q, %172 : i4
+        fsm.update %byte_cntr_cpha1_q, %169 : i20
+        fsm.update %byte_cntr_cpha0_q, %166 : i20
+        fsm.update %bit_cntr_q, %164 : i3
+        fsm.update %segment_rd_en_cpha1, %162 : i1
+        fsm.update %clk_cntr_q, %160 : i16
+        fsm.update %cmd_speed_q, %158 : i2
+        fsm.update %cmd_wr_en_q, %156 : i1
+        fsm.update %cmd_rd_en_q, %157 : i1
+        fsm.update %csaat_q, %155 : i1
+        fsm.update %clkdiv_q, %154 : i16
+        fsm.update %csntrail_q, %153 : i4
+        fsm.update %csnlead_q, %152 : i4
+        fsm.update %csnidle_q, %151 : i4
+        fsm.update %full_cyc_q, %150 : i1
+        fsm.update %cpha_q, %149 : i1
+        fsm.update %cpol_q, %148 : i1
+        fsm.update %csid_q, %147 : i1
       }
     }
     fsm.state @state_2 output {
@@ -4643,10 +3656,9 @@ module {
       %c3_i3 = hw.constant 3 : i3
       %c1_i2 = hw.constant 1 : i2
       %c-2_i2 = hw.constant -2 : i2
-      %c-1_i2 = hw.constant -1 : i2
       %c-1_i20 = hw.constant -1 : i20
       %true = hw.constant true
-      %true_0 = hw.constant true
+      %true_13 = hw.constant true
       %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
       %1 = comb.xor %arg16, %true : i1
       %2 = comb.xor %arg17, %true : i1
@@ -4691,110 +3703,99 @@ module {
       %40 = comb.mux %39, %30, %38 : i4
       %41 = comb.and %25, %33 : i1
       %42 = comb.mux %41, %27, %40 : i4
-      %43 = comb.xor %21, %true : i1
-      %44 = comb.icmp ne %23, %c0_i20 : i20
-      %45 = comb.or %43, %44, %12 : i1
-      %46 = comb.xor %45, %true : i1
-      %47 = comb.and %46, %16 : i1
-      %48 = comb.mux %47, %17, %14 : i3
-      %49 = comb.and %16, %45 : i1
-      %50 = comb.mux %49, %c3_i3, %48 : i3
-      %51 = comb.xor %49, %true : i1
-      %52 = comb.mux %arg18, %c0_i3, %50 : i3
-      %53 = comb.mux %19, %c2_i3, %52 : i3
-      %54 = comb.and %20, %51, %47, %csaat_q, %10 : i1
-      %55 = comb.icmp ne %53, %c2_i3 : i3
-      %56 = comb.and %15, %55 : i1
-      %true_1 = hw.constant true
-      %57 = comb.xor %47, %true_1 : i1
-      %true_2 = hw.constant true
-      %58 = comb.xor %49, %true_2 : i1
-      %true_3 = hw.constant true
-      %59 = comb.xor %arg18, %true_3 : i1
-      %true_4 = hw.constant true
-      %60 = comb.xor %19, %true_4 : i1
-      %61 = comb.and %60, %59, %58, %57, %11 : i1
-      %true_5 = hw.constant true
-      %62 = comb.xor %cpha_q, %true_5 : i1
-      %true_6 = hw.constant true
-      %63 = comb.xor %49, %true_6 : i1
-      %true_7 = hw.constant true
-      %64 = comb.xor %arg18, %true_7 : i1
-      %65 = comb.and %64, %63, %47, %csaat_q, %8, %62 : i1
-      %66 = comb.or %19, %65 : i1
-      %67 = comb.and %66, %21 : i1
-      %68 = comb.or %61, %67 : i1
-      %69 = comb.and %56, %68 : i1
-      %70 = comb.and %56, %66, %22 : i1
-      %71 = comb.and %47, %csaat_q, %8, %cpha_q : i1
-      %72 = comb.or %49, %71 : i1
-      %true_8 = hw.constant true
-      %73 = comb.xor %arg18, %true_8 : i1
-      %true_9 = hw.constant true
-      %74 = comb.xor %19, %true_9 : i1
-      %75 = comb.and %74, %73, %72 : i1
-      %76 = comb.and %56, %75, %21 : i1
-      %77 = comb.and %56, %75, %22 : i1
-      %78 = comb.and %56, %21 : i1
-      %79 = comb.and %arg15, %54 : i1
-      %80 = comb.mux %79, %arg14, %csid_q : i1
-      %81 = comb.mux %79, %arg12, %cpha_q : i1
-      %82 = comb.mux %79, %arg11, %full_cyc_q : i1
-      %83 = comb.mux %79, %arg3, %cmd_wr_en_q : i1
-      %84 = comb.mux %79, %arg4, %cmd_rd_en_q : i1
-      %85 = comb.mux %79, %arg2, %cmd_speed_q : i2
-      %86 = comb.xor %81, %true : i1
-      %87 = comb.mux %86, %69, %76 : i1
-      %88 = comb.mux %86, %70, %77 : i1
+      %43 = comb.xor %isFirstCycle, %true : i1
+      %44 = comb.and %43, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %15 : i1
+      %45 = comb.xor %44, %true : i1
+      verif.assert %45 : i1
+      %46 = comb.xor %21, %true : i1
+      %47 = comb.icmp ne %23, %c0_i20 : i20
+      %48 = comb.or %46, %47, %12 : i1
+      %49 = comb.xor %48, %true : i1
+      %50 = comb.and %49, %16 : i1
+      %51 = comb.mux %50, %17, %14 : i3
+      %52 = comb.and %16, %48 : i1
+      %53 = comb.mux %52, %c3_i3, %51 : i3
+      %54 = comb.xor %52, %true : i1
+      %55 = comb.mux %arg18, %c0_i3, %53 : i3
+      %56 = comb.mux %19, %c2_i3, %55 : i3
+      %57 = comb.and %20, %54, %50, %csaat_q, %10 : i1
+      %58 = comb.icmp ne %56, %c2_i3 : i3
+      %59 = comb.and %15, %58 : i1
+      %true_14 = hw.constant true
+      %60 = comb.xor %50, %true_14 : i1
+      %true_15 = hw.constant true
+      %61 = comb.xor %52, %true_15 : i1
+      %true_16 = hw.constant true
+      %62 = comb.xor %arg18, %true_16 : i1
+      %true_17 = hw.constant true
+      %63 = comb.xor %19, %true_17 : i1
+      %64 = comb.and %63, %62, %61, %60, %11 : i1
+      %true_18 = hw.constant true
+      %65 = comb.xor %cpha_q, %true_18 : i1
+      %true_19 = hw.constant true
+      %66 = comb.xor %52, %true_19 : i1
+      %true_20 = hw.constant true
+      %67 = comb.xor %arg18, %true_20 : i1
+      %68 = comb.and %67, %66, %50, %csaat_q, %8, %65 : i1
+      %69 = comb.or %19, %68 : i1
+      %70 = comb.and %69, %21 : i1
+      %71 = comb.or %64, %70 : i1
+      %72 = comb.and %59, %71 : i1
+      %73 = comb.and %59, %69, %22 : i1
+      %74 = comb.and %50, %csaat_q, %8, %cpha_q : i1
+      %75 = comb.or %52, %74 : i1
+      %true_21 = hw.constant true
+      %76 = comb.xor %arg18, %true_21 : i1
+      %true_22 = hw.constant true
+      %77 = comb.xor %19, %true_22 : i1
+      %78 = comb.and %77, %76, %75 : i1
+      %79 = comb.and %59, %78, %21 : i1
+      %80 = comb.and %59, %78, %22 : i1
+      %81 = comb.and %59, %21 : i1
+      %82 = comb.and %arg15, %57 : i1
+      %83 = comb.mux %82, %arg12, %cpha_q : i1
+      %84 = comb.mux %82, %arg11, %full_cyc_q : i1
+      %85 = comb.mux %82, %arg3, %cmd_wr_en_q : i1
+      %86 = comb.xor %83, %true : i1
+      %87 = comb.mux %86, %72, %79 : i1
+      %88 = comb.mux %86, %73, %80 : i1
       %89 = comb.mux %86, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-      %90 = comb.and %87, %83 : i1
-      %91 = comb.and %81, %78, %89 : i1
+      %90 = comb.and %87, %85 : i1
+      %91 = comb.and %83, %81, %89 : i1
       %92 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
       %93 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
       %94 = comb.mux %86, %92, %93 : i1
-      %95 = comb.mux %82, %sample_en_q2, %sample_en_q : i1
-      %96 = comb.icmp eq %arg2, %c0_i2 : i2
-      %97 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-      %98 = comb.mux %79, %96, %97 : i1
-      %99 = comb.and %84, %83 : i1
-      %100 = comb.xor %99, %true : i1
-      %101 = comb.or %98, %100 : i1
-      verif.assert %101 : i1
-      %102 = comb.icmp ne %85, %c-1_i2 : i2
-      verif.assert %102 : i1
-      %103 = comb.xor %80, %true : i1
-      verif.assert %103 : i1
-      %104 = comb.and %90, %1 : i1
-      %105 = comb.and %91, %2 : i1
-      %106 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
-      %107 = comb.icmp eq %arg5, %c0_i20 : i20
-      %108 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
-      %109 = comb.mux %79, %107, %108 : i1
-      %110 = comb.mux %18, %106, %109 : i1
-      %111 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
-      %112 = comb.icmp eq %arg5, %c0_i20 : i20
-      %113 = comb.icmp eq %24, %c0_i20 : i20
-      %114 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
-      %115 = comb.mux %78, %113, %114 : i1
-      %116 = comb.mux %79, %112, %115 : i1
-      %117 = comb.mux %18, %111, %116 : i1
-      %118 = comb.mux %86, %110, %117 : i1
-      %119 = comb.or %arg18, %118 : i1
-      %120 = comb.or %105, %104 : i1
-      %121 = comb.xor %120, %true : i1
-      %122 = comb.and %90, %121 : i1
-      %123 = comb.and %91, %121 : i1
-      %124 = comb.and %95, %121 : i1
-      %125 = comb.and %88, %121 : i1
-      %126 = comb.and %54, %121 : i1
-      %127 = comb.and %94, %123, %arg17 : i1
-      %128 = comb.and %119, %122, %arg16 : i1
-      fsm.output %126, %u_sck_flop2Fq_o, %csb_q, %42, %127, %128, %122, %123, %124, %125, %cmd_speed_q, %82, %105, %104, %true_0 : i1, i1, i1, i4, i1, i1, i1, i1, i1, i1, i2, i1, i1, i1, i1
+      %95 = comb.mux %84, %sample_en_q2, %sample_en_q : i1
+      %96 = comb.and %90, %1 : i1
+      %97 = comb.and %91, %2 : i1
+      %98 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
+      %99 = comb.icmp eq %arg5, %c0_i20 : i20
+      %100 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
+      %101 = comb.mux %82, %99, %100 : i1
+      %102 = comb.mux %18, %98, %101 : i1
+      %103 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
+      %104 = comb.icmp eq %arg5, %c0_i20 : i20
+      %105 = comb.icmp eq %24, %c0_i20 : i20
+      %106 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
+      %107 = comb.mux %81, %105, %106 : i1
+      %108 = comb.mux %82, %104, %107 : i1
+      %109 = comb.mux %18, %103, %108 : i1
+      %110 = comb.mux %86, %102, %109 : i1
+      %111 = comb.or %arg18, %110 : i1
+      %112 = comb.or %97, %96 : i1
+      %113 = comb.xor %112, %true : i1
+      %114 = comb.and %90, %113 : i1
+      %115 = comb.and %91, %113 : i1
+      %116 = comb.and %95, %113 : i1
+      %117 = comb.and %88, %113 : i1
+      %118 = comb.and %57, %113 : i1
+      %119 = comb.and %94, %115, %arg17 : i1
+      %120 = comb.and %111, %114, %arg16 : i1
+      fsm.output %118, %u_sck_flop2Fq_o, %csb_q, %42, %119, %120, %114, %115, %116, %117, %cmd_speed_q, %84, %97, %96, %true_13 : i1, i1, i1, i4, i1, i1, i1, i1, i1, i1, i2, i1, i1, i1, i1
     } transitions {
       fsm.transition @state_7 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
@@ -4803,7 +3804,6 @@ module {
         %c-4_i3 = hw.constant -4 : i3
         %c3_i3 = hw.constant 3 : i3
         %c1_i2 = hw.constant 1 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %1 = comb.xor %arg16, %true : i1
@@ -4824,421 +3824,150 @@ module {
         %c2_i3 = hw.constant 2 : i3
         %16 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
         %17 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
-        %18 = comb.and %arg1, %0 : i1
-        %19 = comb.xor %16, %true : i1
-        %20 = comb.icmp ne %17, %c0_i20 : i20
-        %21 = comb.or %19, %20, %11 : i1
-        %22 = comb.and %18, %14 : i1
-        %23 = comb.xor %21, %true : i1
-        %24 = comb.and %23, %22 : i1
-        %25 = comb.mux %24, %15, %13 : i3
-        %26 = comb.and %22, %21 : i1
-        %27 = comb.mux %26, %c3_i3, %25 : i3
-        %28 = comb.xor %26, %true : i1
-        %29 = comb.mux %arg18, %c0_i3, %27 : i3
-        %30 = comb.xor %18, %true : i1
-        %31 = comb.and %14, %30 : i1
-        %32 = comb.mux %31, %c2_i3, %29 : i3
-        %33 = comb.xor %31, %true : i1
-        %34 = comb.icmp ne %32, %c2_i3 : i3
-        %35 = comb.and %14, %34 : i1
-        %true_0 = hw.constant true
-        %36 = comb.xor %24, %true_0 : i1
-        %true_1 = hw.constant true
-        %37 = comb.xor %26, %true_1 : i1
-        %true_2 = hw.constant true
-        %38 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %39 = comb.xor %31, %true_3 : i1
-        %40 = comb.and %39, %38, %37, %36, %10 : i1
-        %true_4 = hw.constant true
-        %41 = comb.xor %cpha_q, %true_4 : i1
-        %true_5 = hw.constant true
-        %42 = comb.xor %26, %true_5 : i1
-        %true_6 = hw.constant true
-        %43 = comb.xor %arg18, %true_6 : i1
-        %44 = comb.and %43, %42, %24, %csaat_q, %7, %41 : i1
-        %45 = comb.or %31, %44 : i1
-        %46 = comb.and %45, %16 : i1
-        %47 = comb.or %40, %46 : i1
-        %48 = comb.and %35, %47 : i1
-        %49 = comb.and %24, %csaat_q, %7, %cpha_q : i1
-        %50 = comb.or %26, %49 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %arg18, %true_7 : i1
-        %true_8 = hw.constant true
-        %52 = comb.xor %31, %true_8 : i1
-        %53 = comb.and %35, %52, %51, %50, %16 : i1
-        %54 = comb.and %arg15, %33, %28, %24, %csaat_q, %9 : i1
-        %55 = comb.mux %54, %arg14, %csid_q : i1
-        %56 = comb.mux %54, %arg12, %cpha_q : i1
-        %57 = comb.mux %54, %arg3, %cmd_wr_en_q : i1
-        %58 = comb.mux %54, %arg4, %cmd_rd_en_q : i1
-        %59 = comb.mux %54, %arg2, %cmd_speed_q : i2
-        %60 = comb.xor %56, %true : i1
-        %61 = comb.mux %60, %48, %53 : i1
-        %62 = comb.mux %60, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %63 = comb.icmp eq %arg2, %c0_i2 : i2
-        %64 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %65 = comb.mux %54, %63, %64 : i1
-        %66 = comb.and %58, %57 : i1
-        %67 = comb.xor %66, %true : i1
-        %68 = comb.or %65, %67 : i1
-        verif.assert %68 : i1
-        %69 = comb.icmp ne %59, %c-1_i2 : i2
-        verif.assert %69 : i1
-        %70 = comb.xor %55, %true : i1
-        verif.assert %70 : i1
-        %71 = comb.and %61, %57, %1 : i1
-        %72 = comb.and %56, %35, %16, %62, %2 : i1
-        %73 = comb.or %72, %71 : i1
-        %74 = comb.or %73, %31 : i1
-        %75 = comb.extract %5 from 0 : (i3) -> i2
-        %c-1_i2_9 = hw.constant -1 : i2
-        %76 = comb.icmp eq %75, %c-1_i2_9 : i2
-        %true_10 = hw.constant true
-        %77 = comb.xor %7, %true_10 : i1
-        %true_11 = hw.constant true
-        %78 = comb.xor %26, %true_11 : i1
-        %true_12 = hw.constant true
-        %79 = comb.xor %arg18, %true_12 : i1
+        %18 = comb.xor %isFirstCycle, %true : i1
+        %19 = comb.and %18, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %14 : i1
+        %20 = comb.xor %19, %true : i1
+        %21 = comb.and %arg1, %0 : i1
+        %22 = comb.xor %16, %true : i1
+        %23 = comb.icmp ne %17, %c0_i20 : i20
+        %24 = comb.or %22, %23, %11 : i1
+        %25 = comb.and %21, %14 : i1
+        %26 = comb.xor %24, %true : i1
+        %27 = comb.and %26, %25 : i1
+        %28 = comb.mux %27, %15, %13 : i3
+        %29 = comb.and %25, %24 : i1
+        %30 = comb.mux %29, %c3_i3, %28 : i3
+        %31 = comb.xor %29, %true : i1
+        %32 = comb.mux %arg18, %c0_i3, %30 : i3
+        %33 = comb.xor %21, %true : i1
+        %34 = comb.and %14, %33 : i1
+        %35 = comb.mux %34, %c2_i3, %32 : i3
+        %36 = comb.xor %34, %true : i1
+        %37 = comb.icmp ne %35, %c2_i3 : i3
+        %38 = comb.and %14, %37 : i1
         %true_13 = hw.constant true
-        %80 = comb.xor %74, %true_13 : i1
-        %81 = comb.and %80, %79, %78, %24, %csaat_q, %77, %76 : i1
-        fsm.return %81
-      } action {
-        %c0_i4 = hw.constant 0 : i4
-        %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
-        %c0_i20 = hw.constant 0 : i20
-        %c0_i3 = hw.constant 0 : i3
-        %c-1_i3 = hw.constant -1 : i3
-        %c-2_i3 = hw.constant -2 : i3
-        %c1_i3 = hw.constant 1 : i3
-        %c-4_i3 = hw.constant -4 : i3
-        %c3_i3 = hw.constant 3 : i3
-        %c2_i3 = hw.constant 2 : i3
-        %c1_i2 = hw.constant 1 : i2
-        %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
-        %c-1_i16 = hw.constant -1 : i16
-        %c-1_i20 = hw.constant -1 : i20
-        %c-1_i4 = hw.constant -1 : i4
-        %true = hw.constant true
-        %0 = comb.xor %arg1, %true : i1
-        %1 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
-        %2 = comb.add %clk_cntr_q, %c-1_i16 : i16
-        %3 = comb.xor %arg16, %true : i1
-        %4 = comb.xor %arg17, %true : i1
-        %5 = comb.and %arg1, %1 : i1
-        %6 = comb.concat %c1_i2, %cpha_q : i2, i1
-        %7 = comb.xor %arg15, %true : i1
-        %8 = comb.mux %7, %c-1_i3, %c-4_i3 : i3
-        %9 = comb.icmp eq %arg14, %csid_q : i1
-        %10 = comb.and %9, %arg15 : i1
-        %11 = comb.mux %10, %6, %8 : i3
-        %12 = comb.or %10, %7 : i1
-        %13 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %14 = comb.xor %cpha_q, %true : i1
-        %15 = comb.xor %csaat_q, %true : i1
-        %16 = comb.mux %13, %c1_i3, %c-2_i3 : i3
-        %17 = comb.xor %arg18, %true : i1
-        %18 = comb.and %5, %17 : i1
-        %19 = comb.mux %15, %c-4_i3, %11 : i3
-        %20 = comb.xor %5, %true : i1
-        %21 = comb.and %17, %20 : i1
-        %22 = comb.xor %21, %true : i1
-        %c2_i3_0 = hw.constant 2 : i3
-        %23 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %24 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
-        %25 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
-        %26 = comb.add %byte_cntr_cpha1_q, %c-1_i20 : i20
-        %27 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %28 = comb.or %arg18, %5 : i1
-        %29 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %30 = comb.and %cmd_wr_en_q, %23 : i1
-        %31 = comb.xor %23, %true : i1
-        %32 = comb.icmp ne %25, %c0_i20 : i20
-        %33 = comb.or %31, %32, %14 : i1
-        %34 = comb.xor %33, %true : i1
-        %35 = comb.and %34, %18 : i1
-        %36 = comb.mux %35, %19, %16 : i3
-        %37 = comb.and %18, %33 : i1
-        %38 = comb.mux %37, %c3_i3, %36 : i3
-        %39 = comb.xor %37, %true : i1
-        %40 = comb.mux %arg18, %c0_i3, %38 : i3
-        %41 = comb.mux %21, %c2_i3_0, %40 : i3
-        %42 = comb.icmp ne %41, %c2_i3_0 : i3
-        %43 = comb.and %17, %42 : i1
-        %true_1 = hw.constant true
-        %44 = comb.xor %35, %true_1 : i1
-        %true_2 = hw.constant true
-        %45 = comb.xor %37, %true_2 : i1
-        %true_3 = hw.constant true
-        %46 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %47 = comb.xor %21, %true_4 : i1
-        %48 = comb.and %47, %46, %45, %44, %13 : i1
-        %true_5 = hw.constant true
-        %49 = comb.xor %cpha_q, %true_5 : i1
-        %true_6 = hw.constant true
-        %50 = comb.xor %37, %true_6 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %arg18, %true_7 : i1
-        %52 = comb.and %51, %50, %35, %csaat_q, %10, %49 : i1
-        %53 = comb.or %21, %52 : i1
-        %54 = comb.and %53, %23 : i1
-        %55 = comb.or %48, %54 : i1
-        %56 = comb.and %43, %55 : i1
-        %57 = comb.and %43, %53, %24 : i1
-        %58 = comb.and %35, %csaat_q, %10, %cpha_q : i1
-        %59 = comb.or %37, %58 : i1
-        %true_8 = hw.constant true
-        %60 = comb.xor %arg18, %true_8 : i1
-        %true_9 = hw.constant true
-        %61 = comb.xor %21, %true_9 : i1
-        %62 = comb.and %61, %60, %59 : i1
-        %63 = comb.and %43, %62, %23 : i1
-        %64 = comb.and %43, %62, %24 : i1
-        %65 = comb.and %43, %23 : i1
-        %66 = comb.mux %65, %26, %byte_cntr_cpha1_q : i20
-        %true_10 = hw.constant true
-        %67 = comb.xor %35, %true_10 : i1
-        %true_11 = hw.constant true
-        %68 = comb.xor %37, %true_11 : i1
-        %true_12 = hw.constant true
-        %69 = comb.xor %arg18, %true_12 : i1
-        %true_13 = hw.constant true
-        %70 = comb.xor %21, %true_13 : i1
-        %71 = comb.and %70, %69, %68, %67, %13 : i1
-        %72 = comb.extract %8 from 0 : (i3) -> i2
-        %c0_i2_14 = hw.constant 0 : i2
-        %73 = comb.icmp eq %72, %c0_i2_14 : i2
+        %39 = comb.xor %27, %true_13 : i1
+        %true_14 = hw.constant true
+        %40 = comb.xor %29, %true_14 : i1
         %true_15 = hw.constant true
-        %74 = comb.xor %10, %true_15 : i1
-        %75 = comb.and %74, %73 : i1
-        %76 = comb.or %15, %75 : i1
+        %41 = comb.xor %arg18, %true_15 : i1
         %true_16 = hw.constant true
-        %77 = comb.xor %37, %true_16 : i1
+        %42 = comb.xor %34, %true_16 : i1
+        %43 = comb.and %42, %41, %40, %39, %10 : i1
         %true_17 = hw.constant true
-        %78 = comb.xor %arg18, %true_17 : i1
+        %44 = comb.xor %cpha_q, %true_17 : i1
         %true_18 = hw.constant true
-        %79 = comb.xor %21, %true_18 : i1
-        %80 = comb.and %79, %78, %77, %35, %76 : i1
-        %81 = comb.extract %8 from 0 : (i3) -> i2
-        %c1_i2_19 = hw.constant 1 : i2
-        %82 = comb.icmp eq %81, %c1_i2_19 : i2
+        %45 = comb.xor %29, %true_18 : i1
+        %true_19 = hw.constant true
+        %46 = comb.xor %arg18, %true_19 : i1
+        %47 = comb.and %46, %45, %27, %csaat_q, %7, %44 : i1
+        %48 = comb.or %34, %47 : i1
+        %49 = comb.and %48, %16 : i1
+        %50 = comb.or %43, %49 : i1
+        %51 = comb.and %38, %50 : i1
+        %52 = comb.and %27, %csaat_q, %7, %cpha_q : i1
+        %53 = comb.or %29, %52 : i1
         %true_20 = hw.constant true
-        %83 = comb.xor %10, %true_20 : i1
+        %54 = comb.xor %arg18, %true_20 : i1
         %true_21 = hw.constant true
-        %84 = comb.xor %37, %true_21 : i1
+        %55 = comb.xor %34, %true_21 : i1
+        %56 = comb.and %38, %55, %54, %53, %16 : i1
+        verif.assert %20 : i1
+        %57 = comb.and %arg15, %36, %31, %27, %csaat_q, %9 : i1
+        %58 = comb.mux %57, %arg12, %cpha_q : i1
+        %59 = comb.mux %57, %arg3, %cmd_wr_en_q : i1
+        %60 = comb.xor %58, %true : i1
+        %61 = comb.mux %60, %51, %56 : i1
+        %62 = comb.mux %60, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %63 = comb.and %61, %59, %1 : i1
+        %64 = comb.and %58, %38, %16, %62, %2 : i1
+        %65 = comb.or %64, %63, %34 : i1
+        %66 = comb.extract %5 from 0 : (i3) -> i2
+        %c-1_i2 = hw.constant -1 : i2
+        %67 = comb.icmp eq %66, %c-1_i2 : i2
         %true_22 = hw.constant true
-        %85 = comb.xor %arg18, %true_22 : i1
+        %68 = comb.xor %7, %true_22 : i1
         %true_23 = hw.constant true
-        %86 = comb.xor %21, %true_23 : i1
-        %87 = comb.and %86, %85, %84, %35, %csaat_q, %83, %82 : i1
-        %88 = comb.extract %8 from 0 : (i3) -> i2
-        %c-2_i2_24 = hw.constant -2 : i2
-        %89 = comb.icmp eq %88, %c-2_i2_24 : i2
+        %69 = comb.xor %29, %true_23 : i1
+        %true_24 = hw.constant true
+        %70 = comb.xor %arg18, %true_24 : i1
         %true_25 = hw.constant true
-        %90 = comb.xor %10, %true_25 : i1
-        %91 = comb.and %csaat_q, %90, %89 : i1
-        %true_26 = hw.constant true
-        %92 = comb.xor %13, %true_26 : i1
-        %93 = comb.mux %35, %91, %92 : i1
-        %true_27 = hw.constant true
-        %94 = comb.xor %37, %true_27 : i1
-        %true_28 = hw.constant true
-        %95 = comb.xor %arg18, %true_28 : i1
-        %true_29 = hw.constant true
-        %96 = comb.xor %21, %true_29 : i1
-        %97 = comb.and %42, %18 : i1
-        %98 = comb.xor %71, %true : i1
-        %99 = comb.and %98, %97 : i1
-        %100 = comb.xor %80, %true : i1
-        %101 = comb.and %100, %99 : i1
-        %102 = comb.xor %87, %true : i1
-        %103 = comb.and %102, %101, %96, %95, %94, %93 : i1
-        %104 = comb.and %101, %87 : i1
-        %105 = comb.or %104, %103 : i1
-        %106 = comb.and %99, %80 : i1
-        %107 = comb.and %97, %71 : i1
-        %108 = comb.xor %42, %true : i1
-        %109 = comb.and %29, %108, %18 : i1
-        %true_30 = hw.constant true
-        %110 = comb.xor %cpha_q, %true_30 : i1
-        %true_31 = hw.constant true
-        %111 = comb.xor %37, %true_31 : i1
-        %true_32 = hw.constant true
-        %112 = comb.xor %arg18, %true_32 : i1
-        %113 = comb.and %112, %111, %35, %csaat_q, %10, %110 : i1
-        %114 = comb.or %21, %113 : i1
-        %115 = comb.and %35, %csaat_q, %10, %cpha_q : i1
-        %116 = comb.or %37, %115 : i1
-        %true_33 = hw.constant true
-        %117 = comb.xor %arg18, %true_33 : i1
-        %true_34 = hw.constant true
-        %118 = comb.xor %21, %true_34 : i1
-        %119 = comb.and %118, %117, %116 : i1
-        %120 = comb.extract %8 from 0 : (i3) -> i2
-        %c-1_i2_35 = hw.constant -1 : i2
-        %121 = comb.icmp eq %120, %c-1_i2_35 : i2
-        %true_36 = hw.constant true
-        %122 = comb.xor %10, %true_36 : i1
-        %true_37 = hw.constant true
-        %123 = comb.xor %37, %true_37 : i1
-        %true_38 = hw.constant true
-        %124 = comb.xor %arg18, %true_38 : i1
-        %true_39 = hw.constant true
-        %125 = comb.xor %21, %true_39 : i1
-        %126 = comb.icmp ne %41, %c-4_i3 : i3
-        %127 = comb.xor %114, %true : i1
-        %128 = comb.and %127, %98 : i1
-        %129 = comb.xor %119, %true : i1
-        %130 = comb.and %129, %128, %125, %124, %123, %35, %csaat_q, %122, %121 : i1
-        %131 = comb.xor %130, %true : i1
-        %132 = comb.and %128, %119 : i1
-        %133 = comb.xor %132, %true : i1
-        %134 = comb.and %98, %114 : i1
-        %135 = comb.xor %134, %true : i1
-        %136 = comb.and %98, %135, %133, %131, %126 : i1
-        %137 = comb.icmp ne %41, %c3_i3 : i3
-        %138 = comb.and %arg15, %22, %39, %35, %csaat_q, %12 : i1
-        %139 = comb.mux %138, %arg14, %csid_q : i1
-        %140 = comb.mux %138, %arg13, %cpol_q : i1
-        %141 = comb.mux %138, %arg12, %cpha_q : i1
-        %142 = comb.mux %138, %arg8, %csnidle_q : i4
-        %143 = comb.mux %138, %arg9, %csnlead_q : i4
-        %144 = comb.mux %138, %arg10, %csntrail_q : i4
-        %145 = comb.mux %138, %arg7, %clkdiv_q : i16
-        %146 = comb.mux %138, %arg3, %cmd_wr_en_q : i1
-        %147 = comb.mux %138, %arg4, %cmd_rd_en_q : i1
-        %148 = comb.mux %138, %arg2, %cmd_speed_q : i2
-        %149 = comb.mux %1, %145, %2 : i16
-        %150 = comb.mux %138, %arg7, %149 : i16
-        %151 = comb.mux %0, %clk_cntr_q, %150 : i16
-        %152 = comb.mux %arg18, %c0_i16, %151 : i16
-        %153 = comb.xor %141, %true : i1
-        %154 = comb.mux %153, %56, %63 : i1
-        %155 = comb.and %141, %65 : i1
-        %156 = comb.mux %153, %57, %64 : i1
-        %157 = comb.mux %153, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %158 = comb.xor %147, %true : i1
-        %159 = comb.xor %146, %true : i1
-        %160 = comb.and %158, %159 : i1
-        %161 = comb.icmp eq %arg2, %c0_i2 : i2
-        %162 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %163 = comb.mux %138, %161, %162 : i1
-        %164 = comb.icmp eq %arg2, %c1_i2 : i2
-        %165 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %166 = comb.mux %138, %164, %165 : i1
-        %167 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %168 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %169 = comb.mux %138, %167, %168 : i1
-        %170 = comb.mux %169, %c-4_i3, %c1_i3 : i3
-        %171 = comb.xor %160, %true : i1
-        %172 = comb.xor %163, %true : i1
-        %173 = comb.and %172, %171, %166 : i1
-        %174 = comb.mux %173, %c2_i3, %170 : i3
-        %175 = comb.mux %173, %c-2_i3, %170 : i3
-        %176 = comb.and %171, %163 : i1
-        %177 = comb.mux %176, %c1_i3, %174 : i3
-        %178 = comb.mux %176, %c-1_i3, %175 : i3
-        %179 = comb.mux %160, %c0_i3, %177 : i3
-        %180 = comb.mux %160, %c0_i3, %178 : i3
-        %181 = comb.sub %bit_cntr_q, %179 : i3
-        %182 = comb.mux %156, %181, %bit_cntr_q : i3
-        %183 = comb.mux %154, %180, %182 : i3
-        %184 = comb.mux %20, %bit_cntr_q, %183 : i3
-        %185 = comb.mux %arg18, %c0_i3, %184 : i3
-        %186 = comb.mux %138, %arg5, %byte_cntr_cpha0_q : i20
-        %187 = comb.mux %arg18, %c0_i20, %186 : i20
-        %188 = comb.mux %138, %arg5, %66 : i20
-        %189 = comb.mux %20, %byte_cntr_cpha1_q, %188 : i20
-        %190 = comb.mux %arg18, %c0_i20, %189 : i20
-        %191 = comb.mux %105, %142, %c0_i4 : i4
-        %192 = comb.mux %106, %144, %191 : i4
-        %193 = comb.mux %107, %143, %192 : i4
-        %194 = comb.mux %28, %193, %wait_cntr_q : i4
-        %195 = comb.mux %arg18, %c0_i4, %194 : i4
-        %196 = comb.mux %109, %27, %195 : i4
-        %197 = comb.mux %140, %137, %62 : i1
-        %198 = comb.xor %155, %true : i1
-        %199 = comb.and %198, %cmd_wr_en_last_bit : i1
-        %200 = comb.or %30, %199 : i1
-        %201 = comb.icmp eq %arg2, %c0_i2 : i2
-        %202 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %203 = comb.mux %138, %201, %202 : i1
-        %204 = comb.and %147, %146 : i1
-        %205 = comb.xor %204, %true : i1
-        %206 = comb.or %203, %205 : i1
-        verif.assert %206 : i1
-        %207 = comb.icmp ne %148, %c-1_i2 : i2
-        verif.assert %207 : i1
-        %208 = comb.xor %139, %true : i1
-        verif.assert %208 : i1
-        fsm.update %cmd_wr_en_last_bit, %200 : i1
-        %209 = comb.and %154, %146, %3 : i1
-        %210 = comb.and %155, %157, %4 : i1
-        %211 = comb.or %210, %209 : i1
-        %212 = comb.xor %211, %true : i1
-        %213 = comb.and %156, %212 : i1
-        %214 = comb.and %138, %212 : i1
-        %215 = comb.mux %214, %arg14, %csid_q : i1
-        %216 = comb.mux %214, %arg13, %cpol_q : i1
-        %217 = comb.mux %214, %arg12, %cpha_q : i1
-        %218 = comb.mux %214, %arg11, %full_cyc_q : i1
-        %219 = comb.mux %214, %arg8, %csnidle_q : i4
-        %220 = comb.mux %214, %arg9, %csnlead_q : i4
-        %221 = comb.mux %214, %arg10, %csntrail_q : i4
-        %222 = comb.mux %214, %arg7, %clkdiv_q : i16
-        %223 = comb.mux %214, %arg6, %csaat_q : i1
-        %224 = comb.mux %214, %arg3, %cmd_wr_en_q : i1
-        %225 = comb.mux %214, %arg4, %cmd_rd_en_q : i1
-        %226 = comb.mux %214, %arg2, %cmd_speed_q : i2
-        %227 = comb.mux %214, %arg5, %cmd_len_q : i20
-        %228 = comb.mux %211, %clk_cntr_q, %152 : i16
-        %229 = comb.and %42, %212 : i1
-        %230 = comb.mux bin %229, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %231 = comb.mux %211, %bit_cntr_q, %185 : i3
-        %232 = comb.mux %211, %byte_cntr_cpha0_q, %187 : i20
-        %233 = comb.mux %211, %byte_cntr_cpha1_q, %190 : i20
-        %234 = comb.mux %211, %wait_cntr_q, %196 : i4
-        %235 = comb.or %154, %213 : i1
-        %236 = comb.and %5, %212 : i1
-        %237 = comb.mux %236, %235, %sample_en_q : i1
-        %238 = comb.mux %236, %sample_en_q, %sample_en_q2 : i1
-        %239 = comb.mux bin %211, %u_sck_flop2Fq_o, %197 : i1
-        %240 = comb.mux %212, %136, %csb_q : i1
-        %241 = comb.or %139, %240 : i1
-        fsm.update %csb_q, %241 : i1
-        fsm.update %u_sck_flop2Fq_o, %239 : i1
-        fsm.update %sample_en_q2, %238 : i1
-        fsm.update %sample_en_q, %237 : i1
-        fsm.update %wait_cntr_q, %234 : i4
-        fsm.update %byte_cntr_cpha1_q, %233 : i20
-        fsm.update %byte_cntr_cpha0_q, %232 : i20
-        fsm.update %bit_cntr_q, %231 : i3
-        fsm.update %segment_rd_en_cpha1, %230 : i1
-        fsm.update %clk_cntr_q, %228 : i16
-        fsm.update %cmd_len_q, %227 : i20
-        fsm.update %cmd_speed_q, %226 : i2
-        fsm.update %cmd_wr_en_q, %224 : i1
-        fsm.update %cmd_rd_en_q, %225 : i1
-        fsm.update %csaat_q, %223 : i1
-        fsm.update %clkdiv_q, %222 : i16
-        fsm.update %csntrail_q, %221 : i4
-        fsm.update %csnlead_q, %220 : i4
-        fsm.update %csnidle_q, %219 : i4
-        fsm.update %full_cyc_q, %218 : i1
-        fsm.update %cpha_q, %217 : i1
-        fsm.update %cpol_q, %216 : i1
-        fsm.update %csid_q, %215 : i1
+        %71 = comb.xor %65, %true_25 : i1
+        %72 = comb.and %71, %70, %69, %27, %csaat_q, %68, %67 : i1
+        fsm.return %72
+      } action {
+        %true = hw.constant true
+        %true_13 = hw.constant true
+        %false_14 = hw.constant false
+        %c0_i4 = hw.constant 0 : i4
+        %c0_i3 = hw.constant 0 : i3
+        %c-1_i20 = hw.constant -1 : i20
+        %true_15 = hw.constant true
+        %0 = comb.xor %arg17, %true_15 : i1
+        %1 = comb.xor %arg15, %true_15 : i1
+        %false_16 = hw.constant false
+        %2 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
+        %3 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %4 = comb.add %byte_cntr_cpha1_q, %c-1_i20 : i20
+        %5 = comb.and %cmd_wr_en_q, %3 : i1
+        %6 = comb.xor %isFirstCycle, %true_15 : i1
+        %7 = comb.and %6, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %8 = comb.xor %7, %true_15 : i1
+        verif.assert %8 : i1
+        fsm.update %_sh1_10, %true : i1
+        fsm.update %_sh1_8, %1 : i1
+        fsm.update %_sh1_6, %2 : i1
+        fsm.update %_sh1, %false_16 : i1
+        fsm.update %isFirstCycle, %false_14 : i1
+        %9 = comb.xor %cpha_q, %true_15 : i1
+        %10 = comb.and %cpha_q, %3 : i1
+        %11 = comb.mux %9, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %12 = comb.mux %arg15, %csntrail_q, %c0_i4 : i4
+        %13 = comb.xor %10, %true_15 : i1
+        %14 = comb.and %13, %cmd_wr_en_last_bit : i1
+        %15 = comb.or %5, %14 : i1
+        fsm.update %cmd_wr_en_last_bit, %15 : i1
+        %16 = comb.and %10, %11, %0 : i1
+        %17 = comb.xor %16, %true_15 : i1
+        %18 = comb.mux %16, %clk_cntr_q, %clkdiv_q : i16
+        %19 = comb.mux bin %16, %segment_rd_en_cpha1, %cmd_rd_en_q : i1
+        %true_17 = hw.constant true
+        %20 = comb.xor %3, %true_17 : i1
+        %21 = comb.or %16, %20 : i1
+        %22 = comb.mux %21, %byte_cntr_cpha1_q, %4 : i20
+        %23 = comb.mux %16, %wait_cntr_q, %12 : i4
+        %24 = comb.and %16, %sample_en_q : i1
+        %25 = comb.mux %17, %sample_en_q, %sample_en_q2 : i1
+        %26 = comb.mux bin %16, %u_sck_flop2Fq_o, %cpol_q : i1
+        %27 = comb.and %16, %csb_q : i1
+        %28 = comb.or %csid_q, %27 : i1
+        fsm.update %_sh1_12, %17 : i1
+        fsm.update %csb_q, %28 : i1
+        fsm.update %u_sck_flop2Fq_o, %26 : i1
+        fsm.update %sample_en_q2, %25 : i1
+        fsm.update %sample_en_q, %24 : i1
+        fsm.update %wait_cntr_q, %23 : i4
+        fsm.update %byte_cntr_cpha1_q, %22 : i20
+        fsm.update %byte_cntr_cpha0_q, %byte_cntr_cpha0_q : i20
+        fsm.update %bit_cntr_q, %bit_cntr_q : i3
+        fsm.update %segment_rd_en_cpha1, %19 : i1
+        fsm.update %clk_cntr_q, %18 : i16
+        fsm.update %cmd_speed_q, %cmd_speed_q : i2
+        fsm.update %cmd_wr_en_q, %cmd_wr_en_q : i1
+        fsm.update %cmd_rd_en_q, %cmd_rd_en_q : i1
+        fsm.update %true_13, %true_13 : i1
+        fsm.update %clkdiv_q, %clkdiv_q : i16
+        fsm.update %csntrail_q, %csntrail_q : i4
+        fsm.update %csnlead_q, %csnlead_q : i4
+        fsm.update %csnidle_q, %csnidle_q : i4
+        fsm.update %full_cyc_q, %full_cyc_q : i1
+        fsm.update %cpha_q, %cpha_q : i1
+        fsm.update %cpol_q, %cpol_q : i1
+        fsm.update %csid_q, %csid_q : i1
       }
       fsm.transition @state_6 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
@@ -5247,7 +3976,6 @@ module {
         %c-4_i3 = hw.constant -4 : i3
         %c3_i3 = hw.constant 3 : i3
         %c1_i2 = hw.constant 1 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %1 = comb.xor %arg16, %true : i1
@@ -5268,92 +3996,83 @@ module {
         %c2_i3 = hw.constant 2 : i3
         %16 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
         %17 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
-        %18 = comb.and %arg1, %0 : i1
-        %19 = comb.xor %16, %true : i1
-        %20 = comb.icmp ne %17, %c0_i20 : i20
-        %21 = comb.or %19, %20, %11 : i1
-        %22 = comb.and %18, %14 : i1
-        %23 = comb.xor %21, %true : i1
-        %24 = comb.and %23, %22 : i1
-        %25 = comb.mux %24, %15, %13 : i3
-        %26 = comb.and %22, %21 : i1
-        %27 = comb.mux %26, %c3_i3, %25 : i3
-        %28 = comb.xor %26, %true : i1
-        %29 = comb.mux %arg18, %c0_i3, %27 : i3
-        %30 = comb.xor %18, %true : i1
-        %31 = comb.and %14, %30 : i1
-        %32 = comb.mux %31, %c2_i3, %29 : i3
-        %33 = comb.xor %31, %true : i1
-        %34 = comb.icmp ne %32, %c2_i3 : i3
-        %35 = comb.and %14, %34 : i1
-        %true_0 = hw.constant true
-        %36 = comb.xor %24, %true_0 : i1
-        %true_1 = hw.constant true
-        %37 = comb.xor %26, %true_1 : i1
-        %true_2 = hw.constant true
-        %38 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %39 = comb.xor %31, %true_3 : i1
-        %40 = comb.and %39, %38, %37, %36, %10 : i1
-        %true_4 = hw.constant true
-        %41 = comb.xor %cpha_q, %true_4 : i1
-        %true_5 = hw.constant true
-        %42 = comb.xor %26, %true_5 : i1
-        %true_6 = hw.constant true
-        %43 = comb.xor %arg18, %true_6 : i1
-        %44 = comb.and %43, %42, %24, %csaat_q, %7, %41 : i1
-        %45 = comb.or %31, %44 : i1
-        %46 = comb.and %45, %16 : i1
-        %47 = comb.or %40, %46 : i1
-        %48 = comb.and %35, %47 : i1
-        %49 = comb.and %24, %csaat_q, %7, %cpha_q : i1
-        %50 = comb.or %26, %49 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %arg18, %true_7 : i1
-        %true_8 = hw.constant true
-        %52 = comb.xor %31, %true_8 : i1
-        %53 = comb.and %35, %52, %51, %50, %16 : i1
-        %54 = comb.and %arg15, %33, %28, %24, %csaat_q, %9 : i1
-        %55 = comb.mux %54, %arg14, %csid_q : i1
-        %56 = comb.mux %54, %arg12, %cpha_q : i1
-        %57 = comb.mux %54, %arg3, %cmd_wr_en_q : i1
-        %58 = comb.mux %54, %arg4, %cmd_rd_en_q : i1
-        %59 = comb.mux %54, %arg2, %cmd_speed_q : i2
-        %60 = comb.xor %56, %true : i1
-        %61 = comb.mux %60, %48, %53 : i1
-        %62 = comb.mux %60, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %63 = comb.icmp eq %arg2, %c0_i2 : i2
-        %64 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %65 = comb.mux %54, %63, %64 : i1
-        %66 = comb.and %58, %57 : i1
-        %67 = comb.xor %66, %true : i1
-        %68 = comb.or %65, %67 : i1
-        verif.assert %68 : i1
-        %69 = comb.icmp ne %59, %c-1_i2 : i2
-        verif.assert %69 : i1
-        %70 = comb.xor %55, %true : i1
-        verif.assert %70 : i1
-        %71 = comb.and %61, %57, %1 : i1
-        %72 = comb.and %56, %35, %16, %62, %2 : i1
-        %73 = comb.or %72, %71, %31 : i1
-        %74 = comb.extract %5 from 0 : (i3) -> i2
-        %c-2_i2 = hw.constant -2 : i2
-        %75 = comb.icmp eq %74, %c-2_i2 : i2
-        %true_9 = hw.constant true
-        %76 = comb.xor %7, %true_9 : i1
-        %77 = comb.and %csaat_q, %76, %75 : i1
-        %true_10 = hw.constant true
-        %78 = comb.xor %10, %true_10 : i1
-        %79 = comb.mux %24, %77, %78 : i1
-        %true_11 = hw.constant true
-        %80 = comb.xor %26, %true_11 : i1
-        %true_12 = hw.constant true
-        %81 = comb.xor %arg18, %true_12 : i1
+        %18 = comb.xor %isFirstCycle, %true : i1
+        %19 = comb.and %18, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %14 : i1
+        %20 = comb.xor %19, %true : i1
+        %21 = comb.and %arg1, %0 : i1
+        %22 = comb.xor %16, %true : i1
+        %23 = comb.icmp ne %17, %c0_i20 : i20
+        %24 = comb.or %22, %23, %11 : i1
+        %25 = comb.and %21, %14 : i1
+        %26 = comb.xor %24, %true : i1
+        %27 = comb.and %26, %25 : i1
+        %28 = comb.mux %27, %15, %13 : i3
+        %29 = comb.and %25, %24 : i1
+        %30 = comb.mux %29, %c3_i3, %28 : i3
+        %31 = comb.xor %29, %true : i1
+        %32 = comb.mux %arg18, %c0_i3, %30 : i3
+        %33 = comb.xor %21, %true : i1
+        %34 = comb.and %14, %33 : i1
+        %35 = comb.mux %34, %c2_i3, %32 : i3
+        %36 = comb.xor %34, %true : i1
+        %37 = comb.icmp ne %35, %c2_i3 : i3
+        %38 = comb.and %14, %37 : i1
         %true_13 = hw.constant true
-        %82 = comb.xor %73, %true_13 : i1
-        %83 = comb.and %82, %81, %80, %79 : i1
-        fsm.return %83
+        %39 = comb.xor %27, %true_13 : i1
+        %true_14 = hw.constant true
+        %40 = comb.xor %29, %true_14 : i1
+        %true_15 = hw.constant true
+        %41 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %42 = comb.xor %34, %true_16 : i1
+        %43 = comb.and %42, %41, %40, %39, %10 : i1
+        %true_17 = hw.constant true
+        %44 = comb.xor %cpha_q, %true_17 : i1
+        %true_18 = hw.constant true
+        %45 = comb.xor %29, %true_18 : i1
+        %true_19 = hw.constant true
+        %46 = comb.xor %arg18, %true_19 : i1
+        %47 = comb.and %46, %45, %27, %csaat_q, %7, %44 : i1
+        %48 = comb.or %34, %47 : i1
+        %49 = comb.and %48, %16 : i1
+        %50 = comb.or %43, %49 : i1
+        %51 = comb.and %38, %50 : i1
+        %52 = comb.and %27, %csaat_q, %7, %cpha_q : i1
+        %53 = comb.or %29, %52 : i1
+        %true_20 = hw.constant true
+        %54 = comb.xor %arg18, %true_20 : i1
+        %true_21 = hw.constant true
+        %55 = comb.xor %34, %true_21 : i1
+        %56 = comb.and %38, %55, %54, %53, %16 : i1
+        verif.assert %20 : i1
+        %57 = comb.and %arg15, %36, %31, %27, %csaat_q, %9 : i1
+        %58 = comb.mux %57, %arg12, %cpha_q : i1
+        %59 = comb.mux %57, %arg3, %cmd_wr_en_q : i1
+        %60 = comb.xor %58, %true : i1
+        %61 = comb.mux %60, %51, %56 : i1
+        %62 = comb.mux %60, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %63 = comb.and %61, %59, %1 : i1
+        %64 = comb.and %58, %38, %16, %62, %2 : i1
+        %65 = comb.or %64, %63, %34 : i1
+        %66 = comb.extract %5 from 0 : (i3) -> i2
+        %c-2_i2 = hw.constant -2 : i2
+        %67 = comb.icmp eq %66, %c-2_i2 : i2
+        %true_22 = hw.constant true
+        %68 = comb.xor %7, %true_22 : i1
+        %69 = comb.and %csaat_q, %68, %67 : i1
+        %true_23 = hw.constant true
+        %70 = comb.xor %10, %true_23 : i1
+        %71 = comb.mux %27, %69, %70 : i1
+        %true_24 = hw.constant true
+        %72 = comb.xor %29, %true_24 : i1
+        %true_25 = hw.constant true
+        %73 = comb.xor %arg18, %true_25 : i1
+        %true_26 = hw.constant true
+        %74 = comb.xor %65, %true_26 : i1
+        %75 = comb.and %74, %73, %72, %71 : i1
+        fsm.return %75
       } action {
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
@@ -5367,7 +4086,6 @@ module {
         %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i16 = hw.constant -1 : i16
         %c-1_i20 = hw.constant -1 : i20
         %c-1_i4 = hw.constant -1 : i4
@@ -5385,307 +4103,243 @@ module {
         %10 = comb.and %9, %arg15 : i1
         %11 = comb.mux %10, %6, %8 : i3
         %12 = comb.or %10, %7 : i1
+        %false_14 = hw.constant false
         %13 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %14 = comb.xor %cpha_q, %true : i1
         %15 = comb.xor %csaat_q, %true : i1
         %16 = comb.mux %13, %c1_i3, %c-2_i3 : i3
-        %17 = comb.xor %arg18, %true : i1
-        %18 = comb.and %5, %17 : i1
-        %19 = comb.mux %15, %c-4_i3, %11 : i3
-        %20 = comb.xor %5, %true : i1
-        %21 = comb.and %17, %20 : i1
-        %22 = comb.xor %21, %true : i1
-        %c2_i3_0 = hw.constant 2 : i3
-        %23 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %24 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
-        %25 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
-        %26 = comb.add %byte_cntr_cpha1_q, %c-1_i20 : i20
-        %27 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %28 = comb.or %arg18, %5 : i1
-        %29 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %30 = comb.and %cmd_wr_en_q, %23 : i1
-        %31 = comb.xor %23, %true : i1
-        %32 = comb.icmp ne %25, %c0_i20 : i20
-        %33 = comb.or %31, %32, %14 : i1
-        %34 = comb.xor %33, %true : i1
-        %35 = comb.and %34, %18 : i1
-        %36 = comb.mux %35, %19, %16 : i3
-        %37 = comb.and %18, %33 : i1
-        %38 = comb.mux %37, %c3_i3, %36 : i3
-        %39 = comb.xor %37, %true : i1
-        %40 = comb.mux %arg18, %c0_i3, %38 : i3
-        %41 = comb.mux %21, %c2_i3_0, %40 : i3
-        %42 = comb.icmp ne %41, %c2_i3_0 : i3
-        %43 = comb.and %17, %42 : i1
-        %true_1 = hw.constant true
-        %44 = comb.xor %35, %true_1 : i1
-        %true_2 = hw.constant true
-        %45 = comb.xor %37, %true_2 : i1
-        %true_3 = hw.constant true
-        %46 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %47 = comb.xor %21, %true_4 : i1
-        %48 = comb.and %47, %46, %45, %44, %13 : i1
-        %true_5 = hw.constant true
-        %49 = comb.xor %cpha_q, %true_5 : i1
-        %true_6 = hw.constant true
-        %50 = comb.xor %37, %true_6 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %arg18, %true_7 : i1
-        %52 = comb.and %51, %50, %35, %csaat_q, %10, %49 : i1
-        %53 = comb.or %21, %52 : i1
-        %54 = comb.and %53, %23 : i1
-        %55 = comb.or %48, %54 : i1
-        %56 = comb.and %43, %55 : i1
-        %57 = comb.and %43, %53, %24 : i1
-        %58 = comb.and %35, %csaat_q, %10, %cpha_q : i1
-        %59 = comb.or %37, %58 : i1
-        %true_8 = hw.constant true
-        %60 = comb.xor %arg18, %true_8 : i1
-        %true_9 = hw.constant true
-        %61 = comb.xor %21, %true_9 : i1
-        %62 = comb.and %61, %60, %59 : i1
-        %63 = comb.and %43, %62, %23 : i1
-        %64 = comb.and %43, %62, %24 : i1
-        %65 = comb.and %43, %23 : i1
-        %66 = comb.mux %65, %26, %byte_cntr_cpha1_q : i20
-        %true_10 = hw.constant true
-        %67 = comb.xor %35, %true_10 : i1
-        %true_11 = hw.constant true
-        %68 = comb.xor %37, %true_11 : i1
-        %true_12 = hw.constant true
-        %69 = comb.xor %arg18, %true_12 : i1
-        %true_13 = hw.constant true
-        %70 = comb.xor %21, %true_13 : i1
-        %71 = comb.and %70, %69, %68, %67, %13 : i1
-        %72 = comb.extract %8 from 0 : (i3) -> i2
-        %c0_i2_14 = hw.constant 0 : i2
-        %73 = comb.icmp eq %72, %c0_i2_14 : i2
-        %true_15 = hw.constant true
-        %74 = comb.xor %10, %true_15 : i1
-        %75 = comb.and %74, %73 : i1
-        %76 = comb.or %15, %75 : i1
+        %17 = comb.mux %15, %c-4_i3, %11 : i3
+        %18 = comb.xor %5, %true : i1
+        %c2_i3_15 = hw.constant 2 : i3
         %true_16 = hw.constant true
-        %77 = comb.xor %37, %true_16 : i1
         %true_17 = hw.constant true
-        %78 = comb.xor %arg18, %true_17 : i1
         %true_18 = hw.constant true
-        %79 = comb.xor %21, %true_18 : i1
-        %80 = comb.and %79, %78, %77, %35, %76 : i1
-        %81 = comb.extract %8 from 0 : (i3) -> i2
-        %c1_i2_19 = hw.constant 1 : i2
-        %82 = comb.icmp eq %81, %c1_i2_19 : i2
-        %true_20 = hw.constant true
-        %83 = comb.xor %10, %true_20 : i1
+        %19 = comb.xor %cpha_q, %true_18 : i1
+        %true_19 = hw.constant true
+        %20 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %21 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
+        %22 = comb.icmp eq %arg2, %c0_i2 : i2
+        %23 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %24 = comb.icmp eq %arg2, %c1_i2 : i2
+        %25 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %26 = comb.icmp eq %arg2, %c-2_i2 : i2
+        %27 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %28 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
+        %29 = comb.add %byte_cntr_cpha1_q, %c-1_i20 : i20
+        %30 = comb.extract %8 from 0 : (i3) -> i2
+        %c0_i2_20 = hw.constant 0 : i2
+        %31 = comb.icmp eq %30, %c0_i2_20 : i2
         %true_21 = hw.constant true
-        %84 = comb.xor %37, %true_21 : i1
+        %32 = comb.xor %10, %true_21 : i1
+        %33 = comb.and %32, %31 : i1
+        %34 = comb.or %15, %33 : i1
         %true_22 = hw.constant true
-        %85 = comb.xor %arg18, %true_22 : i1
-        %true_23 = hw.constant true
-        %86 = comb.xor %21, %true_23 : i1
-        %87 = comb.and %86, %85, %84, %35, %csaat_q, %83, %82 : i1
-        %88 = comb.extract %8 from 0 : (i3) -> i2
-        %c-2_i2_24 = hw.constant -2 : i2
-        %89 = comb.icmp eq %88, %c-2_i2_24 : i2
+        %35 = comb.extract %8 from 0 : (i3) -> i2
+        %c1_i2_23 = hw.constant 1 : i2
+        %36 = comb.icmp eq %35, %c1_i2_23 : i2
+        %true_24 = hw.constant true
+        %37 = comb.xor %10, %true_24 : i1
         %true_25 = hw.constant true
-        %90 = comb.xor %10, %true_25 : i1
-        %91 = comb.and %csaat_q, %90, %89 : i1
-        %true_26 = hw.constant true
-        %92 = comb.xor %13, %true_26 : i1
-        %93 = comb.mux %35, %91, %92 : i1
+        %38 = comb.extract %8 from 0 : (i3) -> i2
+        %c-2_i2_26 = hw.constant -2 : i2
+        %39 = comb.icmp eq %38, %c-2_i2_26 : i2
         %true_27 = hw.constant true
-        %94 = comb.xor %37, %true_27 : i1
+        %40 = comb.xor %10, %true_27 : i1
+        %41 = comb.and %csaat_q, %40, %39 : i1
         %true_28 = hw.constant true
-        %95 = comb.xor %arg18, %true_28 : i1
+        %42 = comb.xor %13, %true_28 : i1
         %true_29 = hw.constant true
-        %96 = comb.xor %21, %true_29 : i1
-        %97 = comb.and %42, %18 : i1
-        %98 = comb.xor %71, %true : i1
-        %99 = comb.and %98, %97 : i1
-        %100 = comb.xor %80, %true : i1
-        %101 = comb.and %100, %99 : i1
-        %102 = comb.xor %87, %true : i1
-        %103 = comb.and %102, %101, %96, %95, %94, %93 : i1
-        %104 = comb.and %101, %87 : i1
-        %105 = comb.or %104, %103 : i1
-        %106 = comb.and %99, %80 : i1
-        %107 = comb.and %97, %71 : i1
-        %108 = comb.xor %42, %true : i1
-        %109 = comb.and %29, %108, %18 : i1
+        %43 = comb.add %wait_cntr_q, %c-1_i4 : i4
+        %44 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
+        %45 = comb.extract %8 from 0 : (i3) -> i2
+        %c-1_i2 = hw.constant -1 : i2
+        %46 = comb.icmp eq %45, %c-1_i2 : i2
         %true_30 = hw.constant true
-        %110 = comb.xor %cpha_q, %true_30 : i1
+        %47 = comb.xor %10, %true_30 : i1
         %true_31 = hw.constant true
-        %111 = comb.xor %37, %true_31 : i1
+        %48 = comb.and %cmd_wr_en_q, %20 : i1
+        %49 = comb.xor %isFirstCycle, %true : i1
+        %50 = comb.and %49, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %51 = comb.xor %50, %true : i1
+        verif.assert %51 : i1
+        fsm.update %_sh1_10, %5 : i1
+        fsm.update %_sh1_8, %7 : i1
+        fsm.update %_sh1_6, %13 : i1
+        fsm.update %_sh1, %false_14 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        %52 = comb.xor %20, %true : i1
+        %53 = comb.icmp ne %28, %c0_i20 : i20
+        %54 = comb.or %52, %53, %14 : i1
+        %55 = comb.xor %54, %true : i1
+        %56 = comb.and %55, %5 : i1
+        %57 = comb.mux %56, %17, %16 : i3
+        %58 = comb.and %5, %54 : i1
+        %59 = comb.mux %58, %c3_i3, %57 : i3
+        %60 = comb.xor %58, %true : i1
+        %61 = comb.mux %18, %c2_i3_15, %59 : i3
+        %62 = comb.icmp ne %61, %c2_i3_15 : i3
+        %63 = comb.xor %56, %true_16 : i1
+        %64 = comb.xor %58, %true_17 : i1
+        %65 = comb.and %5, %64, %63, %13 : i1
+        %66 = comb.xor %58, %true_19 : i1
+        %67 = comb.and %66, %56, %csaat_q, %10, %19 : i1
+        %68 = comb.or %18, %67 : i1
+        %69 = comb.and %68, %20 : i1
+        %70 = comb.or %65, %69 : i1
+        %71 = comb.and %62, %70 : i1
+        %72 = comb.and %62, %68, %21 : i1
+        %73 = comb.and %56, %csaat_q, %10, %cpha_q : i1
+        %74 = comb.or %58, %73 : i1
+        %75 = comb.and %5, %74 : i1
+        %76 = comb.and %62, %75, %20 : i1
+        %77 = comb.and %62, %75, %21 : i1
+        %78 = comb.and %62, %20 : i1
+        %79 = comb.mux %78, %29, %byte_cntr_cpha1_q : i20
+        %80 = comb.xor %58, %true_22 : i1
+        %81 = comb.and %80, %56, %34 : i1
+        %82 = comb.xor %58, %true_25 : i1
+        %83 = comb.and %82, %56, %csaat_q, %37, %36 : i1
+        %84 = comb.mux %56, %41, %42 : i1
+        %85 = comb.xor %58, %true_29 : i1
+        %86 = comb.and %62, %5 : i1
+        %87 = comb.xor %65, %true : i1
+        %88 = comb.and %87, %86 : i1
+        %89 = comb.xor %81, %true : i1
+        %90 = comb.and %89, %88 : i1
+        %91 = comb.xor %83, %true : i1
+        %92 = comb.and %91, %90, %85, %84 : i1
+        %93 = comb.and %90, %83 : i1
+        %94 = comb.or %93, %92 : i1
+        %95 = comb.and %88, %81 : i1
+        %96 = comb.and %86, %65 : i1
+        %97 = comb.xor %62, %true : i1
+        %98 = comb.and %44, %97, %5 : i1
+        %99 = comb.xor %58, %true_31 : i1
+        %100 = comb.icmp ne %61, %c-4_i3 : i3
+        %101 = comb.xor %68, %true : i1
+        %102 = comb.and %101, %87 : i1
+        %103 = comb.xor %75, %true : i1
+        %104 = comb.and %103, %102, %99, %56, %csaat_q, %47, %46 : i1
+        %105 = comb.xor %104, %true : i1
+        %106 = comb.and %102, %75 : i1
+        %107 = comb.xor %106, %true : i1
+        %108 = comb.and %87, %68 : i1
+        %109 = comb.xor %108, %true : i1
+        %110 = comb.and %87, %109, %107, %105, %100 : i1
+        %111 = comb.icmp ne %61, %c3_i3 : i3
+        %112 = comb.and %arg15, %60, %56, %csaat_q, %12 : i1
+        %113 = comb.mux %112, %arg14, %csid_q : i1
+        %114 = comb.mux %112, %arg13, %cpol_q : i1
+        %115 = comb.mux %112, %arg12, %cpha_q : i1
+        %116 = comb.mux %112, %arg8, %csnidle_q : i4
+        %117 = comb.mux %112, %arg9, %csnlead_q : i4
+        %118 = comb.mux %112, %arg10, %csntrail_q : i4
+        %119 = comb.mux %112, %arg7, %clkdiv_q : i16
+        %120 = comb.mux %112, %arg3, %cmd_wr_en_q : i1
+        %121 = comb.mux %112, %arg4, %cmd_rd_en_q : i1
+        %122 = comb.mux %1, %119, %2 : i16
+        %123 = comb.mux %112, %arg7, %122 : i16
+        %124 = comb.xor %115, %true : i1
+        %125 = comb.mux %124, %71, %76 : i1
+        %126 = comb.and %115, %78 : i1
+        %127 = comb.mux %124, %72, %77 : i1
+        %128 = comb.mux %124, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %129 = comb.xor %121, %true : i1
+        %130 = comb.xor %120, %true : i1
+        %131 = comb.and %129, %130 : i1
+        %132 = comb.mux %112, %22, %23 : i1
+        %133 = comb.mux %112, %24, %25 : i1
+        %134 = comb.mux %112, %26, %27 : i1
+        %135 = comb.mux %134, %c-4_i3, %c1_i3 : i3
+        %136 = comb.xor %131, %true : i1
+        %137 = comb.xor %132, %true : i1
+        %138 = comb.and %137, %136, %133 : i1
+        %139 = comb.mux %138, %c2_i3, %135 : i3
+        %140 = comb.mux %138, %c-2_i3, %135 : i3
+        %141 = comb.and %136, %132 : i1
+        %142 = comb.mux %141, %c1_i3, %139 : i3
+        %143 = comb.mux %141, %c-1_i3, %140 : i3
+        %144 = comb.mux %131, %c0_i3, %142 : i3
+        %145 = comb.mux %131, %c0_i3, %143 : i3
+        %146 = comb.sub %bit_cntr_q, %144 : i3
+        %147 = comb.mux %127, %146, %bit_cntr_q : i3
+        %148 = comb.mux %125, %145, %147 : i3
+        %149 = comb.mux %112, %arg5, %79 : i20
+        %150 = comb.mux %94, %116, %c0_i4 : i4
+        %151 = comb.mux %95, %118, %150 : i4
+        %152 = comb.mux %96, %117, %151 : i4
+        %153 = comb.mux %5, %152, %wait_cntr_q : i4
+        %154 = comb.mux %98, %43, %153 : i4
+        %155 = comb.mux %114, %111, %75 : i1
+        %156 = comb.xor %126, %true : i1
+        %157 = comb.and %156, %cmd_wr_en_last_bit : i1
+        %158 = comb.or %48, %157 : i1
+        fsm.update %cmd_wr_en_last_bit, %158 : i1
+        %159 = comb.and %125, %120, %3 : i1
+        %160 = comb.and %126, %128, %4 : i1
+        %161 = comb.or %160, %159 : i1
+        %162 = comb.xor %161, %true : i1
+        %163 = comb.and %127, %162 : i1
+        %164 = comb.and %112, %162 : i1
+        %165 = comb.mux %164, %arg14, %csid_q : i1
+        %166 = comb.mux %164, %arg13, %cpol_q : i1
+        %167 = comb.mux %164, %arg12, %cpha_q : i1
+        %168 = comb.mux %164, %arg11, %full_cyc_q : i1
+        %169 = comb.mux %164, %arg8, %csnidle_q : i4
+        %170 = comb.mux %164, %arg9, %csnlead_q : i4
+        %171 = comb.mux %164, %arg10, %csntrail_q : i4
+        %172 = comb.mux %164, %arg7, %clkdiv_q : i16
+        %173 = comb.mux %164, %arg6, %csaat_q : i1
+        %174 = comb.mux %164, %arg3, %cmd_wr_en_q : i1
+        %175 = comb.mux %164, %arg4, %cmd_rd_en_q : i1
+        %176 = comb.mux %164, %arg2, %cmd_speed_q : i2
+        %177 = comb.or %161, %0 : i1
+        %178 = comb.mux %177, %clk_cntr_q, %123 : i16
+        %179 = comb.and %62, %162 : i1
+        %180 = comb.mux bin %179, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %181 = comb.or %161, %18 : i1
+        %182 = comb.mux %181, %bit_cntr_q, %148 : i3
         %true_32 = hw.constant true
-        %112 = comb.xor %arg18, %true_32 : i1
-        %113 = comb.and %112, %111, %35, %csaat_q, %10, %110 : i1
-        %114 = comb.or %21, %113 : i1
-        %115 = comb.and %35, %csaat_q, %10, %cpha_q : i1
-        %116 = comb.or %37, %115 : i1
-        %true_33 = hw.constant true
-        %117 = comb.xor %arg18, %true_33 : i1
-        %true_34 = hw.constant true
-        %118 = comb.xor %21, %true_34 : i1
-        %119 = comb.and %118, %117, %116 : i1
-        %120 = comb.extract %8 from 0 : (i3) -> i2
-        %c-1_i2_35 = hw.constant -1 : i2
-        %121 = comb.icmp eq %120, %c-1_i2_35 : i2
-        %true_36 = hw.constant true
-        %122 = comb.xor %10, %true_36 : i1
-        %true_37 = hw.constant true
-        %123 = comb.xor %37, %true_37 : i1
-        %true_38 = hw.constant true
-        %124 = comb.xor %arg18, %true_38 : i1
-        %true_39 = hw.constant true
-        %125 = comb.xor %21, %true_39 : i1
-        %126 = comb.icmp ne %41, %c-4_i3 : i3
-        %127 = comb.xor %114, %true : i1
-        %128 = comb.and %127, %98 : i1
-        %129 = comb.xor %119, %true : i1
-        %130 = comb.and %129, %128, %125, %124, %123, %35, %csaat_q, %122, %121 : i1
-        %131 = comb.xor %130, %true : i1
-        %132 = comb.and %128, %119 : i1
-        %133 = comb.xor %132, %true : i1
-        %134 = comb.and %98, %114 : i1
-        %135 = comb.xor %134, %true : i1
-        %136 = comb.and %98, %135, %133, %131, %126 : i1
-        %137 = comb.icmp ne %41, %c3_i3 : i3
-        %138 = comb.and %arg15, %22, %39, %35, %csaat_q, %12 : i1
-        %139 = comb.mux %138, %arg14, %csid_q : i1
-        %140 = comb.mux %138, %arg13, %cpol_q : i1
-        %141 = comb.mux %138, %arg12, %cpha_q : i1
-        %142 = comb.mux %138, %arg8, %csnidle_q : i4
-        %143 = comb.mux %138, %arg9, %csnlead_q : i4
-        %144 = comb.mux %138, %arg10, %csntrail_q : i4
-        %145 = comb.mux %138, %arg7, %clkdiv_q : i16
-        %146 = comb.mux %138, %arg3, %cmd_wr_en_q : i1
-        %147 = comb.mux %138, %arg4, %cmd_rd_en_q : i1
-        %148 = comb.mux %138, %arg2, %cmd_speed_q : i2
-        %149 = comb.mux %1, %145, %2 : i16
-        %150 = comb.mux %138, %arg7, %149 : i16
-        %151 = comb.mux %0, %clk_cntr_q, %150 : i16
-        %152 = comb.mux %arg18, %c0_i16, %151 : i16
-        %153 = comb.xor %141, %true : i1
-        %154 = comb.mux %153, %56, %63 : i1
-        %155 = comb.and %141, %65 : i1
-        %156 = comb.mux %153, %57, %64 : i1
-        %157 = comb.mux %153, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %158 = comb.xor %147, %true : i1
-        %159 = comb.xor %146, %true : i1
-        %160 = comb.and %158, %159 : i1
-        %161 = comb.icmp eq %arg2, %c0_i2 : i2
-        %162 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %163 = comb.mux %138, %161, %162 : i1
-        %164 = comb.icmp eq %arg2, %c1_i2 : i2
-        %165 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %166 = comb.mux %138, %164, %165 : i1
-        %167 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %168 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %169 = comb.mux %138, %167, %168 : i1
-        %170 = comb.mux %169, %c-4_i3, %c1_i3 : i3
-        %171 = comb.xor %160, %true : i1
-        %172 = comb.xor %163, %true : i1
-        %173 = comb.and %172, %171, %166 : i1
-        %174 = comb.mux %173, %c2_i3, %170 : i3
-        %175 = comb.mux %173, %c-2_i3, %170 : i3
-        %176 = comb.and %171, %163 : i1
-        %177 = comb.mux %176, %c1_i3, %174 : i3
-        %178 = comb.mux %176, %c-1_i3, %175 : i3
-        %179 = comb.mux %160, %c0_i3, %177 : i3
-        %180 = comb.mux %160, %c0_i3, %178 : i3
-        %181 = comb.sub %bit_cntr_q, %179 : i3
-        %182 = comb.mux %156, %181, %bit_cntr_q : i3
-        %183 = comb.mux %154, %180, %182 : i3
-        %184 = comb.mux %20, %bit_cntr_q, %183 : i3
-        %185 = comb.mux %arg18, %c0_i3, %184 : i3
-        %186 = comb.mux %138, %arg5, %byte_cntr_cpha0_q : i20
-        %187 = comb.mux %arg18, %c0_i20, %186 : i20
-        %188 = comb.mux %138, %arg5, %66 : i20
-        %189 = comb.mux %20, %byte_cntr_cpha1_q, %188 : i20
-        %190 = comb.mux %arg18, %c0_i20, %189 : i20
-        %191 = comb.mux %105, %142, %c0_i4 : i4
-        %192 = comb.mux %106, %144, %191 : i4
-        %193 = comb.mux %107, %143, %192 : i4
-        %194 = comb.mux %28, %193, %wait_cntr_q : i4
-        %195 = comb.mux %arg18, %c0_i4, %194 : i4
-        %196 = comb.mux %109, %27, %195 : i4
-        %197 = comb.mux %140, %137, %62 : i1
-        %198 = comb.xor %155, %true : i1
-        %199 = comb.and %198, %cmd_wr_en_last_bit : i1
-        %200 = comb.or %30, %199 : i1
-        %201 = comb.icmp eq %arg2, %c0_i2 : i2
-        %202 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %203 = comb.mux %138, %201, %202 : i1
-        %204 = comb.and %147, %146 : i1
-        %205 = comb.xor %204, %true : i1
-        %206 = comb.or %203, %205 : i1
-        verif.assert %206 : i1
-        %207 = comb.icmp ne %148, %c-1_i2 : i2
-        verif.assert %207 : i1
-        %208 = comb.xor %139, %true : i1
-        verif.assert %208 : i1
-        fsm.update %cmd_wr_en_last_bit, %200 : i1
-        %209 = comb.and %154, %146, %3 : i1
-        %210 = comb.and %155, %157, %4 : i1
-        %211 = comb.or %210, %209 : i1
-        %212 = comb.xor %211, %true : i1
-        %213 = comb.and %156, %212 : i1
-        %214 = comb.and %138, %212 : i1
-        %215 = comb.mux %214, %arg14, %csid_q : i1
-        %216 = comb.mux %214, %arg13, %cpol_q : i1
-        %217 = comb.mux %214, %arg12, %cpha_q : i1
-        %218 = comb.mux %214, %arg11, %full_cyc_q : i1
-        %219 = comb.mux %214, %arg8, %csnidle_q : i4
-        %220 = comb.mux %214, %arg9, %csnlead_q : i4
-        %221 = comb.mux %214, %arg10, %csntrail_q : i4
-        %222 = comb.mux %214, %arg7, %clkdiv_q : i16
-        %223 = comb.mux %214, %arg6, %csaat_q : i1
-        %224 = comb.mux %214, %arg3, %cmd_wr_en_q : i1
-        %225 = comb.mux %214, %arg4, %cmd_rd_en_q : i1
-        %226 = comb.mux %214, %arg2, %cmd_speed_q : i2
-        %227 = comb.mux %214, %arg5, %cmd_len_q : i20
-        %228 = comb.mux %211, %clk_cntr_q, %152 : i16
-        %229 = comb.and %42, %212 : i1
-        %230 = comb.mux bin %229, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %231 = comb.mux %211, %bit_cntr_q, %185 : i3
-        %232 = comb.mux %211, %byte_cntr_cpha0_q, %187 : i20
-        %233 = comb.mux %211, %byte_cntr_cpha1_q, %190 : i20
-        %234 = comb.mux %211, %wait_cntr_q, %196 : i4
-        %235 = comb.or %154, %213 : i1
-        %236 = comb.and %5, %212 : i1
-        %237 = comb.mux %236, %235, %sample_en_q : i1
-        %238 = comb.mux %236, %sample_en_q, %sample_en_q2 : i1
-        %239 = comb.mux bin %211, %u_sck_flop2Fq_o, %197 : i1
-        %240 = comb.mux %212, %136, %csb_q : i1
-        %241 = comb.or %139, %240 : i1
-        fsm.update %csb_q, %241 : i1
-        fsm.update %u_sck_flop2Fq_o, %239 : i1
-        fsm.update %sample_en_q2, %238 : i1
-        fsm.update %sample_en_q, %237 : i1
-        fsm.update %wait_cntr_q, %234 : i4
-        fsm.update %byte_cntr_cpha1_q, %233 : i20
-        fsm.update %byte_cntr_cpha0_q, %232 : i20
-        fsm.update %bit_cntr_q, %231 : i3
-        fsm.update %segment_rd_en_cpha1, %230 : i1
-        fsm.update %clk_cntr_q, %228 : i16
-        fsm.update %cmd_len_q, %227 : i20
-        fsm.update %cmd_speed_q, %226 : i2
-        fsm.update %cmd_wr_en_q, %224 : i1
-        fsm.update %cmd_rd_en_q, %225 : i1
-        fsm.update %csaat_q, %223 : i1
-        fsm.update %clkdiv_q, %222 : i16
-        fsm.update %csntrail_q, %221 : i4
-        fsm.update %csnlead_q, %220 : i4
-        fsm.update %csnidle_q, %219 : i4
-        fsm.update %full_cyc_q, %218 : i1
-        fsm.update %cpha_q, %217 : i1
-        fsm.update %cpol_q, %216 : i1
-        fsm.update %csid_q, %215 : i1
+        %183 = comb.xor %112, %true_32 : i1
+        %184 = comb.or %161, %183 : i1
+        %185 = comb.mux %184, %byte_cntr_cpha0_q, %arg5 : i20
+        %186 = comb.or %161, %18 : i1
+        %187 = comb.mux %186, %byte_cntr_cpha1_q, %149 : i20
+        %188 = comb.mux %161, %wait_cntr_q, %154 : i4
+        %189 = comb.or %125, %163 : i1
+        %190 = comb.and %5, %162 : i1
+        %191 = comb.mux %190, %189, %sample_en_q : i1
+        %192 = comb.mux %190, %sample_en_q, %sample_en_q2 : i1
+        %193 = comb.mux bin %161, %u_sck_flop2Fq_o, %155 : i1
+        %194 = comb.mux %162, %110, %csb_q : i1
+        %195 = comb.or %113, %194 : i1
+        fsm.update %_sh1_12, %162 : i1
+        fsm.update %csb_q, %195 : i1
+        fsm.update %u_sck_flop2Fq_o, %193 : i1
+        fsm.update %sample_en_q2, %192 : i1
+        fsm.update %sample_en_q, %191 : i1
+        fsm.update %wait_cntr_q, %188 : i4
+        fsm.update %byte_cntr_cpha1_q, %187 : i20
+        fsm.update %byte_cntr_cpha0_q, %185 : i20
+        fsm.update %bit_cntr_q, %182 : i3
+        fsm.update %segment_rd_en_cpha1, %180 : i1
+        fsm.update %clk_cntr_q, %178 : i16
+        fsm.update %cmd_speed_q, %176 : i2
+        fsm.update %cmd_wr_en_q, %174 : i1
+        fsm.update %cmd_rd_en_q, %175 : i1
+        fsm.update %csaat_q, %173 : i1
+        fsm.update %clkdiv_q, %172 : i16
+        fsm.update %csntrail_q, %171 : i4
+        fsm.update %csnlead_q, %170 : i4
+        fsm.update %csnidle_q, %169 : i4
+        fsm.update %full_cyc_q, %168 : i1
+        fsm.update %cpha_q, %167 : i1
+        fsm.update %cpol_q, %166 : i1
+        fsm.update %csid_q, %165 : i1
       }
       fsm.transition @state_3 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
@@ -5694,7 +4348,6 @@ module {
         %c-4_i3 = hw.constant -4 : i3
         %c3_i3 = hw.constant 3 : i3
         %c1_i2 = hw.constant 1 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %1 = comb.xor %arg16, %true : i1
@@ -5715,83 +4368,74 @@ module {
         %c2_i3 = hw.constant 2 : i3
         %16 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
         %17 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
-        %18 = comb.and %arg1, %0 : i1
-        %19 = comb.xor %16, %true : i1
-        %20 = comb.icmp ne %17, %c0_i20 : i20
-        %21 = comb.or %19, %20, %11 : i1
-        %22 = comb.and %18, %14 : i1
-        %23 = comb.xor %21, %true : i1
-        %24 = comb.and %23, %22 : i1
-        %25 = comb.mux %24, %15, %13 : i3
-        %26 = comb.and %22, %21 : i1
-        %27 = comb.mux %26, %c3_i3, %25 : i3
-        %28 = comb.xor %26, %true : i1
-        %29 = comb.mux %arg18, %c0_i3, %27 : i3
-        %30 = comb.xor %18, %true : i1
-        %31 = comb.and %14, %30 : i1
-        %32 = comb.mux %31, %c2_i3, %29 : i3
-        %33 = comb.xor %31, %true : i1
-        %34 = comb.icmp ne %32, %c2_i3 : i3
-        %35 = comb.and %14, %34 : i1
-        %true_0 = hw.constant true
-        %36 = comb.xor %24, %true_0 : i1
-        %true_1 = hw.constant true
-        %37 = comb.xor %26, %true_1 : i1
-        %true_2 = hw.constant true
-        %38 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %39 = comb.xor %31, %true_3 : i1
-        %40 = comb.and %39, %38, %37, %36, %10 : i1
-        %true_4 = hw.constant true
-        %41 = comb.xor %cpha_q, %true_4 : i1
-        %true_5 = hw.constant true
-        %42 = comb.xor %26, %true_5 : i1
-        %true_6 = hw.constant true
-        %43 = comb.xor %arg18, %true_6 : i1
-        %44 = comb.and %43, %42, %24, %csaat_q, %7, %41 : i1
-        %45 = comb.or %31, %44 : i1
-        %46 = comb.and %45, %16 : i1
-        %47 = comb.or %40, %46 : i1
-        %48 = comb.and %35, %47 : i1
-        %49 = comb.and %24, %csaat_q, %7, %cpha_q : i1
-        %50 = comb.or %26, %49 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %arg18, %true_7 : i1
-        %true_8 = hw.constant true
-        %52 = comb.xor %31, %true_8 : i1
-        %53 = comb.and %35, %52, %51, %50, %16 : i1
-        %54 = comb.and %arg15, %33, %28, %24, %csaat_q, %9 : i1
-        %55 = comb.mux %54, %arg14, %csid_q : i1
-        %56 = comb.mux %54, %arg12, %cpha_q : i1
-        %57 = comb.mux %54, %arg3, %cmd_wr_en_q : i1
-        %58 = comb.mux %54, %arg4, %cmd_rd_en_q : i1
-        %59 = comb.mux %54, %arg2, %cmd_speed_q : i2
-        %60 = comb.xor %56, %true : i1
-        %61 = comb.mux %60, %48, %53 : i1
+        %18 = comb.xor %isFirstCycle, %true : i1
+        %19 = comb.and %18, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %14 : i1
+        %20 = comb.xor %19, %true : i1
+        %21 = comb.and %arg1, %0 : i1
+        %22 = comb.xor %16, %true : i1
+        %23 = comb.icmp ne %17, %c0_i20 : i20
+        %24 = comb.or %22, %23, %11 : i1
+        %25 = comb.and %21, %14 : i1
+        %26 = comb.xor %24, %true : i1
+        %27 = comb.and %26, %25 : i1
+        %28 = comb.mux %27, %15, %13 : i3
+        %29 = comb.and %25, %24 : i1
+        %30 = comb.mux %29, %c3_i3, %28 : i3
+        %31 = comb.xor %29, %true : i1
+        %32 = comb.mux %arg18, %c0_i3, %30 : i3
+        %33 = comb.xor %21, %true : i1
+        %34 = comb.and %14, %33 : i1
+        %35 = comb.mux %34, %c2_i3, %32 : i3
+        %36 = comb.xor %34, %true : i1
+        %37 = comb.icmp ne %35, %c2_i3 : i3
+        %38 = comb.and %14, %37 : i1
+        %true_13 = hw.constant true
+        %39 = comb.xor %27, %true_13 : i1
+        %true_14 = hw.constant true
+        %40 = comb.xor %29, %true_14 : i1
+        %true_15 = hw.constant true
+        %41 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %42 = comb.xor %34, %true_16 : i1
+        %43 = comb.and %42, %41, %40, %39, %10 : i1
+        %true_17 = hw.constant true
+        %44 = comb.xor %cpha_q, %true_17 : i1
+        %true_18 = hw.constant true
+        %45 = comb.xor %29, %true_18 : i1
+        %true_19 = hw.constant true
+        %46 = comb.xor %arg18, %true_19 : i1
+        %47 = comb.and %46, %45, %27, %csaat_q, %7, %44 : i1
+        %48 = comb.or %34, %47 : i1
+        %49 = comb.and %48, %16 : i1
+        %50 = comb.or %43, %49 : i1
+        %51 = comb.and %38, %50 : i1
+        %52 = comb.and %27, %csaat_q, %7, %cpha_q : i1
+        %53 = comb.or %29, %52 : i1
+        %true_20 = hw.constant true
+        %54 = comb.xor %arg18, %true_20 : i1
+        %true_21 = hw.constant true
+        %55 = comb.xor %34, %true_21 : i1
+        %56 = comb.and %38, %55, %54, %53, %16 : i1
+        verif.assert %20 : i1
+        %57 = comb.and %arg15, %36, %31, %27, %csaat_q, %9 : i1
+        %58 = comb.mux %57, %arg12, %cpha_q : i1
+        %59 = comb.mux %57, %arg3, %cmd_wr_en_q : i1
+        %60 = comb.xor %58, %true : i1
+        %61 = comb.mux %60, %51, %56 : i1
         %62 = comb.mux %60, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %63 = comb.icmp eq %arg2, %c0_i2 : i2
-        %64 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %65 = comb.mux %54, %63, %64 : i1
-        %66 = comb.and %58, %57 : i1
-        %67 = comb.xor %66, %true : i1
-        %68 = comb.or %65, %67 : i1
-        verif.assert %68 : i1
-        %69 = comb.icmp ne %59, %c-1_i2 : i2
-        verif.assert %69 : i1
-        %70 = comb.xor %55, %true : i1
-        verif.assert %70 : i1
-        %71 = comb.and %61, %57, %1 : i1
-        %72 = comb.and %56, %35, %16, %62, %2 : i1
-        %73 = comb.or %72, %71, %31 : i1
-        %74 = comb.and %24, %csaat_q, %7, %cpha_q : i1
-        %75 = comb.or %26, %74 : i1
-        %true_9 = hw.constant true
-        %76 = comb.xor %arg18, %true_9 : i1
-        %true_10 = hw.constant true
-        %77 = comb.xor %73, %true_10 : i1
-        %78 = comb.and %77, %76, %75 : i1
-        fsm.return %78
+        %63 = comb.and %61, %59, %1 : i1
+        %64 = comb.and %58, %38, %16, %62, %2 : i1
+        %65 = comb.or %64, %63, %34 : i1
+        %66 = comb.and %27, %csaat_q, %7, %cpha_q : i1
+        %67 = comb.or %29, %66 : i1
+        %true_22 = hw.constant true
+        %68 = comb.xor %arg18, %true_22 : i1
+        %true_23 = hw.constant true
+        %69 = comb.xor %65, %true_23 : i1
+        %70 = comb.and %69, %68, %67 : i1
+        fsm.return %70
       } action {
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
@@ -5805,7 +4449,6 @@ module {
         %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i16 = hw.constant -1 : i16
         %c-1_i20 = hw.constant -1 : i20
         %c-1_i4 = hw.constant -1 : i4
@@ -5823,307 +4466,243 @@ module {
         %10 = comb.and %9, %arg15 : i1
         %11 = comb.mux %10, %6, %8 : i3
         %12 = comb.or %10, %7 : i1
+        %false_14 = hw.constant false
         %13 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %14 = comb.xor %cpha_q, %true : i1
         %15 = comb.xor %csaat_q, %true : i1
         %16 = comb.mux %13, %c1_i3, %c-2_i3 : i3
-        %17 = comb.xor %arg18, %true : i1
-        %18 = comb.and %5, %17 : i1
-        %19 = comb.mux %15, %c-4_i3, %11 : i3
-        %20 = comb.xor %5, %true : i1
-        %21 = comb.and %17, %20 : i1
-        %22 = comb.xor %21, %true : i1
-        %c2_i3_0 = hw.constant 2 : i3
-        %23 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %24 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
-        %25 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
-        %26 = comb.add %byte_cntr_cpha1_q, %c-1_i20 : i20
-        %27 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %28 = comb.or %arg18, %5 : i1
-        %29 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %30 = comb.and %cmd_wr_en_q, %23 : i1
-        %31 = comb.xor %23, %true : i1
-        %32 = comb.icmp ne %25, %c0_i20 : i20
-        %33 = comb.or %31, %32, %14 : i1
-        %34 = comb.xor %33, %true : i1
-        %35 = comb.and %34, %18 : i1
-        %36 = comb.mux %35, %19, %16 : i3
-        %37 = comb.and %18, %33 : i1
-        %38 = comb.mux %37, %c3_i3, %36 : i3
-        %39 = comb.xor %37, %true : i1
-        %40 = comb.mux %arg18, %c0_i3, %38 : i3
-        %41 = comb.mux %21, %c2_i3_0, %40 : i3
-        %42 = comb.icmp ne %41, %c2_i3_0 : i3
-        %43 = comb.and %17, %42 : i1
-        %true_1 = hw.constant true
-        %44 = comb.xor %35, %true_1 : i1
-        %true_2 = hw.constant true
-        %45 = comb.xor %37, %true_2 : i1
-        %true_3 = hw.constant true
-        %46 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %47 = comb.xor %21, %true_4 : i1
-        %48 = comb.and %47, %46, %45, %44, %13 : i1
-        %true_5 = hw.constant true
-        %49 = comb.xor %cpha_q, %true_5 : i1
-        %true_6 = hw.constant true
-        %50 = comb.xor %37, %true_6 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %arg18, %true_7 : i1
-        %52 = comb.and %51, %50, %35, %csaat_q, %10, %49 : i1
-        %53 = comb.or %21, %52 : i1
-        %54 = comb.and %53, %23 : i1
-        %55 = comb.or %48, %54 : i1
-        %56 = comb.and %43, %55 : i1
-        %57 = comb.and %43, %53, %24 : i1
-        %58 = comb.and %35, %csaat_q, %10, %cpha_q : i1
-        %59 = comb.or %37, %58 : i1
-        %true_8 = hw.constant true
-        %60 = comb.xor %arg18, %true_8 : i1
-        %true_9 = hw.constant true
-        %61 = comb.xor %21, %true_9 : i1
-        %62 = comb.and %61, %60, %59 : i1
-        %63 = comb.and %43, %62, %23 : i1
-        %64 = comb.and %43, %62, %24 : i1
-        %65 = comb.and %43, %23 : i1
-        %66 = comb.mux %65, %26, %byte_cntr_cpha1_q : i20
-        %true_10 = hw.constant true
-        %67 = comb.xor %35, %true_10 : i1
-        %true_11 = hw.constant true
-        %68 = comb.xor %37, %true_11 : i1
-        %true_12 = hw.constant true
-        %69 = comb.xor %arg18, %true_12 : i1
-        %true_13 = hw.constant true
-        %70 = comb.xor %21, %true_13 : i1
-        %71 = comb.and %70, %69, %68, %67, %13 : i1
-        %72 = comb.extract %8 from 0 : (i3) -> i2
-        %c0_i2_14 = hw.constant 0 : i2
-        %73 = comb.icmp eq %72, %c0_i2_14 : i2
-        %true_15 = hw.constant true
-        %74 = comb.xor %10, %true_15 : i1
-        %75 = comb.and %74, %73 : i1
-        %76 = comb.or %15, %75 : i1
+        %17 = comb.mux %15, %c-4_i3, %11 : i3
+        %18 = comb.xor %5, %true : i1
+        %c2_i3_15 = hw.constant 2 : i3
         %true_16 = hw.constant true
-        %77 = comb.xor %37, %true_16 : i1
         %true_17 = hw.constant true
-        %78 = comb.xor %arg18, %true_17 : i1
         %true_18 = hw.constant true
-        %79 = comb.xor %21, %true_18 : i1
-        %80 = comb.and %79, %78, %77, %35, %76 : i1
-        %81 = comb.extract %8 from 0 : (i3) -> i2
-        %c1_i2_19 = hw.constant 1 : i2
-        %82 = comb.icmp eq %81, %c1_i2_19 : i2
-        %true_20 = hw.constant true
-        %83 = comb.xor %10, %true_20 : i1
+        %19 = comb.xor %cpha_q, %true_18 : i1
+        %true_19 = hw.constant true
+        %20 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %21 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
+        %22 = comb.icmp eq %arg2, %c0_i2 : i2
+        %23 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %24 = comb.icmp eq %arg2, %c1_i2 : i2
+        %25 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %26 = comb.icmp eq %arg2, %c-2_i2 : i2
+        %27 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %28 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
+        %29 = comb.add %byte_cntr_cpha1_q, %c-1_i20 : i20
+        %30 = comb.extract %8 from 0 : (i3) -> i2
+        %c0_i2_20 = hw.constant 0 : i2
+        %31 = comb.icmp eq %30, %c0_i2_20 : i2
         %true_21 = hw.constant true
-        %84 = comb.xor %37, %true_21 : i1
+        %32 = comb.xor %10, %true_21 : i1
+        %33 = comb.and %32, %31 : i1
+        %34 = comb.or %15, %33 : i1
         %true_22 = hw.constant true
-        %85 = comb.xor %arg18, %true_22 : i1
-        %true_23 = hw.constant true
-        %86 = comb.xor %21, %true_23 : i1
-        %87 = comb.and %86, %85, %84, %35, %csaat_q, %83, %82 : i1
-        %88 = comb.extract %8 from 0 : (i3) -> i2
-        %c-2_i2_24 = hw.constant -2 : i2
-        %89 = comb.icmp eq %88, %c-2_i2_24 : i2
+        %35 = comb.extract %8 from 0 : (i3) -> i2
+        %c1_i2_23 = hw.constant 1 : i2
+        %36 = comb.icmp eq %35, %c1_i2_23 : i2
+        %true_24 = hw.constant true
+        %37 = comb.xor %10, %true_24 : i1
         %true_25 = hw.constant true
-        %90 = comb.xor %10, %true_25 : i1
-        %91 = comb.and %csaat_q, %90, %89 : i1
-        %true_26 = hw.constant true
-        %92 = comb.xor %13, %true_26 : i1
-        %93 = comb.mux %35, %91, %92 : i1
+        %38 = comb.extract %8 from 0 : (i3) -> i2
+        %c-2_i2_26 = hw.constant -2 : i2
+        %39 = comb.icmp eq %38, %c-2_i2_26 : i2
         %true_27 = hw.constant true
-        %94 = comb.xor %37, %true_27 : i1
+        %40 = comb.xor %10, %true_27 : i1
+        %41 = comb.and %csaat_q, %40, %39 : i1
         %true_28 = hw.constant true
-        %95 = comb.xor %arg18, %true_28 : i1
+        %42 = comb.xor %13, %true_28 : i1
         %true_29 = hw.constant true
-        %96 = comb.xor %21, %true_29 : i1
-        %97 = comb.and %42, %18 : i1
-        %98 = comb.xor %71, %true : i1
-        %99 = comb.and %98, %97 : i1
-        %100 = comb.xor %80, %true : i1
-        %101 = comb.and %100, %99 : i1
-        %102 = comb.xor %87, %true : i1
-        %103 = comb.and %102, %101, %96, %95, %94, %93 : i1
-        %104 = comb.and %101, %87 : i1
-        %105 = comb.or %104, %103 : i1
-        %106 = comb.and %99, %80 : i1
-        %107 = comb.and %97, %71 : i1
-        %108 = comb.xor %42, %true : i1
-        %109 = comb.and %29, %108, %18 : i1
+        %43 = comb.add %wait_cntr_q, %c-1_i4 : i4
+        %44 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
+        %45 = comb.extract %8 from 0 : (i3) -> i2
+        %c-1_i2 = hw.constant -1 : i2
+        %46 = comb.icmp eq %45, %c-1_i2 : i2
         %true_30 = hw.constant true
-        %110 = comb.xor %cpha_q, %true_30 : i1
+        %47 = comb.xor %10, %true_30 : i1
         %true_31 = hw.constant true
-        %111 = comb.xor %37, %true_31 : i1
+        %48 = comb.and %cmd_wr_en_q, %20 : i1
+        %49 = comb.xor %isFirstCycle, %true : i1
+        %50 = comb.and %49, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %51 = comb.xor %50, %true : i1
+        verif.assert %51 : i1
+        fsm.update %_sh1_10, %5 : i1
+        fsm.update %_sh1_8, %7 : i1
+        fsm.update %_sh1_6, %13 : i1
+        fsm.update %_sh1, %false_14 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        %52 = comb.xor %20, %true : i1
+        %53 = comb.icmp ne %28, %c0_i20 : i20
+        %54 = comb.or %52, %53, %14 : i1
+        %55 = comb.xor %54, %true : i1
+        %56 = comb.and %55, %5 : i1
+        %57 = comb.mux %56, %17, %16 : i3
+        %58 = comb.and %5, %54 : i1
+        %59 = comb.mux %58, %c3_i3, %57 : i3
+        %60 = comb.xor %58, %true : i1
+        %61 = comb.mux %18, %c2_i3_15, %59 : i3
+        %62 = comb.icmp ne %61, %c2_i3_15 : i3
+        %63 = comb.xor %56, %true_16 : i1
+        %64 = comb.xor %58, %true_17 : i1
+        %65 = comb.and %5, %64, %63, %13 : i1
+        %66 = comb.xor %58, %true_19 : i1
+        %67 = comb.and %66, %56, %csaat_q, %10, %19 : i1
+        %68 = comb.or %18, %67 : i1
+        %69 = comb.and %68, %20 : i1
+        %70 = comb.or %65, %69 : i1
+        %71 = comb.and %62, %70 : i1
+        %72 = comb.and %62, %68, %21 : i1
+        %73 = comb.and %56, %csaat_q, %10, %cpha_q : i1
+        %74 = comb.or %58, %73 : i1
+        %75 = comb.and %5, %74 : i1
+        %76 = comb.and %62, %75, %20 : i1
+        %77 = comb.and %62, %75, %21 : i1
+        %78 = comb.and %62, %20 : i1
+        %79 = comb.mux %78, %29, %byte_cntr_cpha1_q : i20
+        %80 = comb.xor %58, %true_22 : i1
+        %81 = comb.and %80, %56, %34 : i1
+        %82 = comb.xor %58, %true_25 : i1
+        %83 = comb.and %82, %56, %csaat_q, %37, %36 : i1
+        %84 = comb.mux %56, %41, %42 : i1
+        %85 = comb.xor %58, %true_29 : i1
+        %86 = comb.and %62, %5 : i1
+        %87 = comb.xor %65, %true : i1
+        %88 = comb.and %87, %86 : i1
+        %89 = comb.xor %81, %true : i1
+        %90 = comb.and %89, %88 : i1
+        %91 = comb.xor %83, %true : i1
+        %92 = comb.and %91, %90, %85, %84 : i1
+        %93 = comb.and %90, %83 : i1
+        %94 = comb.or %93, %92 : i1
+        %95 = comb.and %88, %81 : i1
+        %96 = comb.and %86, %65 : i1
+        %97 = comb.xor %62, %true : i1
+        %98 = comb.and %44, %97, %5 : i1
+        %99 = comb.xor %58, %true_31 : i1
+        %100 = comb.icmp ne %61, %c-4_i3 : i3
+        %101 = comb.xor %68, %true : i1
+        %102 = comb.and %101, %87 : i1
+        %103 = comb.xor %75, %true : i1
+        %104 = comb.and %103, %102, %99, %56, %csaat_q, %47, %46 : i1
+        %105 = comb.xor %104, %true : i1
+        %106 = comb.and %102, %75 : i1
+        %107 = comb.xor %106, %true : i1
+        %108 = comb.and %87, %68 : i1
+        %109 = comb.xor %108, %true : i1
+        %110 = comb.and %87, %109, %107, %105, %100 : i1
+        %111 = comb.icmp ne %61, %c3_i3 : i3
+        %112 = comb.and %arg15, %60, %56, %csaat_q, %12 : i1
+        %113 = comb.mux %112, %arg14, %csid_q : i1
+        %114 = comb.mux %112, %arg13, %cpol_q : i1
+        %115 = comb.mux %112, %arg12, %cpha_q : i1
+        %116 = comb.mux %112, %arg8, %csnidle_q : i4
+        %117 = comb.mux %112, %arg9, %csnlead_q : i4
+        %118 = comb.mux %112, %arg10, %csntrail_q : i4
+        %119 = comb.mux %112, %arg7, %clkdiv_q : i16
+        %120 = comb.mux %112, %arg3, %cmd_wr_en_q : i1
+        %121 = comb.mux %112, %arg4, %cmd_rd_en_q : i1
+        %122 = comb.mux %1, %119, %2 : i16
+        %123 = comb.mux %112, %arg7, %122 : i16
+        %124 = comb.xor %115, %true : i1
+        %125 = comb.mux %124, %71, %76 : i1
+        %126 = comb.and %115, %78 : i1
+        %127 = comb.mux %124, %72, %77 : i1
+        %128 = comb.mux %124, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %129 = comb.xor %121, %true : i1
+        %130 = comb.xor %120, %true : i1
+        %131 = comb.and %129, %130 : i1
+        %132 = comb.mux %112, %22, %23 : i1
+        %133 = comb.mux %112, %24, %25 : i1
+        %134 = comb.mux %112, %26, %27 : i1
+        %135 = comb.mux %134, %c-4_i3, %c1_i3 : i3
+        %136 = comb.xor %131, %true : i1
+        %137 = comb.xor %132, %true : i1
+        %138 = comb.and %137, %136, %133 : i1
+        %139 = comb.mux %138, %c2_i3, %135 : i3
+        %140 = comb.mux %138, %c-2_i3, %135 : i3
+        %141 = comb.and %136, %132 : i1
+        %142 = comb.mux %141, %c1_i3, %139 : i3
+        %143 = comb.mux %141, %c-1_i3, %140 : i3
+        %144 = comb.mux %131, %c0_i3, %142 : i3
+        %145 = comb.mux %131, %c0_i3, %143 : i3
+        %146 = comb.sub %bit_cntr_q, %144 : i3
+        %147 = comb.mux %127, %146, %bit_cntr_q : i3
+        %148 = comb.mux %125, %145, %147 : i3
+        %149 = comb.mux %112, %arg5, %79 : i20
+        %150 = comb.mux %94, %116, %c0_i4 : i4
+        %151 = comb.mux %95, %118, %150 : i4
+        %152 = comb.mux %96, %117, %151 : i4
+        %153 = comb.mux %5, %152, %wait_cntr_q : i4
+        %154 = comb.mux %98, %43, %153 : i4
+        %155 = comb.mux %114, %111, %75 : i1
+        %156 = comb.xor %126, %true : i1
+        %157 = comb.and %156, %cmd_wr_en_last_bit : i1
+        %158 = comb.or %48, %157 : i1
+        fsm.update %cmd_wr_en_last_bit, %158 : i1
+        %159 = comb.and %125, %120, %3 : i1
+        %160 = comb.and %126, %128, %4 : i1
+        %161 = comb.or %160, %159 : i1
+        %162 = comb.xor %161, %true : i1
+        %163 = comb.and %127, %162 : i1
+        %164 = comb.and %112, %162 : i1
+        %165 = comb.mux %164, %arg14, %csid_q : i1
+        %166 = comb.mux %164, %arg13, %cpol_q : i1
+        %167 = comb.mux %164, %arg12, %cpha_q : i1
+        %168 = comb.mux %164, %arg11, %full_cyc_q : i1
+        %169 = comb.mux %164, %arg8, %csnidle_q : i4
+        %170 = comb.mux %164, %arg9, %csnlead_q : i4
+        %171 = comb.mux %164, %arg10, %csntrail_q : i4
+        %172 = comb.mux %164, %arg7, %clkdiv_q : i16
+        %173 = comb.mux %164, %arg6, %csaat_q : i1
+        %174 = comb.mux %164, %arg3, %cmd_wr_en_q : i1
+        %175 = comb.mux %164, %arg4, %cmd_rd_en_q : i1
+        %176 = comb.mux %164, %arg2, %cmd_speed_q : i2
+        %177 = comb.or %161, %0 : i1
+        %178 = comb.mux %177, %clk_cntr_q, %123 : i16
+        %179 = comb.and %62, %162 : i1
+        %180 = comb.mux bin %179, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %181 = comb.or %161, %18 : i1
+        %182 = comb.mux %181, %bit_cntr_q, %148 : i3
         %true_32 = hw.constant true
-        %112 = comb.xor %arg18, %true_32 : i1
-        %113 = comb.and %112, %111, %35, %csaat_q, %10, %110 : i1
-        %114 = comb.or %21, %113 : i1
-        %115 = comb.and %35, %csaat_q, %10, %cpha_q : i1
-        %116 = comb.or %37, %115 : i1
-        %true_33 = hw.constant true
-        %117 = comb.xor %arg18, %true_33 : i1
-        %true_34 = hw.constant true
-        %118 = comb.xor %21, %true_34 : i1
-        %119 = comb.and %118, %117, %116 : i1
-        %120 = comb.extract %8 from 0 : (i3) -> i2
-        %c-1_i2_35 = hw.constant -1 : i2
-        %121 = comb.icmp eq %120, %c-1_i2_35 : i2
-        %true_36 = hw.constant true
-        %122 = comb.xor %10, %true_36 : i1
-        %true_37 = hw.constant true
-        %123 = comb.xor %37, %true_37 : i1
-        %true_38 = hw.constant true
-        %124 = comb.xor %arg18, %true_38 : i1
-        %true_39 = hw.constant true
-        %125 = comb.xor %21, %true_39 : i1
-        %126 = comb.icmp ne %41, %c-4_i3 : i3
-        %127 = comb.xor %114, %true : i1
-        %128 = comb.and %127, %98 : i1
-        %129 = comb.xor %119, %true : i1
-        %130 = comb.and %129, %128, %125, %124, %123, %35, %csaat_q, %122, %121 : i1
-        %131 = comb.xor %130, %true : i1
-        %132 = comb.and %128, %119 : i1
-        %133 = comb.xor %132, %true : i1
-        %134 = comb.and %98, %114 : i1
-        %135 = comb.xor %134, %true : i1
-        %136 = comb.and %98, %135, %133, %131, %126 : i1
-        %137 = comb.icmp ne %41, %c3_i3 : i3
-        %138 = comb.and %arg15, %22, %39, %35, %csaat_q, %12 : i1
-        %139 = comb.mux %138, %arg14, %csid_q : i1
-        %140 = comb.mux %138, %arg13, %cpol_q : i1
-        %141 = comb.mux %138, %arg12, %cpha_q : i1
-        %142 = comb.mux %138, %arg8, %csnidle_q : i4
-        %143 = comb.mux %138, %arg9, %csnlead_q : i4
-        %144 = comb.mux %138, %arg10, %csntrail_q : i4
-        %145 = comb.mux %138, %arg7, %clkdiv_q : i16
-        %146 = comb.mux %138, %arg3, %cmd_wr_en_q : i1
-        %147 = comb.mux %138, %arg4, %cmd_rd_en_q : i1
-        %148 = comb.mux %138, %arg2, %cmd_speed_q : i2
-        %149 = comb.mux %1, %145, %2 : i16
-        %150 = comb.mux %138, %arg7, %149 : i16
-        %151 = comb.mux %0, %clk_cntr_q, %150 : i16
-        %152 = comb.mux %arg18, %c0_i16, %151 : i16
-        %153 = comb.xor %141, %true : i1
-        %154 = comb.mux %153, %56, %63 : i1
-        %155 = comb.and %141, %65 : i1
-        %156 = comb.mux %153, %57, %64 : i1
-        %157 = comb.mux %153, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %158 = comb.xor %147, %true : i1
-        %159 = comb.xor %146, %true : i1
-        %160 = comb.and %158, %159 : i1
-        %161 = comb.icmp eq %arg2, %c0_i2 : i2
-        %162 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %163 = comb.mux %138, %161, %162 : i1
-        %164 = comb.icmp eq %arg2, %c1_i2 : i2
-        %165 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %166 = comb.mux %138, %164, %165 : i1
-        %167 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %168 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %169 = comb.mux %138, %167, %168 : i1
-        %170 = comb.mux %169, %c-4_i3, %c1_i3 : i3
-        %171 = comb.xor %160, %true : i1
-        %172 = comb.xor %163, %true : i1
-        %173 = comb.and %172, %171, %166 : i1
-        %174 = comb.mux %173, %c2_i3, %170 : i3
-        %175 = comb.mux %173, %c-2_i3, %170 : i3
-        %176 = comb.and %171, %163 : i1
-        %177 = comb.mux %176, %c1_i3, %174 : i3
-        %178 = comb.mux %176, %c-1_i3, %175 : i3
-        %179 = comb.mux %160, %c0_i3, %177 : i3
-        %180 = comb.mux %160, %c0_i3, %178 : i3
-        %181 = comb.sub %bit_cntr_q, %179 : i3
-        %182 = comb.mux %156, %181, %bit_cntr_q : i3
-        %183 = comb.mux %154, %180, %182 : i3
-        %184 = comb.mux %20, %bit_cntr_q, %183 : i3
-        %185 = comb.mux %arg18, %c0_i3, %184 : i3
-        %186 = comb.mux %138, %arg5, %byte_cntr_cpha0_q : i20
-        %187 = comb.mux %arg18, %c0_i20, %186 : i20
-        %188 = comb.mux %138, %arg5, %66 : i20
-        %189 = comb.mux %20, %byte_cntr_cpha1_q, %188 : i20
-        %190 = comb.mux %arg18, %c0_i20, %189 : i20
-        %191 = comb.mux %105, %142, %c0_i4 : i4
-        %192 = comb.mux %106, %144, %191 : i4
-        %193 = comb.mux %107, %143, %192 : i4
-        %194 = comb.mux %28, %193, %wait_cntr_q : i4
-        %195 = comb.mux %arg18, %c0_i4, %194 : i4
-        %196 = comb.mux %109, %27, %195 : i4
-        %197 = comb.mux %140, %137, %62 : i1
-        %198 = comb.xor %155, %true : i1
-        %199 = comb.and %198, %cmd_wr_en_last_bit : i1
-        %200 = comb.or %30, %199 : i1
-        %201 = comb.icmp eq %arg2, %c0_i2 : i2
-        %202 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %203 = comb.mux %138, %201, %202 : i1
-        %204 = comb.and %147, %146 : i1
-        %205 = comb.xor %204, %true : i1
-        %206 = comb.or %203, %205 : i1
-        verif.assert %206 : i1
-        %207 = comb.icmp ne %148, %c-1_i2 : i2
-        verif.assert %207 : i1
-        %208 = comb.xor %139, %true : i1
-        verif.assert %208 : i1
-        fsm.update %cmd_wr_en_last_bit, %200 : i1
-        %209 = comb.and %154, %146, %3 : i1
-        %210 = comb.and %155, %157, %4 : i1
-        %211 = comb.or %210, %209 : i1
-        %212 = comb.xor %211, %true : i1
-        %213 = comb.and %156, %212 : i1
-        %214 = comb.and %138, %212 : i1
-        %215 = comb.mux %214, %arg14, %csid_q : i1
-        %216 = comb.mux %214, %arg13, %cpol_q : i1
-        %217 = comb.mux %214, %arg12, %cpha_q : i1
-        %218 = comb.mux %214, %arg11, %full_cyc_q : i1
-        %219 = comb.mux %214, %arg8, %csnidle_q : i4
-        %220 = comb.mux %214, %arg9, %csnlead_q : i4
-        %221 = comb.mux %214, %arg10, %csntrail_q : i4
-        %222 = comb.mux %214, %arg7, %clkdiv_q : i16
-        %223 = comb.mux %214, %arg6, %csaat_q : i1
-        %224 = comb.mux %214, %arg3, %cmd_wr_en_q : i1
-        %225 = comb.mux %214, %arg4, %cmd_rd_en_q : i1
-        %226 = comb.mux %214, %arg2, %cmd_speed_q : i2
-        %227 = comb.mux %214, %arg5, %cmd_len_q : i20
-        %228 = comb.mux %211, %clk_cntr_q, %152 : i16
-        %229 = comb.and %42, %212 : i1
-        %230 = comb.mux bin %229, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %231 = comb.mux %211, %bit_cntr_q, %185 : i3
-        %232 = comb.mux %211, %byte_cntr_cpha0_q, %187 : i20
-        %233 = comb.mux %211, %byte_cntr_cpha1_q, %190 : i20
-        %234 = comb.mux %211, %wait_cntr_q, %196 : i4
-        %235 = comb.or %154, %213 : i1
-        %236 = comb.and %5, %212 : i1
-        %237 = comb.mux %236, %235, %sample_en_q : i1
-        %238 = comb.mux %236, %sample_en_q, %sample_en_q2 : i1
-        %239 = comb.mux bin %211, %u_sck_flop2Fq_o, %197 : i1
-        %240 = comb.mux %212, %136, %csb_q : i1
-        %241 = comb.or %139, %240 : i1
-        fsm.update %csb_q, %241 : i1
-        fsm.update %u_sck_flop2Fq_o, %239 : i1
-        fsm.update %sample_en_q2, %238 : i1
-        fsm.update %sample_en_q, %237 : i1
-        fsm.update %wait_cntr_q, %234 : i4
-        fsm.update %byte_cntr_cpha1_q, %233 : i20
-        fsm.update %byte_cntr_cpha0_q, %232 : i20
-        fsm.update %bit_cntr_q, %231 : i3
-        fsm.update %segment_rd_en_cpha1, %230 : i1
-        fsm.update %clk_cntr_q, %228 : i16
-        fsm.update %cmd_len_q, %227 : i20
-        fsm.update %cmd_speed_q, %226 : i2
-        fsm.update %cmd_wr_en_q, %224 : i1
-        fsm.update %cmd_rd_en_q, %225 : i1
-        fsm.update %csaat_q, %223 : i1
-        fsm.update %clkdiv_q, %222 : i16
-        fsm.update %csntrail_q, %221 : i4
-        fsm.update %csnlead_q, %220 : i4
-        fsm.update %csnidle_q, %219 : i4
-        fsm.update %full_cyc_q, %218 : i1
-        fsm.update %cpha_q, %217 : i1
-        fsm.update %cpol_q, %216 : i1
-        fsm.update %csid_q, %215 : i1
+        %183 = comb.xor %112, %true_32 : i1
+        %184 = comb.or %161, %183 : i1
+        %185 = comb.mux %184, %byte_cntr_cpha0_q, %arg5 : i20
+        %186 = comb.or %161, %18 : i1
+        %187 = comb.mux %186, %byte_cntr_cpha1_q, %149 : i20
+        %188 = comb.mux %161, %wait_cntr_q, %154 : i4
+        %189 = comb.or %125, %163 : i1
+        %190 = comb.and %5, %162 : i1
+        %191 = comb.mux %190, %189, %sample_en_q : i1
+        %192 = comb.mux %190, %sample_en_q, %sample_en_q2 : i1
+        %193 = comb.mux bin %161, %u_sck_flop2Fq_o, %155 : i1
+        %194 = comb.mux %162, %110, %csb_q : i1
+        %195 = comb.or %113, %194 : i1
+        fsm.update %_sh1_12, %162 : i1
+        fsm.update %csb_q, %195 : i1
+        fsm.update %u_sck_flop2Fq_o, %193 : i1
+        fsm.update %sample_en_q2, %192 : i1
+        fsm.update %sample_en_q, %191 : i1
+        fsm.update %wait_cntr_q, %188 : i4
+        fsm.update %byte_cntr_cpha1_q, %187 : i20
+        fsm.update %byte_cntr_cpha0_q, %185 : i20
+        fsm.update %bit_cntr_q, %182 : i3
+        fsm.update %segment_rd_en_cpha1, %180 : i1
+        fsm.update %clk_cntr_q, %178 : i16
+        fsm.update %cmd_speed_q, %176 : i2
+        fsm.update %cmd_wr_en_q, %174 : i1
+        fsm.update %cmd_rd_en_q, %175 : i1
+        fsm.update %csaat_q, %173 : i1
+        fsm.update %clkdiv_q, %172 : i16
+        fsm.update %csntrail_q, %171 : i4
+        fsm.update %csnlead_q, %170 : i4
+        fsm.update %csnidle_q, %169 : i4
+        fsm.update %full_cyc_q, %168 : i1
+        fsm.update %cpha_q, %167 : i1
+        fsm.update %cpol_q, %166 : i1
+        fsm.update %csid_q, %165 : i1
       }
       fsm.transition @state_2 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
@@ -6132,7 +4711,6 @@ module {
         %c-4_i3 = hw.constant -4 : i3
         %c3_i3 = hw.constant 3 : i3
         %c1_i2 = hw.constant 1 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %1 = comb.xor %arg16, %true : i1
@@ -6153,83 +4731,74 @@ module {
         %c2_i3 = hw.constant 2 : i3
         %16 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
         %17 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
-        %18 = comb.and %arg1, %0 : i1
-        %19 = comb.xor %16, %true : i1
-        %20 = comb.icmp ne %17, %c0_i20 : i20
-        %21 = comb.or %19, %20, %11 : i1
-        %22 = comb.and %18, %14 : i1
-        %23 = comb.xor %21, %true : i1
-        %24 = comb.and %23, %22 : i1
-        %25 = comb.mux %24, %15, %13 : i3
-        %26 = comb.and %22, %21 : i1
-        %27 = comb.mux %26, %c3_i3, %25 : i3
-        %28 = comb.xor %26, %true : i1
-        %29 = comb.mux %arg18, %c0_i3, %27 : i3
-        %30 = comb.xor %18, %true : i1
-        %31 = comb.and %14, %30 : i1
-        %32 = comb.mux %31, %c2_i3, %29 : i3
-        %33 = comb.xor %31, %true : i1
-        %34 = comb.icmp ne %32, %c2_i3 : i3
-        %35 = comb.and %14, %34 : i1
-        %true_0 = hw.constant true
-        %36 = comb.xor %24, %true_0 : i1
-        %true_1 = hw.constant true
-        %37 = comb.xor %26, %true_1 : i1
-        %true_2 = hw.constant true
-        %38 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %39 = comb.xor %31, %true_3 : i1
-        %40 = comb.and %39, %38, %37, %36, %10 : i1
-        %true_4 = hw.constant true
-        %41 = comb.xor %cpha_q, %true_4 : i1
-        %true_5 = hw.constant true
-        %42 = comb.xor %26, %true_5 : i1
-        %true_6 = hw.constant true
-        %43 = comb.xor %arg18, %true_6 : i1
-        %44 = comb.and %43, %42, %24, %csaat_q, %7, %41 : i1
-        %45 = comb.or %31, %44 : i1
-        %46 = comb.and %45, %16 : i1
-        %47 = comb.or %40, %46 : i1
-        %48 = comb.and %35, %47 : i1
-        %49 = comb.and %24, %csaat_q, %7, %cpha_q : i1
-        %50 = comb.or %26, %49 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %arg18, %true_7 : i1
-        %true_8 = hw.constant true
-        %52 = comb.xor %31, %true_8 : i1
-        %53 = comb.and %35, %52, %51, %50, %16 : i1
-        %54 = comb.and %arg15, %33, %28, %24, %csaat_q, %9 : i1
-        %55 = comb.mux %54, %arg14, %csid_q : i1
-        %56 = comb.mux %54, %arg12, %cpha_q : i1
-        %57 = comb.mux %54, %arg3, %cmd_wr_en_q : i1
-        %58 = comb.mux %54, %arg4, %cmd_rd_en_q : i1
-        %59 = comb.mux %54, %arg2, %cmd_speed_q : i2
-        %60 = comb.xor %56, %true : i1
-        %61 = comb.mux %60, %48, %53 : i1
+        %18 = comb.xor %isFirstCycle, %true : i1
+        %19 = comb.and %18, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %14 : i1
+        %20 = comb.xor %19, %true : i1
+        %21 = comb.and %arg1, %0 : i1
+        %22 = comb.xor %16, %true : i1
+        %23 = comb.icmp ne %17, %c0_i20 : i20
+        %24 = comb.or %22, %23, %11 : i1
+        %25 = comb.and %21, %14 : i1
+        %26 = comb.xor %24, %true : i1
+        %27 = comb.and %26, %25 : i1
+        %28 = comb.mux %27, %15, %13 : i3
+        %29 = comb.and %25, %24 : i1
+        %30 = comb.mux %29, %c3_i3, %28 : i3
+        %31 = comb.xor %29, %true : i1
+        %32 = comb.mux %arg18, %c0_i3, %30 : i3
+        %33 = comb.xor %21, %true : i1
+        %34 = comb.and %14, %33 : i1
+        %35 = comb.mux %34, %c2_i3, %32 : i3
+        %36 = comb.xor %34, %true : i1
+        %37 = comb.icmp ne %35, %c2_i3 : i3
+        %38 = comb.and %14, %37 : i1
+        %true_13 = hw.constant true
+        %39 = comb.xor %27, %true_13 : i1
+        %true_14 = hw.constant true
+        %40 = comb.xor %29, %true_14 : i1
+        %true_15 = hw.constant true
+        %41 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %42 = comb.xor %34, %true_16 : i1
+        %43 = comb.and %42, %41, %40, %39, %10 : i1
+        %true_17 = hw.constant true
+        %44 = comb.xor %cpha_q, %true_17 : i1
+        %true_18 = hw.constant true
+        %45 = comb.xor %29, %true_18 : i1
+        %true_19 = hw.constant true
+        %46 = comb.xor %arg18, %true_19 : i1
+        %47 = comb.and %46, %45, %27, %csaat_q, %7, %44 : i1
+        %48 = comb.or %34, %47 : i1
+        %49 = comb.and %48, %16 : i1
+        %50 = comb.or %43, %49 : i1
+        %51 = comb.and %38, %50 : i1
+        %52 = comb.and %27, %csaat_q, %7, %cpha_q : i1
+        %53 = comb.or %29, %52 : i1
+        %true_20 = hw.constant true
+        %54 = comb.xor %arg18, %true_20 : i1
+        %true_21 = hw.constant true
+        %55 = comb.xor %34, %true_21 : i1
+        %56 = comb.and %38, %55, %54, %53, %16 : i1
+        verif.assert %20 : i1
+        %57 = comb.and %arg15, %36, %31, %27, %csaat_q, %9 : i1
+        %58 = comb.mux %57, %arg12, %cpha_q : i1
+        %59 = comb.mux %57, %arg3, %cmd_wr_en_q : i1
+        %60 = comb.xor %58, %true : i1
+        %61 = comb.mux %60, %51, %56 : i1
         %62 = comb.mux %60, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %63 = comb.icmp eq %arg2, %c0_i2 : i2
-        %64 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %65 = comb.mux %54, %63, %64 : i1
-        %66 = comb.and %58, %57 : i1
-        %67 = comb.xor %66, %true : i1
-        %68 = comb.or %65, %67 : i1
-        verif.assert %68 : i1
-        %69 = comb.icmp ne %59, %c-1_i2 : i2
-        verif.assert %69 : i1
-        %70 = comb.xor %55, %true : i1
-        verif.assert %70 : i1
-        %71 = comb.and %61, %57, %1 : i1
-        %72 = comb.and %56, %35, %16, %62, %2 : i1
-        %true_9 = hw.constant true
-        %73 = comb.xor %cpha_q, %true_9 : i1
-        %true_10 = hw.constant true
-        %74 = comb.xor %26, %true_10 : i1
-        %true_11 = hw.constant true
-        %75 = comb.xor %arg18, %true_11 : i1
-        %76 = comb.and %75, %74, %24, %csaat_q, %7, %73 : i1
-        %77 = comb.or %72, %71, %31, %76 : i1
-        fsm.return %77
+        %63 = comb.and %61, %59, %1 : i1
+        %64 = comb.and %58, %38, %16, %62, %2 : i1
+        %true_22 = hw.constant true
+        %65 = comb.xor %cpha_q, %true_22 : i1
+        %true_23 = hw.constant true
+        %66 = comb.xor %29, %true_23 : i1
+        %true_24 = hw.constant true
+        %67 = comb.xor %arg18, %true_24 : i1
+        %68 = comb.and %67, %66, %27, %csaat_q, %7, %65 : i1
+        %69 = comb.or %64, %63, %34, %68 : i1
+        fsm.return %69
       } action {
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
@@ -6243,7 +4812,6 @@ module {
         %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i16 = hw.constant -1 : i16
         %c-1_i20 = hw.constant -1 : i20
         %c-1_i4 = hw.constant -1 : i4
@@ -6261,6 +4829,7 @@ module {
         %10 = comb.and %9, %arg15 : i1
         %11 = comb.mux %10, %6, %8 : i3
         %12 = comb.or %10, %7 : i1
+        %false_14 = hw.constant false
         %13 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %14 = comb.xor %cpha_q, %true : i1
         %15 = comb.xor %csaat_q, %true : i1
@@ -6271,297 +4840,268 @@ module {
         %20 = comb.xor %5, %true : i1
         %21 = comb.and %17, %20 : i1
         %22 = comb.xor %21, %true : i1
-        %c2_i3_0 = hw.constant 2 : i3
-        %23 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %24 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
-        %25 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
-        %26 = comb.add %byte_cntr_cpha1_q, %c-1_i20 : i20
-        %27 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %28 = comb.or %arg18, %5 : i1
-        %29 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %30 = comb.and %cmd_wr_en_q, %23 : i1
-        %31 = comb.xor %23, %true : i1
-        %32 = comb.icmp ne %25, %c0_i20 : i20
-        %33 = comb.or %31, %32, %14 : i1
-        %34 = comb.xor %33, %true : i1
-        %35 = comb.and %34, %18 : i1
-        %36 = comb.mux %35, %19, %16 : i3
-        %37 = comb.and %18, %33 : i1
-        %38 = comb.mux %37, %c3_i3, %36 : i3
-        %39 = comb.xor %37, %true : i1
-        %40 = comb.mux %arg18, %c0_i3, %38 : i3
-        %41 = comb.mux %21, %c2_i3_0, %40 : i3
-        %42 = comb.icmp ne %41, %c2_i3_0 : i3
-        %43 = comb.and %17, %42 : i1
-        %true_1 = hw.constant true
-        %44 = comb.xor %35, %true_1 : i1
-        %true_2 = hw.constant true
-        %45 = comb.xor %37, %true_2 : i1
-        %true_3 = hw.constant true
-        %46 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %47 = comb.xor %21, %true_4 : i1
-        %48 = comb.and %47, %46, %45, %44, %13 : i1
-        %true_5 = hw.constant true
-        %49 = comb.xor %cpha_q, %true_5 : i1
-        %true_6 = hw.constant true
-        %50 = comb.xor %37, %true_6 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %arg18, %true_7 : i1
-        %52 = comb.and %51, %50, %35, %csaat_q, %10, %49 : i1
-        %53 = comb.or %21, %52 : i1
-        %54 = comb.and %53, %23 : i1
-        %55 = comb.or %48, %54 : i1
-        %56 = comb.and %43, %55 : i1
-        %57 = comb.and %43, %53, %24 : i1
-        %58 = comb.and %35, %csaat_q, %10, %cpha_q : i1
-        %59 = comb.or %37, %58 : i1
-        %true_8 = hw.constant true
-        %60 = comb.xor %arg18, %true_8 : i1
-        %true_9 = hw.constant true
-        %61 = comb.xor %21, %true_9 : i1
-        %62 = comb.and %61, %60, %59 : i1
-        %63 = comb.and %43, %62, %23 : i1
-        %64 = comb.and %43, %62, %24 : i1
-        %65 = comb.and %43, %23 : i1
-        %66 = comb.mux %65, %26, %byte_cntr_cpha1_q : i20
-        %true_10 = hw.constant true
-        %67 = comb.xor %35, %true_10 : i1
-        %true_11 = hw.constant true
-        %68 = comb.xor %37, %true_11 : i1
-        %true_12 = hw.constant true
-        %69 = comb.xor %arg18, %true_12 : i1
-        %true_13 = hw.constant true
-        %70 = comb.xor %21, %true_13 : i1
-        %71 = comb.and %70, %69, %68, %67, %13 : i1
-        %72 = comb.extract %8 from 0 : (i3) -> i2
-        %c0_i2_14 = hw.constant 0 : i2
-        %73 = comb.icmp eq %72, %c0_i2_14 : i2
-        %true_15 = hw.constant true
-        %74 = comb.xor %10, %true_15 : i1
-        %75 = comb.and %74, %73 : i1
-        %76 = comb.or %15, %75 : i1
+        %c2_i3_15 = hw.constant 2 : i3
         %true_16 = hw.constant true
-        %77 = comb.xor %37, %true_16 : i1
         %true_17 = hw.constant true
-        %78 = comb.xor %arg18, %true_17 : i1
         %true_18 = hw.constant true
-        %79 = comb.xor %21, %true_18 : i1
-        %80 = comb.and %79, %78, %77, %35, %76 : i1
-        %81 = comb.extract %8 from 0 : (i3) -> i2
-        %c1_i2_19 = hw.constant 1 : i2
-        %82 = comb.icmp eq %81, %c1_i2_19 : i2
+        %23 = comb.xor %arg18, %true_18 : i1
+        %true_19 = hw.constant true
+        %24 = comb.xor %21, %true_19 : i1
         %true_20 = hw.constant true
-        %83 = comb.xor %10, %true_20 : i1
+        %25 = comb.xor %cpha_q, %true_20 : i1
         %true_21 = hw.constant true
-        %84 = comb.xor %37, %true_21 : i1
         %true_22 = hw.constant true
-        %85 = comb.xor %arg18, %true_22 : i1
+        %26 = comb.xor %arg18, %true_22 : i1
+        %27 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %28 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
         %true_23 = hw.constant true
-        %86 = comb.xor %21, %true_23 : i1
-        %87 = comb.and %86, %85, %84, %35, %csaat_q, %83, %82 : i1
-        %88 = comb.extract %8 from 0 : (i3) -> i2
-        %c-2_i2_24 = hw.constant -2 : i2
-        %89 = comb.icmp eq %88, %c-2_i2_24 : i2
-        %true_25 = hw.constant true
-        %90 = comb.xor %10, %true_25 : i1
-        %91 = comb.and %csaat_q, %90, %89 : i1
+        %29 = comb.xor %arg18, %true_23 : i1
+        %true_24 = hw.constant true
+        %30 = comb.xor %21, %true_24 : i1
+        %31 = comb.icmp eq %arg2, %c0_i2 : i2
+        %32 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %33 = comb.icmp eq %arg2, %c1_i2 : i2
+        %34 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %35 = comb.icmp eq %arg2, %c-2_i2 : i2
+        %36 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %37 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
+        %38 = comb.add %byte_cntr_cpha1_q, %c-1_i20 : i20
+        %39 = comb.extract %8 from 0 : (i3) -> i2
+        %c0_i2_25 = hw.constant 0 : i2
+        %40 = comb.icmp eq %39, %c0_i2_25 : i2
         %true_26 = hw.constant true
-        %92 = comb.xor %13, %true_26 : i1
-        %93 = comb.mux %35, %91, %92 : i1
+        %41 = comb.xor %10, %true_26 : i1
+        %42 = comb.and %41, %40 : i1
+        %43 = comb.or %15, %42 : i1
         %true_27 = hw.constant true
-        %94 = comb.xor %37, %true_27 : i1
         %true_28 = hw.constant true
-        %95 = comb.xor %arg18, %true_28 : i1
+        %44 = comb.xor %arg18, %true_28 : i1
         %true_29 = hw.constant true
-        %96 = comb.xor %21, %true_29 : i1
-        %97 = comb.and %42, %18 : i1
-        %98 = comb.xor %71, %true : i1
-        %99 = comb.and %98, %97 : i1
-        %100 = comb.xor %80, %true : i1
-        %101 = comb.and %100, %99 : i1
-        %102 = comb.xor %87, %true : i1
-        %103 = comb.and %102, %101, %96, %95, %94, %93 : i1
-        %104 = comb.and %101, %87 : i1
-        %105 = comb.or %104, %103 : i1
-        %106 = comb.and %99, %80 : i1
-        %107 = comb.and %97, %71 : i1
-        %108 = comb.xor %42, %true : i1
-        %109 = comb.and %29, %108, %18 : i1
-        %true_30 = hw.constant true
-        %110 = comb.xor %cpha_q, %true_30 : i1
+        %45 = comb.xor %21, %true_29 : i1
+        %46 = comb.extract %8 from 0 : (i3) -> i2
+        %c1_i2_30 = hw.constant 1 : i2
+        %47 = comb.icmp eq %46, %c1_i2_30 : i2
         %true_31 = hw.constant true
-        %111 = comb.xor %37, %true_31 : i1
+        %48 = comb.xor %10, %true_31 : i1
         %true_32 = hw.constant true
-        %112 = comb.xor %arg18, %true_32 : i1
-        %113 = comb.and %112, %111, %35, %csaat_q, %10, %110 : i1
-        %114 = comb.or %21, %113 : i1
-        %115 = comb.and %35, %csaat_q, %10, %cpha_q : i1
-        %116 = comb.or %37, %115 : i1
         %true_33 = hw.constant true
-        %117 = comb.xor %arg18, %true_33 : i1
+        %49 = comb.xor %arg18, %true_33 : i1
         %true_34 = hw.constant true
-        %118 = comb.xor %21, %true_34 : i1
-        %119 = comb.and %118, %117, %116 : i1
-        %120 = comb.extract %8 from 0 : (i3) -> i2
-        %c-1_i2_35 = hw.constant -1 : i2
-        %121 = comb.icmp eq %120, %c-1_i2_35 : i2
+        %50 = comb.xor %21, %true_34 : i1
+        %51 = comb.extract %8 from 0 : (i3) -> i2
+        %c-2_i2_35 = hw.constant -2 : i2
+        %52 = comb.icmp eq %51, %c-2_i2_35 : i2
         %true_36 = hw.constant true
-        %122 = comb.xor %10, %true_36 : i1
+        %53 = comb.xor %10, %true_36 : i1
+        %54 = comb.and %csaat_q, %53, %52 : i1
         %true_37 = hw.constant true
-        %123 = comb.xor %37, %true_37 : i1
+        %55 = comb.xor %13, %true_37 : i1
         %true_38 = hw.constant true
-        %124 = comb.xor %arg18, %true_38 : i1
         %true_39 = hw.constant true
-        %125 = comb.xor %21, %true_39 : i1
-        %126 = comb.icmp ne %41, %c-4_i3 : i3
-        %127 = comb.xor %114, %true : i1
-        %128 = comb.and %127, %98 : i1
-        %129 = comb.xor %119, %true : i1
-        %130 = comb.and %129, %128, %125, %124, %123, %35, %csaat_q, %122, %121 : i1
-        %131 = comb.xor %130, %true : i1
-        %132 = comb.and %128, %119 : i1
-        %133 = comb.xor %132, %true : i1
-        %134 = comb.and %98, %114 : i1
-        %135 = comb.xor %134, %true : i1
-        %136 = comb.and %98, %135, %133, %131, %126 : i1
-        %137 = comb.icmp ne %41, %c3_i3 : i3
-        %138 = comb.and %arg15, %22, %39, %35, %csaat_q, %12 : i1
-        %139 = comb.mux %138, %arg14, %csid_q : i1
-        %140 = comb.mux %138, %arg13, %cpol_q : i1
-        %141 = comb.mux %138, %arg12, %cpha_q : i1
-        %142 = comb.mux %138, %arg8, %csnidle_q : i4
-        %143 = comb.mux %138, %arg9, %csnlead_q : i4
-        %144 = comb.mux %138, %arg10, %csntrail_q : i4
-        %145 = comb.mux %138, %arg7, %clkdiv_q : i16
-        %146 = comb.mux %138, %arg3, %cmd_wr_en_q : i1
-        %147 = comb.mux %138, %arg4, %cmd_rd_en_q : i1
-        %148 = comb.mux %138, %arg2, %cmd_speed_q : i2
-        %149 = comb.mux %1, %145, %2 : i16
-        %150 = comb.mux %138, %arg7, %149 : i16
-        %151 = comb.mux %0, %clk_cntr_q, %150 : i16
-        %152 = comb.mux %arg18, %c0_i16, %151 : i16
-        %153 = comb.xor %141, %true : i1
-        %154 = comb.mux %153, %56, %63 : i1
-        %155 = comb.and %141, %65 : i1
-        %156 = comb.mux %153, %57, %64 : i1
-        %157 = comb.mux %153, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %158 = comb.xor %147, %true : i1
-        %159 = comb.xor %146, %true : i1
-        %160 = comb.and %158, %159 : i1
-        %161 = comb.icmp eq %arg2, %c0_i2 : i2
-        %162 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %163 = comb.mux %138, %161, %162 : i1
-        %164 = comb.icmp eq %arg2, %c1_i2 : i2
-        %165 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %166 = comb.mux %138, %164, %165 : i1
-        %167 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %168 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %169 = comb.mux %138, %167, %168 : i1
-        %170 = comb.mux %169, %c-4_i3, %c1_i3 : i3
-        %171 = comb.xor %160, %true : i1
-        %172 = comb.xor %163, %true : i1
-        %173 = comb.and %172, %171, %166 : i1
-        %174 = comb.mux %173, %c2_i3, %170 : i3
-        %175 = comb.mux %173, %c-2_i3, %170 : i3
-        %176 = comb.and %171, %163 : i1
-        %177 = comb.mux %176, %c1_i3, %174 : i3
-        %178 = comb.mux %176, %c-1_i3, %175 : i3
-        %179 = comb.mux %160, %c0_i3, %177 : i3
-        %180 = comb.mux %160, %c0_i3, %178 : i3
-        %181 = comb.sub %bit_cntr_q, %179 : i3
-        %182 = comb.mux %156, %181, %bit_cntr_q : i3
-        %183 = comb.mux %154, %180, %182 : i3
-        %184 = comb.mux %20, %bit_cntr_q, %183 : i3
-        %185 = comb.mux %arg18, %c0_i3, %184 : i3
-        %186 = comb.mux %138, %arg5, %byte_cntr_cpha0_q : i20
-        %187 = comb.mux %arg18, %c0_i20, %186 : i20
-        %188 = comb.mux %138, %arg5, %66 : i20
-        %189 = comb.mux %20, %byte_cntr_cpha1_q, %188 : i20
-        %190 = comb.mux %arg18, %c0_i20, %189 : i20
-        %191 = comb.mux %105, %142, %c0_i4 : i4
-        %192 = comb.mux %106, %144, %191 : i4
-        %193 = comb.mux %107, %143, %192 : i4
-        %194 = comb.mux %28, %193, %wait_cntr_q : i4
-        %195 = comb.mux %arg18, %c0_i4, %194 : i4
-        %196 = comb.mux %109, %27, %195 : i4
-        %197 = comb.mux %140, %137, %62 : i1
-        %198 = comb.xor %155, %true : i1
-        %199 = comb.and %198, %cmd_wr_en_last_bit : i1
-        %200 = comb.or %30, %199 : i1
-        %201 = comb.icmp eq %arg2, %c0_i2 : i2
-        %202 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %203 = comb.mux %138, %201, %202 : i1
-        %204 = comb.and %147, %146 : i1
-        %205 = comb.xor %204, %true : i1
-        %206 = comb.or %203, %205 : i1
-        verif.assert %206 : i1
-        %207 = comb.icmp ne %148, %c-1_i2 : i2
-        verif.assert %207 : i1
-        %208 = comb.xor %139, %true : i1
-        verif.assert %208 : i1
-        fsm.update %cmd_wr_en_last_bit, %200 : i1
-        %209 = comb.and %154, %146, %3 : i1
-        %210 = comb.and %155, %157, %4 : i1
-        %211 = comb.or %210, %209 : i1
-        %212 = comb.xor %211, %true : i1
-        %213 = comb.and %156, %212 : i1
-        %214 = comb.and %138, %212 : i1
-        %215 = comb.mux %214, %arg14, %csid_q : i1
-        %216 = comb.mux %214, %arg13, %cpol_q : i1
-        %217 = comb.mux %214, %arg12, %cpha_q : i1
-        %218 = comb.mux %214, %arg11, %full_cyc_q : i1
-        %219 = comb.mux %214, %arg8, %csnidle_q : i4
-        %220 = comb.mux %214, %arg9, %csnlead_q : i4
-        %221 = comb.mux %214, %arg10, %csntrail_q : i4
-        %222 = comb.mux %214, %arg7, %clkdiv_q : i16
-        %223 = comb.mux %214, %arg6, %csaat_q : i1
-        %224 = comb.mux %214, %arg3, %cmd_wr_en_q : i1
-        %225 = comb.mux %214, %arg4, %cmd_rd_en_q : i1
-        %226 = comb.mux %214, %arg2, %cmd_speed_q : i2
-        %227 = comb.mux %214, %arg5, %cmd_len_q : i20
-        %228 = comb.mux %211, %clk_cntr_q, %152 : i16
-        %229 = comb.and %42, %212 : i1
-        %230 = comb.mux bin %229, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %231 = comb.mux %211, %bit_cntr_q, %185 : i3
-        %232 = comb.mux %211, %byte_cntr_cpha0_q, %187 : i20
-        %233 = comb.mux %211, %byte_cntr_cpha1_q, %190 : i20
-        %234 = comb.mux %211, %wait_cntr_q, %196 : i4
-        %235 = comb.or %154, %213 : i1
-        %236 = comb.and %5, %212 : i1
-        %237 = comb.mux %236, %235, %sample_en_q : i1
-        %238 = comb.mux %236, %sample_en_q, %sample_en_q2 : i1
-        %239 = comb.mux bin %211, %u_sck_flop2Fq_o, %197 : i1
-        %240 = comb.mux %212, %136, %csb_q : i1
-        %241 = comb.or %139, %240 : i1
-        fsm.update %csb_q, %241 : i1
-        fsm.update %u_sck_flop2Fq_o, %239 : i1
-        fsm.update %sample_en_q2, %238 : i1
-        fsm.update %sample_en_q, %237 : i1
-        fsm.update %wait_cntr_q, %234 : i4
-        fsm.update %byte_cntr_cpha1_q, %233 : i20
-        fsm.update %byte_cntr_cpha0_q, %232 : i20
-        fsm.update %bit_cntr_q, %231 : i3
-        fsm.update %segment_rd_en_cpha1, %230 : i1
-        fsm.update %clk_cntr_q, %228 : i16
-        fsm.update %cmd_len_q, %227 : i20
-        fsm.update %cmd_speed_q, %226 : i2
-        fsm.update %cmd_wr_en_q, %224 : i1
-        fsm.update %cmd_rd_en_q, %225 : i1
-        fsm.update %csaat_q, %223 : i1
-        fsm.update %clkdiv_q, %222 : i16
-        fsm.update %csntrail_q, %221 : i4
-        fsm.update %csnlead_q, %220 : i4
-        fsm.update %csnidle_q, %219 : i4
-        fsm.update %full_cyc_q, %218 : i1
-        fsm.update %cpha_q, %217 : i1
-        fsm.update %cpol_q, %216 : i1
-        fsm.update %csid_q, %215 : i1
+        %56 = comb.xor %arg18, %true_39 : i1
+        %true_40 = hw.constant true
+        %57 = comb.xor %21, %true_40 : i1
+        %58 = comb.add %wait_cntr_q, %c-1_i4 : i4
+        %59 = comb.or %arg18, %5 : i1
+        %60 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
+        %61 = comb.extract %8 from 0 : (i3) -> i2
+        %c-1_i2 = hw.constant -1 : i2
+        %62 = comb.icmp eq %61, %c-1_i2 : i2
+        %true_41 = hw.constant true
+        %63 = comb.xor %10, %true_41 : i1
+        %true_42 = hw.constant true
+        %true_43 = hw.constant true
+        %64 = comb.xor %arg18, %true_43 : i1
+        %true_44 = hw.constant true
+        %65 = comb.xor %21, %true_44 : i1
+        %66 = comb.and %cmd_wr_en_q, %27 : i1
+        %67 = comb.xor %isFirstCycle, %true : i1
+        %68 = comb.and %67, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %17 : i1
+        %69 = comb.xor %68, %true : i1
+        verif.assert %69 : i1
+        fsm.update %_sh1_10, %5 : i1
+        fsm.update %_sh1_8, %7 : i1
+        fsm.update %_sh1_6, %13 : i1
+        fsm.update %_sh1, %false_14 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        %70 = comb.xor %27, %true : i1
+        %71 = comb.icmp ne %37, %c0_i20 : i20
+        %72 = comb.or %70, %71, %14 : i1
+        %73 = comb.xor %72, %true : i1
+        %74 = comb.and %73, %18 : i1
+        %75 = comb.mux %74, %19, %16 : i3
+        %76 = comb.and %18, %72 : i1
+        %77 = comb.mux %76, %c3_i3, %75 : i3
+        %78 = comb.xor %76, %true : i1
+        %79 = comb.mux %arg18, %c0_i3, %77 : i3
+        %80 = comb.mux %21, %c2_i3_15, %79 : i3
+        %81 = comb.icmp ne %80, %c2_i3_15 : i3
+        %82 = comb.and %17, %81 : i1
+        %83 = comb.xor %74, %true_16 : i1
+        %84 = comb.xor %76, %true_17 : i1
+        %85 = comb.and %24, %23, %84, %83, %13 : i1
+        %86 = comb.xor %76, %true_21 : i1
+        %87 = comb.and %26, %86, %74, %csaat_q, %10, %25 : i1
+        %88 = comb.or %21, %87 : i1
+        %89 = comb.and %88, %27 : i1
+        %90 = comb.or %85, %89 : i1
+        %91 = comb.and %82, %90 : i1
+        %92 = comb.and %82, %88, %28 : i1
+        %93 = comb.and %74, %csaat_q, %10, %cpha_q : i1
+        %94 = comb.or %76, %93 : i1
+        %95 = comb.and %30, %29, %94 : i1
+        %96 = comb.and %82, %95, %27 : i1
+        %97 = comb.and %82, %95, %28 : i1
+        %98 = comb.and %82, %27 : i1
+        %99 = comb.mux %98, %38, %byte_cntr_cpha1_q : i20
+        %100 = comb.xor %76, %true_27 : i1
+        %101 = comb.and %45, %44, %100, %74, %43 : i1
+        %102 = comb.xor %76, %true_32 : i1
+        %103 = comb.and %50, %49, %102, %74, %csaat_q, %48, %47 : i1
+        %104 = comb.mux %74, %54, %55 : i1
+        %105 = comb.xor %76, %true_38 : i1
+        %106 = comb.and %81, %18 : i1
+        %107 = comb.xor %85, %true : i1
+        %108 = comb.and %107, %106 : i1
+        %109 = comb.xor %101, %true : i1
+        %110 = comb.and %109, %108 : i1
+        %111 = comb.xor %103, %true : i1
+        %112 = comb.and %111, %110, %57, %56, %105, %104 : i1
+        %113 = comb.and %110, %103 : i1
+        %114 = comb.or %113, %112 : i1
+        %115 = comb.and %108, %101 : i1
+        %116 = comb.and %106, %85 : i1
+        %117 = comb.xor %81, %true : i1
+        %118 = comb.and %60, %117, %18 : i1
+        %119 = comb.xor %76, %true_42 : i1
+        %120 = comb.icmp ne %80, %c-4_i3 : i3
+        %121 = comb.xor %88, %true : i1
+        %122 = comb.and %121, %107 : i1
+        %123 = comb.xor %95, %true : i1
+        %124 = comb.and %123, %122, %65, %64, %119, %74, %csaat_q, %63, %62 : i1
+        %125 = comb.xor %124, %true : i1
+        %126 = comb.and %122, %95 : i1
+        %127 = comb.xor %126, %true : i1
+        %128 = comb.and %107, %88 : i1
+        %129 = comb.xor %128, %true : i1
+        %130 = comb.and %107, %129, %127, %125, %120 : i1
+        %131 = comb.icmp ne %80, %c3_i3 : i3
+        %132 = comb.and %arg15, %22, %78, %74, %csaat_q, %12 : i1
+        %133 = comb.mux %132, %arg14, %csid_q : i1
+        %134 = comb.mux %132, %arg13, %cpol_q : i1
+        %135 = comb.mux %132, %arg12, %cpha_q : i1
+        %136 = comb.mux %132, %arg8, %csnidle_q : i4
+        %137 = comb.mux %132, %arg9, %csnlead_q : i4
+        %138 = comb.mux %132, %arg10, %csntrail_q : i4
+        %139 = comb.mux %132, %arg7, %clkdiv_q : i16
+        %140 = comb.mux %132, %arg3, %cmd_wr_en_q : i1
+        %141 = comb.mux %132, %arg4, %cmd_rd_en_q : i1
+        %142 = comb.mux %1, %139, %2 : i16
+        %143 = comb.mux %132, %arg7, %142 : i16
+        %144 = comb.mux %0, %clk_cntr_q, %143 : i16
+        %145 = comb.mux %arg18, %c0_i16, %144 : i16
+        %146 = comb.xor %135, %true : i1
+        %147 = comb.mux %146, %91, %96 : i1
+        %148 = comb.and %135, %98 : i1
+        %149 = comb.mux %146, %92, %97 : i1
+        %150 = comb.mux %146, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %151 = comb.xor %141, %true : i1
+        %152 = comb.xor %140, %true : i1
+        %153 = comb.and %151, %152 : i1
+        %154 = comb.mux %132, %31, %32 : i1
+        %155 = comb.mux %132, %33, %34 : i1
+        %156 = comb.mux %132, %35, %36 : i1
+        %157 = comb.mux %156, %c-4_i3, %c1_i3 : i3
+        %158 = comb.xor %153, %true : i1
+        %159 = comb.xor %154, %true : i1
+        %160 = comb.and %159, %158, %155 : i1
+        %161 = comb.mux %160, %c2_i3, %157 : i3
+        %162 = comb.mux %160, %c-2_i3, %157 : i3
+        %163 = comb.and %158, %154 : i1
+        %164 = comb.mux %163, %c1_i3, %161 : i3
+        %165 = comb.mux %163, %c-1_i3, %162 : i3
+        %166 = comb.mux %153, %c0_i3, %164 : i3
+        %167 = comb.mux %153, %c0_i3, %165 : i3
+        %168 = comb.sub %bit_cntr_q, %166 : i3
+        %169 = comb.mux %149, %168, %bit_cntr_q : i3
+        %170 = comb.mux %147, %167, %169 : i3
+        %171 = comb.mux %20, %bit_cntr_q, %170 : i3
+        %172 = comb.mux %arg18, %c0_i3, %171 : i3
+        %173 = comb.mux %132, %arg5, %byte_cntr_cpha0_q : i20
+        %174 = comb.mux %arg18, %c0_i20, %173 : i20
+        %175 = comb.mux %132, %arg5, %99 : i20
+        %176 = comb.mux %20, %byte_cntr_cpha1_q, %175 : i20
+        %177 = comb.mux %arg18, %c0_i20, %176 : i20
+        %178 = comb.mux %114, %136, %c0_i4 : i4
+        %179 = comb.mux %115, %138, %178 : i4
+        %180 = comb.mux %116, %137, %179 : i4
+        %181 = comb.mux %59, %180, %wait_cntr_q : i4
+        %182 = comb.mux %arg18, %c0_i4, %181 : i4
+        %183 = comb.mux %118, %58, %182 : i4
+        %184 = comb.mux %134, %131, %95 : i1
+        %185 = comb.xor %148, %true : i1
+        %186 = comb.and %185, %cmd_wr_en_last_bit : i1
+        %187 = comb.or %66, %186 : i1
+        fsm.update %cmd_wr_en_last_bit, %187 : i1
+        %188 = comb.and %147, %140, %3 : i1
+        %189 = comb.and %148, %150, %4 : i1
+        %190 = comb.or %189, %188 : i1
+        %191 = comb.xor %190, %true : i1
+        %192 = comb.and %149, %191 : i1
+        %193 = comb.and %132, %191 : i1
+        %194 = comb.mux %193, %arg14, %csid_q : i1
+        %195 = comb.mux %193, %arg13, %cpol_q : i1
+        %196 = comb.mux %193, %arg12, %cpha_q : i1
+        %197 = comb.mux %193, %arg11, %full_cyc_q : i1
+        %198 = comb.mux %193, %arg8, %csnidle_q : i4
+        %199 = comb.mux %193, %arg9, %csnlead_q : i4
+        %200 = comb.mux %193, %arg10, %csntrail_q : i4
+        %201 = comb.mux %193, %arg7, %clkdiv_q : i16
+        %202 = comb.mux %193, %arg6, %csaat_q : i1
+        %203 = comb.mux %193, %arg3, %cmd_wr_en_q : i1
+        %204 = comb.mux %193, %arg4, %cmd_rd_en_q : i1
+        %205 = comb.mux %193, %arg2, %cmd_speed_q : i2
+        %206 = comb.mux %190, %clk_cntr_q, %145 : i16
+        %207 = comb.and %81, %191 : i1
+        %208 = comb.mux bin %207, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %209 = comb.mux %190, %bit_cntr_q, %172 : i3
+        %210 = comb.mux %190, %byte_cntr_cpha0_q, %174 : i20
+        %211 = comb.mux %190, %byte_cntr_cpha1_q, %177 : i20
+        %212 = comb.mux %190, %wait_cntr_q, %183 : i4
+        %213 = comb.or %147, %192 : i1
+        %214 = comb.and %5, %191 : i1
+        %215 = comb.mux %214, %213, %sample_en_q : i1
+        %216 = comb.mux %214, %sample_en_q, %sample_en_q2 : i1
+        %217 = comb.mux bin %190, %u_sck_flop2Fq_o, %184 : i1
+        %218 = comb.mux %191, %130, %csb_q : i1
+        %219 = comb.or %133, %218 : i1
+        fsm.update %_sh1_12, %191 : i1
+        fsm.update %csb_q, %219 : i1
+        fsm.update %u_sck_flop2Fq_o, %217 : i1
+        fsm.update %sample_en_q2, %216 : i1
+        fsm.update %sample_en_q, %215 : i1
+        fsm.update %wait_cntr_q, %212 : i4
+        fsm.update %byte_cntr_cpha1_q, %211 : i20
+        fsm.update %byte_cntr_cpha0_q, %210 : i20
+        fsm.update %bit_cntr_q, %209 : i3
+        fsm.update %segment_rd_en_cpha1, %208 : i1
+        fsm.update %clk_cntr_q, %206 : i16
+        fsm.update %cmd_speed_q, %205 : i2
+        fsm.update %cmd_wr_en_q, %203 : i1
+        fsm.update %cmd_rd_en_q, %204 : i1
+        fsm.update %csaat_q, %202 : i1
+        fsm.update %clkdiv_q, %201 : i16
+        fsm.update %csntrail_q, %200 : i4
+        fsm.update %csnlead_q, %199 : i4
+        fsm.update %csnidle_q, %198 : i4
+        fsm.update %full_cyc_q, %197 : i1
+        fsm.update %cpha_q, %196 : i1
+        fsm.update %cpol_q, %195 : i1
+        fsm.update %csid_q, %194 : i1
       }
       fsm.transition @state_1 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
@@ -6570,7 +5110,6 @@ module {
         %c-4_i3 = hw.constant -4 : i3
         %c3_i3 = hw.constant 3 : i3
         %c1_i2 = hw.constant 1 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %1 = comb.xor %arg16, %true : i1
@@ -6591,85 +5130,77 @@ module {
         %c2_i3 = hw.constant 2 : i3
         %16 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
         %17 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
-        %18 = comb.and %arg1, %0 : i1
-        %19 = comb.xor %16, %true : i1
-        %20 = comb.icmp ne %17, %c0_i20 : i20
-        %21 = comb.or %19, %20, %11 : i1
-        %22 = comb.and %18, %14 : i1
-        %23 = comb.xor %21, %true : i1
-        %24 = comb.and %23, %22 : i1
-        %25 = comb.mux %24, %15, %13 : i3
-        %26 = comb.and %22, %21 : i1
-        %27 = comb.mux %26, %c3_i3, %25 : i3
-        %28 = comb.xor %26, %true : i1
-        %29 = comb.mux %arg18, %c0_i3, %27 : i3
-        %30 = comb.xor %18, %true : i1
-        %31 = comb.and %14, %30 : i1
-        %32 = comb.mux %31, %c2_i3, %29 : i3
-        %33 = comb.xor %31, %true : i1
-        %34 = comb.icmp ne %32, %c2_i3 : i3
-        %35 = comb.and %14, %34 : i1
-        %true_0 = hw.constant true
-        %36 = comb.xor %24, %true_0 : i1
-        %true_1 = hw.constant true
-        %37 = comb.xor %26, %true_1 : i1
-        %true_2 = hw.constant true
-        %38 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %39 = comb.xor %31, %true_3 : i1
-        %40 = comb.and %39, %38, %37, %36, %10 : i1
-        %true_4 = hw.constant true
-        %41 = comb.xor %cpha_q, %true_4 : i1
-        %true_5 = hw.constant true
-        %42 = comb.xor %26, %true_5 : i1
-        %true_6 = hw.constant true
-        %43 = comb.xor %arg18, %true_6 : i1
-        %44 = comb.and %43, %42, %24, %csaat_q, %7, %41 : i1
-        %45 = comb.or %31, %44 : i1
-        %46 = comb.and %45, %16 : i1
-        %47 = comb.or %40, %46 : i1
-        %48 = comb.and %35, %47 : i1
-        %49 = comb.and %24, %csaat_q, %7, %cpha_q : i1
-        %50 = comb.or %26, %49 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %arg18, %true_7 : i1
-        %true_8 = hw.constant true
-        %52 = comb.xor %31, %true_8 : i1
-        %53 = comb.and %35, %52, %51, %50, %16 : i1
-        %54 = comb.and %arg15, %33, %28, %24, %csaat_q, %9 : i1
-        %55 = comb.mux %54, %arg14, %csid_q : i1
-        %56 = comb.mux %54, %arg12, %cpha_q : i1
-        %57 = comb.mux %54, %arg3, %cmd_wr_en_q : i1
-        %58 = comb.mux %54, %arg4, %cmd_rd_en_q : i1
-        %59 = comb.mux %54, %arg2, %cmd_speed_q : i2
-        %60 = comb.xor %56, %true : i1
-        %61 = comb.mux %60, %48, %53 : i1
+        %18 = comb.xor %isFirstCycle, %true : i1
+        %19 = comb.and %18, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %14 : i1
+        %20 = comb.xor %19, %true : i1
+        %21 = comb.and %arg1, %0 : i1
+        %22 = comb.xor %16, %true : i1
+        %23 = comb.icmp ne %17, %c0_i20 : i20
+        %24 = comb.or %22, %23, %11 : i1
+        %25 = comb.and %21, %14 : i1
+        %26 = comb.xor %24, %true : i1
+        %27 = comb.and %26, %25 : i1
+        %28 = comb.mux %27, %15, %13 : i3
+        %29 = comb.and %25, %24 : i1
+        %30 = comb.mux %29, %c3_i3, %28 : i3
+        %31 = comb.xor %29, %true : i1
+        %32 = comb.mux %arg18, %c0_i3, %30 : i3
+        %33 = comb.xor %21, %true : i1
+        %34 = comb.and %14, %33 : i1
+        %35 = comb.mux %34, %c2_i3, %32 : i3
+        %36 = comb.xor %34, %true : i1
+        %37 = comb.icmp ne %35, %c2_i3 : i3
+        %38 = comb.and %14, %37 : i1
+        %true_13 = hw.constant true
+        %39 = comb.xor %27, %true_13 : i1
+        %true_14 = hw.constant true
+        %40 = comb.xor %29, %true_14 : i1
+        %true_15 = hw.constant true
+        %41 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %42 = comb.xor %34, %true_16 : i1
+        %43 = comb.and %42, %41, %40, %39, %10 : i1
+        %true_17 = hw.constant true
+        %44 = comb.xor %cpha_q, %true_17 : i1
+        %true_18 = hw.constant true
+        %45 = comb.xor %29, %true_18 : i1
+        %true_19 = hw.constant true
+        %46 = comb.xor %arg18, %true_19 : i1
+        %47 = comb.and %46, %45, %27, %csaat_q, %7, %44 : i1
+        %48 = comb.or %34, %47 : i1
+        %49 = comb.and %48, %16 : i1
+        %50 = comb.or %43, %49 : i1
+        %51 = comb.and %38, %50 : i1
+        %52 = comb.and %27, %csaat_q, %7, %cpha_q : i1
+        %53 = comb.or %29, %52 : i1
+        %true_20 = hw.constant true
+        %54 = comb.xor %arg18, %true_20 : i1
+        %true_21 = hw.constant true
+        %55 = comb.xor %34, %true_21 : i1
+        %56 = comb.and %38, %55, %54, %53, %16 : i1
+        verif.assert %20 : i1
+        %57 = comb.and %arg15, %36, %31, %27, %csaat_q, %9 : i1
+        %58 = comb.mux %57, %arg12, %cpha_q : i1
+        %59 = comb.mux %57, %arg3, %cmd_wr_en_q : i1
+        %60 = comb.xor %58, %true : i1
+        %61 = comb.mux %60, %51, %56 : i1
         %62 = comb.mux %60, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %63 = comb.icmp eq %arg2, %c0_i2 : i2
-        %64 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %65 = comb.mux %54, %63, %64 : i1
-        %66 = comb.and %58, %57 : i1
-        %67 = comb.xor %66, %true : i1
-        %68 = comb.or %65, %67 : i1
-        verif.assert %68 : i1
-        %69 = comb.icmp ne %59, %c-1_i2 : i2
-        verif.assert %69 : i1
-        %70 = comb.xor %55, %true : i1
-        verif.assert %70 : i1
-        %71 = comb.and %61, %57, %1 : i1
-        %72 = comb.and %56, %35, %16, %62, %2 : i1
-        %73 = comb.or %72, %71, %31 : i1
-        %true_9 = hw.constant true
-        %74 = comb.xor %24, %true_9 : i1
-        %true_10 = hw.constant true
-        %75 = comb.xor %26, %true_10 : i1
-        %true_11 = hw.constant true
-        %76 = comb.xor %arg18, %true_11 : i1
-        %true_12 = hw.constant true
-        %77 = comb.xor %73, %true_12 : i1
-        %78 = comb.and %77, %76, %75, %74, %10 : i1
-        fsm.return %78
+        %63 = comb.and %61, %59, %1 : i1
+        %64 = comb.and %58, %38, %16, %62, %2 : i1
+        %65 = comb.or %64, %63, %34 : i1
+        %true_22 = hw.constant true
+        %66 = comb.xor %27, %true_22 : i1
+        %true_23 = hw.constant true
+        %67 = comb.xor %29, %true_23 : i1
+        %true_24 = hw.constant true
+        %68 = comb.xor %arg18, %true_24 : i1
+        %true_25 = hw.constant true
+        %69 = comb.xor %65, %true_25 : i1
+        %70 = comb.and %69, %68, %67, %66, %10 : i1
+        fsm.return %70
       } action {
+        %true = hw.constant true
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
@@ -6683,320 +5214,246 @@ module {
         %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i16 = hw.constant -1 : i16
         %c-1_i20 = hw.constant -1 : i20
-        %c-1_i4 = hw.constant -1 : i4
-        %true = hw.constant true
-        %0 = comb.xor %arg1, %true : i1
+        %true_14 = hw.constant true
+        %0 = comb.xor %arg1, %true_14 : i1
         %1 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %2 = comb.add %clk_cntr_q, %c-1_i16 : i16
-        %3 = comb.xor %arg16, %true : i1
-        %4 = comb.xor %arg17, %true : i1
+        %3 = comb.xor %arg16, %true_14 : i1
+        %4 = comb.xor %arg17, %true_14 : i1
         %5 = comb.and %arg1, %1 : i1
         %6 = comb.concat %c1_i2, %cpha_q : i2, i1
-        %7 = comb.xor %arg15, %true : i1
+        %7 = comb.xor %arg15, %true_14 : i1
         %8 = comb.mux %7, %c-1_i3, %c-4_i3 : i3
         %9 = comb.icmp eq %arg14, %csid_q : i1
         %10 = comb.and %9, %arg15 : i1
         %11 = comb.mux %10, %6, %8 : i3
         %12 = comb.or %10, %7 : i1
-        %13 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %14 = comb.xor %cpha_q, %true : i1
-        %15 = comb.xor %csaat_q, %true : i1
-        %16 = comb.mux %13, %c1_i3, %c-2_i3 : i3
-        %17 = comb.xor %arg18, %true : i1
-        %18 = comb.and %5, %17 : i1
-        %19 = comb.mux %15, %c-4_i3, %11 : i3
-        %20 = comb.xor %5, %true : i1
-        %21 = comb.and %17, %20 : i1
-        %22 = comb.xor %21, %true : i1
-        %c2_i3_0 = hw.constant 2 : i3
-        %23 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %24 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
-        %25 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
-        %26 = comb.add %byte_cntr_cpha1_q, %c-1_i20 : i20
-        %27 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %28 = comb.or %arg18, %5 : i1
-        %29 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %30 = comb.and %cmd_wr_en_q, %23 : i1
-        %31 = comb.xor %23, %true : i1
-        %32 = comb.icmp ne %25, %c0_i20 : i20
-        %33 = comb.or %31, %32, %14 : i1
-        %34 = comb.xor %33, %true : i1
-        %35 = comb.and %34, %18 : i1
-        %36 = comb.mux %35, %19, %16 : i3
-        %37 = comb.and %18, %33 : i1
-        %38 = comb.mux %37, %c3_i3, %36 : i3
-        %39 = comb.xor %37, %true : i1
-        %40 = comb.mux %arg18, %c0_i3, %38 : i3
-        %41 = comb.mux %21, %c2_i3_0, %40 : i3
-        %42 = comb.icmp ne %41, %c2_i3_0 : i3
-        %43 = comb.and %17, %42 : i1
-        %true_1 = hw.constant true
-        %44 = comb.xor %35, %true_1 : i1
-        %true_2 = hw.constant true
-        %45 = comb.xor %37, %true_2 : i1
-        %true_3 = hw.constant true
-        %46 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %47 = comb.xor %21, %true_4 : i1
-        %48 = comb.and %47, %46, %45, %44, %13 : i1
-        %true_5 = hw.constant true
-        %49 = comb.xor %cpha_q, %true_5 : i1
-        %true_6 = hw.constant true
-        %50 = comb.xor %37, %true_6 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %arg18, %true_7 : i1
-        %52 = comb.and %51, %50, %35, %csaat_q, %10, %49 : i1
-        %53 = comb.or %21, %52 : i1
-        %54 = comb.and %53, %23 : i1
-        %55 = comb.or %48, %54 : i1
-        %56 = comb.and %43, %55 : i1
-        %57 = comb.and %43, %53, %24 : i1
-        %58 = comb.and %35, %csaat_q, %10, %cpha_q : i1
-        %59 = comb.or %37, %58 : i1
-        %true_8 = hw.constant true
-        %60 = comb.xor %arg18, %true_8 : i1
-        %true_9 = hw.constant true
-        %61 = comb.xor %21, %true_9 : i1
-        %62 = comb.and %61, %60, %59 : i1
-        %63 = comb.and %43, %62, %23 : i1
-        %64 = comb.and %43, %62, %24 : i1
-        %65 = comb.and %43, %23 : i1
-        %66 = comb.mux %65, %26, %byte_cntr_cpha1_q : i20
-        %true_10 = hw.constant true
-        %67 = comb.xor %35, %true_10 : i1
-        %true_11 = hw.constant true
-        %68 = comb.xor %37, %true_11 : i1
-        %true_12 = hw.constant true
-        %69 = comb.xor %arg18, %true_12 : i1
-        %true_13 = hw.constant true
-        %70 = comb.xor %21, %true_13 : i1
-        %71 = comb.and %70, %69, %68, %67, %13 : i1
-        %72 = comb.extract %8 from 0 : (i3) -> i2
-        %c0_i2_14 = hw.constant 0 : i2
-        %73 = comb.icmp eq %72, %c0_i2_14 : i2
-        %true_15 = hw.constant true
-        %74 = comb.xor %10, %true_15 : i1
-        %75 = comb.and %74, %73 : i1
-        %76 = comb.or %15, %75 : i1
-        %true_16 = hw.constant true
-        %77 = comb.xor %37, %true_16 : i1
+        %false_15 = hw.constant false
+        %13 = comb.xor %cpha_q, %true_14 : i1
+        %14 = comb.xor %csaat_q, %true_14 : i1
+        %15 = comb.mux %14, %c-4_i3, %11 : i3
+        %16 = comb.xor %5, %true_14 : i1
+        %c2_i3_16 = hw.constant 2 : i3
         %true_17 = hw.constant true
-        %78 = comb.xor %arg18, %true_17 : i1
         %true_18 = hw.constant true
-        %79 = comb.xor %21, %true_18 : i1
-        %80 = comb.and %79, %78, %77, %35, %76 : i1
-        %81 = comb.extract %8 from 0 : (i3) -> i2
-        %c1_i2_19 = hw.constant 1 : i2
-        %82 = comb.icmp eq %81, %c1_i2_19 : i2
+        %true_19 = hw.constant true
+        %17 = comb.xor %cpha_q, %true_19 : i1
         %true_20 = hw.constant true
-        %83 = comb.xor %10, %true_20 : i1
-        %true_21 = hw.constant true
-        %84 = comb.xor %37, %true_21 : i1
+        %18 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %19 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
+        %20 = comb.icmp eq %arg2, %c0_i2 : i2
+        %21 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %22 = comb.icmp eq %arg2, %c1_i2 : i2
+        %23 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %24 = comb.icmp eq %arg2, %c-2_i2 : i2
+        %25 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %26 = comb.mux %cpha_q, %byte_cntr_cpha1_q, %byte_cntr_cpha0_q : i20
+        %27 = comb.add %byte_cntr_cpha1_q, %c-1_i20 : i20
+        %28 = comb.extract %8 from 0 : (i3) -> i2
+        %c0_i2_21 = hw.constant 0 : i2
+        %29 = comb.icmp eq %28, %c0_i2_21 : i2
         %true_22 = hw.constant true
-        %85 = comb.xor %arg18, %true_22 : i1
+        %30 = comb.xor %10, %true_22 : i1
+        %31 = comb.and %30, %29 : i1
+        %32 = comb.or %14, %31 : i1
         %true_23 = hw.constant true
-        %86 = comb.xor %21, %true_23 : i1
-        %87 = comb.and %86, %85, %84, %35, %csaat_q, %83, %82 : i1
-        %88 = comb.extract %8 from 0 : (i3) -> i2
-        %c-2_i2_24 = hw.constant -2 : i2
-        %89 = comb.icmp eq %88, %c-2_i2_24 : i2
+        %33 = comb.extract %8 from 0 : (i3) -> i2
+        %c1_i2_24 = hw.constant 1 : i2
+        %34 = comb.icmp eq %33, %c1_i2_24 : i2
         %true_25 = hw.constant true
-        %90 = comb.xor %10, %true_25 : i1
-        %91 = comb.and %csaat_q, %90, %89 : i1
+        %35 = comb.xor %10, %true_25 : i1
         %true_26 = hw.constant true
-        %92 = comb.xor %13, %true_26 : i1
-        %93 = comb.mux %35, %91, %92 : i1
-        %true_27 = hw.constant true
-        %94 = comb.xor %37, %true_27 : i1
+        %36 = comb.extract %8 from 0 : (i3) -> i2
+        %c-2_i2_27 = hw.constant -2 : i2
+        %37 = comb.icmp eq %36, %c-2_i2_27 : i2
         %true_28 = hw.constant true
-        %95 = comb.xor %arg18, %true_28 : i1
+        %38 = comb.xor %10, %true_28 : i1
         %true_29 = hw.constant true
-        %96 = comb.xor %21, %true_29 : i1
-        %97 = comb.and %42, %18 : i1
-        %98 = comb.xor %71, %true : i1
-        %99 = comb.and %98, %97 : i1
-        %100 = comb.xor %80, %true : i1
-        %101 = comb.and %100, %99 : i1
-        %102 = comb.xor %87, %true : i1
-        %103 = comb.and %102, %101, %96, %95, %94, %93 : i1
-        %104 = comb.and %101, %87 : i1
-        %105 = comb.or %104, %103 : i1
-        %106 = comb.and %99, %80 : i1
-        %107 = comb.and %97, %71 : i1
-        %108 = comb.xor %42, %true : i1
-        %109 = comb.and %29, %108, %18 : i1
+        %39 = comb.extract %8 from 0 : (i3) -> i2
+        %c-1_i2 = hw.constant -1 : i2
+        %40 = comb.icmp eq %39, %c-1_i2 : i2
         %true_30 = hw.constant true
-        %110 = comb.xor %cpha_q, %true_30 : i1
+        %41 = comb.xor %10, %true_30 : i1
         %true_31 = hw.constant true
-        %111 = comb.xor %37, %true_31 : i1
+        %42 = comb.and %cmd_wr_en_q, %18 : i1
+        %43 = comb.xor %isFirstCycle, %true_14 : i1
+        %44 = comb.and %43, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %45 = comb.xor %44, %true_14 : i1
+        verif.assert %45 : i1
+        fsm.update %_sh1_10, %5 : i1
+        fsm.update %_sh1_8, %7 : i1
+        fsm.update %_sh1_6, %true : i1
+        fsm.update %_sh1, %false_15 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        %46 = comb.xor %18, %true_14 : i1
+        %47 = comb.icmp ne %26, %c0_i20 : i20
+        %48 = comb.or %46, %47, %13 : i1
+        %49 = comb.xor %48, %true_14 : i1
+        %50 = comb.and %49, %5 : i1
+        %51 = comb.mux %50, %15, %c1_i3 : i3
+        %52 = comb.and %5, %48 : i1
+        %53 = comb.mux %52, %c3_i3, %51 : i3
+        %54 = comb.xor %52, %true_14 : i1
+        %55 = comb.mux %16, %c2_i3_16, %53 : i3
+        %56 = comb.icmp ne %55, %c2_i3_16 : i3
+        %57 = comb.xor %50, %true_17 : i1
+        %58 = comb.xor %52, %true_18 : i1
+        %59 = comb.and %5, %58, %57 : i1
+        %60 = comb.xor %52, %true_20 : i1
+        %61 = comb.and %60, %50, %csaat_q, %10, %17 : i1
+        %62 = comb.or %16, %61 : i1
+        %63 = comb.and %62, %18 : i1
+        %64 = comb.or %59, %63 : i1
+        %65 = comb.and %56, %64 : i1
+        %66 = comb.and %56, %62, %19 : i1
+        %67 = comb.and %50, %csaat_q, %10, %cpha_q : i1
+        %68 = comb.or %52, %67 : i1
+        %69 = comb.and %5, %68 : i1
+        %70 = comb.and %56, %69, %18 : i1
+        %71 = comb.and %56, %69, %19 : i1
+        %72 = comb.and %56, %18 : i1
+        %73 = comb.mux %72, %27, %byte_cntr_cpha1_q : i20
+        %74 = comb.xor %52, %true_23 : i1
+        %75 = comb.and %74, %50, %32 : i1
+        %76 = comb.xor %52, %true_26 : i1
+        %77 = comb.and %76, %50, %csaat_q, %35, %34 : i1
+        %78 = comb.xor %52, %true_29 : i1
+        %79 = comb.and %56, %5 : i1
+        %80 = comb.xor %59, %true_14 : i1
+        %81 = comb.and %80, %79 : i1
+        %82 = comb.xor %75, %true_14 : i1
+        %83 = comb.and %82, %81 : i1
+        %84 = comb.xor %77, %true_14 : i1
+        %85 = comb.and %84, %83, %78, %50, %csaat_q, %38, %37 : i1
+        %86 = comb.and %83, %77 : i1
+        %87 = comb.or %86, %85 : i1
+        %88 = comb.and %81, %75 : i1
+        %89 = comb.and %79, %59 : i1
+        %90 = comb.xor %52, %true_31 : i1
+        %91 = comb.icmp ne %55, %c-4_i3 : i3
+        %92 = comb.xor %62, %true_14 : i1
+        %93 = comb.and %92, %80 : i1
+        %94 = comb.xor %69, %true_14 : i1
+        %95 = comb.and %94, %93, %90, %50, %csaat_q, %41, %40 : i1
+        %96 = comb.xor %95, %true_14 : i1
+        %97 = comb.and %93, %69 : i1
+        %98 = comb.xor %97, %true_14 : i1
+        %99 = comb.and %80, %62 : i1
+        %100 = comb.xor %99, %true_14 : i1
+        %101 = comb.and %80, %100, %98, %96, %91 : i1
+        %102 = comb.icmp ne %55, %c3_i3 : i3
+        %103 = comb.and %arg15, %54, %50, %csaat_q, %12 : i1
+        %104 = comb.mux %103, %arg14, %csid_q : i1
+        %105 = comb.mux %103, %arg13, %cpol_q : i1
+        %106 = comb.mux %103, %arg12, %cpha_q : i1
+        %107 = comb.mux %103, %arg8, %csnidle_q : i4
+        %108 = comb.mux %103, %arg9, %csnlead_q : i4
+        %109 = comb.mux %103, %arg10, %csntrail_q : i4
+        %110 = comb.mux %103, %arg7, %clkdiv_q : i16
+        %111 = comb.mux %103, %arg3, %cmd_wr_en_q : i1
+        %112 = comb.mux %103, %arg4, %cmd_rd_en_q : i1
+        %113 = comb.mux %1, %110, %2 : i16
+        %114 = comb.mux %103, %arg7, %113 : i16
+        %115 = comb.xor %106, %true_14 : i1
+        %116 = comb.mux %115, %65, %70 : i1
+        %117 = comb.and %106, %72 : i1
+        %118 = comb.mux %115, %66, %71 : i1
+        %119 = comb.mux %115, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %120 = comb.xor %112, %true_14 : i1
+        %121 = comb.xor %111, %true_14 : i1
+        %122 = comb.and %120, %121 : i1
+        %123 = comb.mux %103, %20, %21 : i1
+        %124 = comb.mux %103, %22, %23 : i1
+        %125 = comb.mux %103, %24, %25 : i1
+        %126 = comb.mux %125, %c-4_i3, %c1_i3 : i3
+        %127 = comb.xor %122, %true_14 : i1
+        %128 = comb.xor %123, %true_14 : i1
+        %129 = comb.and %128, %127, %124 : i1
+        %130 = comb.mux %129, %c2_i3, %126 : i3
+        %131 = comb.mux %129, %c-2_i3, %126 : i3
+        %132 = comb.and %127, %123 : i1
+        %133 = comb.mux %132, %c1_i3, %130 : i3
+        %134 = comb.mux %132, %c-1_i3, %131 : i3
+        %135 = comb.mux %122, %c0_i3, %133 : i3
+        %136 = comb.mux %122, %c0_i3, %134 : i3
+        %137 = comb.sub %bit_cntr_q, %135 : i3
+        %138 = comb.mux %118, %137, %bit_cntr_q : i3
+        %139 = comb.mux %116, %136, %138 : i3
+        %140 = comb.mux %103, %arg5, %73 : i20
+        %141 = comb.mux %87, %107, %c0_i4 : i4
+        %142 = comb.mux %88, %109, %141 : i4
+        %143 = comb.mux %89, %108, %142 : i4
+        %144 = comb.mux %105, %102, %69 : i1
+        %145 = comb.xor %117, %true_14 : i1
+        %146 = comb.and %145, %cmd_wr_en_last_bit : i1
+        %147 = comb.or %42, %146 : i1
+        fsm.update %cmd_wr_en_last_bit, %147 : i1
+        %148 = comb.and %116, %111, %3 : i1
+        %149 = comb.and %117, %119, %4 : i1
+        %150 = comb.or %149, %148 : i1
+        %151 = comb.xor %150, %true_14 : i1
+        %152 = comb.and %118, %151 : i1
+        %153 = comb.and %103, %151 : i1
+        %154 = comb.mux %153, %arg14, %csid_q : i1
+        %155 = comb.mux %153, %arg13, %cpol_q : i1
+        %156 = comb.mux %153, %arg12, %cpha_q : i1
+        %157 = comb.mux %153, %arg11, %full_cyc_q : i1
+        %158 = comb.mux %153, %arg8, %csnidle_q : i4
+        %159 = comb.mux %153, %arg9, %csnlead_q : i4
+        %160 = comb.mux %153, %arg10, %csntrail_q : i4
+        %161 = comb.mux %153, %arg7, %clkdiv_q : i16
+        %162 = comb.mux %153, %arg6, %csaat_q : i1
+        %163 = comb.mux %153, %arg3, %cmd_wr_en_q : i1
+        %164 = comb.mux %153, %arg4, %cmd_rd_en_q : i1
+        %165 = comb.mux %153, %arg2, %cmd_speed_q : i2
+        %166 = comb.or %150, %0 : i1
+        %167 = comb.mux %166, %clk_cntr_q, %114 : i16
+        %168 = comb.and %56, %151 : i1
+        %169 = comb.mux bin %168, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %170 = comb.or %150, %16 : i1
+        %171 = comb.mux %170, %bit_cntr_q, %139 : i3
         %true_32 = hw.constant true
-        %112 = comb.xor %arg18, %true_32 : i1
-        %113 = comb.and %112, %111, %35, %csaat_q, %10, %110 : i1
-        %114 = comb.or %21, %113 : i1
-        %115 = comb.and %35, %csaat_q, %10, %cpha_q : i1
-        %116 = comb.or %37, %115 : i1
+        %172 = comb.xor %103, %true_32 : i1
+        %173 = comb.or %150, %172 : i1
+        %174 = comb.mux %173, %byte_cntr_cpha0_q, %arg5 : i20
+        %175 = comb.or %150, %16 : i1
+        %176 = comb.mux %175, %byte_cntr_cpha1_q, %140 : i20
         %true_33 = hw.constant true
-        %117 = comb.xor %arg18, %true_33 : i1
-        %true_34 = hw.constant true
-        %118 = comb.xor %21, %true_34 : i1
-        %119 = comb.and %118, %117, %116 : i1
-        %120 = comb.extract %8 from 0 : (i3) -> i2
-        %c-1_i2_35 = hw.constant -1 : i2
-        %121 = comb.icmp eq %120, %c-1_i2_35 : i2
-        %true_36 = hw.constant true
-        %122 = comb.xor %10, %true_36 : i1
-        %true_37 = hw.constant true
-        %123 = comb.xor %37, %true_37 : i1
-        %true_38 = hw.constant true
-        %124 = comb.xor %arg18, %true_38 : i1
-        %true_39 = hw.constant true
-        %125 = comb.xor %21, %true_39 : i1
-        %126 = comb.icmp ne %41, %c-4_i3 : i3
-        %127 = comb.xor %114, %true : i1
-        %128 = comb.and %127, %98 : i1
-        %129 = comb.xor %119, %true : i1
-        %130 = comb.and %129, %128, %125, %124, %123, %35, %csaat_q, %122, %121 : i1
-        %131 = comb.xor %130, %true : i1
-        %132 = comb.and %128, %119 : i1
-        %133 = comb.xor %132, %true : i1
-        %134 = comb.and %98, %114 : i1
-        %135 = comb.xor %134, %true : i1
-        %136 = comb.and %98, %135, %133, %131, %126 : i1
-        %137 = comb.icmp ne %41, %c3_i3 : i3
-        %138 = comb.and %arg15, %22, %39, %35, %csaat_q, %12 : i1
-        %139 = comb.mux %138, %arg14, %csid_q : i1
-        %140 = comb.mux %138, %arg13, %cpol_q : i1
-        %141 = comb.mux %138, %arg12, %cpha_q : i1
-        %142 = comb.mux %138, %arg8, %csnidle_q : i4
-        %143 = comb.mux %138, %arg9, %csnlead_q : i4
-        %144 = comb.mux %138, %arg10, %csntrail_q : i4
-        %145 = comb.mux %138, %arg7, %clkdiv_q : i16
-        %146 = comb.mux %138, %arg3, %cmd_wr_en_q : i1
-        %147 = comb.mux %138, %arg4, %cmd_rd_en_q : i1
-        %148 = comb.mux %138, %arg2, %cmd_speed_q : i2
-        %149 = comb.mux %1, %145, %2 : i16
-        %150 = comb.mux %138, %arg7, %149 : i16
-        %151 = comb.mux %0, %clk_cntr_q, %150 : i16
-        %152 = comb.mux %arg18, %c0_i16, %151 : i16
-        %153 = comb.xor %141, %true : i1
-        %154 = comb.mux %153, %56, %63 : i1
-        %155 = comb.and %141, %65 : i1
-        %156 = comb.mux %153, %57, %64 : i1
-        %157 = comb.mux %153, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %158 = comb.xor %147, %true : i1
-        %159 = comb.xor %146, %true : i1
-        %160 = comb.and %158, %159 : i1
-        %161 = comb.icmp eq %arg2, %c0_i2 : i2
-        %162 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %163 = comb.mux %138, %161, %162 : i1
-        %164 = comb.icmp eq %arg2, %c1_i2 : i2
-        %165 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %166 = comb.mux %138, %164, %165 : i1
-        %167 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %168 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %169 = comb.mux %138, %167, %168 : i1
-        %170 = comb.mux %169, %c-4_i3, %c1_i3 : i3
-        %171 = comb.xor %160, %true : i1
-        %172 = comb.xor %163, %true : i1
-        %173 = comb.and %172, %171, %166 : i1
-        %174 = comb.mux %173, %c2_i3, %170 : i3
-        %175 = comb.mux %173, %c-2_i3, %170 : i3
-        %176 = comb.and %171, %163 : i1
-        %177 = comb.mux %176, %c1_i3, %174 : i3
-        %178 = comb.mux %176, %c-1_i3, %175 : i3
-        %179 = comb.mux %160, %c0_i3, %177 : i3
-        %180 = comb.mux %160, %c0_i3, %178 : i3
-        %181 = comb.sub %bit_cntr_q, %179 : i3
-        %182 = comb.mux %156, %181, %bit_cntr_q : i3
-        %183 = comb.mux %154, %180, %182 : i3
-        %184 = comb.mux %20, %bit_cntr_q, %183 : i3
-        %185 = comb.mux %arg18, %c0_i3, %184 : i3
-        %186 = comb.mux %138, %arg5, %byte_cntr_cpha0_q : i20
-        %187 = comb.mux %arg18, %c0_i20, %186 : i20
-        %188 = comb.mux %138, %arg5, %66 : i20
-        %189 = comb.mux %20, %byte_cntr_cpha1_q, %188 : i20
-        %190 = comb.mux %arg18, %c0_i20, %189 : i20
-        %191 = comb.mux %105, %142, %c0_i4 : i4
-        %192 = comb.mux %106, %144, %191 : i4
-        %193 = comb.mux %107, %143, %192 : i4
-        %194 = comb.mux %28, %193, %wait_cntr_q : i4
-        %195 = comb.mux %arg18, %c0_i4, %194 : i4
-        %196 = comb.mux %109, %27, %195 : i4
-        %197 = comb.mux %140, %137, %62 : i1
-        %198 = comb.xor %155, %true : i1
-        %199 = comb.and %198, %cmd_wr_en_last_bit : i1
-        %200 = comb.or %30, %199 : i1
-        %201 = comb.icmp eq %arg2, %c0_i2 : i2
-        %202 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %203 = comb.mux %138, %201, %202 : i1
-        %204 = comb.and %147, %146 : i1
-        %205 = comb.xor %204, %true : i1
-        %206 = comb.or %203, %205 : i1
-        verif.assert %206 : i1
-        %207 = comb.icmp ne %148, %c-1_i2 : i2
-        verif.assert %207 : i1
-        %208 = comb.xor %139, %true : i1
-        verif.assert %208 : i1
-        fsm.update %cmd_wr_en_last_bit, %200 : i1
-        %209 = comb.and %154, %146, %3 : i1
-        %210 = comb.and %155, %157, %4 : i1
-        %211 = comb.or %210, %209 : i1
-        %212 = comb.xor %211, %true : i1
-        %213 = comb.and %156, %212 : i1
-        %214 = comb.and %138, %212 : i1
-        %215 = comb.mux %214, %arg14, %csid_q : i1
-        %216 = comb.mux %214, %arg13, %cpol_q : i1
-        %217 = comb.mux %214, %arg12, %cpha_q : i1
-        %218 = comb.mux %214, %arg11, %full_cyc_q : i1
-        %219 = comb.mux %214, %arg8, %csnidle_q : i4
-        %220 = comb.mux %214, %arg9, %csnlead_q : i4
-        %221 = comb.mux %214, %arg10, %csntrail_q : i4
-        %222 = comb.mux %214, %arg7, %clkdiv_q : i16
-        %223 = comb.mux %214, %arg6, %csaat_q : i1
-        %224 = comb.mux %214, %arg3, %cmd_wr_en_q : i1
-        %225 = comb.mux %214, %arg4, %cmd_rd_en_q : i1
-        %226 = comb.mux %214, %arg2, %cmd_speed_q : i2
-        %227 = comb.mux %214, %arg5, %cmd_len_q : i20
-        %228 = comb.mux %211, %clk_cntr_q, %152 : i16
-        %229 = comb.and %42, %212 : i1
-        %230 = comb.mux bin %229, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %231 = comb.mux %211, %bit_cntr_q, %185 : i3
-        %232 = comb.mux %211, %byte_cntr_cpha0_q, %187 : i20
-        %233 = comb.mux %211, %byte_cntr_cpha1_q, %190 : i20
-        %234 = comb.mux %211, %wait_cntr_q, %196 : i4
-        %235 = comb.or %154, %213 : i1
-        %236 = comb.and %5, %212 : i1
-        %237 = comb.mux %236, %235, %sample_en_q : i1
-        %238 = comb.mux %236, %sample_en_q, %sample_en_q2 : i1
-        %239 = comb.mux bin %211, %u_sck_flop2Fq_o, %197 : i1
-        %240 = comb.mux %212, %136, %csb_q : i1
-        %241 = comb.or %139, %240 : i1
-        fsm.update %csb_q, %241 : i1
-        fsm.update %u_sck_flop2Fq_o, %239 : i1
-        fsm.update %sample_en_q2, %238 : i1
-        fsm.update %sample_en_q, %237 : i1
-        fsm.update %wait_cntr_q, %234 : i4
-        fsm.update %byte_cntr_cpha1_q, %233 : i20
-        fsm.update %byte_cntr_cpha0_q, %232 : i20
-        fsm.update %bit_cntr_q, %231 : i3
-        fsm.update %segment_rd_en_cpha1, %230 : i1
-        fsm.update %clk_cntr_q, %228 : i16
-        fsm.update %cmd_len_q, %227 : i20
-        fsm.update %cmd_speed_q, %226 : i2
-        fsm.update %cmd_wr_en_q, %224 : i1
-        fsm.update %cmd_rd_en_q, %225 : i1
-        fsm.update %csaat_q, %223 : i1
-        fsm.update %clkdiv_q, %222 : i16
-        fsm.update %csntrail_q, %221 : i4
-        fsm.update %csnlead_q, %220 : i4
-        fsm.update %csnidle_q, %219 : i4
-        fsm.update %full_cyc_q, %218 : i1
-        fsm.update %cpha_q, %217 : i1
-        fsm.update %cpol_q, %216 : i1
-        fsm.update %csid_q, %215 : i1
+        %177 = comb.xor %5, %true_33 : i1
+        %178 = comb.or %150, %177 : i1
+        %179 = comb.mux %178, %wait_cntr_q, %143 : i4
+        %180 = comb.or %116, %152 : i1
+        %181 = comb.and %5, %151 : i1
+        %182 = comb.mux %181, %180, %sample_en_q : i1
+        %183 = comb.mux %181, %sample_en_q, %sample_en_q2 : i1
+        %184 = comb.mux bin %150, %u_sck_flop2Fq_o, %144 : i1
+        %185 = comb.mux %151, %101, %csb_q : i1
+        %186 = comb.or %104, %185 : i1
+        fsm.update %_sh1_12, %151 : i1
+        fsm.update %csb_q, %186 : i1
+        fsm.update %u_sck_flop2Fq_o, %184 : i1
+        fsm.update %sample_en_q2, %183 : i1
+        fsm.update %sample_en_q, %182 : i1
+        fsm.update %wait_cntr_q, %179 : i4
+        fsm.update %byte_cntr_cpha1_q, %176 : i20
+        fsm.update %byte_cntr_cpha0_q, %174 : i20
+        fsm.update %bit_cntr_q, %171 : i3
+        fsm.update %segment_rd_en_cpha1, %169 : i1
+        fsm.update %clk_cntr_q, %167 : i16
+        fsm.update %cmd_speed_q, %165 : i2
+        fsm.update %cmd_wr_en_q, %163 : i1
+        fsm.update %cmd_rd_en_q, %164 : i1
+        fsm.update %csaat_q, %162 : i1
+        fsm.update %clkdiv_q, %161 : i16
+        fsm.update %csntrail_q, %160 : i4
+        fsm.update %csnlead_q, %159 : i4
+        fsm.update %csnidle_q, %158 : i4
+        fsm.update %full_cyc_q, %157 : i1
+        fsm.update %cpha_q, %156 : i1
+        fsm.update %cpol_q, %155 : i1
+        fsm.update %csid_q, %154 : i1
       }
     }
     fsm.state @state_7 output {
@@ -7010,12 +5467,11 @@ module {
       %c-4_i3 = hw.constant -4 : i3
       %c1_i2 = hw.constant 1 : i2
       %c-2_i2 = hw.constant -2 : i2
-      %c-1_i2 = hw.constant -1 : i2
       %true = hw.constant true
-      %false = hw.constant false
-      %false_0 = hw.constant false
+      %false_13 = hw.constant false
+      %false_14 = hw.constant false
       %0 = comb.xor %arg16, %true : i1
-      %false_1 = hw.constant false
+      %false_15 = hw.constant false
       %1 = comb.concat %c1_i2, %cpha_q : i2, i1
       %2 = comb.xor %arg15, %true : i1
       %3 = comb.mux %2, %c-1_i3, %c-4_i3 : i3
@@ -7033,10 +5489,10 @@ module {
       %15 = comb.and %10, %14 : i1
       %16 = comb.xor %15, %true : i1
       %17 = comb.and %16, %11, %7 : i1
-      %c-1_i3_2 = hw.constant -1 : i3
+      %c-1_i3_16 = hw.constant -1 : i3
       %18 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
       %19 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
-      %false_3 = hw.constant false
+      %false_17 = hw.constant false
       %20 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
       %21 = comb.or %cmd_wr_en_q, %cmd_wr_en_last_bit : i1
       %22 = comb.concat %c0_i3, %21 : i3, i1
@@ -7055,88 +5511,76 @@ module {
       %35 = comb.mux %34, %25, %33 : i4
       %36 = comb.and %20, %28 : i1
       %37 = comb.mux %36, %22, %35 : i4
-      %38 = comb.and %arg15, %17 : i1
-      %39 = comb.mux %38, %arg14, %csid_q : i1
-      %40 = comb.mux %38, %arg12, %cpha_q : i1
-      %41 = comb.mux %38, %arg11, %full_cyc_q : i1
-      %42 = comb.mux %38, %arg3, %cmd_wr_en_q : i1
-      %43 = comb.mux %38, %arg4, %cmd_rd_en_q : i1
-      %44 = comb.mux %38, %arg2, %cmd_speed_q : i2
-      %45 = comb.mux %15, %c-1_i3_2, %13 : i3
-      %46 = comb.icmp ne %45, %c-1_i3_2 : i3
+      %38 = comb.xor %isFirstCycle, %true : i1
+      %39 = comb.and %38, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %10 : i1
+      %40 = comb.xor %39, %true : i1
+      verif.assert %40 : i1
+      %41 = comb.and %arg15, %17 : i1
+      %42 = comb.mux %41, %arg12, %cpha_q : i1
+      %43 = comb.mux %41, %arg11, %full_cyc_q : i1
+      %44 = comb.mux %41, %arg3, %cmd_wr_en_q : i1
+      %45 = comb.mux %15, %c-1_i3_16, %13 : i3
+      %46 = comb.icmp ne %45, %c-1_i3_16 : i3
       %47 = comb.and %10, %46 : i1
-      %true_4 = hw.constant true
-      %48 = comb.xor %11, %true_4 : i1
-      %true_5 = hw.constant true
-      %49 = comb.xor %arg18, %true_5 : i1
-      %true_6 = hw.constant true
-      %50 = comb.xor %15, %true_6 : i1
+      %true_18 = hw.constant true
+      %48 = comb.xor %11, %true_18 : i1
+      %true_19 = hw.constant true
+      %49 = comb.xor %arg18, %true_19 : i1
+      %true_20 = hw.constant true
+      %50 = comb.xor %15, %true_20 : i1
       %51 = comb.and %50, %49, %48, %8 : i1
-      %true_7 = hw.constant true
-      %52 = comb.xor %cpha_q, %true_7 : i1
-      %true_8 = hw.constant true
-      %53 = comb.xor %arg18, %true_8 : i1
-      %true_9 = hw.constant true
-      %54 = comb.xor %15, %true_9 : i1
+      %true_21 = hw.constant true
+      %52 = comb.xor %cpha_q, %true_21 : i1
+      %true_22 = hw.constant true
+      %53 = comb.xor %arg18, %true_22 : i1
+      %true_23 = hw.constant true
+      %54 = comb.xor %15, %true_23 : i1
       %55 = comb.and %54, %53, %11, %5, %52 : i1
       %56 = comb.and %55, %18 : i1
       %57 = comb.or %51, %56 : i1
       %58 = comb.and %47, %57 : i1
       %59 = comb.and %47, %55, %19 : i1
-      %true_10 = hw.constant true
-      %60 = comb.xor %arg18, %true_10 : i1
-      %true_11 = hw.constant true
-      %61 = comb.xor %15, %true_11 : i1
+      %true_24 = hw.constant true
+      %60 = comb.xor %arg18, %true_24 : i1
+      %true_25 = hw.constant true
+      %61 = comb.xor %15, %true_25 : i1
       %62 = comb.and %61, %60, %11, %5, %cpha_q : i1
       %63 = comb.and %47, %62, %18 : i1
       %64 = comb.and %47, %62, %19 : i1
-      %65 = comb.xor %40, %true : i1
+      %65 = comb.xor %42, %true : i1
       %66 = comb.mux %65, %58, %63 : i1
       %67 = comb.mux %65, %59, %64 : i1
-      %68 = comb.and %66, %42 : i1
-      %69 = comb.mux %41, %sample_en_q2, %sample_en_q : i1
-      %70 = comb.icmp eq %arg2, %c0_i2 : i2
-      %71 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-      %72 = comb.mux %38, %70, %71 : i1
-      %73 = comb.and %43, %42 : i1
-      %74 = comb.xor %73, %true : i1
-      %75 = comb.or %72, %74 : i1
-      verif.assert %75 : i1
-      %76 = comb.icmp ne %44, %c-1_i2 : i2
-      verif.assert %76 : i1
-      %77 = comb.xor %39, %true : i1
-      verif.assert %77 : i1
-      %78 = comb.and %68, %0 : i1
-      %79 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
-      %80 = comb.icmp eq %arg5, %c0_i20 : i20
-      %81 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
-      %82 = comb.mux %38, %80, %81 : i1
-      %83 = comb.mux %14, %79, %82 : i1
-      %84 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
-      %85 = comb.icmp eq %arg5, %c0_i20 : i20
-      %86 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
-      %87 = comb.mux %38, %85, %86 : i1
-      %88 = comb.mux %14, %84, %87 : i1
-      %89 = comb.mux %65, %83, %88 : i1
-      %90 = comb.or %arg18, %89 : i1
-      %91 = comb.xor %78, %true : i1
-      %92 = comb.and %68, %91 : i1
-      %93 = comb.and %69, %91 : i1
-      %94 = comb.and %67, %91 : i1
-      %95 = comb.and %17, %91 : i1
-      %96 = comb.and %90, %92, %arg16 : i1
-      fsm.output %95, %u_sck_flop2Fq_o, %csb_q, %37, %false_3, %96, %92, %false, %93, %94, %cmd_speed_q, %41, %false_1, %78, %false_0 : i1, i1, i1, i4, i1, i1, i1, i1, i1, i1, i2, i1, i1, i1, i1
+      %68 = comb.and %66, %44 : i1
+      %69 = comb.mux %43, %sample_en_q2, %sample_en_q : i1
+      %70 = comb.and %68, %0 : i1
+      %71 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
+      %72 = comb.icmp eq %arg5, %c0_i20 : i20
+      %73 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
+      %74 = comb.mux %41, %72, %73 : i1
+      %75 = comb.mux %14, %71, %74 : i1
+      %76 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
+      %77 = comb.icmp eq %arg5, %c0_i20 : i20
+      %78 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
+      %79 = comb.mux %41, %77, %78 : i1
+      %80 = comb.mux %14, %76, %79 : i1
+      %81 = comb.mux %65, %75, %80 : i1
+      %82 = comb.or %arg18, %81 : i1
+      %83 = comb.xor %70, %true : i1
+      %84 = comb.and %68, %83 : i1
+      %85 = comb.and %69, %83 : i1
+      %86 = comb.and %67, %83 : i1
+      %87 = comb.and %17, %83 : i1
+      %88 = comb.and %82, %84, %arg16 : i1
+      fsm.output %87, %u_sck_flop2Fq_o, %csb_q, %37, %false_17, %88, %84, %false_13, %85, %86, %cmd_speed_q, %43, %false_15, %70, %false_14 : i1, i1, i1, i4, i1, i1, i1, i1, i1, i1, i2, i1, i1, i1, i1
     } transitions {
       fsm.transition @state_7 guard {
         %c0_i4 = hw.constant 0 : i4
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
         %c-4_i3 = hw.constant -4 : i3
         %c1_i2 = hw.constant 1 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.xor %arg16, %true : i1
         %1 = comb.concat %c1_i2, %cpha_q : i2, i1
@@ -7149,69 +5593,61 @@ module {
         %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
         %10 = comb.xor %arg18, %true : i1
-        %c-1_i3_0 = hw.constant -1 : i3
+        %c-1_i3_13 = hw.constant -1 : i3
         %11 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %12 = comb.and %arg1, %10 : i1
-        %13 = comb.mux %12, %6, %9 : i3
-        %14 = comb.mux %arg18, %c0_i3, %13 : i3
-        %15 = comb.xor %arg1, %true : i1
-        %16 = comb.and %10, %15 : i1
-        %17 = comb.mux %16, %c-1_i3_0, %14 : i3
-        %18 = comb.xor %16, %true : i1
-        %19 = comb.icmp ne %17, %c-1_i3_0 : i3
-        %20 = comb.and %10, %19 : i1
-        %true_1 = hw.constant true
-        %21 = comb.xor %12, %true_1 : i1
-        %true_2 = hw.constant true
-        %22 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %23 = comb.xor %16, %true_3 : i1
-        %24 = comb.and %23, %22, %21, %8 : i1
-        %true_4 = hw.constant true
-        %25 = comb.xor %cpha_q, %true_4 : i1
-        %true_5 = hw.constant true
-        %26 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %27 = comb.xor %16, %true_6 : i1
-        %28 = comb.and %27, %26, %12, %5, %25, %11 : i1
-        %29 = comb.or %24, %28 : i1
-        %30 = comb.and %20, %29 : i1
-        %true_7 = hw.constant true
-        %31 = comb.xor %arg18, %true_7 : i1
-        %true_8 = hw.constant true
-        %32 = comb.xor %16, %true_8 : i1
-        %33 = comb.and %20, %32, %31, %12, %5, %cpha_q, %11 : i1
-        %34 = comb.and %arg15, %18, %12, %7 : i1
-        %35 = comb.mux %34, %arg14, %csid_q : i1
-        %36 = comb.mux %34, %arg12, %cpha_q : i1
-        %37 = comb.mux %34, %arg3, %cmd_wr_en_q : i1
-        %38 = comb.mux %34, %arg4, %cmd_rd_en_q : i1
-        %39 = comb.mux %34, %arg2, %cmd_speed_q : i2
-        %40 = comb.xor %36, %true : i1
-        %41 = comb.mux %40, %30, %33 : i1
-        %42 = comb.icmp eq %arg2, %c0_i2 : i2
-        %43 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %44 = comb.mux %34, %42, %43 : i1
-        %45 = comb.and %38, %37 : i1
-        %46 = comb.xor %45, %true : i1
-        %47 = comb.or %44, %46 : i1
-        verif.assert %47 : i1
-        %48 = comb.icmp ne %39, %c-1_i2 : i2
-        verif.assert %48 : i1
-        %49 = comb.xor %35, %true : i1
-        verif.assert %49 : i1
-        %50 = comb.and %41, %37, %0 : i1
-        %51 = comb.extract %3 from 0 : (i3) -> i2
-        %c-1_i2_9 = hw.constant -1 : i2
-        %52 = comb.icmp eq %51, %c-1_i2_9 : i2
-        %true_10 = hw.constant true
-        %53 = comb.xor %5, %true_10 : i1
-        %true_11 = hw.constant true
-        %54 = comb.xor %arg18, %true_11 : i1
-        %55 = comb.and %54, %12, %53, %52 : i1
-        %56 = comb.or %50, %16, %55 : i1
-        fsm.return %56
+        %12 = comb.xor %isFirstCycle, %true : i1
+        %13 = comb.and %12, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %10 : i1
+        %14 = comb.xor %13, %true : i1
+        %15 = comb.and %arg1, %10 : i1
+        %16 = comb.mux %15, %6, %9 : i3
+        %17 = comb.mux %arg18, %c0_i3, %16 : i3
+        %18 = comb.xor %arg1, %true : i1
+        %19 = comb.and %10, %18 : i1
+        %20 = comb.mux %19, %c-1_i3_13, %17 : i3
+        %21 = comb.xor %19, %true : i1
+        %22 = comb.icmp ne %20, %c-1_i3_13 : i3
+        %23 = comb.and %10, %22 : i1
+        %true_14 = hw.constant true
+        %24 = comb.xor %15, %true_14 : i1
+        %true_15 = hw.constant true
+        %25 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %26 = comb.xor %19, %true_16 : i1
+        %27 = comb.and %26, %25, %24, %8 : i1
+        %true_17 = hw.constant true
+        %28 = comb.xor %cpha_q, %true_17 : i1
+        %true_18 = hw.constant true
+        %29 = comb.xor %arg18, %true_18 : i1
+        %true_19 = hw.constant true
+        %30 = comb.xor %19, %true_19 : i1
+        %31 = comb.and %30, %29, %15, %5, %28, %11 : i1
+        %32 = comb.or %27, %31 : i1
+        %33 = comb.and %23, %32 : i1
+        %true_20 = hw.constant true
+        %34 = comb.xor %arg18, %true_20 : i1
+        %true_21 = hw.constant true
+        %35 = comb.xor %19, %true_21 : i1
+        %36 = comb.and %23, %35, %34, %15, %5, %cpha_q, %11 : i1
+        verif.assert %14 : i1
+        %37 = comb.and %arg15, %21, %15, %7 : i1
+        %38 = comb.mux %37, %arg12, %cpha_q : i1
+        %39 = comb.mux %37, %arg3, %cmd_wr_en_q : i1
+        %40 = comb.xor %38, %true : i1
+        %41 = comb.mux %40, %33, %36 : i1
+        %42 = comb.and %41, %39, %0 : i1
+        %43 = comb.extract %3 from 0 : (i3) -> i2
+        %c-1_i2 = hw.constant -1 : i2
+        %44 = comb.icmp eq %43, %c-1_i2 : i2
+        %true_22 = hw.constant true
+        %45 = comb.xor %5, %true_22 : i1
+        %true_23 = hw.constant true
+        %46 = comb.xor %arg18, %true_23 : i1
+        %47 = comb.and %46, %15, %45, %44 : i1
+        %48 = comb.or %42, %19, %47 : i1
+        fsm.return %48
       } action {
+        fsm.update %_sh1_10, %arg1 : i1
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
@@ -7225,7 +5661,6 @@ module {
         %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i4 = hw.constant -1 : i4
         %true = hw.constant true
         %0 = comb.xor %arg16, %true : i1
@@ -7236,6 +5671,7 @@ module {
         %5 = comb.and %4, %arg15 : i1
         %6 = comb.mux %5, %1, %3 : i3
         %7 = comb.or %5, %2 : i1
+        %false_14 = hw.constant false
         %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
         %10 = comb.xor %arg18, %true : i1
@@ -7245,259 +5681,233 @@ module {
         %14 = comb.xor %arg1, %true : i1
         %15 = comb.and %10, %14 : i1
         %16 = comb.xor %15, %true : i1
-        %c-1_i3_0 = hw.constant -1 : i3
-        %17 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %18 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
-        %19 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %20 = comb.or %arg18, %arg1 : i1
-        %21 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %22 = comb.and %cmd_wr_en_q, %17 : i1
-        %23 = comb.or %22, %cmd_wr_en_last_bit : i1
-        fsm.update %cmd_wr_en_last_bit, %23 : i1
-        %24 = comb.and %arg15, %16, %11, %7 : i1
-        %25 = comb.mux %24, %arg14, %csid_q : i1
-        %26 = comb.mux %24, %arg13, %cpol_q : i1
-        %27 = comb.mux %24, %arg12, %cpha_q : i1
-        %28 = comb.mux %24, %arg8, %csnidle_q : i4
-        %29 = comb.mux %24, %arg9, %csnlead_q : i4
-        %30 = comb.mux %24, %arg10, %csntrail_q : i4
-        %31 = comb.mux %24, %arg3, %cmd_wr_en_q : i1
-        %32 = comb.mux %24, %arg4, %cmd_rd_en_q : i1
-        %33 = comb.mux %24, %arg2, %cmd_speed_q : i2
-        %34 = comb.mux %24, %arg7, %clk_cntr_q : i16
-        %35 = comb.mux %arg18, %c0_i16, %34 : i16
-        %36 = comb.mux %15, %c-1_i3_0, %13 : i3
-        %37 = comb.icmp ne %36, %c-1_i3_0 : i3
-        %38 = comb.and %10, %37 : i1
-        %true_1 = hw.constant true
-        %39 = comb.xor %11, %true_1 : i1
-        %true_2 = hw.constant true
-        %40 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %41 = comb.xor %15, %true_3 : i1
-        %42 = comb.and %41, %40, %39, %8 : i1
-        %true_4 = hw.constant true
-        %43 = comb.xor %cpha_q, %true_4 : i1
-        %true_5 = hw.constant true
-        %44 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %45 = comb.xor %15, %true_6 : i1
-        %46 = comb.and %45, %44, %11, %5, %43 : i1
-        %47 = comb.and %46, %17 : i1
-        %48 = comb.or %42, %47 : i1
-        %49 = comb.and %38, %48 : i1
-        %50 = comb.and %38, %46, %18 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %arg18, %true_7 : i1
-        %true_8 = hw.constant true
-        %52 = comb.xor %15, %true_8 : i1
-        %53 = comb.and %52, %51, %11, %5, %cpha_q : i1
-        %54 = comb.and %38, %53, %17 : i1
-        %55 = comb.and %38, %53, %18 : i1
-        %56 = comb.xor %27, %true : i1
-        %57 = comb.mux %56, %49, %54 : i1
-        %58 = comb.mux %56, %50, %55 : i1
-        %59 = comb.xor %32, %true : i1
-        %60 = comb.xor %31, %true : i1
-        %61 = comb.and %59, %60 : i1
-        %62 = comb.icmp eq %arg2, %c0_i2 : i2
-        %63 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %64 = comb.mux %24, %62, %63 : i1
-        %65 = comb.icmp eq %arg2, %c1_i2 : i2
-        %66 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %67 = comb.mux %24, %65, %66 : i1
-        %68 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %69 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %70 = comb.mux %24, %68, %69 : i1
-        %71 = comb.mux %70, %c-4_i3, %c1_i3 : i3
-        %72 = comb.xor %61, %true : i1
-        %73 = comb.xor %64, %true : i1
-        %74 = comb.and %73, %72, %67 : i1
-        %75 = comb.mux %74, %c2_i3, %71 : i3
-        %76 = comb.mux %74, %c-2_i3, %71 : i3
-        %77 = comb.and %72, %64 : i1
-        %78 = comb.mux %77, %c1_i3, %75 : i3
-        %79 = comb.mux %77, %c-1_i3, %76 : i3
-        %80 = comb.mux %61, %c0_i3, %78 : i3
-        %81 = comb.mux %61, %c0_i3, %79 : i3
-        %82 = comb.sub %bit_cntr_q, %80 : i3
-        %83 = comb.mux %58, %82, %bit_cntr_q : i3
-        %84 = comb.mux %57, %81, %83 : i3
-        %85 = comb.mux %14, %bit_cntr_q, %84 : i3
-        %86 = comb.mux %arg18, %c0_i3, %85 : i3
-        %87 = comb.mux %24, %arg5, %byte_cntr_cpha0_q : i20
-        %88 = comb.mux %arg18, %c0_i20, %87 : i20
-        %89 = comb.mux %24, %arg5, %byte_cntr_cpha1_q : i20
-        %90 = comb.mux %arg18, %c0_i20, %89 : i20
-        %true_9 = hw.constant true
-        %91 = comb.xor %11, %true_9 : i1
-        %true_10 = hw.constant true
-        %92 = comb.xor %arg18, %true_10 : i1
-        %true_11 = hw.constant true
-        %93 = comb.xor %15, %true_11 : i1
-        %94 = comb.and %93, %92, %91, %8 : i1
-        %95 = comb.extract %3 from 0 : (i3) -> i2
-        %c0_i2_12 = hw.constant 0 : i2
-        %96 = comb.icmp eq %95, %c0_i2_12 : i2
-        %true_13 = hw.constant true
-        %97 = comb.xor %5, %true_13 : i1
-        %true_14 = hw.constant true
-        %98 = comb.xor %arg18, %true_14 : i1
-        %true_15 = hw.constant true
-        %99 = comb.xor %15, %true_15 : i1
-        %100 = comb.and %99, %98, %11, %97, %96 : i1
-        %101 = comb.extract %3 from 0 : (i3) -> i2
-        %c1_i2_16 = hw.constant 1 : i2
-        %102 = comb.icmp eq %101, %c1_i2_16 : i2
+        %c-1_i3_15 = hw.constant -1 : i3
+        %true_16 = hw.constant true
+        %17 = comb.xor %11, %true_16 : i1
         %true_17 = hw.constant true
-        %103 = comb.xor %5, %true_17 : i1
+        %18 = comb.xor %arg18, %true_17 : i1
         %true_18 = hw.constant true
-        %104 = comb.xor %arg18, %true_18 : i1
+        %19 = comb.xor %15, %true_18 : i1
+        %20 = comb.and %19, %18, %17, %8 : i1
         %true_19 = hw.constant true
-        %105 = comb.xor %15, %true_19 : i1
-        %106 = comb.and %105, %104, %11, %103, %102 : i1
-        %107 = comb.extract %3 from 0 : (i3) -> i2
-        %c-2_i2_20 = hw.constant -2 : i2
-        %108 = comb.icmp eq %107, %c-2_i2_20 : i2
+        %21 = comb.xor %cpha_q, %true_19 : i1
+        %true_20 = hw.constant true
+        %22 = comb.xor %arg18, %true_20 : i1
         %true_21 = hw.constant true
-        %109 = comb.xor %5, %true_21 : i1
-        %110 = comb.and %109, %108 : i1
+        %23 = comb.xor %15, %true_21 : i1
+        %24 = comb.and %23, %22, %11, %5, %21 : i1
+        %25 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %26 = comb.and %24, %25 : i1
+        %27 = comb.or %20, %26 : i1
+        %28 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
         %true_22 = hw.constant true
-        %111 = comb.xor %8, %true_22 : i1
-        %112 = comb.mux %11, %110, %111 : i1
+        %29 = comb.xor %arg18, %true_22 : i1
         %true_23 = hw.constant true
-        %113 = comb.xor %arg18, %true_23 : i1
-        %true_24 = hw.constant true
-        %114 = comb.xor %15, %true_24 : i1
-        %115 = comb.and %37, %11 : i1
-        %116 = comb.xor %94, %true : i1
-        %117 = comb.and %116, %115 : i1
-        %118 = comb.xor %100, %true : i1
-        %119 = comb.and %118, %117 : i1
-        %120 = comb.xor %106, %true : i1
-        %121 = comb.and %120, %119, %114, %113, %112 : i1
-        %122 = comb.and %119, %106 : i1
-        %123 = comb.or %122, %121 : i1
-        %124 = comb.mux %123, %28, %c0_i4 : i4
-        %125 = comb.and %117, %100 : i1
-        %126 = comb.mux %125, %30, %124 : i4
-        %127 = comb.and %115, %94 : i1
-        %128 = comb.mux %127, %29, %126 : i4
-        %129 = comb.mux %20, %128, %wait_cntr_q : i4
-        %130 = comb.mux %arg18, %c0_i4, %129 : i4
-        %131 = comb.xor %37, %true : i1
-        %132 = comb.and %21, %131, %11 : i1
-        %133 = comb.mux %132, %19, %130 : i4
+        %30 = comb.xor %15, %true_23 : i1
+        %31 = comb.and %30, %29, %11, %5, %cpha_q : i1
+        %32 = comb.icmp eq %arg2, %c0_i2 : i2
+        %33 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %34 = comb.icmp eq %arg2, %c1_i2 : i2
+        %35 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %36 = comb.icmp eq %arg2, %c-2_i2 : i2
+        %37 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %38 = comb.extract %3 from 0 : (i3) -> i2
+        %c0_i2_24 = hw.constant 0 : i2
+        %39 = comb.icmp eq %38, %c0_i2_24 : i2
         %true_25 = hw.constant true
-        %134 = comb.xor %cpha_q, %true_25 : i1
+        %40 = comb.xor %5, %true_25 : i1
         %true_26 = hw.constant true
-        %135 = comb.xor %arg18, %true_26 : i1
+        %41 = comb.xor %arg18, %true_26 : i1
         %true_27 = hw.constant true
-        %136 = comb.xor %15, %true_27 : i1
-        %137 = comb.and %136, %135, %11, %5, %134 : i1
-        %true_28 = hw.constant true
-        %138 = comb.xor %arg18, %true_28 : i1
+        %42 = comb.xor %15, %true_27 : i1
+        %43 = comb.and %42, %41, %11, %40, %39 : i1
+        %44 = comb.extract %3 from 0 : (i3) -> i2
+        %c1_i2_28 = hw.constant 1 : i2
+        %45 = comb.icmp eq %44, %c1_i2_28 : i2
         %true_29 = hw.constant true
-        %139 = comb.xor %15, %true_29 : i1
-        %140 = comb.and %139, %138, %11, %5, %cpha_q : i1
-        %141 = comb.extract %3 from 0 : (i3) -> i2
-        %c-1_i2_30 = hw.constant -1 : i2
-        %142 = comb.icmp eq %141, %c-1_i2_30 : i2
+        %46 = comb.xor %5, %true_29 : i1
+        %true_30 = hw.constant true
+        %47 = comb.xor %arg18, %true_30 : i1
         %true_31 = hw.constant true
-        %143 = comb.xor %5, %true_31 : i1
-        %true_32 = hw.constant true
-        %144 = comb.xor %arg18, %true_32 : i1
-        %145 = comb.and %144, %11, %143, %142 : i1
-        %146 = comb.or %15, %145 : i1
-        %147 = comb.icmp ne %36, %c-4_i3 : i3
-        %148 = comb.xor %137, %true : i1
-        %149 = comb.and %148, %116 : i1
-        %150 = comb.xor %140, %true : i1
-        %151 = comb.and %150, %149, %146 : i1
-        %152 = comb.xor %151, %true : i1
-        %153 = comb.and %149, %140 : i1
-        %154 = comb.xor %153, %true : i1
-        %155 = comb.and %116, %137 : i1
-        %156 = comb.xor %155, %true : i1
-        %157 = comb.and %116, %156, %154, %152, %147 : i1
-        %158 = comb.icmp ne %36, %c3_i3 : i3
-        %159 = comb.mux %26, %158, %53 : i1
-        %160 = comb.icmp eq %arg2, %c0_i2 : i2
-        %161 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %162 = comb.mux %24, %160, %161 : i1
-        %163 = comb.and %32, %31 : i1
-        %164 = comb.xor %163, %true : i1
-        %165 = comb.or %162, %164 : i1
-        verif.assert %165 : i1
-        %166 = comb.icmp ne %33, %c-1_i2 : i2
-        verif.assert %166 : i1
-        %167 = comb.xor %25, %true : i1
-        verif.assert %167 : i1
-        %168 = comb.and %57, %31, %0 : i1
-        %169 = comb.mux %168, %clk_cntr_q, %35 : i16
-        %170 = comb.mux %168, %bit_cntr_q, %86 : i3
-        %171 = comb.mux %168, %byte_cntr_cpha0_q, %88 : i20
-        %172 = comb.mux %168, %byte_cntr_cpha1_q, %90 : i20
-        %173 = comb.mux %168, %wait_cntr_q, %133 : i4
-        fsm.update %wait_cntr_q, %173 : i4
-        fsm.update %byte_cntr_cpha1_q, %172 : i20
-        fsm.update %byte_cntr_cpha0_q, %171 : i20
-        fsm.update %bit_cntr_q, %170 : i3
-        fsm.update %clk_cntr_q, %169 : i16
-        %174 = comb.xor %168, %true : i1
-        %175 = comb.and %58, %174 : i1
-        %176 = comb.and %24, %174 : i1
-        %177 = comb.mux %176, %arg14, %csid_q : i1
-        %178 = comb.mux %176, %arg13, %cpol_q : i1
-        %179 = comb.mux %176, %arg12, %cpha_q : i1
-        %180 = comb.mux %176, %arg11, %full_cyc_q : i1
-        %181 = comb.mux %176, %arg8, %csnidle_q : i4
-        %182 = comb.mux %176, %arg9, %csnlead_q : i4
-        %183 = comb.mux %176, %arg10, %csntrail_q : i4
-        %184 = comb.mux %176, %arg7, %clkdiv_q : i16
-        %185 = comb.mux %176, %arg6, %csaat_q : i1
-        %186 = comb.mux %176, %arg3, %cmd_wr_en_q : i1
-        %187 = comb.mux %176, %arg4, %cmd_rd_en_q : i1
-        %188 = comb.mux %176, %arg2, %cmd_speed_q : i2
-        %189 = comb.mux %176, %arg5, %cmd_len_q : i20
-        %190 = comb.and %37, %174 : i1
-        %191 = comb.mux bin %190, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %192 = comb.or %57, %175 : i1
-        %193 = comb.and %arg1, %174 : i1
-        %194 = comb.mux %193, %192, %sample_en_q : i1
-        %195 = comb.mux %193, %sample_en_q, %sample_en_q2 : i1
-        %196 = comb.mux bin %168, %u_sck_flop2Fq_o, %159 : i1
-        %197 = comb.mux %174, %157, %csb_q : i1
-        %198 = comb.or %25, %197 : i1
-        fsm.update %csb_q, %198 : i1
-        fsm.update %u_sck_flop2Fq_o, %196 : i1
-        fsm.update %sample_en_q2, %195 : i1
-        fsm.update %sample_en_q, %194 : i1
-        fsm.update %segment_rd_en_cpha1, %191 : i1
-        fsm.update %cmd_len_q, %189 : i20
-        fsm.update %cmd_speed_q, %188 : i2
-        fsm.update %cmd_wr_en_q, %186 : i1
-        fsm.update %cmd_rd_en_q, %187 : i1
-        fsm.update %csaat_q, %185 : i1
-        fsm.update %clkdiv_q, %184 : i16
-        fsm.update %csntrail_q, %183 : i4
-        fsm.update %csnlead_q, %182 : i4
-        fsm.update %csnidle_q, %181 : i4
-        fsm.update %full_cyc_q, %180 : i1
-        fsm.update %cpha_q, %179 : i1
-        fsm.update %cpol_q, %178 : i1
-        fsm.update %csid_q, %177 : i1
+        %48 = comb.xor %15, %true_31 : i1
+        %49 = comb.and %48, %47, %11, %46, %45 : i1
+        %50 = comb.extract %3 from 0 : (i3) -> i2
+        %c-2_i2_32 = hw.constant -2 : i2
+        %51 = comb.icmp eq %50, %c-2_i2_32 : i2
+        %true_33 = hw.constant true
+        %52 = comb.xor %5, %true_33 : i1
+        %53 = comb.and %52, %51 : i1
+        %true_34 = hw.constant true
+        %54 = comb.xor %8, %true_34 : i1
+        %55 = comb.mux %11, %53, %54 : i1
+        %true_35 = hw.constant true
+        %56 = comb.xor %arg18, %true_35 : i1
+        %true_36 = hw.constant true
+        %57 = comb.xor %15, %true_36 : i1
+        %58 = comb.add %wait_cntr_q, %c-1_i4 : i4
+        %59 = comb.xor %20, %true : i1
+        %60 = comb.xor %43, %true : i1
+        %61 = comb.xor %49, %true : i1
+        %62 = comb.or %arg18, %arg1 : i1
+        %63 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
+        %64 = comb.extract %3 from 0 : (i3) -> i2
+        %c-1_i2 = hw.constant -1 : i2
+        %65 = comb.icmp eq %64, %c-1_i2 : i2
+        %true_37 = hw.constant true
+        %66 = comb.xor %5, %true_37 : i1
+        %true_38 = hw.constant true
+        %67 = comb.xor %arg18, %true_38 : i1
+        %68 = comb.and %67, %11, %66, %65 : i1
+        %69 = comb.or %15, %68 : i1
+        %70 = comb.xor %24, %true : i1
+        %71 = comb.and %70, %59 : i1
+        %72 = comb.xor %31, %true : i1
+        %73 = comb.and %72, %71, %69 : i1
+        %74 = comb.xor %73, %true : i1
+        %75 = comb.and %71, %31 : i1
+        %76 = comb.xor %75, %true : i1
+        %77 = comb.and %59, %24 : i1
+        %78 = comb.xor %77, %true : i1
+        %79 = comb.and %cmd_wr_en_q, %25 : i1
+        %80 = comb.or %79, %cmd_wr_en_last_bit : i1
+        %81 = comb.xor %isFirstCycle, %true : i1
+        %82 = comb.and %81, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %10 : i1
+        %83 = comb.xor %82, %true : i1
+        verif.assert %83 : i1
+        fsm.update %_sh1_8, %2 : i1
+        fsm.update %_sh1_6, %8 : i1
+        fsm.update %_sh1, %false_14 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        fsm.update %cmd_wr_en_last_bit, %80 : i1
+        %84 = comb.and %arg15, %16, %11, %7 : i1
+        %85 = comb.mux %84, %arg14, %csid_q : i1
+        %86 = comb.mux %84, %arg13, %cpol_q : i1
+        %87 = comb.mux %84, %arg12, %cpha_q : i1
+        %88 = comb.mux %84, %arg8, %csnidle_q : i4
+        %89 = comb.mux %84, %arg9, %csnlead_q : i4
+        %90 = comb.mux %84, %arg10, %csntrail_q : i4
+        %91 = comb.mux %84, %arg3, %cmd_wr_en_q : i1
+        %92 = comb.mux %84, %arg4, %cmd_rd_en_q : i1
+        %93 = comb.mux %84, %arg7, %clk_cntr_q : i16
+        %94 = comb.mux %arg18, %c0_i16, %93 : i16
+        %95 = comb.mux %15, %c-1_i3_15, %13 : i3
+        %96 = comb.icmp ne %95, %c-1_i3_15 : i3
+        %97 = comb.and %10, %96 : i1
+        %98 = comb.and %97, %27 : i1
+        %99 = comb.and %97, %24, %28 : i1
+        %100 = comb.and %97, %31, %25 : i1
+        %101 = comb.and %97, %31, %28 : i1
+        %102 = comb.xor %87, %true : i1
+        %103 = comb.mux %102, %98, %100 : i1
+        %104 = comb.mux %102, %99, %101 : i1
+        %105 = comb.xor %92, %true : i1
+        %106 = comb.xor %91, %true : i1
+        %107 = comb.and %105, %106 : i1
+        %108 = comb.mux %84, %32, %33 : i1
+        %109 = comb.mux %84, %34, %35 : i1
+        %110 = comb.mux %84, %36, %37 : i1
+        %111 = comb.mux %110, %c-4_i3, %c1_i3 : i3
+        %112 = comb.xor %107, %true : i1
+        %113 = comb.xor %108, %true : i1
+        %114 = comb.and %113, %112, %109 : i1
+        %115 = comb.mux %114, %c2_i3, %111 : i3
+        %116 = comb.mux %114, %c-2_i3, %111 : i3
+        %117 = comb.and %112, %108 : i1
+        %118 = comb.mux %117, %c1_i3, %115 : i3
+        %119 = comb.mux %117, %c-1_i3, %116 : i3
+        %120 = comb.mux %107, %c0_i3, %118 : i3
+        %121 = comb.mux %107, %c0_i3, %119 : i3
+        %122 = comb.sub %bit_cntr_q, %120 : i3
+        %123 = comb.mux %104, %122, %bit_cntr_q : i3
+        %124 = comb.mux %103, %121, %123 : i3
+        %125 = comb.mux %14, %bit_cntr_q, %124 : i3
+        %126 = comb.mux %arg18, %c0_i3, %125 : i3
+        %127 = comb.mux %84, %arg5, %byte_cntr_cpha0_q : i20
+        %128 = comb.mux %arg18, %c0_i20, %127 : i20
+        %129 = comb.mux %84, %arg5, %byte_cntr_cpha1_q : i20
+        %130 = comb.mux %arg18, %c0_i20, %129 : i20
+        %131 = comb.and %96, %11 : i1
+        %132 = comb.and %59, %131 : i1
+        %133 = comb.and %60, %132 : i1
+        %134 = comb.and %61, %133, %57, %56, %55 : i1
+        %135 = comb.and %133, %49 : i1
+        %136 = comb.or %135, %134 : i1
+        %137 = comb.mux %136, %88, %c0_i4 : i4
+        %138 = comb.and %132, %43 : i1
+        %139 = comb.mux %138, %90, %137 : i4
+        %140 = comb.and %131, %20 : i1
+        %141 = comb.mux %140, %89, %139 : i4
+        %142 = comb.mux %62, %141, %wait_cntr_q : i4
+        %143 = comb.mux %arg18, %c0_i4, %142 : i4
+        %144 = comb.xor %96, %true : i1
+        %145 = comb.and %63, %144, %11 : i1
+        %146 = comb.mux %145, %58, %143 : i4
+        %147 = comb.icmp ne %95, %c-4_i3 : i3
+        %148 = comb.and %59, %78, %76, %74, %147 : i1
+        %149 = comb.icmp ne %95, %c3_i3 : i3
+        %150 = comb.mux %86, %149, %31 : i1
+        %151 = comb.and %103, %91, %0 : i1
+        %152 = comb.mux %151, %clk_cntr_q, %94 : i16
+        %153 = comb.mux %151, %bit_cntr_q, %126 : i3
+        %154 = comb.mux %151, %byte_cntr_cpha0_q, %128 : i20
+        %155 = comb.mux %151, %byte_cntr_cpha1_q, %130 : i20
+        %156 = comb.mux %151, %wait_cntr_q, %146 : i4
+        %157 = comb.mux bin %151, %u_sck_flop2Fq_o, %150 : i1
+        fsm.update %u_sck_flop2Fq_o, %157 : i1
+        fsm.update %wait_cntr_q, %156 : i4
+        fsm.update %byte_cntr_cpha1_q, %155 : i20
+        fsm.update %byte_cntr_cpha0_q, %154 : i20
+        fsm.update %bit_cntr_q, %153 : i3
+        fsm.update %clk_cntr_q, %152 : i16
+        %158 = comb.xor %151, %true : i1
+        %159 = comb.and %104, %158 : i1
+        %160 = comb.and %84, %158 : i1
+        %161 = comb.mux %160, %arg14, %csid_q : i1
+        %162 = comb.mux %160, %arg13, %cpol_q : i1
+        %163 = comb.mux %160, %arg12, %cpha_q : i1
+        %164 = comb.mux %160, %arg11, %full_cyc_q : i1
+        %165 = comb.mux %160, %arg8, %csnidle_q : i4
+        %166 = comb.mux %160, %arg9, %csnlead_q : i4
+        %167 = comb.mux %160, %arg10, %csntrail_q : i4
+        %168 = comb.mux %160, %arg7, %clkdiv_q : i16
+        %169 = comb.mux %160, %arg6, %csaat_q : i1
+        %170 = comb.mux %160, %arg3, %cmd_wr_en_q : i1
+        %171 = comb.mux %160, %arg4, %cmd_rd_en_q : i1
+        %172 = comb.mux %160, %arg2, %cmd_speed_q : i2
+        %173 = comb.and %96, %158 : i1
+        %174 = comb.mux bin %173, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %175 = comb.or %103, %159 : i1
+        %176 = comb.and %arg1, %158 : i1
+        %177 = comb.mux %176, %175, %sample_en_q : i1
+        %178 = comb.mux %176, %sample_en_q, %sample_en_q2 : i1
+        %179 = comb.mux %158, %148, %csb_q : i1
+        %180 = comb.or %85, %179 : i1
+        fsm.update %_sh1_12, %158 : i1
+        fsm.update %csb_q, %180 : i1
+        fsm.update %sample_en_q2, %178 : i1
+        fsm.update %sample_en_q, %177 : i1
+        fsm.update %segment_rd_en_cpha1, %174 : i1
+        fsm.update %cmd_speed_q, %172 : i2
+        fsm.update %cmd_wr_en_q, %170 : i1
+        fsm.update %cmd_rd_en_q, %171 : i1
+        fsm.update %csaat_q, %169 : i1
+        fsm.update %clkdiv_q, %168 : i16
+        fsm.update %csntrail_q, %167 : i4
+        fsm.update %csnlead_q, %166 : i4
+        fsm.update %csnidle_q, %165 : i4
+        fsm.update %full_cyc_q, %164 : i1
+        fsm.update %cpha_q, %163 : i1
+        fsm.update %cpol_q, %162 : i1
+        fsm.update %csid_q, %161 : i1
       }
       fsm.transition @state_6 guard {
         %c0_i4 = hw.constant 0 : i4
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
         %c-4_i3 = hw.constant -4 : i3
         %c1_i2 = hw.constant 1 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.xor %arg16, %true : i1
         %1 = comb.concat %c1_i2, %cpha_q : i2, i1
@@ -7510,79 +5920,69 @@ module {
         %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
         %10 = comb.xor %arg18, %true : i1
-        %c-1_i3_0 = hw.constant -1 : i3
+        %c-1_i3_13 = hw.constant -1 : i3
         %11 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %12 = comb.and %arg1, %10 : i1
-        %13 = comb.mux %12, %6, %9 : i3
-        %14 = comb.mux %arg18, %c0_i3, %13 : i3
-        %15 = comb.xor %arg1, %true : i1
-        %16 = comb.and %10, %15 : i1
-        %17 = comb.mux %16, %c-1_i3_0, %14 : i3
-        %18 = comb.xor %16, %true : i1
-        %19 = comb.icmp ne %17, %c-1_i3_0 : i3
-        %20 = comb.and %10, %19 : i1
-        %true_1 = hw.constant true
-        %21 = comb.xor %12, %true_1 : i1
-        %true_2 = hw.constant true
-        %22 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %23 = comb.xor %16, %true_3 : i1
-        %24 = comb.and %23, %22, %21, %8 : i1
-        %true_4 = hw.constant true
-        %25 = comb.xor %cpha_q, %true_4 : i1
-        %true_5 = hw.constant true
-        %26 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %27 = comb.xor %16, %true_6 : i1
-        %28 = comb.and %27, %26, %12, %5, %25, %11 : i1
-        %29 = comb.or %24, %28 : i1
-        %30 = comb.and %20, %29 : i1
-        %true_7 = hw.constant true
-        %31 = comb.xor %arg18, %true_7 : i1
-        %true_8 = hw.constant true
-        %32 = comb.xor %16, %true_8 : i1
-        %33 = comb.and %20, %32, %31, %12, %5, %cpha_q, %11 : i1
-        %34 = comb.and %arg15, %18, %12, %7 : i1
-        %35 = comb.mux %34, %arg14, %csid_q : i1
-        %36 = comb.mux %34, %arg12, %cpha_q : i1
-        %37 = comb.mux %34, %arg3, %cmd_wr_en_q : i1
-        %38 = comb.mux %34, %arg4, %cmd_rd_en_q : i1
-        %39 = comb.mux %34, %arg2, %cmd_speed_q : i2
-        %40 = comb.xor %36, %true : i1
-        %41 = comb.mux %40, %30, %33 : i1
-        %42 = comb.icmp eq %arg2, %c0_i2 : i2
-        %43 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %44 = comb.mux %34, %42, %43 : i1
-        %45 = comb.and %38, %37 : i1
-        %46 = comb.xor %45, %true : i1
-        %47 = comb.or %44, %46 : i1
-        verif.assert %47 : i1
-        %48 = comb.icmp ne %39, %c-1_i2 : i2
-        verif.assert %48 : i1
-        %49 = comb.xor %35, %true : i1
-        verif.assert %49 : i1
-        %50 = comb.and %41, %37, %0 : i1
-        %51 = comb.or %50, %16 : i1
-        %52 = comb.extract %3 from 0 : (i3) -> i2
+        %12 = comb.xor %isFirstCycle, %true : i1
+        %13 = comb.and %12, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %10 : i1
+        %14 = comb.xor %13, %true : i1
+        %15 = comb.and %arg1, %10 : i1
+        %16 = comb.mux %15, %6, %9 : i3
+        %17 = comb.mux %arg18, %c0_i3, %16 : i3
+        %18 = comb.xor %arg1, %true : i1
+        %19 = comb.and %10, %18 : i1
+        %20 = comb.mux %19, %c-1_i3_13, %17 : i3
+        %21 = comb.xor %19, %true : i1
+        %22 = comb.icmp ne %20, %c-1_i3_13 : i3
+        %23 = comb.and %10, %22 : i1
+        %true_14 = hw.constant true
+        %24 = comb.xor %15, %true_14 : i1
+        %true_15 = hw.constant true
+        %25 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %26 = comb.xor %19, %true_16 : i1
+        %27 = comb.and %26, %25, %24, %8 : i1
+        %true_17 = hw.constant true
+        %28 = comb.xor %cpha_q, %true_17 : i1
+        %true_18 = hw.constant true
+        %29 = comb.xor %arg18, %true_18 : i1
+        %true_19 = hw.constant true
+        %30 = comb.xor %19, %true_19 : i1
+        %31 = comb.and %30, %29, %15, %5, %28, %11 : i1
+        %32 = comb.or %27, %31 : i1
+        %33 = comb.and %23, %32 : i1
+        %true_20 = hw.constant true
+        %34 = comb.xor %arg18, %true_20 : i1
+        %true_21 = hw.constant true
+        %35 = comb.xor %19, %true_21 : i1
+        %36 = comb.and %23, %35, %34, %15, %5, %cpha_q, %11 : i1
+        verif.assert %14 : i1
+        %37 = comb.and %arg15, %21, %15, %7 : i1
+        %38 = comb.mux %37, %arg12, %cpha_q : i1
+        %39 = comb.mux %37, %arg3, %cmd_wr_en_q : i1
+        %40 = comb.xor %38, %true : i1
+        %41 = comb.mux %40, %33, %36 : i1
+        %42 = comb.and %41, %39, %0 : i1
+        %43 = comb.or %42, %19 : i1
+        %44 = comb.extract %3 from 0 : (i3) -> i2
         %c-2_i2 = hw.constant -2 : i2
-        %53 = comb.icmp eq %52, %c-2_i2 : i2
-        %true_9 = hw.constant true
-        %54 = comb.xor %5, %true_9 : i1
-        %55 = comb.and %54, %53 : i1
-        %true_10 = hw.constant true
-        %56 = comb.xor %8, %true_10 : i1
-        %57 = comb.mux %12, %55, %56 : i1
-        %true_11 = hw.constant true
-        %58 = comb.xor %arg18, %true_11 : i1
-        %true_12 = hw.constant true
-        %59 = comb.xor %51, %true_12 : i1
-        %60 = comb.and %59, %58, %57 : i1
-        fsm.return %60
+        %45 = comb.icmp eq %44, %c-2_i2 : i2
+        %true_22 = hw.constant true
+        %46 = comb.xor %5, %true_22 : i1
+        %47 = comb.and %46, %45 : i1
+        %true_23 = hw.constant true
+        %48 = comb.xor %8, %true_23 : i1
+        %49 = comb.mux %15, %47, %48 : i1
+        %true_24 = hw.constant true
+        %50 = comb.xor %arg18, %true_24 : i1
+        %true_25 = hw.constant true
+        %51 = comb.xor %43, %true_25 : i1
+        %52 = comb.and %51, %50, %49 : i1
+        fsm.return %52
       } action {
+        fsm.update %_sh1_10, %arg1 : i1
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
-        %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
-        %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
         %c-2_i3 = hw.constant -2 : i3
@@ -7592,7 +5992,6 @@ module {
         %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i4 = hw.constant -1 : i4
         %true = hw.constant true
         %0 = comb.xor %arg16, %true : i1
@@ -7603,268 +6002,199 @@ module {
         %5 = comb.and %4, %arg15 : i1
         %6 = comb.mux %5, %1, %3 : i3
         %7 = comb.or %5, %2 : i1
+        %false_14 = hw.constant false
         %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
-        %10 = comb.xor %arg18, %true : i1
-        %11 = comb.and %arg1, %10 : i1
-        %12 = comb.mux %11, %6, %9 : i3
-        %13 = comb.mux %arg18, %c0_i3, %12 : i3
-        %14 = comb.xor %arg1, %true : i1
-        %15 = comb.and %10, %14 : i1
-        %16 = comb.xor %15, %true : i1
-        %c-1_i3_0 = hw.constant -1 : i3
-        %17 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %18 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
-        %19 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %20 = comb.or %arg18, %arg1 : i1
-        %21 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %22 = comb.and %cmd_wr_en_q, %17 : i1
-        %23 = comb.or %22, %cmd_wr_en_last_bit : i1
-        fsm.update %cmd_wr_en_last_bit, %23 : i1
-        %24 = comb.and %arg15, %16, %11, %7 : i1
-        %25 = comb.mux %24, %arg14, %csid_q : i1
-        %26 = comb.mux %24, %arg13, %cpol_q : i1
-        %27 = comb.mux %24, %arg12, %cpha_q : i1
-        %28 = comb.mux %24, %arg8, %csnidle_q : i4
-        %29 = comb.mux %24, %arg9, %csnlead_q : i4
-        %30 = comb.mux %24, %arg10, %csntrail_q : i4
-        %31 = comb.mux %24, %arg3, %cmd_wr_en_q : i1
-        %32 = comb.mux %24, %arg4, %cmd_rd_en_q : i1
-        %33 = comb.mux %24, %arg2, %cmd_speed_q : i2
-        %34 = comb.mux %24, %arg7, %clk_cntr_q : i16
-        %35 = comb.mux %arg18, %c0_i16, %34 : i16
-        %36 = comb.mux %15, %c-1_i3_0, %13 : i3
-        %37 = comb.icmp ne %36, %c-1_i3_0 : i3
-        %38 = comb.and %10, %37 : i1
-        %true_1 = hw.constant true
-        %39 = comb.xor %11, %true_1 : i1
-        %true_2 = hw.constant true
-        %40 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %41 = comb.xor %15, %true_3 : i1
-        %42 = comb.and %41, %40, %39, %8 : i1
-        %true_4 = hw.constant true
-        %43 = comb.xor %cpha_q, %true_4 : i1
-        %true_5 = hw.constant true
-        %44 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %45 = comb.xor %15, %true_6 : i1
-        %46 = comb.and %45, %44, %11, %5, %43 : i1
-        %47 = comb.and %46, %17 : i1
-        %48 = comb.or %42, %47 : i1
-        %49 = comb.and %38, %48 : i1
-        %50 = comb.and %38, %46, %18 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %arg18, %true_7 : i1
-        %true_8 = hw.constant true
-        %52 = comb.xor %15, %true_8 : i1
-        %53 = comb.and %52, %51, %11, %5, %cpha_q : i1
-        %54 = comb.and %38, %53, %17 : i1
-        %55 = comb.and %38, %53, %18 : i1
-        %56 = comb.xor %27, %true : i1
-        %57 = comb.mux %56, %49, %54 : i1
-        %58 = comb.mux %56, %50, %55 : i1
-        %59 = comb.xor %32, %true : i1
-        %60 = comb.xor %31, %true : i1
-        %61 = comb.and %59, %60 : i1
-        %62 = comb.icmp eq %arg2, %c0_i2 : i2
-        %63 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %64 = comb.mux %24, %62, %63 : i1
-        %65 = comb.icmp eq %arg2, %c1_i2 : i2
-        %66 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %67 = comb.mux %24, %65, %66 : i1
-        %68 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %69 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %70 = comb.mux %24, %68, %69 : i1
-        %71 = comb.mux %70, %c-4_i3, %c1_i3 : i3
-        %72 = comb.xor %61, %true : i1
-        %73 = comb.xor %64, %true : i1
-        %74 = comb.and %73, %72, %67 : i1
-        %75 = comb.mux %74, %c2_i3, %71 : i3
-        %76 = comb.mux %74, %c-2_i3, %71 : i3
-        %77 = comb.and %72, %64 : i1
-        %78 = comb.mux %77, %c1_i3, %75 : i3
-        %79 = comb.mux %77, %c-1_i3, %76 : i3
-        %80 = comb.mux %61, %c0_i3, %78 : i3
-        %81 = comb.mux %61, %c0_i3, %79 : i3
-        %82 = comb.sub %bit_cntr_q, %80 : i3
-        %83 = comb.mux %58, %82, %bit_cntr_q : i3
-        %84 = comb.mux %57, %81, %83 : i3
-        %85 = comb.mux %14, %bit_cntr_q, %84 : i3
-        %86 = comb.mux %arg18, %c0_i3, %85 : i3
-        %87 = comb.mux %24, %arg5, %byte_cntr_cpha0_q : i20
-        %88 = comb.mux %arg18, %c0_i20, %87 : i20
-        %89 = comb.mux %24, %arg5, %byte_cntr_cpha1_q : i20
-        %90 = comb.mux %arg18, %c0_i20, %89 : i20
-        %true_9 = hw.constant true
-        %91 = comb.xor %11, %true_9 : i1
-        %true_10 = hw.constant true
-        %92 = comb.xor %arg18, %true_10 : i1
-        %true_11 = hw.constant true
-        %93 = comb.xor %15, %true_11 : i1
-        %94 = comb.and %93, %92, %91, %8 : i1
-        %95 = comb.extract %3 from 0 : (i3) -> i2
-        %c0_i2_12 = hw.constant 0 : i2
-        %96 = comb.icmp eq %95, %c0_i2_12 : i2
-        %true_13 = hw.constant true
-        %97 = comb.xor %5, %true_13 : i1
-        %true_14 = hw.constant true
-        %98 = comb.xor %arg18, %true_14 : i1
-        %true_15 = hw.constant true
-        %99 = comb.xor %15, %true_15 : i1
-        %100 = comb.and %99, %98, %11, %97, %96 : i1
-        %101 = comb.extract %3 from 0 : (i3) -> i2
-        %c1_i2_16 = hw.constant 1 : i2
-        %102 = comb.icmp eq %101, %c1_i2_16 : i2
-        %true_17 = hw.constant true
-        %103 = comb.xor %5, %true_17 : i1
+        %10 = comb.mux %arg1, %6, %9 : i3
+        %11 = comb.xor %arg1, %true : i1
+        %c-1_i3_15 = hw.constant -1 : i3
+        %true_16 = hw.constant true
+        %12 = comb.xor %cpha_q, %true_16 : i1
+        %13 = comb.and %arg1, %5, %12 : i1
+        %14 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %15 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
+        %16 = comb.and %arg1, %5, %cpha_q : i1
+        %17 = comb.icmp eq %arg2, %c0_i2 : i2
+        %18 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %19 = comb.icmp eq %arg2, %c1_i2 : i2
+        %20 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %21 = comb.icmp eq %arg2, %c-2_i2 : i2
+        %22 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %23 = comb.extract %3 from 0 : (i3) -> i2
+        %c0_i2_17 = hw.constant 0 : i2
+        %24 = comb.icmp eq %23, %c0_i2_17 : i2
         %true_18 = hw.constant true
-        %104 = comb.xor %arg18, %true_18 : i1
-        %true_19 = hw.constant true
-        %105 = comb.xor %15, %true_19 : i1
-        %106 = comb.and %105, %104, %11, %103, %102 : i1
-        %107 = comb.extract %3 from 0 : (i3) -> i2
-        %c-2_i2_20 = hw.constant -2 : i2
-        %108 = comb.icmp eq %107, %c-2_i2_20 : i2
-        %true_21 = hw.constant true
-        %109 = comb.xor %5, %true_21 : i1
-        %110 = comb.and %109, %108 : i1
+        %25 = comb.xor %5, %true_18 : i1
+        %26 = comb.and %arg1, %25, %24 : i1
+        %27 = comb.extract %3 from 0 : (i3) -> i2
+        %c1_i2_19 = hw.constant 1 : i2
+        %28 = comb.icmp eq %27, %c1_i2_19 : i2
+        %true_20 = hw.constant true
+        %29 = comb.xor %5, %true_20 : i1
+        %30 = comb.and %arg1, %29, %28 : i1
+        %31 = comb.extract %3 from 0 : (i3) -> i2
+        %c-2_i2_21 = hw.constant -2 : i2
+        %32 = comb.icmp eq %31, %c-2_i2_21 : i2
         %true_22 = hw.constant true
-        %111 = comb.xor %8, %true_22 : i1
-        %112 = comb.mux %11, %110, %111 : i1
+        %33 = comb.xor %5, %true_22 : i1
+        %34 = comb.and %33, %32 : i1
         %true_23 = hw.constant true
-        %113 = comb.xor %arg18, %true_23 : i1
+        %35 = comb.xor %8, %true_23 : i1
+        %36 = comb.mux %arg1, %34, %35 : i1
+        %37 = comb.add %wait_cntr_q, %c-1_i4 : i4
+        %38 = comb.xor %26, %true : i1
+        %39 = comb.xor %30, %true : i1
+        %40 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
+        %41 = comb.extract %3 from 0 : (i3) -> i2
+        %c-1_i2 = hw.constant -1 : i2
+        %42 = comb.icmp eq %41, %c-1_i2 : i2
         %true_24 = hw.constant true
-        %114 = comb.xor %15, %true_24 : i1
-        %115 = comb.and %37, %11 : i1
-        %116 = comb.xor %94, %true : i1
-        %117 = comb.and %116, %115 : i1
-        %118 = comb.xor %100, %true : i1
-        %119 = comb.and %118, %117 : i1
-        %120 = comb.xor %106, %true : i1
-        %121 = comb.and %120, %119, %114, %113, %112 : i1
-        %122 = comb.and %119, %106 : i1
-        %123 = comb.or %122, %121 : i1
-        %124 = comb.mux %123, %28, %c0_i4 : i4
-        %125 = comb.and %117, %100 : i1
-        %126 = comb.mux %125, %30, %124 : i4
-        %127 = comb.and %115, %94 : i1
-        %128 = comb.mux %127, %29, %126 : i4
-        %129 = comb.mux %20, %128, %wait_cntr_q : i4
-        %130 = comb.mux %arg18, %c0_i4, %129 : i4
-        %131 = comb.xor %37, %true : i1
-        %132 = comb.and %21, %131, %11 : i1
-        %133 = comb.mux %132, %19, %130 : i4
+        %43 = comb.xor %5, %true_24 : i1
+        %44 = comb.and %arg1, %43, %42 : i1
+        %45 = comb.or %11, %44 : i1
+        %46 = comb.xor %13, %true : i1
+        %47 = comb.xor %16, %true : i1
+        %48 = comb.and %47, %46, %45 : i1
+        %49 = comb.xor %48, %true : i1
+        %50 = comb.and %46, %16 : i1
+        %51 = comb.xor %50, %true : i1
+        %52 = comb.xor %13, %true : i1
+        %53 = comb.and %cmd_wr_en_q, %14 : i1
+        %54 = comb.or %53, %cmd_wr_en_last_bit : i1
+        %55 = comb.xor %isFirstCycle, %true : i1
+        %56 = comb.and %55, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %57 = comb.xor %56, %true : i1
+        verif.assert %57 : i1
+        fsm.update %_sh1_8, %2 : i1
+        fsm.update %_sh1_6, %8 : i1
+        fsm.update %_sh1, %false_14 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        fsm.update %cmd_wr_en_last_bit, %54 : i1
+        %58 = comb.and %arg15, %arg1, %7 : i1
+        %59 = comb.mux %58, %arg14, %csid_q : i1
+        %60 = comb.mux %58, %arg13, %cpol_q : i1
+        %61 = comb.mux %58, %arg12, %cpha_q : i1
+        %62 = comb.mux %58, %arg8, %csnidle_q : i4
+        %63 = comb.mux %58, %arg10, %csntrail_q : i4
+        %64 = comb.mux %58, %arg3, %cmd_wr_en_q : i1
+        %65 = comb.mux %58, %arg4, %cmd_rd_en_q : i1
+        %66 = comb.mux %11, %c-1_i3_15, %10 : i3
+        %67 = comb.icmp ne %66, %c-1_i3_15 : i3
+        %68 = comb.and %67, %13, %14 : i1
+        %69 = comb.and %67, %13, %15 : i1
+        %70 = comb.and %67, %16, %14 : i1
+        %71 = comb.and %67, %16, %15 : i1
+        %72 = comb.xor %61, %true : i1
+        %73 = comb.mux %72, %68, %70 : i1
+        %74 = comb.mux %72, %69, %71 : i1
+        %75 = comb.xor %65, %true : i1
+        %76 = comb.xor %64, %true : i1
+        %77 = comb.and %75, %76 : i1
+        %78 = comb.mux %58, %17, %18 : i1
+        %79 = comb.mux %58, %19, %20 : i1
+        %80 = comb.mux %58, %21, %22 : i1
+        %81 = comb.mux %80, %c-4_i3, %c1_i3 : i3
+        %82 = comb.xor %77, %true : i1
+        %83 = comb.xor %78, %true : i1
+        %84 = comb.and %83, %82, %79 : i1
+        %85 = comb.mux %84, %c2_i3, %81 : i3
+        %86 = comb.mux %84, %c-2_i3, %81 : i3
+        %87 = comb.and %82, %78 : i1
+        %88 = comb.mux %87, %c1_i3, %85 : i3
+        %89 = comb.mux %87, %c-1_i3, %86 : i3
+        %90 = comb.mux %77, %c0_i3, %88 : i3
+        %91 = comb.mux %77, %c0_i3, %89 : i3
+        %92 = comb.sub %bit_cntr_q, %90 : i3
+        %93 = comb.mux %74, %92, %bit_cntr_q : i3
+        %94 = comb.mux %73, %91, %93 : i3
+        %95 = comb.and %67, %arg1 : i1
+        %96 = comb.and %38, %95 : i1
+        %97 = comb.and %39, %96, %36 : i1
+        %98 = comb.and %96, %30 : i1
+        %99 = comb.or %98, %97 : i1
+        %100 = comb.mux %99, %62, %c0_i4 : i4
+        %101 = comb.and %95, %26 : i1
+        %102 = comb.mux %101, %63, %100 : i4
+        %103 = comb.mux %arg1, %102, %wait_cntr_q : i4
+        %104 = comb.xor %67, %true : i1
+        %105 = comb.and %40, %104, %arg1 : i1
+        %106 = comb.mux %105, %37, %103 : i4
+        %107 = comb.icmp ne %66, %c-4_i3 : i3
+        %108 = comb.and %52, %51, %49, %107 : i1
+        %109 = comb.icmp ne %66, %c3_i3 : i3
+        %110 = comb.mux %60, %109, %16 : i1
+        %111 = comb.and %73, %64, %0 : i1
         %true_25 = hw.constant true
-        %134 = comb.xor %cpha_q, %true_25 : i1
+        %112 = comb.xor %58, %true_25 : i1
+        %113 = comb.or %111, %112 : i1
+        %114 = comb.mux %113, %clk_cntr_q, %arg7 : i16
+        %115 = comb.or %111, %11 : i1
+        %116 = comb.mux %115, %bit_cntr_q, %94 : i3
         %true_26 = hw.constant true
-        %135 = comb.xor %arg18, %true_26 : i1
+        %117 = comb.xor %58, %true_26 : i1
+        %118 = comb.or %111, %117 : i1
+        %119 = comb.mux %118, %byte_cntr_cpha0_q, %arg5 : i20
         %true_27 = hw.constant true
-        %136 = comb.xor %15, %true_27 : i1
-        %137 = comb.and %136, %135, %11, %5, %134 : i1
-        %true_28 = hw.constant true
-        %138 = comb.xor %arg18, %true_28 : i1
-        %true_29 = hw.constant true
-        %139 = comb.xor %15, %true_29 : i1
-        %140 = comb.and %139, %138, %11, %5, %cpha_q : i1
-        %141 = comb.extract %3 from 0 : (i3) -> i2
-        %c-1_i2_30 = hw.constant -1 : i2
-        %142 = comb.icmp eq %141, %c-1_i2_30 : i2
-        %true_31 = hw.constant true
-        %143 = comb.xor %5, %true_31 : i1
-        %true_32 = hw.constant true
-        %144 = comb.xor %arg18, %true_32 : i1
-        %145 = comb.and %144, %11, %143, %142 : i1
-        %146 = comb.or %15, %145 : i1
-        %147 = comb.icmp ne %36, %c-4_i3 : i3
-        %148 = comb.xor %137, %true : i1
-        %149 = comb.and %148, %116 : i1
-        %150 = comb.xor %140, %true : i1
-        %151 = comb.and %150, %149, %146 : i1
-        %152 = comb.xor %151, %true : i1
-        %153 = comb.and %149, %140 : i1
-        %154 = comb.xor %153, %true : i1
-        %155 = comb.and %116, %137 : i1
-        %156 = comb.xor %155, %true : i1
-        %157 = comb.and %116, %156, %154, %152, %147 : i1
-        %158 = comb.icmp ne %36, %c3_i3 : i3
-        %159 = comb.mux %26, %158, %53 : i1
-        %160 = comb.icmp eq %arg2, %c0_i2 : i2
-        %161 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %162 = comb.mux %24, %160, %161 : i1
-        %163 = comb.and %32, %31 : i1
-        %164 = comb.xor %163, %true : i1
-        %165 = comb.or %162, %164 : i1
-        verif.assert %165 : i1
-        %166 = comb.icmp ne %33, %c-1_i2 : i2
-        verif.assert %166 : i1
-        %167 = comb.xor %25, %true : i1
-        verif.assert %167 : i1
-        %168 = comb.and %57, %31, %0 : i1
-        %169 = comb.mux %168, %clk_cntr_q, %35 : i16
-        %170 = comb.mux %168, %bit_cntr_q, %86 : i3
-        %171 = comb.mux %168, %byte_cntr_cpha0_q, %88 : i20
-        %172 = comb.mux %168, %byte_cntr_cpha1_q, %90 : i20
-        %173 = comb.mux %168, %wait_cntr_q, %133 : i4
-        fsm.update %wait_cntr_q, %173 : i4
-        fsm.update %byte_cntr_cpha1_q, %172 : i20
-        fsm.update %byte_cntr_cpha0_q, %171 : i20
-        fsm.update %bit_cntr_q, %170 : i3
-        fsm.update %clk_cntr_q, %169 : i16
-        %174 = comb.xor %168, %true : i1
-        %175 = comb.and %58, %174 : i1
-        %176 = comb.and %24, %174 : i1
-        %177 = comb.mux %176, %arg14, %csid_q : i1
-        %178 = comb.mux %176, %arg13, %cpol_q : i1
-        %179 = comb.mux %176, %arg12, %cpha_q : i1
-        %180 = comb.mux %176, %arg11, %full_cyc_q : i1
-        %181 = comb.mux %176, %arg8, %csnidle_q : i4
-        %182 = comb.mux %176, %arg9, %csnlead_q : i4
-        %183 = comb.mux %176, %arg10, %csntrail_q : i4
-        %184 = comb.mux %176, %arg7, %clkdiv_q : i16
-        %185 = comb.mux %176, %arg6, %csaat_q : i1
-        %186 = comb.mux %176, %arg3, %cmd_wr_en_q : i1
-        %187 = comb.mux %176, %arg4, %cmd_rd_en_q : i1
-        %188 = comb.mux %176, %arg2, %cmd_speed_q : i2
-        %189 = comb.mux %176, %arg5, %cmd_len_q : i20
-        %190 = comb.and %37, %174 : i1
-        %191 = comb.mux bin %190, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %192 = comb.or %57, %175 : i1
-        %193 = comb.and %arg1, %174 : i1
-        %194 = comb.mux %193, %192, %sample_en_q : i1
-        %195 = comb.mux %193, %sample_en_q, %sample_en_q2 : i1
-        %196 = comb.mux bin %168, %u_sck_flop2Fq_o, %159 : i1
-        %197 = comb.mux %174, %157, %csb_q : i1
-        %198 = comb.or %25, %197 : i1
-        fsm.update %csb_q, %198 : i1
-        fsm.update %u_sck_flop2Fq_o, %196 : i1
-        fsm.update %sample_en_q2, %195 : i1
-        fsm.update %sample_en_q, %194 : i1
-        fsm.update %segment_rd_en_cpha1, %191 : i1
-        fsm.update %cmd_len_q, %189 : i20
-        fsm.update %cmd_speed_q, %188 : i2
-        fsm.update %cmd_wr_en_q, %186 : i1
-        fsm.update %cmd_rd_en_q, %187 : i1
-        fsm.update %csaat_q, %185 : i1
-        fsm.update %clkdiv_q, %184 : i16
-        fsm.update %csntrail_q, %183 : i4
-        fsm.update %csnlead_q, %182 : i4
-        fsm.update %csnidle_q, %181 : i4
-        fsm.update %full_cyc_q, %180 : i1
-        fsm.update %cpha_q, %179 : i1
-        fsm.update %cpol_q, %178 : i1
-        fsm.update %csid_q, %177 : i1
+        %120 = comb.xor %58, %true_27 : i1
+        %121 = comb.or %111, %120 : i1
+        %122 = comb.mux %121, %byte_cntr_cpha1_q, %arg5 : i20
+        %123 = comb.mux %111, %wait_cntr_q, %106 : i4
+        %124 = comb.mux bin %111, %u_sck_flop2Fq_o, %110 : i1
+        fsm.update %u_sck_flop2Fq_o, %124 : i1
+        fsm.update %wait_cntr_q, %123 : i4
+        fsm.update %byte_cntr_cpha1_q, %122 : i20
+        fsm.update %byte_cntr_cpha0_q, %119 : i20
+        fsm.update %bit_cntr_q, %116 : i3
+        fsm.update %clk_cntr_q, %114 : i16
+        %125 = comb.xor %111, %true : i1
+        %126 = comb.and %74, %125 : i1
+        %127 = comb.and %58, %125 : i1
+        %128 = comb.mux %127, %arg14, %csid_q : i1
+        %129 = comb.mux %127, %arg13, %cpol_q : i1
+        %130 = comb.mux %127, %arg12, %cpha_q : i1
+        %131 = comb.mux %127, %arg11, %full_cyc_q : i1
+        %132 = comb.mux %127, %arg8, %csnidle_q : i4
+        %133 = comb.mux %127, %arg9, %csnlead_q : i4
+        %134 = comb.mux %127, %arg10, %csntrail_q : i4
+        %135 = comb.mux %127, %arg7, %clkdiv_q : i16
+        %136 = comb.mux %127, %arg6, %csaat_q : i1
+        %137 = comb.mux %127, %arg3, %cmd_wr_en_q : i1
+        %138 = comb.mux %127, %arg4, %cmd_rd_en_q : i1
+        %139 = comb.mux %127, %arg2, %cmd_speed_q : i2
+        %140 = comb.and %67, %125 : i1
+        %141 = comb.mux bin %140, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %142 = comb.or %73, %126 : i1
+        %143 = comb.and %arg1, %125 : i1
+        %144 = comb.mux %143, %142, %sample_en_q : i1
+        %145 = comb.mux %143, %sample_en_q, %sample_en_q2 : i1
+        %146 = comb.mux %125, %108, %csb_q : i1
+        %147 = comb.or %59, %146 : i1
+        fsm.update %_sh1_12, %125 : i1
+        fsm.update %csb_q, %147 : i1
+        fsm.update %sample_en_q2, %145 : i1
+        fsm.update %sample_en_q, %144 : i1
+        fsm.update %segment_rd_en_cpha1, %141 : i1
+        fsm.update %cmd_speed_q, %139 : i2
+        fsm.update %cmd_wr_en_q, %137 : i1
+        fsm.update %cmd_rd_en_q, %138 : i1
+        fsm.update %csaat_q, %136 : i1
+        fsm.update %clkdiv_q, %135 : i16
+        fsm.update %csntrail_q, %134 : i4
+        fsm.update %csnlead_q, %133 : i4
+        fsm.update %csnidle_q, %132 : i4
+        fsm.update %full_cyc_q, %131 : i1
+        fsm.update %cpha_q, %130 : i1
+        fsm.update %cpol_q, %129 : i1
+        fsm.update %csid_q, %128 : i1
       }
       fsm.transition @state_4 guard {
         %c0_i4 = hw.constant 0 : i4
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
         %c-4_i3 = hw.constant -4 : i3
         %c1_i2 = hw.constant 1 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.xor %arg16, %true : i1
         %1 = comb.concat %c1_i2, %cpha_q : i2, i1
@@ -7877,357 +6207,123 @@ module {
         %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
         %10 = comb.xor %arg18, %true : i1
-        %c-1_i3_0 = hw.constant -1 : i3
+        %c-1_i3_13 = hw.constant -1 : i3
         %11 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %12 = comb.and %arg1, %10 : i1
-        %13 = comb.mux %12, %6, %9 : i3
-        %14 = comb.mux %arg18, %c0_i3, %13 : i3
-        %15 = comb.xor %arg1, %true : i1
-        %16 = comb.and %10, %15 : i1
-        %17 = comb.mux %16, %c-1_i3_0, %14 : i3
-        %18 = comb.xor %16, %true : i1
-        %19 = comb.icmp ne %17, %c-1_i3_0 : i3
-        %20 = comb.and %10, %19 : i1
-        %true_1 = hw.constant true
-        %21 = comb.xor %12, %true_1 : i1
-        %true_2 = hw.constant true
-        %22 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %23 = comb.xor %16, %true_3 : i1
-        %24 = comb.and %23, %22, %21, %8 : i1
-        %true_4 = hw.constant true
-        %25 = comb.xor %cpha_q, %true_4 : i1
-        %true_5 = hw.constant true
-        %26 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %27 = comb.xor %16, %true_6 : i1
-        %28 = comb.and %27, %26, %12, %5, %25, %11 : i1
-        %29 = comb.or %24, %28 : i1
-        %30 = comb.and %20, %29 : i1
-        %true_7 = hw.constant true
-        %31 = comb.xor %arg18, %true_7 : i1
-        %true_8 = hw.constant true
-        %32 = comb.xor %16, %true_8 : i1
-        %33 = comb.and %20, %32, %31, %12, %5, %cpha_q, %11 : i1
-        %34 = comb.and %arg15, %18, %12, %7 : i1
-        %35 = comb.mux %34, %arg14, %csid_q : i1
-        %36 = comb.mux %34, %arg12, %cpha_q : i1
-        %37 = comb.mux %34, %arg3, %cmd_wr_en_q : i1
-        %38 = comb.mux %34, %arg4, %cmd_rd_en_q : i1
-        %39 = comb.mux %34, %arg2, %cmd_speed_q : i2
-        %40 = comb.xor %36, %true : i1
-        %41 = comb.mux %40, %30, %33 : i1
-        %42 = comb.icmp eq %arg2, %c0_i2 : i2
-        %43 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %44 = comb.mux %34, %42, %43 : i1
-        %45 = comb.and %38, %37 : i1
-        %46 = comb.xor %45, %true : i1
-        %47 = comb.or %44, %46 : i1
-        verif.assert %47 : i1
-        %48 = comb.icmp ne %39, %c-1_i2 : i2
-        verif.assert %48 : i1
-        %49 = comb.xor %35, %true : i1
-        verif.assert %49 : i1
-        %50 = comb.and %41, %37, %0 : i1
-        %51 = comb.or %50, %16 : i1
-        %52 = comb.extract %3 from 0 : (i3) -> i2
-        %c0_i2_9 = hw.constant 0 : i2
-        %53 = comb.icmp eq %52, %c0_i2_9 : i2
-        %true_10 = hw.constant true
-        %54 = comb.xor %5, %true_10 : i1
-        %true_11 = hw.constant true
-        %55 = comb.xor %arg18, %true_11 : i1
-        %true_12 = hw.constant true
-        %56 = comb.xor %51, %true_12 : i1
-        %57 = comb.and %56, %55, %12, %54, %53 : i1
-        fsm.return %57
-      } action {
-        %c0_i4 = hw.constant 0 : i4
-        %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
-        %c0_i20 = hw.constant 0 : i20
-        %c0_i3 = hw.constant 0 : i3
-        %c-1_i3 = hw.constant -1 : i3
-        %c-2_i3 = hw.constant -2 : i3
-        %c1_i3 = hw.constant 1 : i3
-        %c-4_i3 = hw.constant -4 : i3
-        %c3_i3 = hw.constant 3 : i3
-        %c2_i3 = hw.constant 2 : i3
-        %c1_i2 = hw.constant 1 : i2
-        %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
-        %c-1_i4 = hw.constant -1 : i4
-        %true = hw.constant true
-        %0 = comb.xor %arg16, %true : i1
-        %1 = comb.concat %c1_i2, %cpha_q : i2, i1
-        %2 = comb.xor %arg15, %true : i1
-        %3 = comb.mux %2, %c-1_i3, %c-4_i3 : i3
-        %4 = comb.icmp eq %arg14, %csid_q : i1
-        %5 = comb.and %4, %arg15 : i1
-        %6 = comb.mux %5, %1, %3 : i3
-        %7 = comb.or %5, %2 : i1
-        %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
-        %10 = comb.xor %arg18, %true : i1
-        %11 = comb.and %arg1, %10 : i1
-        %12 = comb.mux %11, %6, %9 : i3
-        %13 = comb.mux %arg18, %c0_i3, %12 : i3
-        %14 = comb.xor %arg1, %true : i1
-        %15 = comb.and %10, %14 : i1
-        %16 = comb.xor %15, %true : i1
-        %c-1_i3_0 = hw.constant -1 : i3
-        %17 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %18 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
-        %19 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %20 = comb.or %arg18, %arg1 : i1
-        %21 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %22 = comb.and %cmd_wr_en_q, %17 : i1
-        %23 = comb.or %22, %cmd_wr_en_last_bit : i1
-        fsm.update %cmd_wr_en_last_bit, %23 : i1
-        %24 = comb.and %arg15, %16, %11, %7 : i1
-        %25 = comb.mux %24, %arg14, %csid_q : i1
-        %26 = comb.mux %24, %arg13, %cpol_q : i1
-        %27 = comb.mux %24, %arg12, %cpha_q : i1
-        %28 = comb.mux %24, %arg8, %csnidle_q : i4
-        %29 = comb.mux %24, %arg9, %csnlead_q : i4
-        %30 = comb.mux %24, %arg10, %csntrail_q : i4
-        %31 = comb.mux %24, %arg3, %cmd_wr_en_q : i1
-        %32 = comb.mux %24, %arg4, %cmd_rd_en_q : i1
-        %33 = comb.mux %24, %arg2, %cmd_speed_q : i2
-        %34 = comb.mux %24, %arg7, %clk_cntr_q : i16
-        %35 = comb.mux %arg18, %c0_i16, %34 : i16
-        %36 = comb.mux %15, %c-1_i3_0, %13 : i3
-        %37 = comb.icmp ne %36, %c-1_i3_0 : i3
-        %38 = comb.and %10, %37 : i1
-        %true_1 = hw.constant true
-        %39 = comb.xor %11, %true_1 : i1
-        %true_2 = hw.constant true
-        %40 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %41 = comb.xor %15, %true_3 : i1
-        %42 = comb.and %41, %40, %39, %8 : i1
-        %true_4 = hw.constant true
-        %43 = comb.xor %cpha_q, %true_4 : i1
-        %true_5 = hw.constant true
-        %44 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %45 = comb.xor %15, %true_6 : i1
-        %46 = comb.and %45, %44, %11, %5, %43 : i1
-        %47 = comb.and %46, %17 : i1
-        %48 = comb.or %42, %47 : i1
-        %49 = comb.and %38, %48 : i1
-        %50 = comb.and %38, %46, %18 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %arg18, %true_7 : i1
-        %true_8 = hw.constant true
-        %52 = comb.xor %15, %true_8 : i1
-        %53 = comb.and %52, %51, %11, %5, %cpha_q : i1
-        %54 = comb.and %38, %53, %17 : i1
-        %55 = comb.and %38, %53, %18 : i1
-        %56 = comb.xor %27, %true : i1
-        %57 = comb.mux %56, %49, %54 : i1
-        %58 = comb.mux %56, %50, %55 : i1
-        %59 = comb.xor %32, %true : i1
-        %60 = comb.xor %31, %true : i1
-        %61 = comb.and %59, %60 : i1
-        %62 = comb.icmp eq %arg2, %c0_i2 : i2
-        %63 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %64 = comb.mux %24, %62, %63 : i1
-        %65 = comb.icmp eq %arg2, %c1_i2 : i2
-        %66 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %67 = comb.mux %24, %65, %66 : i1
-        %68 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %69 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %70 = comb.mux %24, %68, %69 : i1
-        %71 = comb.mux %70, %c-4_i3, %c1_i3 : i3
-        %72 = comb.xor %61, %true : i1
-        %73 = comb.xor %64, %true : i1
-        %74 = comb.and %73, %72, %67 : i1
-        %75 = comb.mux %74, %c2_i3, %71 : i3
-        %76 = comb.mux %74, %c-2_i3, %71 : i3
-        %77 = comb.and %72, %64 : i1
-        %78 = comb.mux %77, %c1_i3, %75 : i3
-        %79 = comb.mux %77, %c-1_i3, %76 : i3
-        %80 = comb.mux %61, %c0_i3, %78 : i3
-        %81 = comb.mux %61, %c0_i3, %79 : i3
-        %82 = comb.sub %bit_cntr_q, %80 : i3
-        %83 = comb.mux %58, %82, %bit_cntr_q : i3
-        %84 = comb.mux %57, %81, %83 : i3
-        %85 = comb.mux %14, %bit_cntr_q, %84 : i3
-        %86 = comb.mux %arg18, %c0_i3, %85 : i3
-        %87 = comb.mux %24, %arg5, %byte_cntr_cpha0_q : i20
-        %88 = comb.mux %arg18, %c0_i20, %87 : i20
-        %89 = comb.mux %24, %arg5, %byte_cntr_cpha1_q : i20
-        %90 = comb.mux %arg18, %c0_i20, %89 : i20
-        %true_9 = hw.constant true
-        %91 = comb.xor %11, %true_9 : i1
-        %true_10 = hw.constant true
-        %92 = comb.xor %arg18, %true_10 : i1
-        %true_11 = hw.constant true
-        %93 = comb.xor %15, %true_11 : i1
-        %94 = comb.and %93, %92, %91, %8 : i1
-        %95 = comb.extract %3 from 0 : (i3) -> i2
-        %c0_i2_12 = hw.constant 0 : i2
-        %96 = comb.icmp eq %95, %c0_i2_12 : i2
-        %true_13 = hw.constant true
-        %97 = comb.xor %5, %true_13 : i1
+        %12 = comb.xor %isFirstCycle, %true : i1
+        %13 = comb.and %12, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %10 : i1
+        %14 = comb.xor %13, %true : i1
+        %15 = comb.and %arg1, %10 : i1
+        %16 = comb.mux %15, %6, %9 : i3
+        %17 = comb.mux %arg18, %c0_i3, %16 : i3
+        %18 = comb.xor %arg1, %true : i1
+        %19 = comb.and %10, %18 : i1
+        %20 = comb.mux %19, %c-1_i3_13, %17 : i3
+        %21 = comb.xor %19, %true : i1
+        %22 = comb.icmp ne %20, %c-1_i3_13 : i3
+        %23 = comb.and %10, %22 : i1
         %true_14 = hw.constant true
-        %98 = comb.xor %arg18, %true_14 : i1
+        %24 = comb.xor %15, %true_14 : i1
         %true_15 = hw.constant true
-        %99 = comb.xor %15, %true_15 : i1
-        %100 = comb.and %99, %98, %11, %97, %96 : i1
-        %101 = comb.extract %3 from 0 : (i3) -> i2
-        %c1_i2_16 = hw.constant 1 : i2
-        %102 = comb.icmp eq %101, %c1_i2_16 : i2
+        %25 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %26 = comb.xor %19, %true_16 : i1
+        %27 = comb.and %26, %25, %24, %8 : i1
         %true_17 = hw.constant true
-        %103 = comb.xor %5, %true_17 : i1
+        %28 = comb.xor %cpha_q, %true_17 : i1
         %true_18 = hw.constant true
-        %104 = comb.xor %arg18, %true_18 : i1
+        %29 = comb.xor %arg18, %true_18 : i1
         %true_19 = hw.constant true
-        %105 = comb.xor %15, %true_19 : i1
-        %106 = comb.and %105, %104, %11, %103, %102 : i1
-        %107 = comb.extract %3 from 0 : (i3) -> i2
-        %c-2_i2_20 = hw.constant -2 : i2
-        %108 = comb.icmp eq %107, %c-2_i2_20 : i2
+        %30 = comb.xor %19, %true_19 : i1
+        %31 = comb.and %30, %29, %15, %5, %28, %11 : i1
+        %32 = comb.or %27, %31 : i1
+        %33 = comb.and %23, %32 : i1
+        %true_20 = hw.constant true
+        %34 = comb.xor %arg18, %true_20 : i1
         %true_21 = hw.constant true
-        %109 = comb.xor %5, %true_21 : i1
-        %110 = comb.and %109, %108 : i1
+        %35 = comb.xor %19, %true_21 : i1
+        %36 = comb.and %23, %35, %34, %15, %5, %cpha_q, %11 : i1
+        verif.assert %14 : i1
+        %37 = comb.and %arg15, %21, %15, %7 : i1
+        %38 = comb.mux %37, %arg12, %cpha_q : i1
+        %39 = comb.mux %37, %arg3, %cmd_wr_en_q : i1
+        %40 = comb.xor %38, %true : i1
+        %41 = comb.mux %40, %33, %36 : i1
+        %42 = comb.and %41, %39, %0 : i1
+        %43 = comb.or %42, %19 : i1
+        %44 = comb.extract %3 from 0 : (i3) -> i2
+        %c0_i2 = hw.constant 0 : i2
+        %45 = comb.icmp eq %44, %c0_i2 : i2
         %true_22 = hw.constant true
-        %111 = comb.xor %8, %true_22 : i1
-        %112 = comb.mux %11, %110, %111 : i1
+        %46 = comb.xor %5, %true_22 : i1
         %true_23 = hw.constant true
-        %113 = comb.xor %arg18, %true_23 : i1
+        %47 = comb.xor %arg18, %true_23 : i1
         %true_24 = hw.constant true
-        %114 = comb.xor %15, %true_24 : i1
-        %115 = comb.and %37, %11 : i1
-        %116 = comb.xor %94, %true : i1
-        %117 = comb.and %116, %115 : i1
-        %118 = comb.xor %100, %true : i1
-        %119 = comb.and %118, %117 : i1
-        %120 = comb.xor %106, %true : i1
-        %121 = comb.and %120, %119, %114, %113, %112 : i1
-        %122 = comb.and %119, %106 : i1
-        %123 = comb.or %122, %121 : i1
-        %124 = comb.mux %123, %28, %c0_i4 : i4
-        %125 = comb.and %117, %100 : i1
-        %126 = comb.mux %125, %30, %124 : i4
-        %127 = comb.and %115, %94 : i1
-        %128 = comb.mux %127, %29, %126 : i4
-        %129 = comb.mux %20, %128, %wait_cntr_q : i4
-        %130 = comb.mux %arg18, %c0_i4, %129 : i4
-        %131 = comb.xor %37, %true : i1
-        %132 = comb.and %21, %131, %11 : i1
-        %133 = comb.mux %132, %19, %130 : i4
-        %true_25 = hw.constant true
-        %134 = comb.xor %cpha_q, %true_25 : i1
-        %true_26 = hw.constant true
-        %135 = comb.xor %arg18, %true_26 : i1
-        %true_27 = hw.constant true
-        %136 = comb.xor %15, %true_27 : i1
-        %137 = comb.and %136, %135, %11, %5, %134 : i1
-        %true_28 = hw.constant true
-        %138 = comb.xor %arg18, %true_28 : i1
-        %true_29 = hw.constant true
-        %139 = comb.xor %15, %true_29 : i1
-        %140 = comb.and %139, %138, %11, %5, %cpha_q : i1
-        %141 = comb.extract %3 from 0 : (i3) -> i2
-        %c-1_i2_30 = hw.constant -1 : i2
-        %142 = comb.icmp eq %141, %c-1_i2_30 : i2
-        %true_31 = hw.constant true
-        %143 = comb.xor %5, %true_31 : i1
-        %true_32 = hw.constant true
-        %144 = comb.xor %arg18, %true_32 : i1
-        %145 = comb.and %144, %11, %143, %142 : i1
-        %146 = comb.or %15, %145 : i1
-        %147 = comb.icmp ne %36, %c-4_i3 : i3
-        %148 = comb.xor %137, %true : i1
-        %149 = comb.and %148, %116 : i1
-        %150 = comb.xor %140, %true : i1
-        %151 = comb.and %150, %149, %146 : i1
-        %152 = comb.xor %151, %true : i1
-        %153 = comb.and %149, %140 : i1
-        %154 = comb.xor %153, %true : i1
-        %155 = comb.and %116, %137 : i1
-        %156 = comb.xor %155, %true : i1
-        %157 = comb.and %116, %156, %154, %152, %147 : i1
-        %158 = comb.icmp ne %36, %c3_i3 : i3
-        %159 = comb.mux %26, %158, %53 : i1
-        %160 = comb.icmp eq %arg2, %c0_i2 : i2
-        %161 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %162 = comb.mux %24, %160, %161 : i1
-        %163 = comb.and %32, %31 : i1
-        %164 = comb.xor %163, %true : i1
-        %165 = comb.or %162, %164 : i1
-        verif.assert %165 : i1
-        %166 = comb.icmp ne %33, %c-1_i2 : i2
-        verif.assert %166 : i1
-        %167 = comb.xor %25, %true : i1
-        verif.assert %167 : i1
-        %168 = comb.and %57, %31, %0 : i1
-        %169 = comb.mux %168, %clk_cntr_q, %35 : i16
-        %170 = comb.mux %168, %bit_cntr_q, %86 : i3
-        %171 = comb.mux %168, %byte_cntr_cpha0_q, %88 : i20
-        %172 = comb.mux %168, %byte_cntr_cpha1_q, %90 : i20
-        %173 = comb.mux %168, %wait_cntr_q, %133 : i4
-        fsm.update %wait_cntr_q, %173 : i4
-        fsm.update %byte_cntr_cpha1_q, %172 : i20
-        fsm.update %byte_cntr_cpha0_q, %171 : i20
-        fsm.update %bit_cntr_q, %170 : i3
-        fsm.update %clk_cntr_q, %169 : i16
-        %174 = comb.xor %168, %true : i1
-        %175 = comb.and %58, %174 : i1
-        %176 = comb.and %24, %174 : i1
-        %177 = comb.mux %176, %arg14, %csid_q : i1
-        %178 = comb.mux %176, %arg13, %cpol_q : i1
-        %179 = comb.mux %176, %arg12, %cpha_q : i1
-        %180 = comb.mux %176, %arg11, %full_cyc_q : i1
-        %181 = comb.mux %176, %arg8, %csnidle_q : i4
-        %182 = comb.mux %176, %arg9, %csnlead_q : i4
-        %183 = comb.mux %176, %arg10, %csntrail_q : i4
-        %184 = comb.mux %176, %arg7, %clkdiv_q : i16
-        %185 = comb.mux %176, %arg6, %csaat_q : i1
-        %186 = comb.mux %176, %arg3, %cmd_wr_en_q : i1
-        %187 = comb.mux %176, %arg4, %cmd_rd_en_q : i1
-        %188 = comb.mux %176, %arg2, %cmd_speed_q : i2
-        %189 = comb.mux %176, %arg5, %cmd_len_q : i20
-        %190 = comb.and %37, %174 : i1
-        %191 = comb.mux bin %190, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %192 = comb.or %57, %175 : i1
-        %193 = comb.and %arg1, %174 : i1
-        %194 = comb.mux %193, %192, %sample_en_q : i1
-        %195 = comb.mux %193, %sample_en_q, %sample_en_q2 : i1
-        %196 = comb.mux bin %168, %u_sck_flop2Fq_o, %159 : i1
-        %197 = comb.mux %174, %157, %csb_q : i1
-        %198 = comb.or %25, %197 : i1
-        fsm.update %csb_q, %198 : i1
-        fsm.update %u_sck_flop2Fq_o, %196 : i1
-        fsm.update %sample_en_q2, %195 : i1
-        fsm.update %sample_en_q, %194 : i1
-        fsm.update %segment_rd_en_cpha1, %191 : i1
-        fsm.update %cmd_len_q, %189 : i20
-        fsm.update %cmd_speed_q, %188 : i2
-        fsm.update %cmd_wr_en_q, %186 : i1
-        fsm.update %cmd_rd_en_q, %187 : i1
-        fsm.update %csaat_q, %185 : i1
-        fsm.update %clkdiv_q, %184 : i16
-        fsm.update %csntrail_q, %183 : i4
-        fsm.update %csnlead_q, %182 : i4
-        fsm.update %csnidle_q, %181 : i4
-        fsm.update %full_cyc_q, %180 : i1
-        fsm.update %cpha_q, %179 : i1
-        fsm.update %cpol_q, %178 : i1
-        fsm.update %csid_q, %177 : i1
+        %48 = comb.xor %43, %true_24 : i1
+        %49 = comb.and %48, %47, %15, %46, %45 : i1
+        fsm.return %49
+      } action {
+        %true = hw.constant true
+        fsm.update %_sh1_10, %true : i1
+        %false_13 = hw.constant false
+        %c0_i4 = hw.constant 0 : i4
+        %c0_i3 = hw.constant 0 : i3
+        %c-1_i4 = hw.constant -1 : i4
+        %true_14 = hw.constant true
+        %0 = comb.xor %arg15, %true_14 : i1
+        %false_15 = hw.constant false
+        %1 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
+        %2 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %3 = comb.add %wait_cntr_q, %c-1_i4 : i4
+        %4 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
+        %5 = comb.and %cmd_wr_en_q, %2 : i1
+        %6 = comb.or %5, %cmd_wr_en_last_bit : i1
+        %7 = comb.xor %isFirstCycle, %true_14 : i1
+        %8 = comb.and %7, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %9 = comb.xor %8, %true_14 : i1
+        verif.assert %9 : i1
+        fsm.update %_sh1_8, %0 : i1
+        fsm.update %_sh1_6, %1 : i1
+        fsm.update %_sh1, %false_15 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        fsm.update %cmd_wr_en_last_bit, %6 : i1
+        %false_16 = hw.constant false
+        %10 = comb.mux %arg15, %csntrail_q, %c0_i4 : i4
+        %11 = comb.and %4, %0 : i1
+        %12 = comb.mux %11, %3, %10 : i4
+        fsm.update %u_sck_flop2Fq_o, %cpol_q : i1
+        fsm.update %wait_cntr_q, %12 : i4
+        fsm.update %byte_cntr_cpha1_q, %byte_cntr_cpha1_q : i20
+        fsm.update %byte_cntr_cpha0_q, %byte_cntr_cpha0_q : i20
+        fsm.update %bit_cntr_q, %bit_cntr_q : i3
+        fsm.update %clk_cntr_q, %clk_cntr_q : i16
+        %true_17 = hw.constant true
+        %13 = comb.mux bin %arg15, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        fsm.update %_sh1_12, %true_17 : i1
+        fsm.update %csb_q, %csid_q : i1
+        fsm.update %sample_en_q2, %sample_en_q : i1
+        fsm.update %sample_en_q, %false_16 : i1
+        fsm.update %segment_rd_en_cpha1, %13 : i1
+        fsm.update %cmd_speed_q, %cmd_speed_q : i2
+        fsm.update %cmd_wr_en_q, %cmd_wr_en_q : i1
+        fsm.update %cmd_rd_en_q, %cmd_rd_en_q : i1
+        fsm.update %csaat_q, %csaat_q : i1
+        fsm.update %clkdiv_q, %clkdiv_q : i16
+        fsm.update %csntrail_q, %csntrail_q : i4
+        fsm.update %csnlead_q, %csnlead_q : i4
+        fsm.update %csnidle_q, %csnidle_q : i4
+        fsm.update %full_cyc_q, %full_cyc_q : i1
+        fsm.update %cpha_q, %cpha_q : i1
+        fsm.update %cpol_q, %cpol_q : i1
+        fsm.update %csid_q, %csid_q : i1
       }
       fsm.transition @state_3 guard {
         %c0_i4 = hw.constant 0 : i4
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
         %c-4_i3 = hw.constant -4 : i3
         %c1_i2 = hw.constant 1 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.xor %arg16, %true : i1
         %1 = comb.concat %c1_i2, %cpha_q : i2, i1
@@ -8240,352 +6336,171 @@ module {
         %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
         %10 = comb.xor %arg18, %true : i1
-        %c-1_i3_0 = hw.constant -1 : i3
+        %c-1_i3_13 = hw.constant -1 : i3
         %11 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %12 = comb.and %arg1, %10 : i1
-        %13 = comb.mux %12, %6, %9 : i3
-        %14 = comb.mux %arg18, %c0_i3, %13 : i3
-        %15 = comb.xor %arg1, %true : i1
-        %16 = comb.and %10, %15 : i1
-        %17 = comb.mux %16, %c-1_i3_0, %14 : i3
-        %18 = comb.xor %16, %true : i1
-        %19 = comb.icmp ne %17, %c-1_i3_0 : i3
-        %20 = comb.and %10, %19 : i1
-        %true_1 = hw.constant true
-        %21 = comb.xor %12, %true_1 : i1
-        %true_2 = hw.constant true
-        %22 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %23 = comb.xor %16, %true_3 : i1
-        %24 = comb.and %23, %22, %21, %8 : i1
-        %true_4 = hw.constant true
-        %25 = comb.xor %cpha_q, %true_4 : i1
-        %true_5 = hw.constant true
-        %26 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %27 = comb.xor %16, %true_6 : i1
-        %28 = comb.and %27, %26, %12, %5, %25, %11 : i1
-        %29 = comb.or %24, %28 : i1
-        %30 = comb.and %20, %29 : i1
-        %true_7 = hw.constant true
-        %31 = comb.xor %arg18, %true_7 : i1
-        %true_8 = hw.constant true
-        %32 = comb.xor %16, %true_8 : i1
-        %33 = comb.and %20, %32, %31, %12, %5, %cpha_q, %11 : i1
-        %34 = comb.and %arg15, %18, %12, %7 : i1
-        %35 = comb.mux %34, %arg14, %csid_q : i1
-        %36 = comb.mux %34, %arg12, %cpha_q : i1
-        %37 = comb.mux %34, %arg3, %cmd_wr_en_q : i1
-        %38 = comb.mux %34, %arg4, %cmd_rd_en_q : i1
-        %39 = comb.mux %34, %arg2, %cmd_speed_q : i2
-        %40 = comb.xor %36, %true : i1
-        %41 = comb.mux %40, %30, %33 : i1
-        %42 = comb.icmp eq %arg2, %c0_i2 : i2
-        %43 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %44 = comb.mux %34, %42, %43 : i1
-        %45 = comb.and %38, %37 : i1
-        %46 = comb.xor %45, %true : i1
-        %47 = comb.or %44, %46 : i1
-        verif.assert %47 : i1
-        %48 = comb.icmp ne %39, %c-1_i2 : i2
-        verif.assert %48 : i1
-        %49 = comb.xor %35, %true : i1
-        verif.assert %49 : i1
-        %50 = comb.and %41, %37, %0 : i1
-        %51 = comb.or %50, %16 : i1
-        %true_9 = hw.constant true
-        %52 = comb.xor %arg18, %true_9 : i1
-        %true_10 = hw.constant true
-        %53 = comb.xor %51, %true_10 : i1
-        %54 = comb.and %53, %52, %12, %5, %cpha_q : i1
-        fsm.return %54
+        %12 = comb.xor %isFirstCycle, %true : i1
+        %13 = comb.and %12, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %10 : i1
+        %14 = comb.xor %13, %true : i1
+        %15 = comb.and %arg1, %10 : i1
+        %16 = comb.mux %15, %6, %9 : i3
+        %17 = comb.mux %arg18, %c0_i3, %16 : i3
+        %18 = comb.xor %arg1, %true : i1
+        %19 = comb.and %10, %18 : i1
+        %20 = comb.mux %19, %c-1_i3_13, %17 : i3
+        %21 = comb.xor %19, %true : i1
+        %22 = comb.icmp ne %20, %c-1_i3_13 : i3
+        %23 = comb.and %10, %22 : i1
+        %true_14 = hw.constant true
+        %24 = comb.xor %15, %true_14 : i1
+        %true_15 = hw.constant true
+        %25 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %26 = comb.xor %19, %true_16 : i1
+        %27 = comb.and %26, %25, %24, %8 : i1
+        %true_17 = hw.constant true
+        %28 = comb.xor %cpha_q, %true_17 : i1
+        %true_18 = hw.constant true
+        %29 = comb.xor %arg18, %true_18 : i1
+        %true_19 = hw.constant true
+        %30 = comb.xor %19, %true_19 : i1
+        %31 = comb.and %30, %29, %15, %5, %28, %11 : i1
+        %32 = comb.or %27, %31 : i1
+        %33 = comb.and %23, %32 : i1
+        %true_20 = hw.constant true
+        %34 = comb.xor %arg18, %true_20 : i1
+        %true_21 = hw.constant true
+        %35 = comb.xor %19, %true_21 : i1
+        %36 = comb.and %23, %35, %34, %15, %5, %cpha_q, %11 : i1
+        verif.assert %14 : i1
+        %37 = comb.and %arg15, %21, %15, %7 : i1
+        %38 = comb.mux %37, %arg12, %cpha_q : i1
+        %39 = comb.mux %37, %arg3, %cmd_wr_en_q : i1
+        %40 = comb.xor %38, %true : i1
+        %41 = comb.mux %40, %33, %36 : i1
+        %42 = comb.and %41, %39, %0 : i1
+        %43 = comb.or %42, %19 : i1
+        %true_22 = hw.constant true
+        %44 = comb.xor %arg18, %true_22 : i1
+        %true_23 = hw.constant true
+        %45 = comb.xor %43, %true_23 : i1
+        %46 = comb.and %45, %44, %15, %5, %cpha_q : i1
+        fsm.return %46
       } action {
+        %true = hw.constant true
+        %true_13 = hw.constant true
+        fsm.update %_sh1_10, %true : i1
+        %false_14 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
-        %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
-        %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
         %c-4_i3 = hw.constant -4 : i3
-        %c3_i3 = hw.constant 3 : i3
         %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
-        %c-1_i4 = hw.constant -1 : i4
-        %true = hw.constant true
-        %0 = comb.xor %arg16, %true : i1
-        %1 = comb.concat %c1_i2, %cpha_q : i2, i1
-        %2 = comb.xor %arg15, %true : i1
-        %3 = comb.mux %2, %c-1_i3, %c-4_i3 : i3
-        %4 = comb.icmp eq %arg14, %csid_q : i1
-        %5 = comb.and %4, %arg15 : i1
-        %6 = comb.mux %5, %1, %3 : i3
-        %7 = comb.or %5, %2 : i1
-        %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
-        %10 = comb.xor %arg18, %true : i1
-        %11 = comb.and %arg1, %10 : i1
-        %12 = comb.mux %11, %6, %9 : i3
-        %13 = comb.mux %arg18, %c0_i3, %12 : i3
-        %14 = comb.xor %arg1, %true : i1
-        %15 = comb.and %10, %14 : i1
-        %16 = comb.xor %15, %true : i1
-        %c-1_i3_0 = hw.constant -1 : i3
-        %17 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %18 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
-        %19 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %20 = comb.or %arg18, %arg1 : i1
-        %21 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %22 = comb.and %cmd_wr_en_q, %17 : i1
-        %23 = comb.or %22, %cmd_wr_en_last_bit : i1
-        fsm.update %cmd_wr_en_last_bit, %23 : i1
-        %24 = comb.and %arg15, %16, %11, %7 : i1
-        %25 = comb.mux %24, %arg14, %csid_q : i1
-        %26 = comb.mux %24, %arg13, %cpol_q : i1
-        %27 = comb.mux %24, %arg12, %cpha_q : i1
-        %28 = comb.mux %24, %arg8, %csnidle_q : i4
-        %29 = comb.mux %24, %arg9, %csnlead_q : i4
-        %30 = comb.mux %24, %arg10, %csntrail_q : i4
-        %31 = comb.mux %24, %arg3, %cmd_wr_en_q : i1
-        %32 = comb.mux %24, %arg4, %cmd_rd_en_q : i1
-        %33 = comb.mux %24, %arg2, %cmd_speed_q : i2
-        %34 = comb.mux %24, %arg7, %clk_cntr_q : i16
-        %35 = comb.mux %arg18, %c0_i16, %34 : i16
-        %36 = comb.mux %15, %c-1_i3_0, %13 : i3
-        %37 = comb.icmp ne %36, %c-1_i3_0 : i3
-        %38 = comb.and %10, %37 : i1
-        %true_1 = hw.constant true
-        %39 = comb.xor %11, %true_1 : i1
-        %true_2 = hw.constant true
-        %40 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %41 = comb.xor %15, %true_3 : i1
-        %42 = comb.and %41, %40, %39, %8 : i1
-        %true_4 = hw.constant true
-        %43 = comb.xor %cpha_q, %true_4 : i1
-        %true_5 = hw.constant true
-        %44 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %45 = comb.xor %15, %true_6 : i1
-        %46 = comb.and %45, %44, %11, %5, %43 : i1
-        %47 = comb.and %46, %17 : i1
-        %48 = comb.or %42, %47 : i1
-        %49 = comb.and %38, %48 : i1
-        %50 = comb.and %38, %46, %18 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %arg18, %true_7 : i1
-        %true_8 = hw.constant true
-        %52 = comb.xor %15, %true_8 : i1
-        %53 = comb.and %52, %51, %11, %5, %cpha_q : i1
-        %54 = comb.and %38, %53, %17 : i1
-        %55 = comb.and %38, %53, %18 : i1
-        %56 = comb.xor %27, %true : i1
-        %57 = comb.mux %56, %49, %54 : i1
-        %58 = comb.mux %56, %50, %55 : i1
-        %59 = comb.xor %32, %true : i1
-        %60 = comb.xor %31, %true : i1
-        %61 = comb.and %59, %60 : i1
-        %62 = comb.icmp eq %arg2, %c0_i2 : i2
-        %63 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %64 = comb.mux %24, %62, %63 : i1
-        %65 = comb.icmp eq %arg2, %c1_i2 : i2
-        %66 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %67 = comb.mux %24, %65, %66 : i1
-        %68 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %69 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %70 = comb.mux %24, %68, %69 : i1
-        %71 = comb.mux %70, %c-4_i3, %c1_i3 : i3
-        %72 = comb.xor %61, %true : i1
-        %73 = comb.xor %64, %true : i1
-        %74 = comb.and %73, %72, %67 : i1
-        %75 = comb.mux %74, %c2_i3, %71 : i3
-        %76 = comb.mux %74, %c-2_i3, %71 : i3
-        %77 = comb.and %72, %64 : i1
-        %78 = comb.mux %77, %c1_i3, %75 : i3
-        %79 = comb.mux %77, %c-1_i3, %76 : i3
-        %80 = comb.mux %61, %c0_i3, %78 : i3
-        %81 = comb.mux %61, %c0_i3, %79 : i3
-        %82 = comb.sub %bit_cntr_q, %80 : i3
-        %83 = comb.mux %58, %82, %bit_cntr_q : i3
-        %84 = comb.mux %57, %81, %83 : i3
-        %85 = comb.mux %14, %bit_cntr_q, %84 : i3
-        %86 = comb.mux %arg18, %c0_i3, %85 : i3
-        %87 = comb.mux %24, %arg5, %byte_cntr_cpha0_q : i20
-        %88 = comb.mux %arg18, %c0_i20, %87 : i20
-        %89 = comb.mux %24, %arg5, %byte_cntr_cpha1_q : i20
-        %90 = comb.mux %arg18, %c0_i20, %89 : i20
-        %true_9 = hw.constant true
-        %91 = comb.xor %11, %true_9 : i1
-        %true_10 = hw.constant true
-        %92 = comb.xor %arg18, %true_10 : i1
-        %true_11 = hw.constant true
-        %93 = comb.xor %15, %true_11 : i1
-        %94 = comb.and %93, %92, %91, %8 : i1
-        %95 = comb.extract %3 from 0 : (i3) -> i2
-        %c0_i2_12 = hw.constant 0 : i2
-        %96 = comb.icmp eq %95, %c0_i2_12 : i2
-        %true_13 = hw.constant true
-        %97 = comb.xor %5, %true_13 : i1
-        %true_14 = hw.constant true
-        %98 = comb.xor %arg18, %true_14 : i1
         %true_15 = hw.constant true
-        %99 = comb.xor %15, %true_15 : i1
-        %100 = comb.and %99, %98, %11, %97, %96 : i1
-        %101 = comb.extract %3 from 0 : (i3) -> i2
-        %c1_i2_16 = hw.constant 1 : i2
-        %102 = comb.icmp eq %101, %c1_i2_16 : i2
-        %true_17 = hw.constant true
-        %103 = comb.xor %5, %true_17 : i1
+        %0 = comb.xor %arg16, %true_15 : i1
+        %false_16 = hw.constant false
+        %false_17 = hw.constant false
+        %1 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
+        %2 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %3 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
+        %4 = comb.icmp eq %arg2, %c0_i2 : i2
+        %5 = comb.icmp eq %arg2, %c1_i2 : i2
+        %6 = comb.icmp eq %arg2, %c-2_i2 : i2
+        %7 = comb.and %cmd_wr_en_q, %2 : i1
+        %8 = comb.or %7, %cmd_wr_en_last_bit : i1
+        %9 = comb.xor %isFirstCycle, %true_15 : i1
+        %10 = comb.and %9, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %11 = comb.xor %10, %true_15 : i1
+        verif.assert %11 : i1
+        fsm.update %_sh1_8, %false_16 : i1
+        fsm.update %_sh1_6, %1 : i1
+        fsm.update %_sh1, %false_17 : i1
+        fsm.update %isFirstCycle, %false_14 : i1
+        fsm.update %cmd_wr_en_last_bit, %8 : i1
+        %12 = comb.and %arg12, %2 : i1
+        %13 = comb.and %arg12, %3 : i1
+        %14 = comb.xor %arg4, %true_15 : i1
+        %15 = comb.xor %arg3, %true_15 : i1
+        %16 = comb.and %14, %15 : i1
+        %17 = comb.mux %6, %c-4_i3, %c1_i3 : i3
+        %18 = comb.xor %16, %true_15 : i1
+        %19 = comb.xor %4, %true_15 : i1
+        %20 = comb.and %19, %18, %5 : i1
+        %21 = comb.mux %20, %c2_i3, %17 : i3
+        %22 = comb.mux %20, %c-2_i3, %17 : i3
+        %23 = comb.and %18, %4 : i1
+        %24 = comb.mux %23, %c1_i3, %21 : i3
+        %25 = comb.mux %23, %c-1_i3, %22 : i3
+        %26 = comb.mux %16, %c0_i3, %24 : i3
+        %27 = comb.mux %16, %c0_i3, %25 : i3
+        %28 = comb.sub %bit_cntr_q, %26 : i3
+        %29 = comb.mux %13, %28, %bit_cntr_q : i3
+        %30 = comb.mux %12, %27, %29 : i3
         %true_18 = hw.constant true
-        %104 = comb.xor %arg18, %true_18 : i1
-        %true_19 = hw.constant true
-        %105 = comb.xor %15, %true_19 : i1
-        %106 = comb.and %105, %104, %11, %103, %102 : i1
-        %107 = comb.extract %3 from 0 : (i3) -> i2
-        %c-2_i2_20 = hw.constant -2 : i2
-        %108 = comb.icmp eq %107, %c-2_i2_20 : i2
-        %true_21 = hw.constant true
-        %109 = comb.xor %5, %true_21 : i1
-        %110 = comb.and %109, %108 : i1
-        %true_22 = hw.constant true
-        %111 = comb.xor %8, %true_22 : i1
-        %112 = comb.mux %11, %110, %111 : i1
-        %true_23 = hw.constant true
-        %113 = comb.xor %arg18, %true_23 : i1
-        %true_24 = hw.constant true
-        %114 = comb.xor %15, %true_24 : i1
-        %115 = comb.and %37, %11 : i1
-        %116 = comb.xor %94, %true : i1
-        %117 = comb.and %116, %115 : i1
-        %118 = comb.xor %100, %true : i1
-        %119 = comb.and %118, %117 : i1
-        %120 = comb.xor %106, %true : i1
-        %121 = comb.and %120, %119, %114, %113, %112 : i1
-        %122 = comb.and %119, %106 : i1
-        %123 = comb.or %122, %121 : i1
-        %124 = comb.mux %123, %28, %c0_i4 : i4
-        %125 = comb.and %117, %100 : i1
-        %126 = comb.mux %125, %30, %124 : i4
-        %127 = comb.and %115, %94 : i1
-        %128 = comb.mux %127, %29, %126 : i4
-        %129 = comb.mux %20, %128, %wait_cntr_q : i4
-        %130 = comb.mux %arg18, %c0_i4, %129 : i4
-        %131 = comb.xor %37, %true : i1
-        %132 = comb.and %21, %131, %11 : i1
-        %133 = comb.mux %132, %19, %130 : i4
-        %true_25 = hw.constant true
-        %134 = comb.xor %cpha_q, %true_25 : i1
-        %true_26 = hw.constant true
-        %135 = comb.xor %arg18, %true_26 : i1
-        %true_27 = hw.constant true
-        %136 = comb.xor %15, %true_27 : i1
-        %137 = comb.and %136, %135, %11, %5, %134 : i1
-        %true_28 = hw.constant true
-        %138 = comb.xor %arg18, %true_28 : i1
-        %true_29 = hw.constant true
-        %139 = comb.xor %15, %true_29 : i1
-        %140 = comb.and %139, %138, %11, %5, %cpha_q : i1
-        %141 = comb.extract %3 from 0 : (i3) -> i2
-        %c-1_i2_30 = hw.constant -1 : i2
-        %142 = comb.icmp eq %141, %c-1_i2_30 : i2
-        %true_31 = hw.constant true
-        %143 = comb.xor %5, %true_31 : i1
-        %true_32 = hw.constant true
-        %144 = comb.xor %arg18, %true_32 : i1
-        %145 = comb.and %144, %11, %143, %142 : i1
-        %146 = comb.or %15, %145 : i1
-        %147 = comb.icmp ne %36, %c-4_i3 : i3
-        %148 = comb.xor %137, %true : i1
-        %149 = comb.and %148, %116 : i1
-        %150 = comb.xor %140, %true : i1
-        %151 = comb.and %150, %149, %146 : i1
-        %152 = comb.xor %151, %true : i1
-        %153 = comb.and %149, %140 : i1
-        %154 = comb.xor %153, %true : i1
-        %155 = comb.and %116, %137 : i1
-        %156 = comb.xor %155, %true : i1
-        %157 = comb.and %116, %156, %154, %152, %147 : i1
-        %158 = comb.icmp ne %36, %c3_i3 : i3
-        %159 = comb.mux %26, %158, %53 : i1
-        %160 = comb.icmp eq %arg2, %c0_i2 : i2
-        %161 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %162 = comb.mux %24, %160, %161 : i1
-        %163 = comb.and %32, %31 : i1
-        %164 = comb.xor %163, %true : i1
-        %165 = comb.or %162, %164 : i1
-        verif.assert %165 : i1
-        %166 = comb.icmp ne %33, %c-1_i2 : i2
-        verif.assert %166 : i1
-        %167 = comb.xor %25, %true : i1
-        verif.assert %167 : i1
-        %168 = comb.and %57, %31, %0 : i1
-        %169 = comb.mux %168, %clk_cntr_q, %35 : i16
-        %170 = comb.mux %168, %bit_cntr_q, %86 : i3
-        %171 = comb.mux %168, %byte_cntr_cpha0_q, %88 : i20
-        %172 = comb.mux %168, %byte_cntr_cpha1_q, %90 : i20
-        %173 = comb.mux %168, %wait_cntr_q, %133 : i4
-        fsm.update %wait_cntr_q, %173 : i4
-        fsm.update %byte_cntr_cpha1_q, %172 : i20
-        fsm.update %byte_cntr_cpha0_q, %171 : i20
-        fsm.update %bit_cntr_q, %170 : i3
-        fsm.update %clk_cntr_q, %169 : i16
-        %174 = comb.xor %168, %true : i1
-        %175 = comb.and %58, %174 : i1
-        %176 = comb.and %24, %174 : i1
-        %177 = comb.mux %176, %arg14, %csid_q : i1
-        %178 = comb.mux %176, %arg13, %cpol_q : i1
-        %179 = comb.mux %176, %arg12, %cpha_q : i1
-        %180 = comb.mux %176, %arg11, %full_cyc_q : i1
-        %181 = comb.mux %176, %arg8, %csnidle_q : i4
-        %182 = comb.mux %176, %arg9, %csnlead_q : i4
-        %183 = comb.mux %176, %arg10, %csntrail_q : i4
-        %184 = comb.mux %176, %arg7, %clkdiv_q : i16
-        %185 = comb.mux %176, %arg6, %csaat_q : i1
-        %186 = comb.mux %176, %arg3, %cmd_wr_en_q : i1
-        %187 = comb.mux %176, %arg4, %cmd_rd_en_q : i1
-        %188 = comb.mux %176, %arg2, %cmd_speed_q : i2
-        %189 = comb.mux %176, %arg5, %cmd_len_q : i20
-        %190 = comb.and %37, %174 : i1
-        %191 = comb.mux bin %190, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %192 = comb.or %57, %175 : i1
-        %193 = comb.and %arg1, %174 : i1
-        %194 = comb.mux %193, %192, %sample_en_q : i1
-        %195 = comb.mux %193, %sample_en_q, %sample_en_q2 : i1
-        %196 = comb.mux bin %168, %u_sck_flop2Fq_o, %159 : i1
-        %197 = comb.mux %174, %157, %csb_q : i1
-        %198 = comb.or %25, %197 : i1
-        fsm.update %csb_q, %198 : i1
-        fsm.update %u_sck_flop2Fq_o, %196 : i1
-        fsm.update %sample_en_q2, %195 : i1
-        fsm.update %sample_en_q, %194 : i1
-        fsm.update %segment_rd_en_cpha1, %191 : i1
-        fsm.update %cmd_len_q, %189 : i20
-        fsm.update %cmd_speed_q, %188 : i2
-        fsm.update %cmd_wr_en_q, %186 : i1
-        fsm.update %cmd_rd_en_q, %187 : i1
-        fsm.update %csaat_q, %185 : i1
-        fsm.update %clkdiv_q, %184 : i16
-        fsm.update %csntrail_q, %183 : i4
-        fsm.update %csnlead_q, %182 : i4
-        fsm.update %csnidle_q, %181 : i4
-        fsm.update %full_cyc_q, %180 : i1
-        fsm.update %cpha_q, %179 : i1
-        fsm.update %cpol_q, %178 : i1
-        fsm.update %csid_q, %177 : i1
+        %31 = comb.xor %arg13, %true_18 : i1
+        %32 = comb.and %12, %arg3, %0 : i1
+        %33 = comb.mux %32, %clk_cntr_q, %arg7 : i16
+        %34 = comb.mux %32, %bit_cntr_q, %30 : i3
+        %35 = comb.mux %32, %byte_cntr_cpha0_q, %arg5 : i20
+        %36 = comb.mux %32, %byte_cntr_cpha1_q, %arg5 : i20
+        %37 = comb.mux %32, %wait_cntr_q, %c0_i4 : i4
+        %38 = comb.mux bin %32, %u_sck_flop2Fq_o, %31 : i1
+        fsm.update %u_sck_flop2Fq_o, %38 : i1
+        fsm.update %wait_cntr_q, %37 : i4
+        fsm.update %byte_cntr_cpha1_q, %36 : i20
+        fsm.update %byte_cntr_cpha0_q, %35 : i20
+        fsm.update %bit_cntr_q, %34 : i3
+        fsm.update %clk_cntr_q, %33 : i16
+        %39 = comb.xor %32, %true_15 : i1
+        %40 = comb.and %13, %39 : i1
+        %41 = comb.mux %39, %arg14, %csid_q : i1
+        %42 = comb.mux %39, %arg13, %cpol_q : i1
+        %43 = comb.or %32, %arg12 : i1
+        %44 = comb.mux %39, %arg11, %full_cyc_q : i1
+        %45 = comb.mux %39, %arg8, %csnidle_q : i4
+        %46 = comb.mux %39, %arg9, %csnlead_q : i4
+        %47 = comb.mux %39, %arg10, %csntrail_q : i4
+        %48 = comb.mux %39, %arg7, %clkdiv_q : i16
+        %49 = comb.mux %39, %arg6, %csaat_q : i1
+        %50 = comb.mux %39, %arg3, %cmd_wr_en_q : i1
+        %51 = comb.mux %39, %arg4, %cmd_rd_en_q : i1
+        %52 = comb.mux %39, %arg2, %cmd_speed_q : i2
+        %53 = comb.mux bin %32, %segment_rd_en_cpha1, %cmd_rd_en_q : i1
+        %54 = comb.or %12, %40 : i1
+        %55 = comb.mux %39, %54, %sample_en_q : i1
+        %56 = comb.mux %39, %sample_en_q, %sample_en_q2 : i1
+        %57 = comb.and %32, %csb_q : i1
+        %58 = comb.or %arg14, %57 : i1
+        fsm.update %_sh1_12, %39 : i1
+        fsm.update %csb_q, %58 : i1
+        fsm.update %sample_en_q2, %56 : i1
+        fsm.update %sample_en_q, %55 : i1
+        fsm.update %segment_rd_en_cpha1, %53 : i1
+        fsm.update %cmd_speed_q, %52 : i2
+        fsm.update %cmd_wr_en_q, %50 : i1
+        fsm.update %cmd_rd_en_q, %51 : i1
+        fsm.update %csaat_q, %49 : i1
+        fsm.update %clkdiv_q, %48 : i16
+        fsm.update %csntrail_q, %47 : i4
+        fsm.update %csnlead_q, %46 : i4
+        fsm.update %csnidle_q, %45 : i4
+        fsm.update %full_cyc_q, %44 : i1
+        fsm.update %true_13, %43 : i1
+        fsm.update %cpol_q, %42 : i1
+        fsm.update %csid_q, %41 : i1
       }
       fsm.transition @state_2 guard {
         %c0_i4 = hw.constant 0 : i4
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
         %c-4_i3 = hw.constant -4 : i3
         %c1_i2 = hw.constant 1 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.xor %arg16, %true : i1
         %1 = comb.concat %c1_i2, %cpha_q : i2, i1
@@ -8598,354 +6513,172 @@ module {
         %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
         %10 = comb.xor %arg18, %true : i1
-        %c-1_i3_0 = hw.constant -1 : i3
+        %c-1_i3_13 = hw.constant -1 : i3
         %11 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %12 = comb.and %arg1, %10 : i1
-        %13 = comb.mux %12, %6, %9 : i3
-        %14 = comb.mux %arg18, %c0_i3, %13 : i3
-        %15 = comb.xor %arg1, %true : i1
-        %16 = comb.and %10, %15 : i1
-        %17 = comb.mux %16, %c-1_i3_0, %14 : i3
-        %18 = comb.xor %16, %true : i1
-        %19 = comb.icmp ne %17, %c-1_i3_0 : i3
-        %20 = comb.and %10, %19 : i1
-        %true_1 = hw.constant true
-        %21 = comb.xor %12, %true_1 : i1
-        %true_2 = hw.constant true
-        %22 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %23 = comb.xor %16, %true_3 : i1
-        %24 = comb.and %23, %22, %21, %8 : i1
-        %true_4 = hw.constant true
-        %25 = comb.xor %cpha_q, %true_4 : i1
-        %true_5 = hw.constant true
-        %26 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %27 = comb.xor %16, %true_6 : i1
-        %28 = comb.and %27, %26, %12, %5, %25, %11 : i1
-        %29 = comb.or %24, %28 : i1
-        %30 = comb.and %20, %29 : i1
-        %true_7 = hw.constant true
-        %31 = comb.xor %arg18, %true_7 : i1
-        %true_8 = hw.constant true
-        %32 = comb.xor %16, %true_8 : i1
-        %33 = comb.and %20, %32, %31, %12, %5, %cpha_q, %11 : i1
-        %34 = comb.and %arg15, %18, %12, %7 : i1
-        %35 = comb.mux %34, %arg14, %csid_q : i1
-        %36 = comb.mux %34, %arg12, %cpha_q : i1
-        %37 = comb.mux %34, %arg3, %cmd_wr_en_q : i1
-        %38 = comb.mux %34, %arg4, %cmd_rd_en_q : i1
-        %39 = comb.mux %34, %arg2, %cmd_speed_q : i2
-        %40 = comb.xor %36, %true : i1
-        %41 = comb.mux %40, %30, %33 : i1
-        %42 = comb.icmp eq %arg2, %c0_i2 : i2
-        %43 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %44 = comb.mux %34, %42, %43 : i1
-        %45 = comb.and %38, %37 : i1
-        %46 = comb.xor %45, %true : i1
-        %47 = comb.or %44, %46 : i1
-        verif.assert %47 : i1
-        %48 = comb.icmp ne %39, %c-1_i2 : i2
-        verif.assert %48 : i1
-        %49 = comb.xor %35, %true : i1
-        verif.assert %49 : i1
-        %50 = comb.and %41, %37, %0 : i1
-        %51 = comb.or %50, %16 : i1
-        %true_9 = hw.constant true
-        %52 = comb.xor %cpha_q, %true_9 : i1
-        %true_10 = hw.constant true
-        %53 = comb.xor %arg18, %true_10 : i1
-        %true_11 = hw.constant true
-        %54 = comb.xor %51, %true_11 : i1
-        %55 = comb.and %54, %53, %12, %5, %52 : i1
-        fsm.return %55
+        %12 = comb.xor %isFirstCycle, %true : i1
+        %13 = comb.and %12, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %10 : i1
+        %14 = comb.xor %13, %true : i1
+        %15 = comb.and %arg1, %10 : i1
+        %16 = comb.mux %15, %6, %9 : i3
+        %17 = comb.mux %arg18, %c0_i3, %16 : i3
+        %18 = comb.xor %arg1, %true : i1
+        %19 = comb.and %10, %18 : i1
+        %20 = comb.mux %19, %c-1_i3_13, %17 : i3
+        %21 = comb.xor %19, %true : i1
+        %22 = comb.icmp ne %20, %c-1_i3_13 : i3
+        %23 = comb.and %10, %22 : i1
+        %true_14 = hw.constant true
+        %24 = comb.xor %15, %true_14 : i1
+        %true_15 = hw.constant true
+        %25 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %26 = comb.xor %19, %true_16 : i1
+        %27 = comb.and %26, %25, %24, %8 : i1
+        %true_17 = hw.constant true
+        %28 = comb.xor %cpha_q, %true_17 : i1
+        %true_18 = hw.constant true
+        %29 = comb.xor %arg18, %true_18 : i1
+        %true_19 = hw.constant true
+        %30 = comb.xor %19, %true_19 : i1
+        %31 = comb.and %30, %29, %15, %5, %28, %11 : i1
+        %32 = comb.or %27, %31 : i1
+        %33 = comb.and %23, %32 : i1
+        %true_20 = hw.constant true
+        %34 = comb.xor %arg18, %true_20 : i1
+        %true_21 = hw.constant true
+        %35 = comb.xor %19, %true_21 : i1
+        %36 = comb.and %23, %35, %34, %15, %5, %cpha_q, %11 : i1
+        verif.assert %14 : i1
+        %37 = comb.and %arg15, %21, %15, %7 : i1
+        %38 = comb.mux %37, %arg12, %cpha_q : i1
+        %39 = comb.mux %37, %arg3, %cmd_wr_en_q : i1
+        %40 = comb.xor %38, %true : i1
+        %41 = comb.mux %40, %33, %36 : i1
+        %42 = comb.and %41, %39, %0 : i1
+        %43 = comb.or %42, %19 : i1
+        %true_22 = hw.constant true
+        %44 = comb.xor %cpha_q, %true_22 : i1
+        %true_23 = hw.constant true
+        %45 = comb.xor %arg18, %true_23 : i1
+        %true_24 = hw.constant true
+        %46 = comb.xor %43, %true_24 : i1
+        %47 = comb.and %46, %45, %15, %5, %44 : i1
+        fsm.return %47
       } action {
+        %true = hw.constant true
+        %false_13 = hw.constant false
+        fsm.update %_sh1_10, %true : i1
+        %false_14 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
-        %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
-        %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
         %c-4_i3 = hw.constant -4 : i3
-        %c3_i3 = hw.constant 3 : i3
         %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
-        %c-1_i4 = hw.constant -1 : i4
-        %true = hw.constant true
-        %0 = comb.xor %arg16, %true : i1
-        %1 = comb.concat %c1_i2, %cpha_q : i2, i1
-        %2 = comb.xor %arg15, %true : i1
-        %3 = comb.mux %2, %c-1_i3, %c-4_i3 : i3
-        %4 = comb.icmp eq %arg14, %csid_q : i1
-        %5 = comb.and %4, %arg15 : i1
-        %6 = comb.mux %5, %1, %3 : i3
-        %7 = comb.or %5, %2 : i1
-        %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
-        %10 = comb.xor %arg18, %true : i1
-        %11 = comb.and %arg1, %10 : i1
-        %12 = comb.mux %11, %6, %9 : i3
-        %13 = comb.mux %arg18, %c0_i3, %12 : i3
-        %14 = comb.xor %arg1, %true : i1
-        %15 = comb.and %10, %14 : i1
-        %16 = comb.xor %15, %true : i1
-        %c-1_i3_0 = hw.constant -1 : i3
-        %17 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %18 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
-        %19 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %20 = comb.or %arg18, %arg1 : i1
-        %21 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %22 = comb.and %cmd_wr_en_q, %17 : i1
-        %23 = comb.or %22, %cmd_wr_en_last_bit : i1
-        fsm.update %cmd_wr_en_last_bit, %23 : i1
-        %24 = comb.and %arg15, %16, %11, %7 : i1
-        %25 = comb.mux %24, %arg14, %csid_q : i1
-        %26 = comb.mux %24, %arg13, %cpol_q : i1
-        %27 = comb.mux %24, %arg12, %cpha_q : i1
-        %28 = comb.mux %24, %arg8, %csnidle_q : i4
-        %29 = comb.mux %24, %arg9, %csnlead_q : i4
-        %30 = comb.mux %24, %arg10, %csntrail_q : i4
-        %31 = comb.mux %24, %arg3, %cmd_wr_en_q : i1
-        %32 = comb.mux %24, %arg4, %cmd_rd_en_q : i1
-        %33 = comb.mux %24, %arg2, %cmd_speed_q : i2
-        %34 = comb.mux %24, %arg7, %clk_cntr_q : i16
-        %35 = comb.mux %arg18, %c0_i16, %34 : i16
-        %36 = comb.mux %15, %c-1_i3_0, %13 : i3
-        %37 = comb.icmp ne %36, %c-1_i3_0 : i3
-        %38 = comb.and %10, %37 : i1
-        %true_1 = hw.constant true
-        %39 = comb.xor %11, %true_1 : i1
-        %true_2 = hw.constant true
-        %40 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %41 = comb.xor %15, %true_3 : i1
-        %42 = comb.and %41, %40, %39, %8 : i1
-        %true_4 = hw.constant true
-        %43 = comb.xor %cpha_q, %true_4 : i1
-        %true_5 = hw.constant true
-        %44 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %45 = comb.xor %15, %true_6 : i1
-        %46 = comb.and %45, %44, %11, %5, %43 : i1
-        %47 = comb.and %46, %17 : i1
-        %48 = comb.or %42, %47 : i1
-        %49 = comb.and %38, %48 : i1
-        %50 = comb.and %38, %46, %18 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %arg18, %true_7 : i1
-        %true_8 = hw.constant true
-        %52 = comb.xor %15, %true_8 : i1
-        %53 = comb.and %52, %51, %11, %5, %cpha_q : i1
-        %54 = comb.and %38, %53, %17 : i1
-        %55 = comb.and %38, %53, %18 : i1
-        %56 = comb.xor %27, %true : i1
-        %57 = comb.mux %56, %49, %54 : i1
-        %58 = comb.mux %56, %50, %55 : i1
-        %59 = comb.xor %32, %true : i1
-        %60 = comb.xor %31, %true : i1
-        %61 = comb.and %59, %60 : i1
-        %62 = comb.icmp eq %arg2, %c0_i2 : i2
-        %63 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %64 = comb.mux %24, %62, %63 : i1
-        %65 = comb.icmp eq %arg2, %c1_i2 : i2
-        %66 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %67 = comb.mux %24, %65, %66 : i1
-        %68 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %69 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %70 = comb.mux %24, %68, %69 : i1
-        %71 = comb.mux %70, %c-4_i3, %c1_i3 : i3
-        %72 = comb.xor %61, %true : i1
-        %73 = comb.xor %64, %true : i1
-        %74 = comb.and %73, %72, %67 : i1
-        %75 = comb.mux %74, %c2_i3, %71 : i3
-        %76 = comb.mux %74, %c-2_i3, %71 : i3
-        %77 = comb.and %72, %64 : i1
-        %78 = comb.mux %77, %c1_i3, %75 : i3
-        %79 = comb.mux %77, %c-1_i3, %76 : i3
-        %80 = comb.mux %61, %c0_i3, %78 : i3
-        %81 = comb.mux %61, %c0_i3, %79 : i3
-        %82 = comb.sub %bit_cntr_q, %80 : i3
-        %83 = comb.mux %58, %82, %bit_cntr_q : i3
-        %84 = comb.mux %57, %81, %83 : i3
-        %85 = comb.mux %14, %bit_cntr_q, %84 : i3
-        %86 = comb.mux %arg18, %c0_i3, %85 : i3
-        %87 = comb.mux %24, %arg5, %byte_cntr_cpha0_q : i20
-        %88 = comb.mux %arg18, %c0_i20, %87 : i20
-        %89 = comb.mux %24, %arg5, %byte_cntr_cpha1_q : i20
-        %90 = comb.mux %arg18, %c0_i20, %89 : i20
-        %true_9 = hw.constant true
-        %91 = comb.xor %11, %true_9 : i1
-        %true_10 = hw.constant true
-        %92 = comb.xor %arg18, %true_10 : i1
-        %true_11 = hw.constant true
-        %93 = comb.xor %15, %true_11 : i1
-        %94 = comb.and %93, %92, %91, %8 : i1
-        %95 = comb.extract %3 from 0 : (i3) -> i2
-        %c0_i2_12 = hw.constant 0 : i2
-        %96 = comb.icmp eq %95, %c0_i2_12 : i2
-        %true_13 = hw.constant true
-        %97 = comb.xor %5, %true_13 : i1
-        %true_14 = hw.constant true
-        %98 = comb.xor %arg18, %true_14 : i1
         %true_15 = hw.constant true
-        %99 = comb.xor %15, %true_15 : i1
-        %100 = comb.and %99, %98, %11, %97, %96 : i1
-        %101 = comb.extract %3 from 0 : (i3) -> i2
-        %c1_i2_16 = hw.constant 1 : i2
-        %102 = comb.icmp eq %101, %c1_i2_16 : i2
-        %true_17 = hw.constant true
-        %103 = comb.xor %5, %true_17 : i1
-        %true_18 = hw.constant true
-        %104 = comb.xor %arg18, %true_18 : i1
-        %true_19 = hw.constant true
-        %105 = comb.xor %15, %true_19 : i1
-        %106 = comb.and %105, %104, %11, %103, %102 : i1
-        %107 = comb.extract %3 from 0 : (i3) -> i2
-        %c-2_i2_20 = hw.constant -2 : i2
-        %108 = comb.icmp eq %107, %c-2_i2_20 : i2
-        %true_21 = hw.constant true
-        %109 = comb.xor %5, %true_21 : i1
-        %110 = comb.and %109, %108 : i1
-        %true_22 = hw.constant true
-        %111 = comb.xor %8, %true_22 : i1
-        %112 = comb.mux %11, %110, %111 : i1
-        %true_23 = hw.constant true
-        %113 = comb.xor %arg18, %true_23 : i1
-        %true_24 = hw.constant true
-        %114 = comb.xor %15, %true_24 : i1
-        %115 = comb.and %37, %11 : i1
-        %116 = comb.xor %94, %true : i1
-        %117 = comb.and %116, %115 : i1
-        %118 = comb.xor %100, %true : i1
-        %119 = comb.and %118, %117 : i1
-        %120 = comb.xor %106, %true : i1
-        %121 = comb.and %120, %119, %114, %113, %112 : i1
-        %122 = comb.and %119, %106 : i1
-        %123 = comb.or %122, %121 : i1
-        %124 = comb.mux %123, %28, %c0_i4 : i4
-        %125 = comb.and %117, %100 : i1
-        %126 = comb.mux %125, %30, %124 : i4
-        %127 = comb.and %115, %94 : i1
-        %128 = comb.mux %127, %29, %126 : i4
-        %129 = comb.mux %20, %128, %wait_cntr_q : i4
-        %130 = comb.mux %arg18, %c0_i4, %129 : i4
-        %131 = comb.xor %37, %true : i1
-        %132 = comb.and %21, %131, %11 : i1
-        %133 = comb.mux %132, %19, %130 : i4
-        %true_25 = hw.constant true
-        %134 = comb.xor %cpha_q, %true_25 : i1
-        %true_26 = hw.constant true
-        %135 = comb.xor %arg18, %true_26 : i1
-        %true_27 = hw.constant true
-        %136 = comb.xor %15, %true_27 : i1
-        %137 = comb.and %136, %135, %11, %5, %134 : i1
-        %true_28 = hw.constant true
-        %138 = comb.xor %arg18, %true_28 : i1
-        %true_29 = hw.constant true
-        %139 = comb.xor %15, %true_29 : i1
-        %140 = comb.and %139, %138, %11, %5, %cpha_q : i1
-        %141 = comb.extract %3 from 0 : (i3) -> i2
-        %c-1_i2_30 = hw.constant -1 : i2
-        %142 = comb.icmp eq %141, %c-1_i2_30 : i2
-        %true_31 = hw.constant true
-        %143 = comb.xor %5, %true_31 : i1
-        %true_32 = hw.constant true
-        %144 = comb.xor %arg18, %true_32 : i1
-        %145 = comb.and %144, %11, %143, %142 : i1
-        %146 = comb.or %15, %145 : i1
-        %147 = comb.icmp ne %36, %c-4_i3 : i3
-        %148 = comb.xor %137, %true : i1
-        %149 = comb.and %148, %116 : i1
-        %150 = comb.xor %140, %true : i1
-        %151 = comb.and %150, %149, %146 : i1
-        %152 = comb.xor %151, %true : i1
-        %153 = comb.and %149, %140 : i1
-        %154 = comb.xor %153, %true : i1
-        %155 = comb.and %116, %137 : i1
-        %156 = comb.xor %155, %true : i1
-        %157 = comb.and %116, %156, %154, %152, %147 : i1
-        %158 = comb.icmp ne %36, %c3_i3 : i3
-        %159 = comb.mux %26, %158, %53 : i1
-        %160 = comb.icmp eq %arg2, %c0_i2 : i2
-        %161 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %162 = comb.mux %24, %160, %161 : i1
-        %163 = comb.and %32, %31 : i1
-        %164 = comb.xor %163, %true : i1
-        %165 = comb.or %162, %164 : i1
-        verif.assert %165 : i1
-        %166 = comb.icmp ne %33, %c-1_i2 : i2
-        verif.assert %166 : i1
-        %167 = comb.xor %25, %true : i1
-        verif.assert %167 : i1
-        %168 = comb.and %57, %31, %0 : i1
-        %169 = comb.mux %168, %clk_cntr_q, %35 : i16
-        %170 = comb.mux %168, %bit_cntr_q, %86 : i3
-        %171 = comb.mux %168, %byte_cntr_cpha0_q, %88 : i20
-        %172 = comb.mux %168, %byte_cntr_cpha1_q, %90 : i20
-        %173 = comb.mux %168, %wait_cntr_q, %133 : i4
-        fsm.update %wait_cntr_q, %173 : i4
-        fsm.update %byte_cntr_cpha1_q, %172 : i20
-        fsm.update %byte_cntr_cpha0_q, %171 : i20
-        fsm.update %bit_cntr_q, %170 : i3
-        fsm.update %clk_cntr_q, %169 : i16
-        %174 = comb.xor %168, %true : i1
-        %175 = comb.and %58, %174 : i1
-        %176 = comb.and %24, %174 : i1
-        %177 = comb.mux %176, %arg14, %csid_q : i1
-        %178 = comb.mux %176, %arg13, %cpol_q : i1
-        %179 = comb.mux %176, %arg12, %cpha_q : i1
-        %180 = comb.mux %176, %arg11, %full_cyc_q : i1
-        %181 = comb.mux %176, %arg8, %csnidle_q : i4
-        %182 = comb.mux %176, %arg9, %csnlead_q : i4
-        %183 = comb.mux %176, %arg10, %csntrail_q : i4
-        %184 = comb.mux %176, %arg7, %clkdiv_q : i16
-        %185 = comb.mux %176, %arg6, %csaat_q : i1
-        %186 = comb.mux %176, %arg3, %cmd_wr_en_q : i1
-        %187 = comb.mux %176, %arg4, %cmd_rd_en_q : i1
-        %188 = comb.mux %176, %arg2, %cmd_speed_q : i2
-        %189 = comb.mux %176, %arg5, %cmd_len_q : i20
-        %190 = comb.and %37, %174 : i1
-        %191 = comb.mux bin %190, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %192 = comb.or %57, %175 : i1
-        %193 = comb.and %arg1, %174 : i1
-        %194 = comb.mux %193, %192, %sample_en_q : i1
-        %195 = comb.mux %193, %sample_en_q, %sample_en_q2 : i1
-        %196 = comb.mux bin %168, %u_sck_flop2Fq_o, %159 : i1
-        %197 = comb.mux %174, %157, %csb_q : i1
-        %198 = comb.or %25, %197 : i1
-        fsm.update %csb_q, %198 : i1
-        fsm.update %u_sck_flop2Fq_o, %196 : i1
-        fsm.update %sample_en_q2, %195 : i1
-        fsm.update %sample_en_q, %194 : i1
-        fsm.update %segment_rd_en_cpha1, %191 : i1
-        fsm.update %cmd_len_q, %189 : i20
-        fsm.update %cmd_speed_q, %188 : i2
-        fsm.update %cmd_wr_en_q, %186 : i1
-        fsm.update %cmd_rd_en_q, %187 : i1
-        fsm.update %csaat_q, %185 : i1
-        fsm.update %clkdiv_q, %184 : i16
-        fsm.update %csntrail_q, %183 : i4
-        fsm.update %csnlead_q, %182 : i4
-        fsm.update %csnidle_q, %181 : i4
-        fsm.update %full_cyc_q, %180 : i1
-        fsm.update %cpha_q, %179 : i1
-        fsm.update %cpol_q, %178 : i1
-        fsm.update %csid_q, %177 : i1
+        %0 = comb.xor %arg16, %true_15 : i1
+        %false_16 = hw.constant false
+        %false_17 = hw.constant false
+        %1 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
+        %2 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %3 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
+        %4 = comb.icmp eq %arg2, %c0_i2 : i2
+        %5 = comb.icmp eq %arg2, %c1_i2 : i2
+        %6 = comb.icmp eq %arg2, %c-2_i2 : i2
+        %7 = comb.and %cmd_wr_en_q, %2 : i1
+        %8 = comb.or %7, %cmd_wr_en_last_bit : i1
+        %9 = comb.xor %isFirstCycle, %true_15 : i1
+        %10 = comb.and %9, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %11 = comb.xor %10, %true_15 : i1
+        verif.assert %11 : i1
+        fsm.update %_sh1_8, %false_16 : i1
+        fsm.update %_sh1_6, %1 : i1
+        fsm.update %_sh1, %false_17 : i1
+        fsm.update %isFirstCycle, %false_14 : i1
+        fsm.update %cmd_wr_en_last_bit, %8 : i1
+        %12 = comb.xor %arg12, %true_15 : i1
+        %13 = comb.and %12, %2 : i1
+        %14 = comb.and %12, %3 : i1
+        %15 = comb.xor %arg4, %true_15 : i1
+        %16 = comb.xor %arg3, %true_15 : i1
+        %17 = comb.and %15, %16 : i1
+        %18 = comb.mux %6, %c-4_i3, %c1_i3 : i3
+        %19 = comb.xor %17, %true_15 : i1
+        %20 = comb.xor %4, %true_15 : i1
+        %21 = comb.and %20, %19, %5 : i1
+        %22 = comb.mux %21, %c2_i3, %18 : i3
+        %23 = comb.mux %21, %c-2_i3, %18 : i3
+        %24 = comb.and %19, %4 : i1
+        %25 = comb.mux %24, %c1_i3, %22 : i3
+        %26 = comb.mux %24, %c-1_i3, %23 : i3
+        %27 = comb.mux %17, %c0_i3, %25 : i3
+        %28 = comb.mux %17, %c0_i3, %26 : i3
+        %29 = comb.sub %bit_cntr_q, %27 : i3
+        %30 = comb.mux %14, %29, %bit_cntr_q : i3
+        %31 = comb.mux %13, %28, %30 : i3
+        %32 = comb.and %13, %arg3, %0 : i1
+        %33 = comb.mux %32, %clk_cntr_q, %arg7 : i16
+        %34 = comb.mux %32, %bit_cntr_q, %31 : i3
+        %35 = comb.mux %32, %byte_cntr_cpha0_q, %arg5 : i20
+        %36 = comb.mux %32, %byte_cntr_cpha1_q, %arg5 : i20
+        %37 = comb.mux %32, %wait_cntr_q, %c0_i4 : i4
+        %38 = comb.mux bin %32, %u_sck_flop2Fq_o, %arg13 : i1
+        fsm.update %u_sck_flop2Fq_o, %38 : i1
+        fsm.update %wait_cntr_q, %37 : i4
+        fsm.update %byte_cntr_cpha1_q, %36 : i20
+        fsm.update %byte_cntr_cpha0_q, %35 : i20
+        fsm.update %bit_cntr_q, %34 : i3
+        fsm.update %clk_cntr_q, %33 : i16
+        %39 = comb.xor %32, %true_15 : i1
+        %40 = comb.and %14, %39 : i1
+        %41 = comb.mux %39, %arg14, %csid_q : i1
+        %42 = comb.mux %39, %arg13, %cpol_q : i1
+        %43 = comb.and %39, %arg12 : i1
+        %44 = comb.mux %39, %arg11, %full_cyc_q : i1
+        %45 = comb.mux %39, %arg8, %csnidle_q : i4
+        %46 = comb.mux %39, %arg9, %csnlead_q : i4
+        %47 = comb.mux %39, %arg10, %csntrail_q : i4
+        %48 = comb.mux %39, %arg7, %clkdiv_q : i16
+        %49 = comb.mux %39, %arg6, %csaat_q : i1
+        %50 = comb.mux %39, %arg3, %cmd_wr_en_q : i1
+        %51 = comb.mux %39, %arg4, %cmd_rd_en_q : i1
+        %52 = comb.mux %39, %arg2, %cmd_speed_q : i2
+        %53 = comb.mux bin %32, %segment_rd_en_cpha1, %cmd_rd_en_q : i1
+        %54 = comb.or %13, %40 : i1
+        %55 = comb.mux %39, %54, %sample_en_q : i1
+        %56 = comb.mux %39, %sample_en_q, %sample_en_q2 : i1
+        %57 = comb.and %32, %csb_q : i1
+        %58 = comb.or %arg14, %57 : i1
+        fsm.update %_sh1_12, %39 : i1
+        fsm.update %csb_q, %58 : i1
+        fsm.update %sample_en_q2, %56 : i1
+        fsm.update %sample_en_q, %55 : i1
+        fsm.update %segment_rd_en_cpha1, %53 : i1
+        fsm.update %cmd_speed_q, %52 : i2
+        fsm.update %cmd_wr_en_q, %50 : i1
+        fsm.update %cmd_rd_en_q, %51 : i1
+        fsm.update %csaat_q, %49 : i1
+        fsm.update %clkdiv_q, %48 : i16
+        fsm.update %csntrail_q, %47 : i4
+        fsm.update %csnlead_q, %46 : i4
+        fsm.update %csnidle_q, %45 : i4
+        fsm.update %full_cyc_q, %44 : i1
+        fsm.update %false_13, %43 : i1
+        fsm.update %cpol_q, %42 : i1
+        fsm.update %csid_q, %41 : i1
       }
       fsm.transition @state_1 guard {
         %c0_i4 = hw.constant 0 : i4
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
         %c-4_i3 = hw.constant -4 : i3
         %c1_i2 = hw.constant 1 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.xor %arg16, %true : i1
         %1 = comb.concat %c1_i2, %cpha_q : i2, i1
@@ -8958,72 +6691,63 @@ module {
         %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
         %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
         %10 = comb.xor %arg18, %true : i1
-        %c-1_i3_0 = hw.constant -1 : i3
+        %c-1_i3_13 = hw.constant -1 : i3
         %11 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %12 = comb.and %arg1, %10 : i1
-        %13 = comb.mux %12, %6, %9 : i3
-        %14 = comb.mux %arg18, %c0_i3, %13 : i3
-        %15 = comb.xor %arg1, %true : i1
-        %16 = comb.and %10, %15 : i1
-        %17 = comb.mux %16, %c-1_i3_0, %14 : i3
-        %18 = comb.xor %16, %true : i1
-        %19 = comb.icmp ne %17, %c-1_i3_0 : i3
-        %20 = comb.and %10, %19 : i1
-        %true_1 = hw.constant true
-        %21 = comb.xor %12, %true_1 : i1
-        %true_2 = hw.constant true
-        %22 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %23 = comb.xor %16, %true_3 : i1
-        %24 = comb.and %23, %22, %21, %8 : i1
-        %true_4 = hw.constant true
-        %25 = comb.xor %cpha_q, %true_4 : i1
-        %true_5 = hw.constant true
-        %26 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %27 = comb.xor %16, %true_6 : i1
-        %28 = comb.and %27, %26, %12, %5, %25, %11 : i1
-        %29 = comb.or %24, %28 : i1
-        %30 = comb.and %20, %29 : i1
-        %true_7 = hw.constant true
-        %31 = comb.xor %arg18, %true_7 : i1
-        %true_8 = hw.constant true
-        %32 = comb.xor %16, %true_8 : i1
-        %33 = comb.and %20, %32, %31, %12, %5, %cpha_q, %11 : i1
-        %34 = comb.and %arg15, %18, %12, %7 : i1
-        %35 = comb.mux %34, %arg14, %csid_q : i1
-        %36 = comb.mux %34, %arg12, %cpha_q : i1
-        %37 = comb.mux %34, %arg3, %cmd_wr_en_q : i1
-        %38 = comb.mux %34, %arg4, %cmd_rd_en_q : i1
-        %39 = comb.mux %34, %arg2, %cmd_speed_q : i2
-        %40 = comb.xor %36, %true : i1
-        %41 = comb.mux %40, %30, %33 : i1
-        %42 = comb.icmp eq %arg2, %c0_i2 : i2
-        %43 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %44 = comb.mux %34, %42, %43 : i1
-        %45 = comb.and %38, %37 : i1
-        %46 = comb.xor %45, %true : i1
-        %47 = comb.or %44, %46 : i1
-        verif.assert %47 : i1
-        %48 = comb.icmp ne %39, %c-1_i2 : i2
-        verif.assert %48 : i1
-        %49 = comb.xor %35, %true : i1
-        verif.assert %49 : i1
-        %50 = comb.and %41, %37, %0 : i1
-        %51 = comb.or %50, %16 : i1
-        %true_9 = hw.constant true
-        %52 = comb.xor %12, %true_9 : i1
-        %true_10 = hw.constant true
-        %53 = comb.xor %arg18, %true_10 : i1
-        %true_11 = hw.constant true
-        %54 = comb.xor %51, %true_11 : i1
-        %55 = comb.and %54, %53, %52, %8 : i1
-        fsm.return %55
+        %12 = comb.xor %isFirstCycle, %true : i1
+        %13 = comb.and %12, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %10 : i1
+        %14 = comb.xor %13, %true : i1
+        %15 = comb.and %arg1, %10 : i1
+        %16 = comb.mux %15, %6, %9 : i3
+        %17 = comb.mux %arg18, %c0_i3, %16 : i3
+        %18 = comb.xor %arg1, %true : i1
+        %19 = comb.and %10, %18 : i1
+        %20 = comb.mux %19, %c-1_i3_13, %17 : i3
+        %21 = comb.xor %19, %true : i1
+        %22 = comb.icmp ne %20, %c-1_i3_13 : i3
+        %23 = comb.and %10, %22 : i1
+        %true_14 = hw.constant true
+        %24 = comb.xor %15, %true_14 : i1
+        %true_15 = hw.constant true
+        %25 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %26 = comb.xor %19, %true_16 : i1
+        %27 = comb.and %26, %25, %24, %8 : i1
+        %true_17 = hw.constant true
+        %28 = comb.xor %cpha_q, %true_17 : i1
+        %true_18 = hw.constant true
+        %29 = comb.xor %arg18, %true_18 : i1
+        %true_19 = hw.constant true
+        %30 = comb.xor %19, %true_19 : i1
+        %31 = comb.and %30, %29, %15, %5, %28, %11 : i1
+        %32 = comb.or %27, %31 : i1
+        %33 = comb.and %23, %32 : i1
+        %true_20 = hw.constant true
+        %34 = comb.xor %arg18, %true_20 : i1
+        %true_21 = hw.constant true
+        %35 = comb.xor %19, %true_21 : i1
+        %36 = comb.and %23, %35, %34, %15, %5, %cpha_q, %11 : i1
+        verif.assert %14 : i1
+        %37 = comb.and %arg15, %21, %15, %7 : i1
+        %38 = comb.mux %37, %arg12, %cpha_q : i1
+        %39 = comb.mux %37, %arg3, %cmd_wr_en_q : i1
+        %40 = comb.xor %38, %true : i1
+        %41 = comb.mux %40, %33, %36 : i1
+        %42 = comb.and %41, %39, %0 : i1
+        %43 = comb.or %42, %19 : i1
+        %true_22 = hw.constant true
+        %44 = comb.xor %15, %true_22 : i1
+        %true_23 = hw.constant true
+        %45 = comb.xor %arg18, %true_23 : i1
+        %true_24 = hw.constant true
+        %46 = comb.xor %43, %true_24 : i1
+        %47 = comb.and %46, %45, %44, %8 : i1
+        fsm.return %47
       } action {
+        %true = hw.constant true
+        fsm.update %_sh1_10, %arg1 : i1
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
-        %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
-        %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
         %c-2_i3 = hw.constant -2 : i3
@@ -9033,268 +6757,190 @@ module {
         %c2_i3 = hw.constant 2 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
-        %c-1_i4 = hw.constant -1 : i4
-        %true = hw.constant true
-        %0 = comb.xor %arg16, %true : i1
+        %true_14 = hw.constant true
+        %0 = comb.xor %arg16, %true_14 : i1
         %1 = comb.concat %c1_i2, %cpha_q : i2, i1
-        %2 = comb.xor %arg15, %true : i1
+        %2 = comb.xor %arg15, %true_14 : i1
         %3 = comb.mux %2, %c-1_i3, %c-4_i3 : i3
         %4 = comb.icmp eq %arg14, %csid_q : i1
         %5 = comb.and %4, %arg15 : i1
         %6 = comb.mux %5, %1, %3 : i3
         %7 = comb.or %5, %2 : i1
-        %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
-        %10 = comb.xor %arg18, %true : i1
-        %11 = comb.and %arg1, %10 : i1
-        %12 = comb.mux %11, %6, %9 : i3
-        %13 = comb.mux %arg18, %c0_i3, %12 : i3
-        %14 = comb.xor %arg1, %true : i1
-        %15 = comb.and %10, %14 : i1
-        %16 = comb.xor %15, %true : i1
-        %c-1_i3_0 = hw.constant -1 : i3
-        %17 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %18 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
-        %19 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %20 = comb.or %arg18, %arg1 : i1
-        %21 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %22 = comb.and %cmd_wr_en_q, %17 : i1
-        %23 = comb.or %22, %cmd_wr_en_last_bit : i1
-        fsm.update %cmd_wr_en_last_bit, %23 : i1
-        %24 = comb.and %arg15, %16, %11, %7 : i1
-        %25 = comb.mux %24, %arg14, %csid_q : i1
-        %26 = comb.mux %24, %arg13, %cpol_q : i1
-        %27 = comb.mux %24, %arg12, %cpha_q : i1
-        %28 = comb.mux %24, %arg8, %csnidle_q : i4
-        %29 = comb.mux %24, %arg9, %csnlead_q : i4
-        %30 = comb.mux %24, %arg10, %csntrail_q : i4
-        %31 = comb.mux %24, %arg3, %cmd_wr_en_q : i1
-        %32 = comb.mux %24, %arg4, %cmd_rd_en_q : i1
-        %33 = comb.mux %24, %arg2, %cmd_speed_q : i2
-        %34 = comb.mux %24, %arg7, %clk_cntr_q : i16
-        %35 = comb.mux %arg18, %c0_i16, %34 : i16
-        %36 = comb.mux %15, %c-1_i3_0, %13 : i3
-        %37 = comb.icmp ne %36, %c-1_i3_0 : i3
-        %38 = comb.and %10, %37 : i1
-        %true_1 = hw.constant true
-        %39 = comb.xor %11, %true_1 : i1
-        %true_2 = hw.constant true
-        %40 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %41 = comb.xor %15, %true_3 : i1
-        %42 = comb.and %41, %40, %39, %8 : i1
-        %true_4 = hw.constant true
-        %43 = comb.xor %cpha_q, %true_4 : i1
-        %true_5 = hw.constant true
-        %44 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %45 = comb.xor %15, %true_6 : i1
-        %46 = comb.and %45, %44, %11, %5, %43 : i1
-        %47 = comb.and %46, %17 : i1
-        %48 = comb.or %42, %47 : i1
-        %49 = comb.and %38, %48 : i1
-        %50 = comb.and %38, %46, %18 : i1
-        %true_7 = hw.constant true
-        %51 = comb.xor %arg18, %true_7 : i1
-        %true_8 = hw.constant true
-        %52 = comb.xor %15, %true_8 : i1
-        %53 = comb.and %52, %51, %11, %5, %cpha_q : i1
-        %54 = comb.and %38, %53, %17 : i1
-        %55 = comb.and %38, %53, %18 : i1
-        %56 = comb.xor %27, %true : i1
-        %57 = comb.mux %56, %49, %54 : i1
-        %58 = comb.mux %56, %50, %55 : i1
-        %59 = comb.xor %32, %true : i1
-        %60 = comb.xor %31, %true : i1
-        %61 = comb.and %59, %60 : i1
-        %62 = comb.icmp eq %arg2, %c0_i2 : i2
-        %63 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %64 = comb.mux %24, %62, %63 : i1
-        %65 = comb.icmp eq %arg2, %c1_i2 : i2
-        %66 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %67 = comb.mux %24, %65, %66 : i1
-        %68 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %69 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %70 = comb.mux %24, %68, %69 : i1
-        %71 = comb.mux %70, %c-4_i3, %c1_i3 : i3
-        %72 = comb.xor %61, %true : i1
-        %73 = comb.xor %64, %true : i1
-        %74 = comb.and %73, %72, %67 : i1
-        %75 = comb.mux %74, %c2_i3, %71 : i3
-        %76 = comb.mux %74, %c-2_i3, %71 : i3
-        %77 = comb.and %72, %64 : i1
-        %78 = comb.mux %77, %c1_i3, %75 : i3
-        %79 = comb.mux %77, %c-1_i3, %76 : i3
-        %80 = comb.mux %61, %c0_i3, %78 : i3
-        %81 = comb.mux %61, %c0_i3, %79 : i3
-        %82 = comb.sub %bit_cntr_q, %80 : i3
-        %83 = comb.mux %58, %82, %bit_cntr_q : i3
-        %84 = comb.mux %57, %81, %83 : i3
-        %85 = comb.mux %14, %bit_cntr_q, %84 : i3
-        %86 = comb.mux %arg18, %c0_i3, %85 : i3
-        %87 = comb.mux %24, %arg5, %byte_cntr_cpha0_q : i20
-        %88 = comb.mux %arg18, %c0_i20, %87 : i20
-        %89 = comb.mux %24, %arg5, %byte_cntr_cpha1_q : i20
-        %90 = comb.mux %arg18, %c0_i20, %89 : i20
-        %true_9 = hw.constant true
-        %91 = comb.xor %11, %true_9 : i1
-        %true_10 = hw.constant true
-        %92 = comb.xor %arg18, %true_10 : i1
-        %true_11 = hw.constant true
-        %93 = comb.xor %15, %true_11 : i1
-        %94 = comb.and %93, %92, %91, %8 : i1
-        %95 = comb.extract %3 from 0 : (i3) -> i2
-        %c0_i2_12 = hw.constant 0 : i2
-        %96 = comb.icmp eq %95, %c0_i2_12 : i2
-        %true_13 = hw.constant true
-        %97 = comb.xor %5, %true_13 : i1
-        %true_14 = hw.constant true
-        %98 = comb.xor %arg18, %true_14 : i1
-        %true_15 = hw.constant true
-        %99 = comb.xor %15, %true_15 : i1
-        %100 = comb.and %99, %98, %11, %97, %96 : i1
-        %101 = comb.extract %3 from 0 : (i3) -> i2
-        %c1_i2_16 = hw.constant 1 : i2
-        %102 = comb.icmp eq %101, %c1_i2_16 : i2
+        %false_15 = hw.constant false
+        %8 = comb.mux %arg1, %6, %c1_i3 : i3
+        %9 = comb.xor %arg1, %true_14 : i1
+        %c-1_i3_16 = hw.constant -1 : i3
         %true_17 = hw.constant true
-        %103 = comb.xor %5, %true_17 : i1
-        %true_18 = hw.constant true
-        %104 = comb.xor %arg18, %true_18 : i1
+        %10 = comb.xor %cpha_q, %true_17 : i1
+        %11 = comb.and %arg1, %5, %10 : i1
+        %12 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %13 = comb.icmp ne %bit_cntr_q, %c0_i3 : i3
+        %14 = comb.and %arg1, %5, %cpha_q : i1
+        %15 = comb.icmp eq %arg2, %c0_i2 : i2
+        %16 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %17 = comb.icmp eq %arg2, %c1_i2 : i2
+        %18 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %19 = comb.icmp eq %arg2, %c-2_i2 : i2
+        %20 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %21 = comb.extract %3 from 0 : (i3) -> i2
+        %c0_i2_18 = hw.constant 0 : i2
+        %22 = comb.icmp eq %21, %c0_i2_18 : i2
         %true_19 = hw.constant true
-        %105 = comb.xor %15, %true_19 : i1
-        %106 = comb.and %105, %104, %11, %103, %102 : i1
-        %107 = comb.extract %3 from 0 : (i3) -> i2
-        %c-2_i2_20 = hw.constant -2 : i2
-        %108 = comb.icmp eq %107, %c-2_i2_20 : i2
+        %23 = comb.xor %5, %true_19 : i1
+        %24 = comb.and %arg1, %23, %22 : i1
+        %25 = comb.extract %3 from 0 : (i3) -> i2
+        %c1_i2_20 = hw.constant 1 : i2
+        %26 = comb.icmp eq %25, %c1_i2_20 : i2
         %true_21 = hw.constant true
-        %109 = comb.xor %5, %true_21 : i1
-        %110 = comb.and %109, %108 : i1
-        %true_22 = hw.constant true
-        %111 = comb.xor %8, %true_22 : i1
-        %112 = comb.mux %11, %110, %111 : i1
+        %27 = comb.xor %5, %true_21 : i1
+        %28 = comb.and %arg1, %27, %26 : i1
+        %29 = comb.extract %3 from 0 : (i3) -> i2
+        %c-2_i2_22 = hw.constant -2 : i2
+        %30 = comb.icmp eq %29, %c-2_i2_22 : i2
         %true_23 = hw.constant true
-        %113 = comb.xor %arg18, %true_23 : i1
+        %31 = comb.xor %5, %true_23 : i1
+        %32 = comb.xor %24, %true_14 : i1
+        %33 = comb.xor %28, %true_14 : i1
+        %34 = comb.extract %3 from 0 : (i3) -> i2
+        %c-1_i2 = hw.constant -1 : i2
+        %35 = comb.icmp eq %34, %c-1_i2 : i2
         %true_24 = hw.constant true
-        %114 = comb.xor %15, %true_24 : i1
-        %115 = comb.and %37, %11 : i1
-        %116 = comb.xor %94, %true : i1
-        %117 = comb.and %116, %115 : i1
-        %118 = comb.xor %100, %true : i1
-        %119 = comb.and %118, %117 : i1
-        %120 = comb.xor %106, %true : i1
-        %121 = comb.and %120, %119, %114, %113, %112 : i1
-        %122 = comb.and %119, %106 : i1
-        %123 = comb.or %122, %121 : i1
-        %124 = comb.mux %123, %28, %c0_i4 : i4
-        %125 = comb.and %117, %100 : i1
-        %126 = comb.mux %125, %30, %124 : i4
-        %127 = comb.and %115, %94 : i1
-        %128 = comb.mux %127, %29, %126 : i4
-        %129 = comb.mux %20, %128, %wait_cntr_q : i4
-        %130 = comb.mux %arg18, %c0_i4, %129 : i4
-        %131 = comb.xor %37, %true : i1
-        %132 = comb.and %21, %131, %11 : i1
-        %133 = comb.mux %132, %19, %130 : i4
+        %36 = comb.xor %5, %true_24 : i1
+        %37 = comb.and %arg1, %36, %35 : i1
+        %38 = comb.or %9, %37 : i1
+        %39 = comb.xor %11, %true_14 : i1
+        %40 = comb.xor %14, %true_14 : i1
+        %41 = comb.and %40, %39, %38 : i1
+        %42 = comb.xor %41, %true_14 : i1
+        %43 = comb.and %39, %14 : i1
+        %44 = comb.xor %43, %true_14 : i1
+        %45 = comb.xor %11, %true_14 : i1
+        %46 = comb.and %cmd_wr_en_q, %12 : i1
+        %47 = comb.or %46, %cmd_wr_en_last_bit : i1
+        %48 = comb.xor %isFirstCycle, %true_14 : i1
+        %49 = comb.and %48, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %50 = comb.xor %49, %true_14 : i1
+        verif.assert %50 : i1
+        fsm.update %_sh1_8, %2 : i1
+        fsm.update %_sh1_6, %true : i1
+        fsm.update %_sh1, %false_15 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        fsm.update %cmd_wr_en_last_bit, %47 : i1
+        %51 = comb.and %arg15, %arg1, %7 : i1
+        %52 = comb.mux %51, %arg14, %csid_q : i1
+        %53 = comb.mux %51, %arg13, %cpol_q : i1
+        %54 = comb.mux %51, %arg12, %cpha_q : i1
+        %55 = comb.mux %51, %arg8, %csnidle_q : i4
+        %56 = comb.mux %51, %arg10, %csntrail_q : i4
+        %57 = comb.mux %51, %arg3, %cmd_wr_en_q : i1
+        %58 = comb.mux %51, %arg4, %cmd_rd_en_q : i1
+        %59 = comb.mux %9, %c-1_i3_16, %8 : i3
+        %60 = comb.icmp ne %59, %c-1_i3_16 : i3
+        %61 = comb.and %60, %11, %12 : i1
+        %62 = comb.and %60, %11, %13 : i1
+        %63 = comb.and %60, %14, %12 : i1
+        %64 = comb.and %60, %14, %13 : i1
+        %65 = comb.xor %54, %true_14 : i1
+        %66 = comb.mux %65, %61, %63 : i1
+        %67 = comb.mux %65, %62, %64 : i1
+        %68 = comb.xor %58, %true_14 : i1
+        %69 = comb.xor %57, %true_14 : i1
+        %70 = comb.and %68, %69 : i1
+        %71 = comb.mux %51, %15, %16 : i1
+        %72 = comb.mux %51, %17, %18 : i1
+        %73 = comb.mux %51, %19, %20 : i1
+        %74 = comb.mux %73, %c-4_i3, %c1_i3 : i3
+        %75 = comb.xor %70, %true_14 : i1
+        %76 = comb.xor %71, %true_14 : i1
+        %77 = comb.and %76, %75, %72 : i1
+        %78 = comb.mux %77, %c2_i3, %74 : i3
+        %79 = comb.mux %77, %c-2_i3, %74 : i3
+        %80 = comb.and %75, %71 : i1
+        %81 = comb.mux %80, %c1_i3, %78 : i3
+        %82 = comb.mux %80, %c-1_i3, %79 : i3
+        %83 = comb.mux %70, %c0_i3, %81 : i3
+        %84 = comb.mux %70, %c0_i3, %82 : i3
+        %85 = comb.sub %bit_cntr_q, %83 : i3
+        %86 = comb.mux %67, %85, %bit_cntr_q : i3
+        %87 = comb.mux %66, %84, %86 : i3
+        %88 = comb.and %60, %arg1 : i1
+        %89 = comb.and %32, %88 : i1
+        %90 = comb.and %33, %89, %31, %30 : i1
+        %91 = comb.and %89, %28 : i1
+        %92 = comb.or %91, %90 : i1
+        %93 = comb.mux %92, %55, %c0_i4 : i4
+        %94 = comb.and %88, %24 : i1
+        %95 = comb.mux %94, %56, %93 : i4
+        %96 = comb.icmp ne %59, %c-4_i3 : i3
+        %97 = comb.and %45, %44, %42, %96 : i1
+        %98 = comb.icmp ne %59, %c3_i3 : i3
+        %99 = comb.mux %53, %98, %14 : i1
+        %100 = comb.and %66, %57, %0 : i1
         %true_25 = hw.constant true
-        %134 = comb.xor %cpha_q, %true_25 : i1
+        %101 = comb.xor %51, %true_25 : i1
+        %102 = comb.or %100, %101 : i1
+        %103 = comb.mux %102, %clk_cntr_q, %arg7 : i16
+        %104 = comb.or %100, %9 : i1
+        %105 = comb.mux %104, %bit_cntr_q, %87 : i3
         %true_26 = hw.constant true
-        %135 = comb.xor %arg18, %true_26 : i1
+        %106 = comb.xor %51, %true_26 : i1
+        %107 = comb.or %100, %106 : i1
+        %108 = comb.mux %107, %byte_cntr_cpha0_q, %arg5 : i20
         %true_27 = hw.constant true
-        %136 = comb.xor %15, %true_27 : i1
-        %137 = comb.and %136, %135, %11, %5, %134 : i1
+        %109 = comb.xor %51, %true_27 : i1
+        %110 = comb.or %100, %109 : i1
+        %111 = comb.mux %110, %byte_cntr_cpha1_q, %arg5 : i20
         %true_28 = hw.constant true
-        %138 = comb.xor %arg18, %true_28 : i1
-        %true_29 = hw.constant true
-        %139 = comb.xor %15, %true_29 : i1
-        %140 = comb.and %139, %138, %11, %5, %cpha_q : i1
-        %141 = comb.extract %3 from 0 : (i3) -> i2
-        %c-1_i2_30 = hw.constant -1 : i2
-        %142 = comb.icmp eq %141, %c-1_i2_30 : i2
-        %true_31 = hw.constant true
-        %143 = comb.xor %5, %true_31 : i1
-        %true_32 = hw.constant true
-        %144 = comb.xor %arg18, %true_32 : i1
-        %145 = comb.and %144, %11, %143, %142 : i1
-        %146 = comb.or %15, %145 : i1
-        %147 = comb.icmp ne %36, %c-4_i3 : i3
-        %148 = comb.xor %137, %true : i1
-        %149 = comb.and %148, %116 : i1
-        %150 = comb.xor %140, %true : i1
-        %151 = comb.and %150, %149, %146 : i1
-        %152 = comb.xor %151, %true : i1
-        %153 = comb.and %149, %140 : i1
-        %154 = comb.xor %153, %true : i1
-        %155 = comb.and %116, %137 : i1
-        %156 = comb.xor %155, %true : i1
-        %157 = comb.and %116, %156, %154, %152, %147 : i1
-        %158 = comb.icmp ne %36, %c3_i3 : i3
-        %159 = comb.mux %26, %158, %53 : i1
-        %160 = comb.icmp eq %arg2, %c0_i2 : i2
-        %161 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %162 = comb.mux %24, %160, %161 : i1
-        %163 = comb.and %32, %31 : i1
-        %164 = comb.xor %163, %true : i1
-        %165 = comb.or %162, %164 : i1
-        verif.assert %165 : i1
-        %166 = comb.icmp ne %33, %c-1_i2 : i2
-        verif.assert %166 : i1
-        %167 = comb.xor %25, %true : i1
-        verif.assert %167 : i1
-        %168 = comb.and %57, %31, %0 : i1
-        %169 = comb.mux %168, %clk_cntr_q, %35 : i16
-        %170 = comb.mux %168, %bit_cntr_q, %86 : i3
-        %171 = comb.mux %168, %byte_cntr_cpha0_q, %88 : i20
-        %172 = comb.mux %168, %byte_cntr_cpha1_q, %90 : i20
-        %173 = comb.mux %168, %wait_cntr_q, %133 : i4
-        fsm.update %wait_cntr_q, %173 : i4
-        fsm.update %byte_cntr_cpha1_q, %172 : i20
-        fsm.update %byte_cntr_cpha0_q, %171 : i20
-        fsm.update %bit_cntr_q, %170 : i3
-        fsm.update %clk_cntr_q, %169 : i16
-        %174 = comb.xor %168, %true : i1
-        %175 = comb.and %58, %174 : i1
-        %176 = comb.and %24, %174 : i1
-        %177 = comb.mux %176, %arg14, %csid_q : i1
-        %178 = comb.mux %176, %arg13, %cpol_q : i1
-        %179 = comb.mux %176, %arg12, %cpha_q : i1
-        %180 = comb.mux %176, %arg11, %full_cyc_q : i1
-        %181 = comb.mux %176, %arg8, %csnidle_q : i4
-        %182 = comb.mux %176, %arg9, %csnlead_q : i4
-        %183 = comb.mux %176, %arg10, %csntrail_q : i4
-        %184 = comb.mux %176, %arg7, %clkdiv_q : i16
-        %185 = comb.mux %176, %arg6, %csaat_q : i1
-        %186 = comb.mux %176, %arg3, %cmd_wr_en_q : i1
-        %187 = comb.mux %176, %arg4, %cmd_rd_en_q : i1
-        %188 = comb.mux %176, %arg2, %cmd_speed_q : i2
-        %189 = comb.mux %176, %arg5, %cmd_len_q : i20
-        %190 = comb.and %37, %174 : i1
-        %191 = comb.mux bin %190, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %192 = comb.or %57, %175 : i1
-        %193 = comb.and %arg1, %174 : i1
-        %194 = comb.mux %193, %192, %sample_en_q : i1
-        %195 = comb.mux %193, %sample_en_q, %sample_en_q2 : i1
-        %196 = comb.mux bin %168, %u_sck_flop2Fq_o, %159 : i1
-        %197 = comb.mux %174, %157, %csb_q : i1
-        %198 = comb.or %25, %197 : i1
-        fsm.update %csb_q, %198 : i1
-        fsm.update %u_sck_flop2Fq_o, %196 : i1
-        fsm.update %sample_en_q2, %195 : i1
-        fsm.update %sample_en_q, %194 : i1
-        fsm.update %segment_rd_en_cpha1, %191 : i1
-        fsm.update %cmd_len_q, %189 : i20
-        fsm.update %cmd_speed_q, %188 : i2
-        fsm.update %cmd_wr_en_q, %186 : i1
-        fsm.update %cmd_rd_en_q, %187 : i1
-        fsm.update %csaat_q, %185 : i1
-        fsm.update %clkdiv_q, %184 : i16
-        fsm.update %csntrail_q, %183 : i4
-        fsm.update %csnlead_q, %182 : i4
-        fsm.update %csnidle_q, %181 : i4
-        fsm.update %full_cyc_q, %180 : i1
-        fsm.update %cpha_q, %179 : i1
-        fsm.update %cpol_q, %178 : i1
-        fsm.update %csid_q, %177 : i1
+        %112 = comb.xor %arg1, %true_28 : i1
+        %113 = comb.or %100, %112 : i1
+        %114 = comb.mux %113, %wait_cntr_q, %95 : i4
+        %115 = comb.mux bin %100, %u_sck_flop2Fq_o, %99 : i1
+        fsm.update %u_sck_flop2Fq_o, %115 : i1
+        fsm.update %wait_cntr_q, %114 : i4
+        fsm.update %byte_cntr_cpha1_q, %111 : i20
+        fsm.update %byte_cntr_cpha0_q, %108 : i20
+        fsm.update %bit_cntr_q, %105 : i3
+        fsm.update %clk_cntr_q, %103 : i16
+        %116 = comb.xor %100, %true_14 : i1
+        %117 = comb.and %67, %116 : i1
+        %118 = comb.and %51, %116 : i1
+        %119 = comb.mux %118, %arg14, %csid_q : i1
+        %120 = comb.mux %118, %arg13, %cpol_q : i1
+        %121 = comb.mux %118, %arg12, %cpha_q : i1
+        %122 = comb.mux %118, %arg11, %full_cyc_q : i1
+        %123 = comb.mux %118, %arg8, %csnidle_q : i4
+        %124 = comb.mux %118, %arg9, %csnlead_q : i4
+        %125 = comb.mux %118, %arg10, %csntrail_q : i4
+        %126 = comb.mux %118, %arg7, %clkdiv_q : i16
+        %127 = comb.mux %118, %arg6, %csaat_q : i1
+        %128 = comb.mux %118, %arg3, %cmd_wr_en_q : i1
+        %129 = comb.mux %118, %arg4, %cmd_rd_en_q : i1
+        %130 = comb.mux %118, %arg2, %cmd_speed_q : i2
+        %131 = comb.and %60, %116 : i1
+        %132 = comb.mux bin %131, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %133 = comb.or %66, %117 : i1
+        %134 = comb.and %arg1, %116 : i1
+        %135 = comb.mux %134, %133, %sample_en_q : i1
+        %136 = comb.mux %134, %sample_en_q, %sample_en_q2 : i1
+        %137 = comb.mux %116, %97, %csb_q : i1
+        %138 = comb.or %52, %137 : i1
+        fsm.update %_sh1_12, %116 : i1
+        fsm.update %csb_q, %138 : i1
+        fsm.update %sample_en_q2, %136 : i1
+        fsm.update %sample_en_q, %135 : i1
+        fsm.update %segment_rd_en_cpha1, %132 : i1
+        fsm.update %cmd_speed_q, %130 : i2
+        fsm.update %cmd_wr_en_q, %128 : i1
+        fsm.update %cmd_rd_en_q, %129 : i1
+        fsm.update %csaat_q, %127 : i1
+        fsm.update %clkdiv_q, %126 : i16
+        fsm.update %csntrail_q, %125 : i4
+        fsm.update %csnlead_q, %124 : i4
+        fsm.update %csnidle_q, %123 : i4
+        fsm.update %full_cyc_q, %122 : i1
+        fsm.update %cpha_q, %121 : i1
+        fsm.update %cpol_q, %120 : i1
+        fsm.update %csid_q, %119 : i1
       }
     }
     fsm.state @state_4 output {
@@ -9307,14 +6953,13 @@ module {
       %c1_i3 = hw.constant 1 : i3
       %c1_i2 = hw.constant 1 : i2
       %c-2_i2 = hw.constant -2 : i2
-      %c-1_i2 = hw.constant -1 : i2
       %true = hw.constant true
-      %false = hw.constant false
-      %false_0 = hw.constant false
-      %true_1 = hw.constant true
+      %false_13 = hw.constant false
+      %false_14 = hw.constant false
+      %true_15 = hw.constant true
       %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
       %1 = comb.xor %arg16, %true : i1
-      %false_2 = hw.constant false
+      %false_16 = hw.constant false
       %2 = comb.and %arg1, %0 : i1
       %3 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
       %4 = comb.mux %3, %c1_i3, %c-2_i3 : i3
@@ -9324,7 +6969,7 @@ module {
       %8 = comb.and %5, %7 : i1
       %c-4_i3 = hw.constant -4 : i3
       %9 = comb.xor %cpha_q, %true : i1
-      %false_3 = hw.constant false
+      %false_17 = hw.constant false
       %10 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
       %11 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
       %12 = comb.mux %9, %10, %11 : i1
@@ -9348,44 +6993,37 @@ module {
       %30 = comb.mux %29, %20, %28 : i4
       %31 = comb.and %15, %23 : i1
       %32 = comb.mux %31, %17, %30 : i4
-      %33 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-      %34 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
+      %33 = comb.xor %isFirstCycle, %true : i1
+      %34 = comb.and %33, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %5 : i1
       %35 = comb.xor %34, %true : i1
-      %36 = comb.or %33, %35 : i1
-      verif.assert %36 : i1
-      %37 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-      verif.assert %37 : i1
-      %38 = comb.xor %csid_q, %true : i1
-      verif.assert %38 : i1
-      %c-2_i2_4 = hw.constant -2 : i2
-      %39 = comb.concat %c-2_i2_4, %3 : i2, i1
-      %40 = comb.mux %6, %39, %4 : i3
-      %41 = comb.mux %arg18, %c0_i3, %40 : i3
-      %42 = comb.mux %8, %c-4_i3, %41 : i3
-      %43 = comb.icmp ne %42, %c-4_i3 : i3
-      %true_5 = hw.constant true
-      %44 = comb.xor %6, %true_5 : i1
-      %true_6 = hw.constant true
-      %45 = comb.xor %arg18, %true_6 : i1
-      %true_7 = hw.constant true
-      %46 = comb.xor %8, %true_7 : i1
-      %47 = comb.and %9, %5, %43, %46, %45, %44, %3, %cmd_wr_en_q : i1
-      %48 = comb.and %47, %1 : i1
-      %49 = comb.xor %48, %true : i1
-      %50 = comb.and %47, %49 : i1
-      %51 = comb.and %14, %49 : i1
-      %false_8 = hw.constant false
-      %52 = comb.and %13, %50, %arg16 : i1
-      fsm.output %false_0, %u_sck_flop2Fq_o, %csb_q, %32, %false_3, %52, %50, %false, %51, %false_8, %cmd_speed_q, %full_cyc_q, %false_2, %48, %true_1 : i1, i1, i1, i4, i1, i1, i1, i1, i1, i1, i2, i1, i1, i1, i1
+      verif.assert %35 : i1
+      %c-2_i2_18 = hw.constant -2 : i2
+      %36 = comb.concat %c-2_i2_18, %3 : i2, i1
+      %37 = comb.mux %6, %36, %4 : i3
+      %38 = comb.mux %arg18, %c0_i3, %37 : i3
+      %39 = comb.mux %8, %c-4_i3, %38 : i3
+      %40 = comb.icmp ne %39, %c-4_i3 : i3
+      %true_19 = hw.constant true
+      %41 = comb.xor %6, %true_19 : i1
+      %true_20 = hw.constant true
+      %42 = comb.xor %arg18, %true_20 : i1
+      %true_21 = hw.constant true
+      %43 = comb.xor %8, %true_21 : i1
+      %44 = comb.and %9, %5, %40, %43, %42, %41, %3, %cmd_wr_en_q : i1
+      %45 = comb.and %44, %1 : i1
+      %46 = comb.xor %45, %true : i1
+      %47 = comb.and %44, %46 : i1
+      %48 = comb.and %14, %46 : i1
+      %false_22 = hw.constant false
+      %49 = comb.and %13, %47, %arg16 : i1
+      fsm.output %false_14, %u_sck_flop2Fq_o, %csb_q, %32, %false_17, %49, %47, %false_13, %48, %false_22, %cmd_speed_q, %full_cyc_q, %false_16, %45, %true_15 : i1, i1, i1, i4, i1, i1, i1, i1, i1, i1, i2, i1, i1, i1, i1
     } transitions {
       fsm.transition @state_6 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %1 = comb.xor %arg16, %true : i1
@@ -9393,46 +7031,41 @@ module {
         %3 = comb.mux %2, %c1_i3, %c-2_i3 : i3
         %4 = comb.xor %arg18, %true : i1
         %c-4_i3 = hw.constant -4 : i3
-        %5 = comb.and %arg1, %0 : i1
-        %6 = comb.and %5, %4 : i1
+        %5 = comb.xor %isFirstCycle, %true : i1
+        %6 = comb.and %5, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %4 : i1
+        %7 = comb.xor %6, %true : i1
+        %8 = comb.and %arg1, %0 : i1
+        %9 = comb.and %8, %4 : i1
         %c-2_i2 = hw.constant -2 : i2
-        %7 = comb.concat %c-2_i2, %2 : i2, i1
-        %8 = comb.mux %6, %7, %3 : i3
-        %9 = comb.mux %arg18, %c0_i3, %8 : i3
-        %10 = comb.xor %5, %true : i1
-        %11 = comb.and %4, %10 : i1
-        %12 = comb.mux %11, %c-4_i3, %9 : i3
-        %13 = comb.icmp ne %12, %c-4_i3 : i3
-        %true_0 = hw.constant true
-        %14 = comb.xor %6, %true_0 : i1
-        %true_1 = hw.constant true
-        %15 = comb.xor %arg18, %true_1 : i1
-        %true_2 = hw.constant true
-        %16 = comb.xor %11, %true_2 : i1
-        %17 = comb.xor %cpha_q, %true : i1
-        %18 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %19 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
-        %20 = comb.xor %19, %true : i1
-        %21 = comb.or %18, %20 : i1
-        verif.assert %21 : i1
-        %22 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-        verif.assert %22 : i1
-        %23 = comb.xor %csid_q, %true : i1
-        verif.assert %23 : i1
-        %24 = comb.and %17, %4, %13, %16, %15, %14, %2, %cmd_wr_en_q, %1 : i1
-        %25 = comb.or %24, %11 : i1
-        %true_3 = hw.constant true
-        %26 = comb.xor %2, %true_3 : i1
-        %true_4 = hw.constant true
-        %27 = comb.xor %6, %true_4 : i1
-        %true_5 = hw.constant true
-        %28 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %29 = comb.xor %25, %true_6 : i1
-        %30 = comb.and %29, %28, %27, %26 : i1
-        fsm.return %30
+        %10 = comb.concat %c-2_i2, %2 : i2, i1
+        %11 = comb.mux %9, %10, %3 : i3
+        %12 = comb.mux %arg18, %c0_i3, %11 : i3
+        %13 = comb.xor %8, %true : i1
+        %14 = comb.and %4, %13 : i1
+        %15 = comb.mux %14, %c-4_i3, %12 : i3
+        %16 = comb.icmp ne %15, %c-4_i3 : i3
+        %true_13 = hw.constant true
+        %17 = comb.xor %9, %true_13 : i1
+        %true_14 = hw.constant true
+        %18 = comb.xor %arg18, %true_14 : i1
+        %true_15 = hw.constant true
+        %19 = comb.xor %14, %true_15 : i1
+        verif.assert %7 : i1
+        %20 = comb.xor %cpha_q, %true : i1
+        %21 = comb.and %20, %4, %16, %19, %18, %17, %2, %cmd_wr_en_q, %1 : i1
+        %22 = comb.or %21, %14 : i1
+        %true_16 = hw.constant true
+        %23 = comb.xor %2, %true_16 : i1
+        %true_17 = hw.constant true
+        %24 = comb.xor %9, %true_17 : i1
+        %true_18 = hw.constant true
+        %25 = comb.xor %arg18, %true_18 : i1
+        %true_19 = hw.constant true
+        %26 = comb.xor %22, %true_19 : i1
+        %27 = comb.and %26, %25, %24, %23 : i1
+        fsm.return %27
       } action {
-        fsm.update %cmd_len_q, %cmd_len_q : i20
+        %false_13 = hw.constant false
         fsm.update %cmd_speed_q, %cmd_speed_q : i2
         fsm.update %cmd_wr_en_q, %cmd_wr_en_q : i1
         fsm.update %cmd_rd_en_q, %cmd_rd_en_q : i1
@@ -9445,19 +7078,9 @@ module {
         fsm.update %cpha_q, %cpha_q : i1
         fsm.update %cpol_q, %cpol_q : i1
         fsm.update %csid_q, %csid_q : i1
-        %c0_i4 = hw.constant 0 : i4
+        %false_14 = hw.constant false
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
-        %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
-        %c-1_i3 = hw.constant -1 : i3
-        %c-2_i3 = hw.constant -2 : i3
-        %c1_i3 = hw.constant 1 : i3
-        %c-4_i3 = hw.constant -4 : i3
-        %c3_i3 = hw.constant 3 : i3
-        %c1_i2 = hw.constant 1 : i2
-        %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i16 = hw.constant -1 : i16
         %c-1_i4 = hw.constant -1 : i4
         %true = hw.constant true
@@ -9466,152 +7089,47 @@ module {
         %2 = comb.add %clk_cntr_q, %c-1_i16 : i16
         %3 = comb.mux %1, %clkdiv_q, %2 : i16
         %4 = comb.mux %0, %clk_cntr_q, %3 : i16
-        %5 = comb.mux %arg18, %c0_i16, %4 : i16
-        %6 = comb.xor %arg16, %true : i1
-        %7 = comb.and %arg1, %1 : i1
-        %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
-        %10 = comb.xor %arg18, %true : i1
-        %11 = comb.and %7, %10 : i1
-        %12 = comb.xor %7, %true : i1
-        %13 = comb.and %10, %12 : i1
-        %c-4_i3_0 = hw.constant -4 : i3
-        %14 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %15 = comb.xor %cpha_q, %true : i1
-        %16 = comb.xor %cmd_rd_en_q, %true : i1
-        %17 = comb.xor %cmd_wr_en_q, %true : i1
-        %18 = comb.and %16, %17 : i1
-        %19 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %20 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %21 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %22 = comb.mux %21, %c-4_i3, %c1_i3 : i3
-        %23 = comb.xor %18, %true : i1
-        %24 = comb.xor %19, %true : i1
-        %25 = comb.and %24, %23, %20 : i1
-        %26 = comb.mux %25, %c-2_i3, %22 : i3
-        %27 = comb.and %23, %19 : i1
-        %28 = comb.mux %27, %c-1_i3, %26 : i3
-        %29 = comb.mux %18, %c0_i3, %28 : i3
-        %30 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %31 = comb.or %arg18, %7 : i1
-        %32 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %33 = comb.and %cmd_wr_en_q, %14 : i1
-        %34 = comb.or %33, %cmd_wr_en_last_bit : i1
-        %35 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %36 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
-        %37 = comb.xor %36, %true : i1
-        %38 = comb.or %35, %37 : i1
-        verif.assert %38 : i1
-        %39 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-        verif.assert %39 : i1
-        %40 = comb.xor %csid_q, %true : i1
-        verif.assert %40 : i1
-        fsm.update %cmd_wr_en_last_bit, %34 : i1
-        %c-2_i2_1 = hw.constant -2 : i2
-        %41 = comb.concat %c-2_i2_1, %8 : i2, i1
-        %42 = comb.mux %11, %41, %9 : i3
-        %43 = comb.mux %arg18, %c0_i3, %42 : i3
-        %44 = comb.mux %13, %c-4_i3_0, %43 : i3
-        %45 = comb.icmp ne %44, %c-4_i3_0 : i3
-        %true_2 = hw.constant true
-        %46 = comb.xor %11, %true_2 : i1
-        %true_3 = hw.constant true
-        %47 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %48 = comb.xor %13, %true_4 : i1
-        %49 = comb.and %15, %10, %45, %48, %47, %46, %8 : i1
-        %50 = comb.mux %49, %29, %bit_cntr_q : i3
-        %51 = comb.mux %12, %bit_cntr_q, %50 : i3
-        %52 = comb.mux %arg18, %c0_i3, %51 : i3
-        %true_5 = hw.constant true
-        %53 = comb.xor %11, %true_5 : i1
-        %true_6 = hw.constant true
-        %54 = comb.xor %arg18, %true_6 : i1
-        %true_7 = hw.constant true
-        %55 = comb.xor %13, %true_7 : i1
-        %56 = comb.and %55, %54, %53, %8 : i1
-        %true_8 = hw.constant true
-        %57 = comb.xor %8, %true_8 : i1
-        %true_9 = hw.constant true
-        %58 = comb.xor %arg18, %true_9 : i1
-        %59 = comb.and %58, %11, %57 : i1
-        %60 = comb.or %13, %59 : i1
-        %true_10 = hw.constant true
-        %61 = comb.xor %arg18, %true_10 : i1
-        %true_11 = hw.constant true
-        %62 = comb.xor %13, %true_11 : i1
-        %63 = comb.and %62, %61, %11, %8 : i1
-        %true_12 = hw.constant true
-        %64 = comb.xor %8, %true_12 : i1
-        %true_13 = hw.constant true
-        %65 = comb.xor %11, %true_13 : i1
-        %true_14 = hw.constant true
-        %66 = comb.xor %arg18, %true_14 : i1
-        %true_15 = hw.constant true
-        %67 = comb.xor %13, %true_15 : i1
-        %68 = comb.and %45, %11 : i1
-        %69 = comb.xor %56, %true : i1
-        %70 = comb.and %69, %68 : i1
-        %71 = comb.xor %60, %true : i1
-        %72 = comb.and %71, %70 : i1
-        %73 = comb.xor %63, %true : i1
-        %74 = comb.and %73, %72, %67, %66, %65, %64 : i1
-        %75 = comb.and %72, %63 : i1
-        %76 = comb.or %75, %74 : i1
-        %77 = comb.mux %76, %csnidle_q, %c0_i4 : i4
-        %78 = comb.and %70, %60 : i1
-        %79 = comb.mux %78, %csntrail_q, %77 : i4
-        %80 = comb.and %68, %56 : i1
-        %81 = comb.mux %80, %csnlead_q, %79 : i4
-        %82 = comb.mux %31, %81, %wait_cntr_q : i4
-        %83 = comb.mux %arg18, %c0_i4, %82 : i4
-        %84 = comb.xor %45, %true : i1
-        %85 = comb.and %32, %84, %11 : i1
-        %86 = comb.mux %85, %30, %83 : i4
-        %87 = comb.icmp ne %44, %c-4_i3 : i3
-        %88 = comb.and %69, %87 : i1
-        %89 = comb.icmp ne %44, %c3_i3 : i3
-        %90 = comb.and %cpol_q, %89 : i1
-        %91 = comb.and %49, %cmd_wr_en_q, %6 : i1
-        %92 = comb.mux %91, %clk_cntr_q, %5 : i16
-        %93 = comb.mux %91, %bit_cntr_q, %52 : i3
+        %5 = comb.and %arg1, %1 : i1
+        %6 = comb.xor %arg15, %true : i1
+        %false_15 = hw.constant false
+        %7 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %8 = comb.add %wait_cntr_q, %c-1_i4 : i4
+        %9 = comb.and %cmd_wr_en_q, %7 : i1
+        %10 = comb.or %9, %cmd_wr_en_last_bit : i1
+        %11 = comb.xor %isFirstCycle, %true : i1
+        %12 = comb.and %11, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %13 = comb.xor %12, %true : i1
+        verif.assert %13 : i1
+        fsm.update %_sh1_10, %5 : i1
+        fsm.update %_sh1_8, %6 : i1
+        fsm.update %_sh1_6, %false_13 : i1
+        fsm.update %_sh1, %false_15 : i1
+        fsm.update %isFirstCycle, %false_14 : i1
+        fsm.update %cmd_wr_en_last_bit, %10 : i1
+        %14 = comb.mux %5, %8, %wait_cntr_q : i4
+        fsm.update %u_sck_flop2Fq_o, %cpol_q : i1
+        fsm.update %wait_cntr_q, %14 : i4
+        fsm.update %byte_cntr_cpha1_q, %byte_cntr_cpha1_q : i20
+        fsm.update %byte_cntr_cpha0_q, %byte_cntr_cpha0_q : i20
+        fsm.update %bit_cntr_q, %bit_cntr_q : i3
+        fsm.update %clk_cntr_q, %4 : i16
         %true_16 = hw.constant true
-        %94 = comb.xor %arg18, %true_16 : i1
-        %95 = comb.or %91, %94 : i1
-        %96 = comb.mux %95, %byte_cntr_cpha0_q, %c0_i20 : i20
         %true_17 = hw.constant true
-        %97 = comb.xor %arg18, %true_17 : i1
-        %98 = comb.or %91, %97 : i1
-        %99 = comb.mux %98, %byte_cntr_cpha1_q, %c0_i20 : i20
-        %100 = comb.mux %91, %wait_cntr_q, %86 : i4
-        fsm.update %wait_cntr_q, %100 : i4
-        fsm.update %byte_cntr_cpha1_q, %99 : i20
-        fsm.update %byte_cntr_cpha0_q, %96 : i20
-        fsm.update %bit_cntr_q, %93 : i3
-        fsm.update %clk_cntr_q, %92 : i16
-        %101 = comb.xor %91, %true : i1
-        %102 = comb.and %45, %101 : i1
-        %103 = comb.mux bin %102, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %104 = comb.and %7, %101 : i1
-        %105 = comb.mux %104, %49, %sample_en_q : i1
-        %106 = comb.mux %104, %sample_en_q, %sample_en_q2 : i1
-        %107 = comb.mux bin %91, %u_sck_flop2Fq_o, %90 : i1
-        %108 = comb.mux %101, %88, %csb_q : i1
-        %109 = comb.or %csid_q, %108 : i1
-        fsm.update %csb_q, %109 : i1
-        fsm.update %u_sck_flop2Fq_o, %107 : i1
-        fsm.update %sample_en_q2, %106 : i1
-        fsm.update %sample_en_q, %105 : i1
-        fsm.update %segment_rd_en_cpha1, %103 : i1
+        %15 = comb.xor %5, %true_17 : i1
+        %16 = comb.and %15, %sample_en_q : i1
+        %17 = comb.mux %5, %sample_en_q, %sample_en_q2 : i1
+        fsm.update %_sh1_12, %true_16 : i1
+        fsm.update %csb_q, %csid_q : i1
+        fsm.update %sample_en_q2, %17 : i1
+        fsm.update %sample_en_q, %16 : i1
+        fsm.update %segment_rd_en_cpha1, %segment_rd_en_cpha1 : i1
       }
       fsm.transition @state_5 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %1 = comb.xor %arg16, %true : i1
@@ -9619,42 +7137,38 @@ module {
         %3 = comb.mux %2, %c1_i3, %c-2_i3 : i3
         %4 = comb.xor %arg18, %true : i1
         %c-4_i3 = hw.constant -4 : i3
-        %5 = comb.and %arg1, %0 : i1
-        %6 = comb.and %5, %4 : i1
+        %5 = comb.xor %isFirstCycle, %true : i1
+        %6 = comb.and %5, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %4 : i1
+        %7 = comb.xor %6, %true : i1
+        %8 = comb.and %arg1, %0 : i1
+        %9 = comb.and %8, %4 : i1
         %c-2_i2 = hw.constant -2 : i2
-        %7 = comb.concat %c-2_i2, %2 : i2, i1
-        %8 = comb.mux %6, %7, %3 : i3
-        %9 = comb.mux %arg18, %c0_i3, %8 : i3
-        %10 = comb.xor %5, %true : i1
-        %11 = comb.and %4, %10 : i1
-        %12 = comb.mux %11, %c-4_i3, %9 : i3
-        %13 = comb.icmp ne %12, %c-4_i3 : i3
-        %true_0 = hw.constant true
-        %14 = comb.xor %6, %true_0 : i1
-        %true_1 = hw.constant true
-        %15 = comb.xor %arg18, %true_1 : i1
-        %true_2 = hw.constant true
-        %16 = comb.xor %11, %true_2 : i1
-        %17 = comb.xor %cpha_q, %true : i1
-        %18 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %19 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
-        %20 = comb.xor %19, %true : i1
-        %21 = comb.or %18, %20 : i1
-        verif.assert %21 : i1
-        %22 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-        verif.assert %22 : i1
-        %23 = comb.xor %csid_q, %true : i1
-        verif.assert %23 : i1
-        %24 = comb.and %17, %4, %13, %16, %15, %14, %2, %cmd_wr_en_q, %1 : i1
-        %25 = comb.or %24, %11 : i1
-        %true_3 = hw.constant true
-        %26 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %27 = comb.xor %25, %true_4 : i1
-        %28 = comb.and %27, %26, %6, %2 : i1
-        fsm.return %28
+        %10 = comb.concat %c-2_i2, %2 : i2, i1
+        %11 = comb.mux %9, %10, %3 : i3
+        %12 = comb.mux %arg18, %c0_i3, %11 : i3
+        %13 = comb.xor %8, %true : i1
+        %14 = comb.and %4, %13 : i1
+        %15 = comb.mux %14, %c-4_i3, %12 : i3
+        %16 = comb.icmp ne %15, %c-4_i3 : i3
+        %true_13 = hw.constant true
+        %17 = comb.xor %9, %true_13 : i1
+        %true_14 = hw.constant true
+        %18 = comb.xor %arg18, %true_14 : i1
+        %true_15 = hw.constant true
+        %19 = comb.xor %14, %true_15 : i1
+        verif.assert %7 : i1
+        %20 = comb.xor %cpha_q, %true : i1
+        %21 = comb.and %20, %4, %16, %19, %18, %17, %2, %cmd_wr_en_q, %1 : i1
+        %22 = comb.or %21, %14 : i1
+        %true_16 = hw.constant true
+        %23 = comb.xor %arg18, %true_16 : i1
+        %true_17 = hw.constant true
+        %24 = comb.xor %22, %true_17 : i1
+        %25 = comb.and %24, %23, %9, %2 : i1
+        fsm.return %25
       } action {
-        fsm.update %cmd_len_q, %cmd_len_q : i20
+        %true = hw.constant true
+        %true_13 = hw.constant true
         fsm.update %cmd_speed_q, %cmd_speed_q : i2
         fsm.update %cmd_wr_en_q, %cmd_wr_en_q : i1
         fsm.update %cmd_rd_en_q, %cmd_rd_en_q : i1
@@ -9667,173 +7181,45 @@ module {
         fsm.update %cpha_q, %cpha_q : i1
         fsm.update %cpol_q, %cpol_q : i1
         fsm.update %csid_q, %csid_q : i1
-        %c0_i4 = hw.constant 0 : i4
-        %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
-        %c0_i20 = hw.constant 0 : i20
+        %false_14 = hw.constant false
         %c0_i3 = hw.constant 0 : i3
-        %c-1_i3 = hw.constant -1 : i3
-        %c-2_i3 = hw.constant -2 : i3
-        %c1_i3 = hw.constant 1 : i3
-        %c-4_i3 = hw.constant -4 : i3
-        %c3_i3 = hw.constant 3 : i3
-        %c1_i2 = hw.constant 1 : i2
-        %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
-        %c-1_i16 = hw.constant -1 : i16
-        %c-1_i4 = hw.constant -1 : i4
-        %true = hw.constant true
-        %0 = comb.xor %arg1, %true : i1
-        %1 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
-        %2 = comb.add %clk_cntr_q, %c-1_i16 : i16
-        %3 = comb.mux %1, %clkdiv_q, %2 : i16
-        %4 = comb.mux %0, %clk_cntr_q, %3 : i16
-        %5 = comb.mux %arg18, %c0_i16, %4 : i16
-        %6 = comb.xor %arg16, %true : i1
-        %7 = comb.and %arg1, %1 : i1
-        %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
-        %10 = comb.xor %arg18, %true : i1
-        %11 = comb.and %7, %10 : i1
-        %12 = comb.xor %7, %true : i1
-        %13 = comb.and %10, %12 : i1
-        %c-4_i3_0 = hw.constant -4 : i3
-        %14 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %15 = comb.xor %cpha_q, %true : i1
-        %16 = comb.xor %cmd_rd_en_q, %true : i1
-        %17 = comb.xor %cmd_wr_en_q, %true : i1
-        %18 = comb.and %16, %17 : i1
-        %19 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %20 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %21 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %22 = comb.mux %21, %c-4_i3, %c1_i3 : i3
-        %23 = comb.xor %18, %true : i1
-        %24 = comb.xor %19, %true : i1
-        %25 = comb.and %24, %23, %20 : i1
-        %26 = comb.mux %25, %c-2_i3, %22 : i3
-        %27 = comb.and %23, %19 : i1
-        %28 = comb.mux %27, %c-1_i3, %26 : i3
-        %29 = comb.mux %18, %c0_i3, %28 : i3
-        %30 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %31 = comb.or %arg18, %7 : i1
-        %32 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %33 = comb.and %cmd_wr_en_q, %14 : i1
-        %34 = comb.or %33, %cmd_wr_en_last_bit : i1
-        %35 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %36 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
-        %37 = comb.xor %36, %true : i1
-        %38 = comb.or %35, %37 : i1
-        verif.assert %38 : i1
-        %39 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-        verif.assert %39 : i1
-        %40 = comb.xor %csid_q, %true : i1
-        verif.assert %40 : i1
-        fsm.update %cmd_wr_en_last_bit, %34 : i1
-        %c-2_i2_1 = hw.constant -2 : i2
-        %41 = comb.concat %c-2_i2_1, %8 : i2, i1
-        %42 = comb.mux %11, %41, %9 : i3
-        %43 = comb.mux %arg18, %c0_i3, %42 : i3
-        %44 = comb.mux %13, %c-4_i3_0, %43 : i3
-        %45 = comb.icmp ne %44, %c-4_i3_0 : i3
-        %true_2 = hw.constant true
-        %46 = comb.xor %11, %true_2 : i1
-        %true_3 = hw.constant true
-        %47 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %48 = comb.xor %13, %true_4 : i1
-        %49 = comb.and %15, %10, %45, %48, %47, %46, %8 : i1
-        %50 = comb.and %7, %49 : i1
-        %51 = comb.mux %50, %29, %bit_cntr_q : i3
-        %52 = comb.mux %arg18, %c0_i3, %51 : i3
-        %true_5 = hw.constant true
-        %53 = comb.xor %11, %true_5 : i1
-        %true_6 = hw.constant true
-        %54 = comb.xor %arg18, %true_6 : i1
-        %true_7 = hw.constant true
-        %55 = comb.xor %13, %true_7 : i1
-        %56 = comb.and %55, %54, %53, %8 : i1
-        %true_8 = hw.constant true
-        %57 = comb.xor %8, %true_8 : i1
-        %true_9 = hw.constant true
-        %58 = comb.xor %arg18, %true_9 : i1
-        %59 = comb.and %58, %11, %57 : i1
-        %60 = comb.or %13, %59 : i1
-        %true_10 = hw.constant true
-        %61 = comb.xor %arg18, %true_10 : i1
-        %true_11 = hw.constant true
-        %62 = comb.xor %13, %true_11 : i1
-        %63 = comb.and %62, %61, %11, %8 : i1
-        %true_12 = hw.constant true
-        %64 = comb.xor %8, %true_12 : i1
-        %true_13 = hw.constant true
-        %65 = comb.xor %11, %true_13 : i1
-        %true_14 = hw.constant true
-        %66 = comb.xor %arg18, %true_14 : i1
         %true_15 = hw.constant true
-        %67 = comb.xor %13, %true_15 : i1
-        %68 = comb.and %45, %11 : i1
-        %69 = comb.xor %56, %true : i1
-        %70 = comb.and %69, %68 : i1
-        %71 = comb.xor %60, %true : i1
-        %72 = comb.and %71, %70 : i1
-        %73 = comb.xor %63, %true : i1
-        %74 = comb.and %73, %72, %67, %66, %65, %64 : i1
-        %75 = comb.and %72, %63 : i1
-        %76 = comb.or %75, %74 : i1
-        %77 = comb.mux %76, %csnidle_q, %c0_i4 : i4
-        %78 = comb.and %70, %60 : i1
-        %79 = comb.mux %78, %csntrail_q, %77 : i4
-        %80 = comb.and %68, %56 : i1
-        %81 = comb.mux %80, %csnlead_q, %79 : i4
-        %82 = comb.mux %31, %81, %wait_cntr_q : i4
-        %83 = comb.mux %arg18, %c0_i4, %82 : i4
-        %84 = comb.xor %45, %true : i1
-        %85 = comb.and %32, %84, %11 : i1
-        %86 = comb.mux %85, %30, %83 : i4
-        %87 = comb.icmp ne %44, %c-4_i3 : i3
-        %88 = comb.and %69, %87 : i1
-        %89 = comb.icmp ne %44, %c3_i3 : i3
-        %90 = comb.and %cpol_q, %89 : i1
-        %91 = comb.and %49, %cmd_wr_en_q, %6 : i1
-        %92 = comb.mux %91, %clk_cntr_q, %5 : i16
-        %93 = comb.mux %91, %bit_cntr_q, %52 : i3
-        %true_16 = hw.constant true
-        %94 = comb.xor %arg18, %true_16 : i1
-        %95 = comb.or %91, %94 : i1
-        %96 = comb.mux %95, %byte_cntr_cpha0_q, %c0_i20 : i20
-        %true_17 = hw.constant true
-        %97 = comb.xor %arg18, %true_17 : i1
-        %98 = comb.or %91, %97 : i1
-        %99 = comb.mux %98, %byte_cntr_cpha1_q, %c0_i20 : i20
-        %100 = comb.mux %91, %wait_cntr_q, %86 : i4
-        fsm.update %wait_cntr_q, %100 : i4
-        fsm.update %byte_cntr_cpha1_q, %99 : i20
-        fsm.update %byte_cntr_cpha0_q, %96 : i20
-        fsm.update %bit_cntr_q, %93 : i3
-        fsm.update %clk_cntr_q, %92 : i16
-        %101 = comb.xor %91, %true : i1
-        %102 = comb.and %45, %101 : i1
-        %103 = comb.mux bin %102, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %104 = comb.and %7, %101 : i1
-        %105 = comb.mux %104, %49, %sample_en_q : i1
-        %106 = comb.mux %104, %sample_en_q, %sample_en_q2 : i1
-        %107 = comb.mux bin %91, %u_sck_flop2Fq_o, %90 : i1
-        %108 = comb.mux %101, %88, %csb_q : i1
-        %109 = comb.or %csid_q, %108 : i1
-        fsm.update %csb_q, %109 : i1
-        fsm.update %u_sck_flop2Fq_o, %107 : i1
-        fsm.update %sample_en_q2, %106 : i1
-        fsm.update %sample_en_q, %105 : i1
-        fsm.update %segment_rd_en_cpha1, %103 : i1
+        %0 = comb.xor %arg15, %true_15 : i1
+        %false_16 = hw.constant false
+        %1 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %2 = comb.and %cmd_wr_en_q, %1 : i1
+        %3 = comb.or %2, %cmd_wr_en_last_bit : i1
+        %4 = comb.xor %isFirstCycle, %true_15 : i1
+        %5 = comb.and %4, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %6 = comb.xor %5, %true_15 : i1
+        verif.assert %6 : i1
+        fsm.update %_sh1_10, %true : i1
+        fsm.update %_sh1_8, %0 : i1
+        fsm.update %_sh1_6, %true_13 : i1
+        fsm.update %_sh1, %false_16 : i1
+        fsm.update %isFirstCycle, %false_14 : i1
+        fsm.update %cmd_wr_en_last_bit, %3 : i1
+        %false_17 = hw.constant false
+        fsm.update %u_sck_flop2Fq_o, %cpol_q : i1
+        fsm.update %wait_cntr_q, %csnidle_q : i4
+        fsm.update %byte_cntr_cpha1_q, %byte_cntr_cpha1_q : i20
+        fsm.update %byte_cntr_cpha0_q, %byte_cntr_cpha0_q : i20
+        fsm.update %bit_cntr_q, %bit_cntr_q : i3
+        fsm.update %clk_cntr_q, %clkdiv_q : i16
+        %true_18 = hw.constant true
+        %true_19 = hw.constant true
+        fsm.update %_sh1_12, %true_18 : i1
+        fsm.update %csb_q, %true_19 : i1
+        fsm.update %sample_en_q2, %sample_en_q : i1
+        fsm.update %sample_en_q, %false_17 : i1
+        fsm.update %segment_rd_en_cpha1, %cmd_rd_en_q : i1
       }
       fsm.transition @state_4 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %1 = comb.xor %arg16, %true : i1
@@ -9841,42 +7227,36 @@ module {
         %3 = comb.mux %2, %c1_i3, %c-2_i3 : i3
         %4 = comb.xor %arg18, %true : i1
         %c-4_i3 = hw.constant -4 : i3
-        %5 = comb.and %arg1, %0 : i1
-        %6 = comb.and %5, %4 : i1
+        %5 = comb.xor %isFirstCycle, %true : i1
+        %6 = comb.and %5, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %4 : i1
+        %7 = comb.xor %6, %true : i1
+        %8 = comb.and %arg1, %0 : i1
+        %9 = comb.and %8, %4 : i1
         %c-2_i2 = hw.constant -2 : i2
-        %7 = comb.concat %c-2_i2, %2 : i2, i1
-        %8 = comb.mux %6, %7, %3 : i3
-        %9 = comb.mux %arg18, %c0_i3, %8 : i3
-        %10 = comb.xor %5, %true : i1
-        %11 = comb.and %4, %10 : i1
-        %12 = comb.mux %11, %c-4_i3, %9 : i3
-        %13 = comb.icmp ne %12, %c-4_i3 : i3
-        %true_0 = hw.constant true
-        %14 = comb.xor %6, %true_0 : i1
-        %true_1 = hw.constant true
-        %15 = comb.xor %arg18, %true_1 : i1
-        %true_2 = hw.constant true
-        %16 = comb.xor %11, %true_2 : i1
-        %17 = comb.xor %cpha_q, %true : i1
-        %18 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %19 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
-        %20 = comb.xor %19, %true : i1
-        %21 = comb.or %18, %20 : i1
-        verif.assert %21 : i1
-        %22 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-        verif.assert %22 : i1
-        %23 = comb.xor %csid_q, %true : i1
-        verif.assert %23 : i1
-        %24 = comb.and %17, %4, %13, %16, %15, %14, %2, %cmd_wr_en_q, %1 : i1
-        %true_3 = hw.constant true
-        %25 = comb.xor %2, %true_3 : i1
-        %true_4 = hw.constant true
-        %26 = comb.xor %arg18, %true_4 : i1
-        %27 = comb.and %26, %6, %25 : i1
-        %28 = comb.or %24, %11, %27 : i1
-        fsm.return %28
+        %10 = comb.concat %c-2_i2, %2 : i2, i1
+        %11 = comb.mux %9, %10, %3 : i3
+        %12 = comb.mux %arg18, %c0_i3, %11 : i3
+        %13 = comb.xor %8, %true : i1
+        %14 = comb.and %4, %13 : i1
+        %15 = comb.mux %14, %c-4_i3, %12 : i3
+        %16 = comb.icmp ne %15, %c-4_i3 : i3
+        %true_13 = hw.constant true
+        %17 = comb.xor %9, %true_13 : i1
+        %true_14 = hw.constant true
+        %18 = comb.xor %arg18, %true_14 : i1
+        %true_15 = hw.constant true
+        %19 = comb.xor %14, %true_15 : i1
+        verif.assert %7 : i1
+        %20 = comb.xor %cpha_q, %true : i1
+        %21 = comb.and %20, %4, %16, %19, %18, %17, %2, %cmd_wr_en_q, %1 : i1
+        %true_16 = hw.constant true
+        %22 = comb.xor %2, %true_16 : i1
+        %true_17 = hw.constant true
+        %23 = comb.xor %arg18, %true_17 : i1
+        %24 = comb.and %23, %9, %22 : i1
+        %25 = comb.or %21, %14, %24 : i1
+        fsm.return %25
       } action {
-        fsm.update %cmd_len_q, %cmd_len_q : i20
         fsm.update %cmd_speed_q, %cmd_speed_q : i2
         fsm.update %cmd_wr_en_q, %cmd_wr_en_q : i1
         fsm.update %cmd_rd_en_q, %cmd_rd_en_q : i1
@@ -9889,6 +7269,7 @@ module {
         fsm.update %cpha_q, %cpha_q : i1
         fsm.update %cpol_q, %cpol_q : i1
         fsm.update %csid_q, %csid_q : i1
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
@@ -9901,7 +7282,6 @@ module {
         %c3_i3 = hw.constant 3 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i16 = hw.constant -1 : i16
         %c-1_i4 = hw.constant -1 : i4
         %true = hw.constant true
@@ -9913,149 +7293,144 @@ module {
         %5 = comb.mux %arg18, %c0_i16, %4 : i16
         %6 = comb.xor %arg16, %true : i1
         %7 = comb.and %arg1, %1 : i1
-        %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
-        %10 = comb.xor %arg18, %true : i1
-        %11 = comb.and %7, %10 : i1
-        %12 = comb.xor %7, %true : i1
-        %13 = comb.and %10, %12 : i1
-        %c-4_i3_0 = hw.constant -4 : i3
-        %14 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %15 = comb.xor %cpha_q, %true : i1
-        %16 = comb.xor %cmd_rd_en_q, %true : i1
-        %17 = comb.xor %cmd_wr_en_q, %true : i1
-        %18 = comb.and %16, %17 : i1
-        %19 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %20 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %21 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %22 = comb.mux %21, %c-4_i3, %c1_i3 : i3
-        %23 = comb.xor %18, %true : i1
-        %24 = comb.xor %19, %true : i1
-        %25 = comb.and %24, %23, %20 : i1
-        %26 = comb.mux %25, %c-2_i3, %22 : i3
-        %27 = comb.and %23, %19 : i1
-        %28 = comb.mux %27, %c-1_i3, %26 : i3
-        %29 = comb.mux %18, %c0_i3, %28 : i3
-        %30 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %31 = comb.or %arg18, %7 : i1
-        %32 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %33 = comb.and %cmd_wr_en_q, %14 : i1
-        %34 = comb.or %33, %cmd_wr_en_last_bit : i1
-        %35 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %36 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
-        %37 = comb.xor %36, %true : i1
-        %38 = comb.or %35, %37 : i1
-        verif.assert %38 : i1
-        %39 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-        verif.assert %39 : i1
-        %40 = comb.xor %csid_q, %true : i1
-        verif.assert %40 : i1
-        fsm.update %cmd_wr_en_last_bit, %34 : i1
-        %c-2_i2_1 = hw.constant -2 : i2
-        %41 = comb.concat %c-2_i2_1, %8 : i2, i1
-        %42 = comb.mux %11, %41, %9 : i3
-        %43 = comb.mux %arg18, %c0_i3, %42 : i3
-        %44 = comb.mux %13, %c-4_i3_0, %43 : i3
-        %45 = comb.icmp ne %44, %c-4_i3_0 : i3
-        %true_2 = hw.constant true
-        %46 = comb.xor %11, %true_2 : i1
-        %true_3 = hw.constant true
-        %47 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %48 = comb.xor %13, %true_4 : i1
-        %49 = comb.and %15, %10, %45, %48, %47, %46, %8 : i1
-        %50 = comb.and %7, %49 : i1
-        %51 = comb.mux %50, %29, %bit_cntr_q : i3
-        %52 = comb.mux %arg18, %c0_i3, %51 : i3
-        %true_5 = hw.constant true
-        %53 = comb.xor %11, %true_5 : i1
-        %true_6 = hw.constant true
-        %54 = comb.xor %arg18, %true_6 : i1
-        %true_7 = hw.constant true
-        %55 = comb.xor %13, %true_7 : i1
-        %56 = comb.and %55, %54, %53, %8 : i1
-        %true_8 = hw.constant true
-        %57 = comb.xor %8, %true_8 : i1
-        %true_9 = hw.constant true
-        %58 = comb.xor %arg18, %true_9 : i1
-        %59 = comb.and %58, %11, %57 : i1
-        %60 = comb.or %13, %59 : i1
-        %true_10 = hw.constant true
-        %61 = comb.xor %arg18, %true_10 : i1
-        %true_11 = hw.constant true
-        %62 = comb.xor %13, %true_11 : i1
-        %63 = comb.and %62, %61, %11, %8 : i1
-        %true_12 = hw.constant true
-        %64 = comb.xor %8, %true_12 : i1
-        %true_13 = hw.constant true
-        %65 = comb.xor %11, %true_13 : i1
-        %true_14 = hw.constant true
-        %66 = comb.xor %arg18, %true_14 : i1
-        %true_15 = hw.constant true
-        %67 = comb.xor %13, %true_15 : i1
-        %68 = comb.and %45, %11 : i1
-        %69 = comb.xor %56, %true : i1
-        %70 = comb.and %69, %68 : i1
-        %71 = comb.xor %60, %true : i1
-        %72 = comb.and %71, %70 : i1
-        %73 = comb.xor %63, %true : i1
-        %74 = comb.and %73, %72, %67, %66, %65, %64 : i1
-        %75 = comb.and %72, %63 : i1
-        %76 = comb.or %75, %74 : i1
-        %77 = comb.mux %76, %csnidle_q, %c0_i4 : i4
-        %78 = comb.and %70, %60 : i1
-        %79 = comb.mux %78, %csntrail_q, %77 : i4
-        %80 = comb.and %68, %56 : i1
-        %81 = comb.mux %80, %csnlead_q, %79 : i4
-        %82 = comb.mux %31, %81, %wait_cntr_q : i4
-        %83 = comb.mux %arg18, %c0_i4, %82 : i4
-        %84 = comb.xor %45, %true : i1
-        %85 = comb.and %32, %84, %11 : i1
-        %86 = comb.mux %85, %30, %83 : i4
-        %87 = comb.icmp ne %44, %c-4_i3 : i3
-        %88 = comb.and %69, %87 : i1
-        %89 = comb.icmp ne %44, %c3_i3 : i3
-        %90 = comb.and %cpol_q, %89 : i1
-        %91 = comb.and %49, %cmd_wr_en_q, %6 : i1
-        %92 = comb.mux %91, %clk_cntr_q, %5 : i16
-        %93 = comb.mux %91, %bit_cntr_q, %52 : i3
-        %true_16 = hw.constant true
-        %94 = comb.xor %arg18, %true_16 : i1
-        %95 = comb.or %91, %94 : i1
-        %96 = comb.mux %95, %byte_cntr_cpha0_q, %c0_i20 : i20
+        %8 = comb.xor %arg15, %true : i1
+        %false_14 = hw.constant false
+        %9 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
+        %10 = comb.mux %9, %c1_i3, %c-2_i3 : i3
+        %11 = comb.xor %arg18, %true : i1
+        %12 = comb.and %7, %11 : i1
+        %c-2_i2_15 = hw.constant -2 : i2
+        %13 = comb.concat %c-2_i2_15, %9 : i2, i1
+        %14 = comb.mux %12, %13, %10 : i3
+        %15 = comb.mux %arg18, %c0_i3, %14 : i3
+        %16 = comb.xor %7, %true : i1
+        %17 = comb.and %11, %16 : i1
+        %c-4_i3_16 = hw.constant -4 : i3
         %true_17 = hw.constant true
-        %97 = comb.xor %arg18, %true_17 : i1
-        %98 = comb.or %91, %97 : i1
-        %99 = comb.mux %98, %byte_cntr_cpha1_q, %c0_i20 : i20
-        %100 = comb.mux %91, %wait_cntr_q, %86 : i4
-        fsm.update %wait_cntr_q, %100 : i4
-        fsm.update %byte_cntr_cpha1_q, %99 : i20
-        fsm.update %byte_cntr_cpha0_q, %96 : i20
-        fsm.update %bit_cntr_q, %93 : i3
-        fsm.update %clk_cntr_q, %92 : i16
-        %101 = comb.xor %91, %true : i1
-        %102 = comb.and %45, %101 : i1
-        %103 = comb.mux bin %102, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %104 = comb.and %7, %101 : i1
-        %105 = comb.mux %104, %49, %sample_en_q : i1
-        %106 = comb.mux %104, %sample_en_q, %sample_en_q2 : i1
-        %107 = comb.mux bin %91, %u_sck_flop2Fq_o, %90 : i1
-        %108 = comb.mux %101, %88, %csb_q : i1
-        %109 = comb.or %csid_q, %108 : i1
-        fsm.update %csb_q, %109 : i1
-        fsm.update %u_sck_flop2Fq_o, %107 : i1
-        fsm.update %sample_en_q2, %106 : i1
-        fsm.update %sample_en_q, %105 : i1
-        fsm.update %segment_rd_en_cpha1, %103 : i1
+        %18 = comb.xor %12, %true_17 : i1
+        %true_18 = hw.constant true
+        %19 = comb.xor %arg18, %true_18 : i1
+        %true_19 = hw.constant true
+        %20 = comb.xor %17, %true_19 : i1
+        %21 = comb.and %20, %19, %18, %9 : i1
+        %22 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %23 = comb.xor %cpha_q, %true : i1
+        %24 = comb.xor %cmd_rd_en_q, %true : i1
+        %25 = comb.xor %cmd_wr_en_q, %true : i1
+        %26 = comb.and %24, %25 : i1
+        %27 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %28 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %29 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %30 = comb.mux %29, %c-4_i3, %c1_i3 : i3
+        %31 = comb.xor %26, %true : i1
+        %32 = comb.xor %27, %true : i1
+        %33 = comb.and %32, %31, %28 : i1
+        %34 = comb.mux %33, %c-2_i3, %30 : i3
+        %35 = comb.and %31, %27 : i1
+        %36 = comb.mux %35, %c-1_i3, %34 : i3
+        %37 = comb.mux %26, %c0_i3, %36 : i3
+        %true_20 = hw.constant true
+        %38 = comb.xor %9, %true_20 : i1
+        %true_21 = hw.constant true
+        %39 = comb.xor %arg18, %true_21 : i1
+        %40 = comb.and %39, %12, %38 : i1
+        %41 = comb.or %17, %40 : i1
+        %true_22 = hw.constant true
+        %42 = comb.xor %arg18, %true_22 : i1
+        %true_23 = hw.constant true
+        %43 = comb.xor %17, %true_23 : i1
+        %44 = comb.and %43, %42, %12, %9 : i1
+        %true_24 = hw.constant true
+        %45 = comb.xor %9, %true_24 : i1
+        %true_25 = hw.constant true
+        %46 = comb.xor %12, %true_25 : i1
+        %true_26 = hw.constant true
+        %47 = comb.xor %arg18, %true_26 : i1
+        %true_27 = hw.constant true
+        %48 = comb.xor %17, %true_27 : i1
+        %49 = comb.add %wait_cntr_q, %c-1_i4 : i4
+        %50 = comb.xor %21, %true : i1
+        %51 = comb.xor %41, %true : i1
+        %52 = comb.xor %44, %true : i1
+        %53 = comb.or %arg18, %7 : i1
+        %54 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
+        %true_28 = hw.constant true
+        %55 = comb.xor %arg18, %true_28 : i1
+        %true_29 = hw.constant true
+        %56 = comb.xor %arg18, %true_29 : i1
+        %57 = comb.and %cmd_wr_en_q, %22 : i1
+        %58 = comb.or %57, %cmd_wr_en_last_bit : i1
+        %59 = comb.xor %isFirstCycle, %true : i1
+        %60 = comb.and %59, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %11 : i1
+        %61 = comb.xor %60, %true : i1
+        verif.assert %61 : i1
+        fsm.update %_sh1_10, %7 : i1
+        fsm.update %_sh1_8, %8 : i1
+        fsm.update %_sh1_6, %9 : i1
+        fsm.update %_sh1, %false_14 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        fsm.update %cmd_wr_en_last_bit, %58 : i1
+        %62 = comb.mux %17, %c-4_i3_16, %15 : i3
+        %63 = comb.icmp ne %62, %c-4_i3_16 : i3
+        %64 = comb.and %23, %11, %63, %21 : i1
+        %65 = comb.and %7, %64 : i1
+        %66 = comb.mux %65, %37, %bit_cntr_q : i3
+        %67 = comb.mux %arg18, %c0_i3, %66 : i3
+        %68 = comb.and %63, %12 : i1
+        %69 = comb.and %50, %68 : i1
+        %70 = comb.and %51, %69 : i1
+        %71 = comb.and %52, %70, %48, %47, %46, %45 : i1
+        %72 = comb.and %70, %44 : i1
+        %73 = comb.or %72, %71 : i1
+        %74 = comb.mux %73, %csnidle_q, %c0_i4 : i4
+        %75 = comb.and %69, %41 : i1
+        %76 = comb.mux %75, %csntrail_q, %74 : i4
+        %77 = comb.and %68, %21 : i1
+        %78 = comb.mux %77, %csnlead_q, %76 : i4
+        %79 = comb.mux %53, %78, %wait_cntr_q : i4
+        %80 = comb.mux %arg18, %c0_i4, %79 : i4
+        %81 = comb.xor %63, %true : i1
+        %82 = comb.and %54, %81, %12 : i1
+        %83 = comb.mux %82, %49, %80 : i4
+        %84 = comb.icmp ne %62, %c-4_i3 : i3
+        %85 = comb.and %50, %84 : i1
+        %86 = comb.icmp ne %62, %c3_i3 : i3
+        %87 = comb.and %cpol_q, %86 : i1
+        %88 = comb.and %64, %cmd_wr_en_q, %6 : i1
+        %89 = comb.mux %88, %clk_cntr_q, %5 : i16
+        %90 = comb.mux %88, %bit_cntr_q, %67 : i3
+        %91 = comb.or %88, %55 : i1
+        %92 = comb.mux %91, %byte_cntr_cpha0_q, %c0_i20 : i20
+        %93 = comb.or %88, %56 : i1
+        %94 = comb.mux %93, %byte_cntr_cpha1_q, %c0_i20 : i20
+        %95 = comb.mux %88, %wait_cntr_q, %83 : i4
+        %96 = comb.mux bin %88, %u_sck_flop2Fq_o, %87 : i1
+        fsm.update %u_sck_flop2Fq_o, %96 : i1
+        fsm.update %wait_cntr_q, %95 : i4
+        fsm.update %byte_cntr_cpha1_q, %94 : i20
+        fsm.update %byte_cntr_cpha0_q, %92 : i20
+        fsm.update %bit_cntr_q, %90 : i3
+        fsm.update %clk_cntr_q, %89 : i16
+        %97 = comb.xor %88, %true : i1
+        %98 = comb.and %63, %97 : i1
+        %99 = comb.mux bin %98, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %100 = comb.and %7, %97 : i1
+        %101 = comb.mux %100, %64, %sample_en_q : i1
+        %102 = comb.mux %100, %sample_en_q, %sample_en_q2 : i1
+        %103 = comb.mux %97, %85, %csb_q : i1
+        %104 = comb.or %csid_q, %103 : i1
+        fsm.update %_sh1_12, %97 : i1
+        fsm.update %csb_q, %104 : i1
+        fsm.update %sample_en_q2, %102 : i1
+        fsm.update %sample_en_q, %101 : i1
+        fsm.update %segment_rd_en_cpha1, %99 : i1
       }
       fsm.transition @state_1 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %1 = comb.xor %arg16, %true : i1
@@ -10063,44 +7438,39 @@ module {
         %3 = comb.mux %2, %c1_i3, %c-2_i3 : i3
         %4 = comb.xor %arg18, %true : i1
         %c-4_i3 = hw.constant -4 : i3
-        %5 = comb.and %arg1, %0 : i1
-        %6 = comb.and %5, %4 : i1
+        %5 = comb.xor %isFirstCycle, %true : i1
+        %6 = comb.and %5, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %4 : i1
+        %7 = comb.xor %6, %true : i1
+        %8 = comb.and %arg1, %0 : i1
+        %9 = comb.and %8, %4 : i1
         %c-2_i2 = hw.constant -2 : i2
-        %7 = comb.concat %c-2_i2, %2 : i2, i1
-        %8 = comb.mux %6, %7, %3 : i3
-        %9 = comb.mux %arg18, %c0_i3, %8 : i3
-        %10 = comb.xor %5, %true : i1
-        %11 = comb.and %4, %10 : i1
-        %12 = comb.mux %11, %c-4_i3, %9 : i3
-        %13 = comb.icmp ne %12, %c-4_i3 : i3
-        %true_0 = hw.constant true
-        %14 = comb.xor %6, %true_0 : i1
-        %true_1 = hw.constant true
-        %15 = comb.xor %arg18, %true_1 : i1
-        %true_2 = hw.constant true
-        %16 = comb.xor %11, %true_2 : i1
-        %17 = comb.xor %cpha_q, %true : i1
-        %18 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %19 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
-        %20 = comb.xor %19, %true : i1
-        %21 = comb.or %18, %20 : i1
-        verif.assert %21 : i1
-        %22 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-        verif.assert %22 : i1
-        %23 = comb.xor %csid_q, %true : i1
-        verif.assert %23 : i1
-        %24 = comb.and %17, %4, %13, %16, %15, %14, %2, %cmd_wr_en_q, %1 : i1
-        %25 = comb.or %24, %11 : i1
-        %true_3 = hw.constant true
-        %26 = comb.xor %6, %true_3 : i1
-        %true_4 = hw.constant true
-        %27 = comb.xor %arg18, %true_4 : i1
-        %true_5 = hw.constant true
-        %28 = comb.xor %25, %true_5 : i1
-        %29 = comb.and %28, %27, %26, %2 : i1
-        fsm.return %29
+        %10 = comb.concat %c-2_i2, %2 : i2, i1
+        %11 = comb.mux %9, %10, %3 : i3
+        %12 = comb.mux %arg18, %c0_i3, %11 : i3
+        %13 = comb.xor %8, %true : i1
+        %14 = comb.and %4, %13 : i1
+        %15 = comb.mux %14, %c-4_i3, %12 : i3
+        %16 = comb.icmp ne %15, %c-4_i3 : i3
+        %true_13 = hw.constant true
+        %17 = comb.xor %9, %true_13 : i1
+        %true_14 = hw.constant true
+        %18 = comb.xor %arg18, %true_14 : i1
+        %true_15 = hw.constant true
+        %19 = comb.xor %14, %true_15 : i1
+        verif.assert %7 : i1
+        %20 = comb.xor %cpha_q, %true : i1
+        %21 = comb.and %20, %4, %16, %19, %18, %17, %2, %cmd_wr_en_q, %1 : i1
+        %22 = comb.or %21, %14 : i1
+        %true_16 = hw.constant true
+        %23 = comb.xor %9, %true_16 : i1
+        %true_17 = hw.constant true
+        %24 = comb.xor %arg18, %true_17 : i1
+        %true_18 = hw.constant true
+        %25 = comb.xor %22, %true_18 : i1
+        %26 = comb.and %25, %24, %23, %2 : i1
+        fsm.return %26
       } action {
-        fsm.update %cmd_len_q, %cmd_len_q : i20
+        %true = hw.constant true
         fsm.update %cmd_speed_q, %cmd_speed_q : i2
         fsm.update %cmd_wr_en_q, %cmd_wr_en_q : i1
         fsm.update %cmd_rd_en_q, %cmd_rd_en_q : i1
@@ -10113,164 +7483,71 @@ module {
         fsm.update %cpha_q, %cpha_q : i1
         fsm.update %cpol_q, %cpol_q : i1
         fsm.update %csid_q, %csid_q : i1
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
-        %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
-        %c-1_i3 = hw.constant -1 : i3
-        %c-2_i3 = hw.constant -2 : i3
-        %c1_i3 = hw.constant 1 : i3
-        %c-4_i3 = hw.constant -4 : i3
-        %c3_i3 = hw.constant 3 : i3
-        %c1_i2 = hw.constant 1 : i2
-        %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i16 = hw.constant -1 : i16
-        %c-1_i4 = hw.constant -1 : i4
-        %true = hw.constant true
-        %0 = comb.xor %arg1, %true : i1
+        %true_14 = hw.constant true
+        %0 = comb.xor %arg1, %true_14 : i1
         %1 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %2 = comb.add %clk_cntr_q, %c-1_i16 : i16
         %3 = comb.mux %1, %clkdiv_q, %2 : i16
         %4 = comb.mux %0, %clk_cntr_q, %3 : i16
-        %5 = comb.mux %arg18, %c0_i16, %4 : i16
-        %6 = comb.xor %arg16, %true : i1
-        %7 = comb.and %arg1, %1 : i1
-        %8 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %9 = comb.mux %8, %c1_i3, %c-2_i3 : i3
-        %10 = comb.xor %arg18, %true : i1
-        %11 = comb.and %7, %10 : i1
-        %12 = comb.xor %7, %true : i1
-        %13 = comb.and %10, %12 : i1
-        %c-4_i3_0 = hw.constant -4 : i3
-        %14 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %15 = comb.xor %cpha_q, %true : i1
-        %16 = comb.xor %cmd_rd_en_q, %true : i1
-        %17 = comb.xor %cmd_wr_en_q, %true : i1
-        %18 = comb.and %16, %17 : i1
-        %19 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %20 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %21 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %22 = comb.mux %21, %c-4_i3, %c1_i3 : i3
-        %23 = comb.xor %18, %true : i1
-        %24 = comb.xor %19, %true : i1
-        %25 = comb.and %24, %23, %20 : i1
-        %26 = comb.mux %25, %c-2_i3, %22 : i3
-        %27 = comb.and %23, %19 : i1
-        %28 = comb.mux %27, %c-1_i3, %26 : i3
-        %29 = comb.mux %18, %c0_i3, %28 : i3
-        %30 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %31 = comb.or %arg18, %7 : i1
-        %32 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %33 = comb.and %cmd_wr_en_q, %14 : i1
-        %34 = comb.or %33, %cmd_wr_en_last_bit : i1
-        %35 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %36 = comb.and %cmd_rd_en_q, %cmd_wr_en_q : i1
-        %37 = comb.xor %36, %true : i1
-        %38 = comb.or %35, %37 : i1
-        verif.assert %38 : i1
-        %39 = comb.icmp ne %cmd_speed_q, %c-1_i2 : i2
-        verif.assert %39 : i1
-        %40 = comb.xor %csid_q, %true : i1
-        verif.assert %40 : i1
-        fsm.update %cmd_wr_en_last_bit, %34 : i1
-        %c-2_i2_1 = hw.constant -2 : i2
-        %41 = comb.concat %c-2_i2_1, %8 : i2, i1
-        %42 = comb.mux %11, %41, %9 : i3
-        %43 = comb.mux %arg18, %c0_i3, %42 : i3
-        %44 = comb.mux %13, %c-4_i3_0, %43 : i3
-        %45 = comb.icmp ne %44, %c-4_i3_0 : i3
-        %true_2 = hw.constant true
-        %46 = comb.xor %11, %true_2 : i1
-        %true_3 = hw.constant true
-        %47 = comb.xor %arg18, %true_3 : i1
-        %true_4 = hw.constant true
-        %48 = comb.xor %13, %true_4 : i1
-        %49 = comb.and %15, %10, %45, %48, %47, %46, %8 : i1
-        %50 = comb.and %7, %49 : i1
-        %51 = comb.mux %50, %29, %bit_cntr_q : i3
-        %52 = comb.mux %arg18, %c0_i3, %51 : i3
-        %true_5 = hw.constant true
-        %53 = comb.xor %11, %true_5 : i1
-        %true_6 = hw.constant true
-        %54 = comb.xor %arg18, %true_6 : i1
-        %true_7 = hw.constant true
-        %55 = comb.xor %13, %true_7 : i1
-        %56 = comb.and %55, %54, %53, %8 : i1
-        %true_8 = hw.constant true
-        %57 = comb.xor %8, %true_8 : i1
-        %true_9 = hw.constant true
-        %58 = comb.xor %arg18, %true_9 : i1
-        %59 = comb.and %58, %11, %57 : i1
-        %60 = comb.or %13, %59 : i1
-        %true_10 = hw.constant true
-        %61 = comb.xor %arg18, %true_10 : i1
-        %true_11 = hw.constant true
-        %62 = comb.xor %13, %true_11 : i1
-        %63 = comb.and %62, %61, %11, %8 : i1
-        %true_12 = hw.constant true
-        %64 = comb.xor %8, %true_12 : i1
-        %true_13 = hw.constant true
-        %65 = comb.xor %11, %true_13 : i1
-        %true_14 = hw.constant true
-        %66 = comb.xor %arg18, %true_14 : i1
-        %true_15 = hw.constant true
-        %67 = comb.xor %13, %true_15 : i1
-        %68 = comb.and %45, %11 : i1
-        %69 = comb.xor %56, %true : i1
-        %70 = comb.and %69, %68 : i1
-        %71 = comb.xor %60, %true : i1
-        %72 = comb.and %71, %70 : i1
-        %73 = comb.xor %63, %true : i1
-        %74 = comb.and %73, %72, %67, %66, %65, %64 : i1
-        %75 = comb.and %72, %63 : i1
-        %76 = comb.or %75, %74 : i1
-        %77 = comb.mux %76, %csnidle_q, %c0_i4 : i4
-        %78 = comb.and %70, %60 : i1
-        %79 = comb.mux %78, %csntrail_q, %77 : i4
-        %80 = comb.and %68, %56 : i1
-        %81 = comb.mux %80, %csnlead_q, %79 : i4
-        %82 = comb.mux %31, %81, %wait_cntr_q : i4
-        %83 = comb.mux %arg18, %c0_i4, %82 : i4
-        %84 = comb.xor %45, %true : i1
-        %85 = comb.and %32, %84, %11 : i1
-        %86 = comb.mux %85, %30, %83 : i4
-        %87 = comb.icmp ne %44, %c-4_i3 : i3
-        %88 = comb.and %69, %87 : i1
-        %89 = comb.icmp ne %44, %c3_i3 : i3
-        %90 = comb.and %cpol_q, %89 : i1
-        %91 = comb.and %49, %cmd_wr_en_q, %6 : i1
-        %92 = comb.mux %91, %clk_cntr_q, %5 : i16
-        %93 = comb.mux %91, %bit_cntr_q, %52 : i3
-        %true_16 = hw.constant true
-        %94 = comb.xor %arg18, %true_16 : i1
-        %95 = comb.or %91, %94 : i1
-        %96 = comb.mux %95, %byte_cntr_cpha0_q, %c0_i20 : i20
+        %5 = comb.and %arg1, %1 : i1
+        %6 = comb.xor %arg15, %true_14 : i1
+        %false_15 = hw.constant false
+        %c1_i2 = hw.constant 1 : i2
+        %7 = comb.concat %5, %c1_i2 : i1, i2
+        %8 = comb.xor %5, %true_14 : i1
+        %c-4_i3 = hw.constant -4 : i3
+        %9 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %10 = comb.and %cmd_wr_en_q, %9 : i1
+        %11 = comb.or %10, %cmd_wr_en_last_bit : i1
+        %12 = comb.xor %isFirstCycle, %true_14 : i1
+        %13 = comb.and %12, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %14 = comb.xor %13, %true_14 : i1
+        verif.assert %14 : i1
+        fsm.update %_sh1_10, %5 : i1
+        fsm.update %_sh1_8, %6 : i1
+        fsm.update %_sh1_6, %true : i1
+        fsm.update %_sh1, %false_15 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        fsm.update %cmd_wr_en_last_bit, %11 : i1
+        %15 = comb.mux %8, %c-4_i3, %7 : i3
+        %16 = comb.extract %15 from 2 : (i3) -> i1
+        %17 = comb.extract %15 from 0 : (i3) -> i1
+        %18 = comb.concat %16, %17 : i1, i1
+        %c-2_i2 = hw.constant -2 : i2
+        %19 = comb.icmp ne %18, %c-2_i2 : i2
+        %20 = comb.and %19, %5 : i1
+        %21 = comb.mux %20, %csnidle_q, %c0_i4 : i4
+        %22 = comb.and %20, %8 : i1
+        %23 = comb.mux %22, %csntrail_q, %21 : i4
+        %24 = comb.mux %5, %23, %wait_cntr_q : i4
+        %25 = comb.extract %15 from 2 : (i3) -> i1
+        %26 = comb.extract %15 from 0 : (i3) -> i1
+        %27 = comb.concat %25, %26 : i1, i1
+        %c-2_i2_16 = hw.constant -2 : i2
+        %28 = comb.icmp ne %27, %c-2_i2_16 : i2
+        fsm.update %u_sck_flop2Fq_o, %cpol_q : i1
+        fsm.update %wait_cntr_q, %24 : i4
+        fsm.update %byte_cntr_cpha1_q, %byte_cntr_cpha1_q : i20
+        fsm.update %byte_cntr_cpha0_q, %byte_cntr_cpha0_q : i20
+        fsm.update %bit_cntr_q, %bit_cntr_q : i3
+        fsm.update %clk_cntr_q, %4 : i16
         %true_17 = hw.constant true
-        %97 = comb.xor %arg18, %true_17 : i1
-        %98 = comb.or %91, %97 : i1
-        %99 = comb.mux %98, %byte_cntr_cpha1_q, %c0_i20 : i20
-        %100 = comb.mux %91, %wait_cntr_q, %86 : i4
-        fsm.update %wait_cntr_q, %100 : i4
-        fsm.update %byte_cntr_cpha1_q, %99 : i20
-        fsm.update %byte_cntr_cpha0_q, %96 : i20
-        fsm.update %bit_cntr_q, %93 : i3
-        fsm.update %clk_cntr_q, %92 : i16
-        %101 = comb.xor %91, %true : i1
-        %102 = comb.and %45, %101 : i1
-        %103 = comb.mux bin %102, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %104 = comb.and %7, %101 : i1
-        %105 = comb.mux %104, %49, %sample_en_q : i1
-        %106 = comb.mux %104, %sample_en_q, %sample_en_q2 : i1
-        %107 = comb.mux bin %91, %u_sck_flop2Fq_o, %90 : i1
-        %108 = comb.mux %101, %88, %csb_q : i1
-        %109 = comb.or %csid_q, %108 : i1
-        fsm.update %csb_q, %109 : i1
-        fsm.update %u_sck_flop2Fq_o, %107 : i1
-        fsm.update %sample_en_q2, %106 : i1
-        fsm.update %sample_en_q, %105 : i1
-        fsm.update %segment_rd_en_cpha1, %103 : i1
+        %29 = comb.mux bin %19, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %true_18 = hw.constant true
+        %30 = comb.xor %5, %true_18 : i1
+        %31 = comb.and %30, %sample_en_q : i1
+        %32 = comb.mux %5, %sample_en_q, %sample_en_q2 : i1
+        %33 = comb.or %csid_q, %28 : i1
+        fsm.update %_sh1_12, %true_17 : i1
+        fsm.update %csb_q, %33 : i1
+        fsm.update %sample_en_q2, %32 : i1
+        fsm.update %sample_en_q, %31 : i1
+        fsm.update %segment_rd_en_cpha1, %29 : i1
       }
     }
     fsm.state @state_5 output {
@@ -10283,9 +7560,8 @@ module {
       %c1_i3 = hw.constant 1 : i3
       %c1_i2 = hw.constant 1 : i2
       %c-2_i2 = hw.constant -2 : i2
-      %c-1_i2 = hw.constant -1 : i2
       %true = hw.constant true
-      %false = hw.constant false
+      %false_13 = hw.constant false
       %0 = comb.icmp ne %arg13, %cpol_q : i1
       %1 = comb.icmp ne %arg12, %cpha_q : i1
       %2 = comb.icmp ne %arg11, %full_cyc_q : i1
@@ -10294,10 +7570,10 @@ module {
       %5 = comb.icmp ne %arg9, %csnlead_q : i4
       %6 = comb.icmp ne %arg7, %clkdiv_q : i16
       %7 = comb.or %0, %1, %2, %3, %4, %5, %6 : i1
-      %true_0 = hw.constant true
+      %true_14 = hw.constant true
       %8 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
       %9 = comb.xor %arg16, %true : i1
-      %false_1 = hw.constant false
+      %false_15 = hw.constant false
       %10 = comb.and %arg1, %8 : i1
       %11 = comb.mux %7, %c-2_i3, %c1_i3 : i3
       %12 = comb.mux %arg15, %11, %c0_i3 : i3
@@ -10310,7 +7586,7 @@ module {
       %19 = comb.xor %18, %true : i1
       %20 = comb.and %19, %16, %13 : i1
       %c-3_i3 = hw.constant -3 : i3
-      %false_2 = hw.constant false
+      %false_16 = hw.constant false
       %21 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
       %22 = comb.or %cmd_wr_en_q, %cmd_wr_en_last_bit : i1
       %23 = comb.concat %c0_i3, %22 : i3, i1
@@ -10329,71 +7605,59 @@ module {
       %36 = comb.mux %35, %26, %34 : i4
       %37 = comb.and %21, %29 : i1
       %38 = comb.mux %37, %23, %36 : i4
-      %39 = comb.and %arg15, %20 : i1
-      %40 = comb.mux %39, %arg14, %csid_q : i1
-      %41 = comb.mux %39, %arg12, %cpha_q : i1
-      %42 = comb.mux %39, %arg11, %full_cyc_q : i1
-      %43 = comb.mux %39, %arg3, %cmd_wr_en_q : i1
-      %44 = comb.mux %39, %arg4, %cmd_rd_en_q : i1
-      %45 = comb.mux %39, %arg2, %cmd_speed_q : i2
+      %39 = comb.xor %isFirstCycle, %true : i1
+      %40 = comb.and %39, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %15 : i1
+      %41 = comb.xor %40, %true : i1
+      verif.assert %41 : i1
+      %42 = comb.and %arg15, %20 : i1
+      %43 = comb.mux %42, %arg12, %cpha_q : i1
+      %44 = comb.mux %42, %arg11, %full_cyc_q : i1
+      %45 = comb.mux %42, %arg3, %cmd_wr_en_q : i1
       %46 = comb.mux %13, %12, %c-3_i3 : i3
       %47 = comb.mux %16, %46, %14 : i3
       %48 = comb.mux %arg18, %c0_i3, %47 : i3
       %49 = comb.mux %18, %c-3_i3, %48 : i3
       %50 = comb.icmp ne %49, %c-3_i3 : i3
-      %true_3 = hw.constant true
-      %51 = comb.xor %7, %true_3 : i1
+      %true_17 = hw.constant true
+      %51 = comb.xor %7, %true_17 : i1
       %52 = comb.and %arg15, %51 : i1
-      %true_4 = hw.constant true
-      %53 = comb.xor %16, %true_4 : i1
+      %true_18 = hw.constant true
+      %53 = comb.xor %16, %true_18 : i1
       %54 = comb.or %53, %52 : i1
-      %true_5 = hw.constant true
-      %55 = comb.xor %arg18, %true_5 : i1
-      %true_6 = hw.constant true
-      %56 = comb.xor %18, %true_6 : i1
-      %57 = comb.xor %41, %true : i1
-      %58 = comb.and %57, %15, %50, %56, %55, %54, %13, %43 : i1
-      %59 = comb.mux %42, %sample_en_q2, %sample_en_q : i1
-      %60 = comb.icmp eq %arg2, %c0_i2 : i2
-      %61 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-      %62 = comb.mux %39, %60, %61 : i1
-      %63 = comb.and %44, %43 : i1
-      %64 = comb.xor %63, %true : i1
-      %65 = comb.or %62, %64 : i1
-      verif.assert %65 : i1
-      %66 = comb.icmp ne %45, %c-1_i2 : i2
-      verif.assert %66 : i1
-      %67 = comb.xor %40, %true : i1
-      verif.assert %67 : i1
-      %68 = comb.and %58, %9 : i1
-      %69 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
-      %70 = comb.icmp eq %arg5, %c0_i20 : i20
-      %71 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
-      %72 = comb.mux %39, %70, %71 : i1
-      %73 = comb.mux %17, %69, %72 : i1
-      %74 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
-      %75 = comb.icmp eq %arg5, %c0_i20 : i20
-      %76 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
-      %77 = comb.mux %39, %75, %76 : i1
-      %78 = comb.mux %17, %74, %77 : i1
-      %79 = comb.mux %57, %73, %78 : i1
-      %80 = comb.or %arg18, %79 : i1
-      %81 = comb.xor %68, %true : i1
-      %82 = comb.and %58, %81 : i1
-      %83 = comb.and %59, %81 : i1
-      %false_7 = hw.constant false
-      %84 = comb.and %20, %81 : i1
-      %85 = comb.and %80, %82, %arg16 : i1
-      fsm.output %84, %u_sck_flop2Fq_o, %csb_q, %38, %false_2, %85, %82, %false, %83, %false_7, %cmd_speed_q, %42, %false_1, %68, %true_0 : i1, i1, i1, i4, i1, i1, i1, i1, i1, i1, i2, i1, i1, i1, i1
+      %true_19 = hw.constant true
+      %55 = comb.xor %arg18, %true_19 : i1
+      %true_20 = hw.constant true
+      %56 = comb.xor %18, %true_20 : i1
+      %57 = comb.xor %43, %true : i1
+      %58 = comb.and %57, %15, %50, %56, %55, %54, %13, %45 : i1
+      %59 = comb.mux %44, %sample_en_q2, %sample_en_q : i1
+      %60 = comb.and %58, %9 : i1
+      %61 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
+      %62 = comb.icmp eq %arg5, %c0_i20 : i20
+      %63 = comb.icmp eq %byte_cntr_cpha0_q, %c0_i20 : i20
+      %64 = comb.mux %42, %62, %63 : i1
+      %65 = comb.mux %17, %61, %64 : i1
+      %66 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
+      %67 = comb.icmp eq %arg5, %c0_i20 : i20
+      %68 = comb.icmp eq %byte_cntr_cpha1_q, %c0_i20 : i20
+      %69 = comb.mux %42, %67, %68 : i1
+      %70 = comb.mux %17, %66, %69 : i1
+      %71 = comb.mux %57, %65, %70 : i1
+      %72 = comb.or %arg18, %71 : i1
+      %73 = comb.xor %60, %true : i1
+      %74 = comb.and %58, %73 : i1
+      %75 = comb.and %59, %73 : i1
+      %false_21 = hw.constant false
+      %76 = comb.and %20, %73 : i1
+      %77 = comb.and %72, %74, %arg16 : i1
+      fsm.output %76, %u_sck_flop2Fq_o, %csb_q, %38, %false_16, %77, %74, %false_13, %75, %false_21, %cmd_speed_q, %44, %false_15, %60, %true_14 : i1, i1, i1, i4, i1, i1, i1, i1, i1, i1, i2, i1, i1, i1, i1
     } transitions {
       fsm.transition @state_6 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp ne %arg13, %cpol_q : i1
         %1 = comb.icmp ne %arg12, %cpha_q : i1
@@ -10411,61 +7675,51 @@ module {
         %13 = comb.mux %12, %c1_i3, %c-2_i3 : i3
         %14 = comb.xor %arg18, %true : i1
         %c-3_i3 = hw.constant -3 : i3
-        %15 = comb.and %arg1, %8 : i1
-        %16 = comb.and %15, %14 : i1
-        %17 = comb.mux %12, %11, %c-3_i3 : i3
-        %18 = comb.mux %16, %17, %13 : i3
-        %19 = comb.mux %arg18, %c0_i3, %18 : i3
-        %20 = comb.xor %15, %true : i1
-        %21 = comb.and %14, %20 : i1
-        %22 = comb.mux %21, %c-3_i3, %19 : i3
-        %23 = comb.xor %21, %true : i1
-        %24 = comb.icmp ne %22, %c-3_i3 : i3
-        %true_0 = hw.constant true
-        %25 = comb.xor %7, %true_0 : i1
-        %26 = comb.and %arg15, %25 : i1
-        %true_1 = hw.constant true
-        %27 = comb.xor %16, %true_1 : i1
-        %28 = comb.or %27, %26 : i1
-        %true_2 = hw.constant true
-        %29 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %30 = comb.xor %21, %true_3 : i1
-        %31 = comb.and %arg15, %23, %16, %12 : i1
-        %32 = comb.mux %31, %arg14, %csid_q : i1
-        %33 = comb.mux %31, %arg12, %cpha_q : i1
-        %34 = comb.mux %31, %arg3, %cmd_wr_en_q : i1
-        %35 = comb.mux %31, %arg4, %cmd_rd_en_q : i1
-        %36 = comb.mux %31, %arg2, %cmd_speed_q : i2
-        %37 = comb.xor %33, %true : i1
-        %38 = comb.icmp eq %arg2, %c0_i2 : i2
-        %39 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %40 = comb.mux %31, %38, %39 : i1
-        %41 = comb.and %35, %34 : i1
-        %42 = comb.xor %41, %true : i1
-        %43 = comb.or %40, %42 : i1
-        verif.assert %43 : i1
-        %44 = comb.icmp ne %36, %c-1_i2 : i2
-        verif.assert %44 : i1
-        %45 = comb.xor %32, %true : i1
-        verif.assert %45 : i1
-        %46 = comb.and %37, %14, %24, %30, %29, %28, %12, %34, %9 : i1
-        %47 = comb.or %46, %21 : i1
-        %48 = comb.and %12, %arg15, %7 : i1
-        %true_4 = hw.constant true
-        %49 = comb.xor %12, %true_4 : i1
-        %50 = comb.mux %16, %48, %49 : i1
-        %true_5 = hw.constant true
-        %51 = comb.xor %arg18, %true_5 : i1
-        %true_6 = hw.constant true
-        %52 = comb.xor %47, %true_6 : i1
-        %53 = comb.and %52, %51, %50 : i1
-        fsm.return %53
+        %15 = comb.xor %isFirstCycle, %true : i1
+        %16 = comb.and %15, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %14 : i1
+        %17 = comb.xor %16, %true : i1
+        %18 = comb.and %arg1, %8 : i1
+        %19 = comb.and %18, %14 : i1
+        %20 = comb.mux %12, %11, %c-3_i3 : i3
+        %21 = comb.mux %19, %20, %13 : i3
+        %22 = comb.mux %arg18, %c0_i3, %21 : i3
+        %23 = comb.xor %18, %true : i1
+        %24 = comb.and %14, %23 : i1
+        %25 = comb.mux %24, %c-3_i3, %22 : i3
+        %26 = comb.xor %24, %true : i1
+        %27 = comb.icmp ne %25, %c-3_i3 : i3
+        %true_13 = hw.constant true
+        %28 = comb.xor %7, %true_13 : i1
+        %29 = comb.and %arg15, %28 : i1
+        %true_14 = hw.constant true
+        %30 = comb.xor %19, %true_14 : i1
+        %31 = comb.or %30, %29 : i1
+        %true_15 = hw.constant true
+        %32 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %33 = comb.xor %24, %true_16 : i1
+        verif.assert %17 : i1
+        %34 = comb.and %arg15, %26, %19, %12 : i1
+        %35 = comb.mux %34, %arg12, %cpha_q : i1
+        %36 = comb.mux %34, %arg3, %cmd_wr_en_q : i1
+        %37 = comb.xor %35, %true : i1
+        %38 = comb.and %37, %14, %27, %33, %32, %31, %12, %36, %9 : i1
+        %39 = comb.or %38, %24 : i1
+        %40 = comb.and %12, %arg15, %7 : i1
+        %true_17 = hw.constant true
+        %41 = comb.xor %12, %true_17 : i1
+        %42 = comb.mux %19, %40, %41 : i1
+        %true_18 = hw.constant true
+        %43 = comb.xor %arg18, %true_18 : i1
+        %true_19 = hw.constant true
+        %44 = comb.xor %39, %true_19 : i1
+        %45 = comb.and %44, %43, %42 : i1
+        fsm.return %45
       } action {
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
-        %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
         %c-2_i3 = hw.constant -2 : i3
@@ -10474,7 +7728,6 @@ module {
         %c3_i3 = hw.constant 3 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i16 = hw.constant -1 : i16
         %c-1_i4 = hw.constant -1 : i4
         %true = hw.constant true
@@ -10493,195 +7746,165 @@ module {
         %12 = comb.and %arg1, %9 : i1
         %13 = comb.mux %7, %c-2_i3, %c1_i3 : i3
         %14 = comb.mux %arg15, %13, %c0_i3 : i3
-        %15 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %16 = comb.mux %15, %c1_i3, %c-2_i3 : i3
-        %17 = comb.xor %arg18, %true : i1
-        %18 = comb.and %12, %17 : i1
-        %19 = comb.xor %12, %true : i1
-        %20 = comb.and %17, %19 : i1
-        %21 = comb.xor %20, %true : i1
+        %15 = comb.xor %arg15, %true : i1
+        %true_14 = hw.constant true
+        %16 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
+        %17 = comb.mux %16, %c1_i3, %c-2_i3 : i3
+        %18 = comb.xor %12, %true : i1
         %c-3_i3 = hw.constant -3 : i3
-        %22 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %23 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %24 = comb.or %arg18, %12 : i1
-        %25 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %26 = comb.and %cmd_wr_en_q, %22 : i1
-        %27 = comb.or %26, %cmd_wr_en_last_bit : i1
-        fsm.update %cmd_wr_en_last_bit, %27 : i1
-        %28 = comb.and %arg15, %21, %18, %15 : i1
-        %29 = comb.mux %28, %arg14, %csid_q : i1
-        %30 = comb.mux %28, %arg13, %cpol_q : i1
-        %31 = comb.mux %28, %arg12, %cpha_q : i1
-        %32 = comb.mux %28, %arg8, %csnidle_q : i4
-        %33 = comb.mux %28, %arg9, %csnlead_q : i4
-        %34 = comb.mux %28, %arg7, %clkdiv_q : i16
-        %35 = comb.mux %28, %arg3, %cmd_wr_en_q : i1
-        %36 = comb.mux %28, %arg4, %cmd_rd_en_q : i1
-        %37 = comb.mux %28, %arg2, %cmd_speed_q : i2
-        %38 = comb.mux %9, %34, %10 : i16
-        %39 = comb.mux %28, %arg7, %38 : i16
-        %40 = comb.mux %8, %clk_cntr_q, %39 : i16
-        %41 = comb.mux %arg18, %c0_i16, %40 : i16
-        %42 = comb.mux %15, %14, %c-3_i3 : i3
-        %43 = comb.mux %18, %42, %16 : i3
-        %44 = comb.mux %arg18, %c0_i3, %43 : i3
-        %45 = comb.mux %20, %c-3_i3, %44 : i3
-        %46 = comb.icmp ne %45, %c-3_i3 : i3
-        %true_0 = hw.constant true
-        %47 = comb.xor %7, %true_0 : i1
-        %48 = comb.and %arg15, %47 : i1
-        %true_1 = hw.constant true
-        %49 = comb.xor %18, %true_1 : i1
-        %50 = comb.or %49, %48 : i1
-        %true_2 = hw.constant true
-        %51 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %52 = comb.xor %20, %true_3 : i1
-        %53 = comb.xor %31, %true : i1
-        %54 = comb.and %53, %17, %46, %52, %51, %50, %15 : i1
-        %55 = comb.xor %36, %true : i1
-        %56 = comb.xor %35, %true : i1
-        %57 = comb.and %55, %56 : i1
-        %58 = comb.icmp eq %arg2, %c0_i2 : i2
-        %59 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %60 = comb.mux %28, %58, %59 : i1
-        %61 = comb.icmp eq %arg2, %c1_i2 : i2
-        %62 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %63 = comb.mux %28, %61, %62 : i1
-        %64 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %65 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %66 = comb.mux %28, %64, %65 : i1
-        %67 = comb.mux %66, %c-4_i3, %c1_i3 : i3
-        %68 = comb.xor %57, %true : i1
-        %69 = comb.xor %60, %true : i1
-        %70 = comb.and %69, %68, %63 : i1
-        %71 = comb.mux %70, %c-2_i3, %67 : i3
-        %72 = comb.and %68, %60 : i1
-        %73 = comb.mux %72, %c-1_i3, %71 : i3
-        %74 = comb.mux %57, %c0_i3, %73 : i3
-        %75 = comb.mux %54, %74, %bit_cntr_q : i3
-        %76 = comb.mux %19, %bit_cntr_q, %75 : i3
-        %77 = comb.mux %arg18, %c0_i3, %76 : i3
-        %78 = comb.mux %28, %arg5, %byte_cntr_cpha0_q : i20
-        %79 = comb.mux %arg18, %c0_i20, %78 : i20
-        %80 = comb.mux %28, %arg5, %byte_cntr_cpha1_q : i20
-        %81 = comb.mux %arg18, %c0_i20, %80 : i20
-        %true_4 = hw.constant true
-        %82 = comb.xor %7, %true_4 : i1
-        %83 = comb.and %arg15, %82 : i1
-        %true_5 = hw.constant true
-        %84 = comb.xor %18, %true_5 : i1
-        %85 = comb.or %84, %83 : i1
-        %true_6 = hw.constant true
-        %86 = comb.xor %arg18, %true_6 : i1
-        %true_7 = hw.constant true
-        %87 = comb.xor %20, %true_7 : i1
-        %88 = comb.and %87, %86, %85, %15 : i1
-        %true_8 = hw.constant true
-        %89 = comb.xor %15, %true_8 : i1
-        %true_9 = hw.constant true
-        %90 = comb.xor %arg18, %true_9 : i1
-        %91 = comb.and %90, %18, %89 : i1
-        %92 = comb.or %20, %91 : i1
-        %93 = comb.and %15, %arg15, %7 : i1
-        %true_10 = hw.constant true
-        %94 = comb.xor %15, %true_10 : i1
-        %95 = comb.mux %18, %93, %94 : i1
-        %true_11 = hw.constant true
-        %96 = comb.xor %arg18, %true_11 : i1
-        %true_12 = hw.constant true
-        %97 = comb.xor %20, %true_12 : i1
-        %98 = comb.and %46, %18 : i1
-        %99 = comb.xor %88, %true : i1
-        %100 = comb.and %99, %98 : i1
-        %101 = comb.xor %92, %true : i1
-        %102 = comb.and %101, %100, %97, %96, %95 : i1
-        %103 = comb.and %100, %92 : i1
-        %104 = comb.or %103, %102 : i1
-        %105 = comb.mux %104, %32, %c0_i4 : i4
-        %106 = comb.and %98, %88 : i1
-        %107 = comb.mux %106, %33, %105 : i4
-        %108 = comb.mux %24, %107, %wait_cntr_q : i4
-        %109 = comb.mux %arg18, %c0_i4, %108 : i4
-        %110 = comb.xor %46, %true : i1
-        %111 = comb.and %25, %110, %18 : i1
-        %112 = comb.mux %111, %23, %109 : i4
-        %113 = comb.icmp ne %45, %c-4_i3 : i3
-        %114 = comb.and %99, %113 : i1
-        %115 = comb.icmp ne %45, %c3_i3 : i3
-        %116 = comb.and %30, %115 : i1
-        %117 = comb.icmp eq %arg2, %c0_i2 : i2
-        %118 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %119 = comb.mux %28, %117, %118 : i1
-        %120 = comb.and %36, %35 : i1
-        %121 = comb.xor %120, %true : i1
-        %122 = comb.or %119, %121 : i1
-        verif.assert %122 : i1
-        %123 = comb.icmp ne %37, %c-1_i2 : i2
-        verif.assert %123 : i1
-        %124 = comb.xor %29, %true : i1
-        verif.assert %124 : i1
-        %125 = comb.and %54, %35, %11 : i1
-        %126 = comb.mux %125, %clk_cntr_q, %41 : i16
-        %127 = comb.mux %125, %bit_cntr_q, %77 : i3
-        %128 = comb.mux %125, %byte_cntr_cpha0_q, %79 : i20
-        %129 = comb.mux %125, %byte_cntr_cpha1_q, %81 : i20
-        %130 = comb.mux %125, %wait_cntr_q, %112 : i4
-        fsm.update %wait_cntr_q, %130 : i4
-        fsm.update %byte_cntr_cpha1_q, %129 : i20
-        fsm.update %byte_cntr_cpha0_q, %128 : i20
-        fsm.update %bit_cntr_q, %127 : i3
-        fsm.update %clk_cntr_q, %126 : i16
-        %131 = comb.xor %125, %true : i1
-        %132 = comb.and %28, %131 : i1
-        %133 = comb.mux %132, %arg14, %csid_q : i1
-        %134 = comb.mux %132, %arg13, %cpol_q : i1
-        %135 = comb.mux %132, %arg12, %cpha_q : i1
-        %136 = comb.mux %132, %arg11, %full_cyc_q : i1
-        %137 = comb.mux %132, %arg8, %csnidle_q : i4
-        %138 = comb.mux %132, %arg9, %csnlead_q : i4
-        %139 = comb.mux %132, %arg10, %csntrail_q : i4
-        %140 = comb.mux %132, %arg7, %clkdiv_q : i16
-        %141 = comb.mux %132, %arg6, %csaat_q : i1
-        %142 = comb.mux %132, %arg3, %cmd_wr_en_q : i1
-        %143 = comb.mux %132, %arg4, %cmd_rd_en_q : i1
-        %144 = comb.mux %132, %arg2, %cmd_speed_q : i2
-        %145 = comb.mux %132, %arg5, %cmd_len_q : i20
-        %146 = comb.and %46, %131 : i1
-        %147 = comb.mux bin %146, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %148 = comb.and %12, %131 : i1
-        %149 = comb.mux %148, %54, %sample_en_q : i1
-        %150 = comb.mux %148, %sample_en_q, %sample_en_q2 : i1
-        %151 = comb.mux bin %125, %u_sck_flop2Fq_o, %116 : i1
-        %152 = comb.mux %131, %114, %csb_q : i1
-        %153 = comb.or %29, %152 : i1
-        fsm.update %csb_q, %153 : i1
-        fsm.update %u_sck_flop2Fq_o, %151 : i1
-        fsm.update %sample_en_q2, %150 : i1
-        fsm.update %sample_en_q, %149 : i1
-        fsm.update %segment_rd_en_cpha1, %147 : i1
-        fsm.update %cmd_len_q, %145 : i20
-        fsm.update %cmd_speed_q, %144 : i2
-        fsm.update %cmd_wr_en_q, %142 : i1
-        fsm.update %cmd_rd_en_q, %143 : i1
-        fsm.update %csaat_q, %141 : i1
-        fsm.update %clkdiv_q, %140 : i16
-        fsm.update %csntrail_q, %139 : i4
-        fsm.update %csnlead_q, %138 : i4
-        fsm.update %csnidle_q, %137 : i4
-        fsm.update %full_cyc_q, %136 : i1
-        fsm.update %cpha_q, %135 : i1
-        fsm.update %cpol_q, %134 : i1
-        fsm.update %csid_q, %133 : i1
+        %true_15 = hw.constant true
+        %19 = comb.xor %7, %true_15 : i1
+        %20 = comb.and %arg15, %19 : i1
+        %true_16 = hw.constant true
+        %21 = comb.xor %12, %true_16 : i1
+        %22 = comb.or %21, %20 : i1
+        %23 = comb.and %12, %22, %16 : i1
+        %24 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %25 = comb.icmp eq %arg2, %c0_i2 : i2
+        %26 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %27 = comb.icmp eq %arg2, %c1_i2 : i2
+        %28 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %29 = comb.icmp eq %arg2, %c-2_i2 : i2
+        %30 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %true_17 = hw.constant true
+        %31 = comb.xor %16, %true_17 : i1
+        %32 = comb.and %12, %31 : i1
+        %33 = comb.or %18, %32 : i1
+        %34 = comb.and %16, %arg15, %7 : i1
+        %true_18 = hw.constant true
+        %35 = comb.xor %16, %true_18 : i1
+        %36 = comb.mux %12, %34, %35 : i1
+        %37 = comb.add %wait_cntr_q, %c-1_i4 : i4
+        %38 = comb.xor %23, %true : i1
+        %39 = comb.xor %33, %true : i1
+        %40 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
+        %41 = comb.and %cmd_wr_en_q, %24 : i1
+        %42 = comb.or %41, %cmd_wr_en_last_bit : i1
+        %43 = comb.xor %isFirstCycle, %true : i1
+        %44 = comb.and %43, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %45 = comb.xor %44, %true : i1
+        verif.assert %45 : i1
+        fsm.update %_sh1_10, %12 : i1
+        fsm.update %_sh1_8, %15 : i1
+        fsm.update %_sh1_6, %16 : i1
+        fsm.update %_sh1, %true_14 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        fsm.update %cmd_wr_en_last_bit, %42 : i1
+        %46 = comb.and %arg15, %12, %16 : i1
+        %47 = comb.mux %46, %arg14, %csid_q : i1
+        %48 = comb.mux %46, %arg13, %cpol_q : i1
+        %49 = comb.mux %46, %arg12, %cpha_q : i1
+        %50 = comb.mux %46, %arg8, %csnidle_q : i4
+        %51 = comb.mux %46, %arg9, %csnlead_q : i4
+        %52 = comb.mux %46, %arg7, %clkdiv_q : i16
+        %53 = comb.mux %46, %arg3, %cmd_wr_en_q : i1
+        %54 = comb.mux %46, %arg4, %cmd_rd_en_q : i1
+        %55 = comb.mux %9, %52, %10 : i16
+        %56 = comb.mux %46, %arg7, %55 : i16
+        %57 = comb.mux %16, %14, %c-3_i3 : i3
+        %58 = comb.mux %12, %57, %17 : i3
+        %59 = comb.mux %18, %c-3_i3, %58 : i3
+        %60 = comb.icmp ne %59, %c-3_i3 : i3
+        %61 = comb.xor %49, %true : i1
+        %62 = comb.and %61, %60, %23 : i1
+        %63 = comb.xor %54, %true : i1
+        %64 = comb.xor %53, %true : i1
+        %65 = comb.and %63, %64 : i1
+        %66 = comb.mux %46, %25, %26 : i1
+        %67 = comb.mux %46, %27, %28 : i1
+        %68 = comb.mux %46, %29, %30 : i1
+        %69 = comb.mux %68, %c-4_i3, %c1_i3 : i3
+        %70 = comb.xor %65, %true : i1
+        %71 = comb.xor %66, %true : i1
+        %72 = comb.and %71, %70, %67 : i1
+        %73 = comb.mux %72, %c-2_i3, %69 : i3
+        %74 = comb.and %70, %66 : i1
+        %75 = comb.mux %74, %c-1_i3, %73 : i3
+        %76 = comb.mux %65, %c0_i3, %75 : i3
+        %77 = comb.and %60, %12 : i1
+        %78 = comb.and %38, %77 : i1
+        %79 = comb.and %39, %78, %36 : i1
+        %80 = comb.and %78, %33 : i1
+        %81 = comb.or %80, %79 : i1
+        %82 = comb.mux %81, %50, %c0_i4 : i4
+        %83 = comb.and %77, %23 : i1
+        %84 = comb.mux %83, %51, %82 : i4
+        %85 = comb.mux %12, %84, %wait_cntr_q : i4
+        %86 = comb.xor %60, %true : i1
+        %87 = comb.and %40, %86, %12 : i1
+        %88 = comb.mux %87, %37, %85 : i4
+        %89 = comb.icmp ne %59, %c-4_i3 : i3
+        %90 = comb.and %38, %89 : i1
+        %91 = comb.icmp ne %59, %c3_i3 : i3
+        %92 = comb.and %48, %91 : i1
+        %93 = comb.and %62, %53, %11 : i1
+        %94 = comb.or %93, %8 : i1
+        %95 = comb.mux %94, %clk_cntr_q, %56 : i16
+        %true_19 = hw.constant true
+        %96 = comb.xor %62, %true_19 : i1
+        %97 = comb.or %93, %96 : i1
+        %98 = comb.mux %97, %bit_cntr_q, %76 : i3
+        %true_20 = hw.constant true
+        %99 = comb.xor %46, %true_20 : i1
+        %100 = comb.or %93, %99 : i1
+        %101 = comb.mux %100, %byte_cntr_cpha0_q, %arg5 : i20
+        %true_21 = hw.constant true
+        %102 = comb.xor %46, %true_21 : i1
+        %103 = comb.or %93, %102 : i1
+        %104 = comb.mux %103, %byte_cntr_cpha1_q, %arg5 : i20
+        %105 = comb.mux %93, %wait_cntr_q, %88 : i4
+        %106 = comb.mux bin %93, %u_sck_flop2Fq_o, %92 : i1
+        fsm.update %u_sck_flop2Fq_o, %106 : i1
+        fsm.update %wait_cntr_q, %105 : i4
+        fsm.update %byte_cntr_cpha1_q, %104 : i20
+        fsm.update %byte_cntr_cpha0_q, %101 : i20
+        fsm.update %bit_cntr_q, %98 : i3
+        fsm.update %clk_cntr_q, %95 : i16
+        %107 = comb.xor %93, %true : i1
+        %108 = comb.and %46, %107 : i1
+        %109 = comb.mux %108, %arg14, %csid_q : i1
+        %110 = comb.mux %108, %arg13, %cpol_q : i1
+        %111 = comb.mux %108, %arg12, %cpha_q : i1
+        %112 = comb.mux %108, %arg11, %full_cyc_q : i1
+        %113 = comb.mux %108, %arg8, %csnidle_q : i4
+        %114 = comb.mux %108, %arg9, %csnlead_q : i4
+        %115 = comb.mux %108, %arg10, %csntrail_q : i4
+        %116 = comb.mux %108, %arg7, %clkdiv_q : i16
+        %117 = comb.mux %108, %arg6, %csaat_q : i1
+        %118 = comb.mux %108, %arg3, %cmd_wr_en_q : i1
+        %119 = comb.mux %108, %arg4, %cmd_rd_en_q : i1
+        %120 = comb.mux %108, %arg2, %cmd_speed_q : i2
+        %121 = comb.and %60, %107 : i1
+        %122 = comb.mux bin %121, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %123 = comb.and %12, %107 : i1
+        %124 = comb.mux %123, %62, %sample_en_q : i1
+        %125 = comb.mux %123, %sample_en_q, %sample_en_q2 : i1
+        %126 = comb.mux %107, %90, %csb_q : i1
+        %127 = comb.or %47, %126 : i1
+        fsm.update %_sh1_12, %107 : i1
+        fsm.update %csb_q, %127 : i1
+        fsm.update %sample_en_q2, %125 : i1
+        fsm.update %sample_en_q, %124 : i1
+        fsm.update %segment_rd_en_cpha1, %122 : i1
+        fsm.update %cmd_speed_q, %120 : i2
+        fsm.update %cmd_wr_en_q, %118 : i1
+        fsm.update %cmd_rd_en_q, %119 : i1
+        fsm.update %csaat_q, %117 : i1
+        fsm.update %clkdiv_q, %116 : i16
+        fsm.update %csntrail_q, %115 : i4
+        fsm.update %csnlead_q, %114 : i4
+        fsm.update %csnidle_q, %113 : i4
+        fsm.update %full_cyc_q, %112 : i1
+        fsm.update %cpha_q, %111 : i1
+        fsm.update %cpol_q, %110 : i1
+        fsm.update %csid_q, %109 : i1
       }
       fsm.transition @state_5 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp ne %arg13, %cpol_q : i1
         %1 = comb.icmp ne %arg12, %cpha_q : i1
@@ -10699,53 +7922,44 @@ module {
         %13 = comb.mux %12, %c1_i3, %c-2_i3 : i3
         %14 = comb.xor %arg18, %true : i1
         %c-3_i3 = hw.constant -3 : i3
-        %15 = comb.and %arg1, %8 : i1
-        %16 = comb.and %15, %14 : i1
-        %17 = comb.mux %12, %11, %c-3_i3 : i3
-        %18 = comb.mux %16, %17, %13 : i3
-        %19 = comb.mux %arg18, %c0_i3, %18 : i3
-        %20 = comb.xor %15, %true : i1
-        %21 = comb.and %14, %20 : i1
-        %22 = comb.mux %21, %c-3_i3, %19 : i3
-        %23 = comb.xor %21, %true : i1
-        %24 = comb.icmp ne %22, %c-3_i3 : i3
-        %true_0 = hw.constant true
-        %25 = comb.xor %7, %true_0 : i1
-        %26 = comb.and %arg15, %25 : i1
-        %true_1 = hw.constant true
-        %27 = comb.xor %16, %true_1 : i1
-        %28 = comb.or %27, %26 : i1
-        %true_2 = hw.constant true
-        %29 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %30 = comb.xor %21, %true_3 : i1
-        %31 = comb.and %arg15, %23, %16, %12 : i1
-        %32 = comb.mux %31, %arg14, %csid_q : i1
-        %33 = comb.mux %31, %arg12, %cpha_q : i1
-        %34 = comb.mux %31, %arg3, %cmd_wr_en_q : i1
-        %35 = comb.mux %31, %arg4, %cmd_rd_en_q : i1
-        %36 = comb.mux %31, %arg2, %cmd_speed_q : i2
-        %37 = comb.xor %33, %true : i1
-        %38 = comb.icmp eq %arg2, %c0_i2 : i2
-        %39 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %40 = comb.mux %31, %38, %39 : i1
-        %41 = comb.and %35, %34 : i1
-        %42 = comb.xor %41, %true : i1
-        %43 = comb.or %40, %42 : i1
-        verif.assert %43 : i1
-        %44 = comb.icmp ne %36, %c-1_i2 : i2
-        verif.assert %44 : i1
-        %45 = comb.xor %32, %true : i1
-        verif.assert %45 : i1
-        %46 = comb.and %37, %14, %24, %30, %29, %28, %12, %34, %9 : i1
-        %true_4 = hw.constant true
-        %47 = comb.xor %12, %true_4 : i1
-        %true_5 = hw.constant true
-        %48 = comb.xor %arg18, %true_5 : i1
-        %49 = comb.and %48, %16, %47 : i1
-        %50 = comb.or %46, %21, %49 : i1
-        fsm.return %50
+        %15 = comb.xor %isFirstCycle, %true : i1
+        %16 = comb.and %15, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %14 : i1
+        %17 = comb.xor %16, %true : i1
+        %18 = comb.and %arg1, %8 : i1
+        %19 = comb.and %18, %14 : i1
+        %20 = comb.mux %12, %11, %c-3_i3 : i3
+        %21 = comb.mux %19, %20, %13 : i3
+        %22 = comb.mux %arg18, %c0_i3, %21 : i3
+        %23 = comb.xor %18, %true : i1
+        %24 = comb.and %14, %23 : i1
+        %25 = comb.mux %24, %c-3_i3, %22 : i3
+        %26 = comb.xor %24, %true : i1
+        %27 = comb.icmp ne %25, %c-3_i3 : i3
+        %true_13 = hw.constant true
+        %28 = comb.xor %7, %true_13 : i1
+        %29 = comb.and %arg15, %28 : i1
+        %true_14 = hw.constant true
+        %30 = comb.xor %19, %true_14 : i1
+        %31 = comb.or %30, %29 : i1
+        %true_15 = hw.constant true
+        %32 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %33 = comb.xor %24, %true_16 : i1
+        verif.assert %17 : i1
+        %34 = comb.and %arg15, %26, %19, %12 : i1
+        %35 = comb.mux %34, %arg12, %cpha_q : i1
+        %36 = comb.mux %34, %arg3, %cmd_wr_en_q : i1
+        %37 = comb.xor %35, %true : i1
+        %38 = comb.and %37, %14, %27, %33, %32, %31, %12, %36, %9 : i1
+        %true_17 = hw.constant true
+        %39 = comb.xor %12, %true_17 : i1
+        %true_18 = hw.constant true
+        %40 = comb.xor %arg18, %true_18 : i1
+        %41 = comb.and %40, %19, %39 : i1
+        %42 = comb.or %38, %24, %41 : i1
+        fsm.return %42
       } action {
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
@@ -10758,7 +7972,6 @@ module {
         %c3_i3 = hw.constant 3 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i16 = hw.constant -1 : i16
         %c-1_i4 = hw.constant -1 : i4
         %true = hw.constant true
@@ -10777,195 +7990,181 @@ module {
         %12 = comb.and %arg1, %9 : i1
         %13 = comb.mux %7, %c-2_i3, %c1_i3 : i3
         %14 = comb.mux %arg15, %13, %c0_i3 : i3
-        %15 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %16 = comb.mux %15, %c1_i3, %c-2_i3 : i3
-        %17 = comb.xor %arg18, %true : i1
-        %18 = comb.and %12, %17 : i1
-        %19 = comb.xor %12, %true : i1
-        %20 = comb.and %17, %19 : i1
-        %21 = comb.xor %20, %true : i1
+        %15 = comb.xor %arg15, %true : i1
+        %true_14 = hw.constant true
+        %16 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
+        %17 = comb.mux %16, %c1_i3, %c-2_i3 : i3
+        %18 = comb.xor %arg18, %true : i1
+        %19 = comb.and %12, %18 : i1
+        %20 = comb.xor %12, %true : i1
+        %21 = comb.and %18, %20 : i1
+        %22 = comb.xor %21, %true : i1
         %c-3_i3 = hw.constant -3 : i3
-        %22 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %23 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %24 = comb.or %arg18, %12 : i1
-        %25 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %26 = comb.and %cmd_wr_en_q, %22 : i1
-        %27 = comb.or %26, %cmd_wr_en_last_bit : i1
-        fsm.update %cmd_wr_en_last_bit, %27 : i1
-        %28 = comb.and %arg15, %21, %18, %15 : i1
-        %29 = comb.mux %28, %arg14, %csid_q : i1
-        %30 = comb.mux %28, %arg13, %cpol_q : i1
-        %31 = comb.mux %28, %arg12, %cpha_q : i1
-        %32 = comb.mux %28, %arg8, %csnidle_q : i4
-        %33 = comb.mux %28, %arg9, %csnlead_q : i4
-        %34 = comb.mux %28, %arg7, %clkdiv_q : i16
-        %35 = comb.mux %28, %arg3, %cmd_wr_en_q : i1
-        %36 = comb.mux %28, %arg4, %cmd_rd_en_q : i1
-        %37 = comb.mux %28, %arg2, %cmd_speed_q : i2
-        %38 = comb.mux %9, %34, %10 : i16
-        %39 = comb.mux %28, %arg7, %38 : i16
-        %40 = comb.mux %8, %clk_cntr_q, %39 : i16
-        %41 = comb.mux %arg18, %c0_i16, %40 : i16
-        %42 = comb.mux %15, %14, %c-3_i3 : i3
-        %43 = comb.mux %18, %42, %16 : i3
-        %44 = comb.mux %arg18, %c0_i3, %43 : i3
-        %45 = comb.mux %20, %c-3_i3, %44 : i3
-        %46 = comb.icmp ne %45, %c-3_i3 : i3
-        %true_0 = hw.constant true
-        %47 = comb.xor %7, %true_0 : i1
-        %48 = comb.and %arg15, %47 : i1
-        %true_1 = hw.constant true
-        %49 = comb.xor %18, %true_1 : i1
-        %50 = comb.or %49, %48 : i1
-        %true_2 = hw.constant true
-        %51 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %52 = comb.xor %20, %true_3 : i1
-        %53 = comb.xor %31, %true : i1
-        %54 = comb.and %53, %17, %46, %52, %51, %50, %15 : i1
-        %55 = comb.xor %36, %true : i1
-        %56 = comb.xor %35, %true : i1
-        %57 = comb.and %55, %56 : i1
-        %58 = comb.icmp eq %arg2, %c0_i2 : i2
-        %59 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %60 = comb.mux %28, %58, %59 : i1
-        %61 = comb.icmp eq %arg2, %c1_i2 : i2
-        %62 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %63 = comb.mux %28, %61, %62 : i1
-        %64 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %65 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %66 = comb.mux %28, %64, %65 : i1
-        %67 = comb.mux %66, %c-4_i3, %c1_i3 : i3
-        %68 = comb.xor %57, %true : i1
-        %69 = comb.xor %60, %true : i1
-        %70 = comb.and %69, %68, %63 : i1
-        %71 = comb.mux %70, %c-2_i3, %67 : i3
-        %72 = comb.and %68, %60 : i1
-        %73 = comb.mux %72, %c-1_i3, %71 : i3
-        %74 = comb.mux %57, %c0_i3, %73 : i3
-        %75 = comb.and %12, %54 : i1
-        %76 = comb.mux %75, %74, %bit_cntr_q : i3
-        %77 = comb.mux %arg18, %c0_i3, %76 : i3
-        %78 = comb.mux %28, %arg5, %byte_cntr_cpha0_q : i20
-        %79 = comb.mux %arg18, %c0_i20, %78 : i20
-        %80 = comb.mux %28, %arg5, %byte_cntr_cpha1_q : i20
-        %81 = comb.mux %arg18, %c0_i20, %80 : i20
-        %true_4 = hw.constant true
-        %82 = comb.xor %7, %true_4 : i1
-        %83 = comb.and %arg15, %82 : i1
-        %true_5 = hw.constant true
-        %84 = comb.xor %18, %true_5 : i1
-        %85 = comb.or %84, %83 : i1
-        %true_6 = hw.constant true
-        %86 = comb.xor %arg18, %true_6 : i1
-        %true_7 = hw.constant true
-        %87 = comb.xor %20, %true_7 : i1
-        %88 = comb.and %87, %86, %85, %15 : i1
-        %true_8 = hw.constant true
-        %89 = comb.xor %15, %true_8 : i1
-        %true_9 = hw.constant true
-        %90 = comb.xor %arg18, %true_9 : i1
-        %91 = comb.and %90, %18, %89 : i1
-        %92 = comb.or %20, %91 : i1
-        %93 = comb.and %15, %arg15, %7 : i1
-        %true_10 = hw.constant true
-        %94 = comb.xor %15, %true_10 : i1
-        %95 = comb.mux %18, %93, %94 : i1
-        %true_11 = hw.constant true
-        %96 = comb.xor %arg18, %true_11 : i1
-        %true_12 = hw.constant true
-        %97 = comb.xor %20, %true_12 : i1
-        %98 = comb.and %46, %18 : i1
-        %99 = comb.xor %88, %true : i1
-        %100 = comb.and %99, %98 : i1
-        %101 = comb.xor %92, %true : i1
-        %102 = comb.and %101, %100, %97, %96, %95 : i1
-        %103 = comb.and %100, %92 : i1
-        %104 = comb.or %103, %102 : i1
-        %105 = comb.mux %104, %32, %c0_i4 : i4
-        %106 = comb.and %98, %88 : i1
-        %107 = comb.mux %106, %33, %105 : i4
-        %108 = comb.mux %24, %107, %wait_cntr_q : i4
-        %109 = comb.mux %arg18, %c0_i4, %108 : i4
-        %110 = comb.xor %46, %true : i1
-        %111 = comb.and %25, %110, %18 : i1
-        %112 = comb.mux %111, %23, %109 : i4
-        %113 = comb.icmp ne %45, %c-4_i3 : i3
-        %114 = comb.and %99, %113 : i1
-        %115 = comb.icmp ne %45, %c3_i3 : i3
-        %116 = comb.and %30, %115 : i1
-        %117 = comb.icmp eq %arg2, %c0_i2 : i2
-        %118 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %119 = comb.mux %28, %117, %118 : i1
-        %120 = comb.and %36, %35 : i1
-        %121 = comb.xor %120, %true : i1
-        %122 = comb.or %119, %121 : i1
-        verif.assert %122 : i1
-        %123 = comb.icmp ne %37, %c-1_i2 : i2
-        verif.assert %123 : i1
-        %124 = comb.xor %29, %true : i1
-        verif.assert %124 : i1
-        %125 = comb.and %54, %35, %11 : i1
-        %126 = comb.mux %125, %clk_cntr_q, %41 : i16
-        %127 = comb.mux %125, %bit_cntr_q, %77 : i3
-        %128 = comb.mux %125, %byte_cntr_cpha0_q, %79 : i20
-        %129 = comb.mux %125, %byte_cntr_cpha1_q, %81 : i20
-        %130 = comb.mux %125, %wait_cntr_q, %112 : i4
-        fsm.update %wait_cntr_q, %130 : i4
-        fsm.update %byte_cntr_cpha1_q, %129 : i20
-        fsm.update %byte_cntr_cpha0_q, %128 : i20
-        fsm.update %bit_cntr_q, %127 : i3
-        fsm.update %clk_cntr_q, %126 : i16
-        %131 = comb.xor %125, %true : i1
-        %132 = comb.and %28, %131 : i1
-        %133 = comb.mux %132, %arg14, %csid_q : i1
-        %134 = comb.mux %132, %arg13, %cpol_q : i1
-        %135 = comb.mux %132, %arg12, %cpha_q : i1
-        %136 = comb.mux %132, %arg11, %full_cyc_q : i1
-        %137 = comb.mux %132, %arg8, %csnidle_q : i4
-        %138 = comb.mux %132, %arg9, %csnlead_q : i4
-        %139 = comb.mux %132, %arg10, %csntrail_q : i4
-        %140 = comb.mux %132, %arg7, %clkdiv_q : i16
-        %141 = comb.mux %132, %arg6, %csaat_q : i1
-        %142 = comb.mux %132, %arg3, %cmd_wr_en_q : i1
-        %143 = comb.mux %132, %arg4, %cmd_rd_en_q : i1
-        %144 = comb.mux %132, %arg2, %cmd_speed_q : i2
-        %145 = comb.mux %132, %arg5, %cmd_len_q : i20
-        %146 = comb.and %46, %131 : i1
-        %147 = comb.mux bin %146, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %148 = comb.and %12, %131 : i1
-        %149 = comb.mux %148, %54, %sample_en_q : i1
-        %150 = comb.mux %148, %sample_en_q, %sample_en_q2 : i1
-        %151 = comb.mux bin %125, %u_sck_flop2Fq_o, %116 : i1
-        %152 = comb.mux %131, %114, %csb_q : i1
-        %153 = comb.or %29, %152 : i1
-        fsm.update %csb_q, %153 : i1
-        fsm.update %u_sck_flop2Fq_o, %151 : i1
-        fsm.update %sample_en_q2, %150 : i1
-        fsm.update %sample_en_q, %149 : i1
-        fsm.update %segment_rd_en_cpha1, %147 : i1
-        fsm.update %cmd_len_q, %145 : i20
-        fsm.update %cmd_speed_q, %144 : i2
-        fsm.update %cmd_wr_en_q, %142 : i1
-        fsm.update %cmd_rd_en_q, %143 : i1
-        fsm.update %csaat_q, %141 : i1
-        fsm.update %clkdiv_q, %140 : i16
-        fsm.update %csntrail_q, %139 : i4
-        fsm.update %csnlead_q, %138 : i4
-        fsm.update %csnidle_q, %137 : i4
-        fsm.update %full_cyc_q, %136 : i1
-        fsm.update %cpha_q, %135 : i1
-        fsm.update %cpol_q, %134 : i1
-        fsm.update %csid_q, %133 : i1
+        %true_15 = hw.constant true
+        %23 = comb.xor %7, %true_15 : i1
+        %24 = comb.and %arg15, %23 : i1
+        %true_16 = hw.constant true
+        %25 = comb.xor %19, %true_16 : i1
+        %26 = comb.or %25, %24 : i1
+        %true_17 = hw.constant true
+        %27 = comb.xor %arg18, %true_17 : i1
+        %true_18 = hw.constant true
+        %28 = comb.xor %21, %true_18 : i1
+        %29 = comb.and %28, %27, %26, %16 : i1
+        %30 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %31 = comb.icmp eq %arg2, %c0_i2 : i2
+        %32 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %33 = comb.icmp eq %arg2, %c1_i2 : i2
+        %34 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %35 = comb.icmp eq %arg2, %c-2_i2 : i2
+        %36 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %true_19 = hw.constant true
+        %37 = comb.xor %16, %true_19 : i1
+        %true_20 = hw.constant true
+        %38 = comb.xor %arg18, %true_20 : i1
+        %39 = comb.and %38, %19, %37 : i1
+        %40 = comb.or %21, %39 : i1
+        %41 = comb.and %16, %arg15, %7 : i1
+        %true_21 = hw.constant true
+        %42 = comb.xor %16, %true_21 : i1
+        %43 = comb.mux %19, %41, %42 : i1
+        %true_22 = hw.constant true
+        %44 = comb.xor %arg18, %true_22 : i1
+        %true_23 = hw.constant true
+        %45 = comb.xor %21, %true_23 : i1
+        %46 = comb.add %wait_cntr_q, %c-1_i4 : i4
+        %47 = comb.xor %29, %true : i1
+        %48 = comb.xor %40, %true : i1
+        %49 = comb.or %arg18, %12 : i1
+        %50 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
+        %51 = comb.and %cmd_wr_en_q, %30 : i1
+        %52 = comb.or %51, %cmd_wr_en_last_bit : i1
+        %53 = comb.xor %isFirstCycle, %true : i1
+        %54 = comb.and %53, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %18 : i1
+        %55 = comb.xor %54, %true : i1
+        verif.assert %55 : i1
+        fsm.update %_sh1_10, %12 : i1
+        fsm.update %_sh1_8, %15 : i1
+        fsm.update %_sh1_6, %16 : i1
+        fsm.update %_sh1, %true_14 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        fsm.update %cmd_wr_en_last_bit, %52 : i1
+        %56 = comb.and %arg15, %22, %19, %16 : i1
+        %57 = comb.mux %56, %arg14, %csid_q : i1
+        %58 = comb.mux %56, %arg13, %cpol_q : i1
+        %59 = comb.mux %56, %arg12, %cpha_q : i1
+        %60 = comb.mux %56, %arg8, %csnidle_q : i4
+        %61 = comb.mux %56, %arg9, %csnlead_q : i4
+        %62 = comb.mux %56, %arg7, %clkdiv_q : i16
+        %63 = comb.mux %56, %arg3, %cmd_wr_en_q : i1
+        %64 = comb.mux %56, %arg4, %cmd_rd_en_q : i1
+        %65 = comb.mux %9, %62, %10 : i16
+        %66 = comb.mux %56, %arg7, %65 : i16
+        %67 = comb.mux %8, %clk_cntr_q, %66 : i16
+        %68 = comb.mux %arg18, %c0_i16, %67 : i16
+        %69 = comb.mux %16, %14, %c-3_i3 : i3
+        %70 = comb.mux %19, %69, %17 : i3
+        %71 = comb.mux %arg18, %c0_i3, %70 : i3
+        %72 = comb.mux %21, %c-3_i3, %71 : i3
+        %73 = comb.icmp ne %72, %c-3_i3 : i3
+        %74 = comb.xor %59, %true : i1
+        %75 = comb.and %74, %18, %73, %29 : i1
+        %76 = comb.xor %64, %true : i1
+        %77 = comb.xor %63, %true : i1
+        %78 = comb.and %76, %77 : i1
+        %79 = comb.mux %56, %31, %32 : i1
+        %80 = comb.mux %56, %33, %34 : i1
+        %81 = comb.mux %56, %35, %36 : i1
+        %82 = comb.mux %81, %c-4_i3, %c1_i3 : i3
+        %83 = comb.xor %78, %true : i1
+        %84 = comb.xor %79, %true : i1
+        %85 = comb.and %84, %83, %80 : i1
+        %86 = comb.mux %85, %c-2_i3, %82 : i3
+        %87 = comb.and %83, %79 : i1
+        %88 = comb.mux %87, %c-1_i3, %86 : i3
+        %89 = comb.mux %78, %c0_i3, %88 : i3
+        %90 = comb.and %12, %75 : i1
+        %91 = comb.mux %90, %89, %bit_cntr_q : i3
+        %92 = comb.mux %arg18, %c0_i3, %91 : i3
+        %93 = comb.mux %56, %arg5, %byte_cntr_cpha0_q : i20
+        %94 = comb.mux %arg18, %c0_i20, %93 : i20
+        %95 = comb.mux %56, %arg5, %byte_cntr_cpha1_q : i20
+        %96 = comb.mux %arg18, %c0_i20, %95 : i20
+        %97 = comb.and %73, %19 : i1
+        %98 = comb.and %47, %97 : i1
+        %99 = comb.and %48, %98, %45, %44, %43 : i1
+        %100 = comb.and %98, %40 : i1
+        %101 = comb.or %100, %99 : i1
+        %102 = comb.mux %101, %60, %c0_i4 : i4
+        %103 = comb.and %97, %29 : i1
+        %104 = comb.mux %103, %61, %102 : i4
+        %105 = comb.mux %49, %104, %wait_cntr_q : i4
+        %106 = comb.mux %arg18, %c0_i4, %105 : i4
+        %107 = comb.xor %73, %true : i1
+        %108 = comb.and %50, %107, %19 : i1
+        %109 = comb.mux %108, %46, %106 : i4
+        %110 = comb.icmp ne %72, %c-4_i3 : i3
+        %111 = comb.and %47, %110 : i1
+        %112 = comb.icmp ne %72, %c3_i3 : i3
+        %113 = comb.and %58, %112 : i1
+        %114 = comb.and %75, %63, %11 : i1
+        %115 = comb.mux %114, %clk_cntr_q, %68 : i16
+        %116 = comb.mux %114, %bit_cntr_q, %92 : i3
+        %117 = comb.mux %114, %byte_cntr_cpha0_q, %94 : i20
+        %118 = comb.mux %114, %byte_cntr_cpha1_q, %96 : i20
+        %119 = comb.mux %114, %wait_cntr_q, %109 : i4
+        %120 = comb.mux bin %114, %u_sck_flop2Fq_o, %113 : i1
+        fsm.update %u_sck_flop2Fq_o, %120 : i1
+        fsm.update %wait_cntr_q, %119 : i4
+        fsm.update %byte_cntr_cpha1_q, %118 : i20
+        fsm.update %byte_cntr_cpha0_q, %117 : i20
+        fsm.update %bit_cntr_q, %116 : i3
+        fsm.update %clk_cntr_q, %115 : i16
+        %121 = comb.xor %114, %true : i1
+        %122 = comb.and %56, %121 : i1
+        %123 = comb.mux %122, %arg14, %csid_q : i1
+        %124 = comb.mux %122, %arg13, %cpol_q : i1
+        %125 = comb.mux %122, %arg12, %cpha_q : i1
+        %126 = comb.mux %122, %arg11, %full_cyc_q : i1
+        %127 = comb.mux %122, %arg8, %csnidle_q : i4
+        %128 = comb.mux %122, %arg9, %csnlead_q : i4
+        %129 = comb.mux %122, %arg10, %csntrail_q : i4
+        %130 = comb.mux %122, %arg7, %clkdiv_q : i16
+        %131 = comb.mux %122, %arg6, %csaat_q : i1
+        %132 = comb.mux %122, %arg3, %cmd_wr_en_q : i1
+        %133 = comb.mux %122, %arg4, %cmd_rd_en_q : i1
+        %134 = comb.mux %122, %arg2, %cmd_speed_q : i2
+        %135 = comb.and %73, %121 : i1
+        %136 = comb.mux bin %135, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %137 = comb.and %12, %121 : i1
+        %138 = comb.mux %137, %75, %sample_en_q : i1
+        %139 = comb.mux %137, %sample_en_q, %sample_en_q2 : i1
+        %140 = comb.mux %121, %111, %csb_q : i1
+        %141 = comb.or %57, %140 : i1
+        fsm.update %_sh1_12, %121 : i1
+        fsm.update %csb_q, %141 : i1
+        fsm.update %sample_en_q2, %139 : i1
+        fsm.update %sample_en_q, %138 : i1
+        fsm.update %segment_rd_en_cpha1, %136 : i1
+        fsm.update %cmd_speed_q, %134 : i2
+        fsm.update %cmd_wr_en_q, %132 : i1
+        fsm.update %cmd_rd_en_q, %133 : i1
+        fsm.update %csaat_q, %131 : i1
+        fsm.update %clkdiv_q, %130 : i16
+        fsm.update %csntrail_q, %129 : i4
+        fsm.update %csnlead_q, %128 : i4
+        fsm.update %csnidle_q, %127 : i4
+        fsm.update %full_cyc_q, %126 : i1
+        fsm.update %cpha_q, %125 : i1
+        fsm.update %cpol_q, %124 : i1
+        fsm.update %csid_q, %123 : i1
       }
       fsm.transition @state_1 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp ne %arg13, %cpol_q : i1
         %1 = comb.icmp ne %arg12, %cpha_q : i1
@@ -10983,63 +8182,54 @@ module {
         %13 = comb.mux %12, %c1_i3, %c-2_i3 : i3
         %14 = comb.xor %arg18, %true : i1
         %c-3_i3 = hw.constant -3 : i3
-        %15 = comb.and %arg1, %8 : i1
-        %16 = comb.and %15, %14 : i1
-        %17 = comb.mux %12, %11, %c-3_i3 : i3
-        %18 = comb.mux %16, %17, %13 : i3
-        %19 = comb.mux %arg18, %c0_i3, %18 : i3
-        %20 = comb.xor %15, %true : i1
-        %21 = comb.and %14, %20 : i1
-        %22 = comb.mux %21, %c-3_i3, %19 : i3
-        %23 = comb.xor %21, %true : i1
-        %24 = comb.icmp ne %22, %c-3_i3 : i3
-        %true_0 = hw.constant true
-        %25 = comb.xor %7, %true_0 : i1
-        %26 = comb.and %arg15, %25 : i1
-        %true_1 = hw.constant true
-        %27 = comb.xor %16, %true_1 : i1
-        %28 = comb.or %27, %26 : i1
-        %true_2 = hw.constant true
-        %29 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %30 = comb.xor %21, %true_3 : i1
-        %31 = comb.and %arg15, %23, %16, %12 : i1
-        %32 = comb.mux %31, %arg14, %csid_q : i1
-        %33 = comb.mux %31, %arg12, %cpha_q : i1
-        %34 = comb.mux %31, %arg3, %cmd_wr_en_q : i1
-        %35 = comb.mux %31, %arg4, %cmd_rd_en_q : i1
-        %36 = comb.mux %31, %arg2, %cmd_speed_q : i2
-        %37 = comb.xor %33, %true : i1
-        %38 = comb.icmp eq %arg2, %c0_i2 : i2
-        %39 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %40 = comb.mux %31, %38, %39 : i1
-        %41 = comb.and %35, %34 : i1
-        %42 = comb.xor %41, %true : i1
-        %43 = comb.or %40, %42 : i1
-        verif.assert %43 : i1
-        %44 = comb.icmp ne %36, %c-1_i2 : i2
-        verif.assert %44 : i1
-        %45 = comb.xor %32, %true : i1
-        verif.assert %45 : i1
-        %46 = comb.and %37, %14, %24, %30, %29, %28, %12, %34, %9 : i1
-        %47 = comb.or %46, %21 : i1
-        %true_4 = hw.constant true
-        %48 = comb.xor %7, %true_4 : i1
-        %49 = comb.and %arg15, %48 : i1
-        %true_5 = hw.constant true
-        %50 = comb.xor %16, %true_5 : i1
-        %51 = comb.or %50, %49 : i1
-        %true_6 = hw.constant true
-        %52 = comb.xor %arg18, %true_6 : i1
-        %true_7 = hw.constant true
-        %53 = comb.xor %47, %true_7 : i1
-        %54 = comb.and %53, %52, %51, %12 : i1
-        fsm.return %54
+        %15 = comb.xor %isFirstCycle, %true : i1
+        %16 = comb.and %15, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %14 : i1
+        %17 = comb.xor %16, %true : i1
+        %18 = comb.and %arg1, %8 : i1
+        %19 = comb.and %18, %14 : i1
+        %20 = comb.mux %12, %11, %c-3_i3 : i3
+        %21 = comb.mux %19, %20, %13 : i3
+        %22 = comb.mux %arg18, %c0_i3, %21 : i3
+        %23 = comb.xor %18, %true : i1
+        %24 = comb.and %14, %23 : i1
+        %25 = comb.mux %24, %c-3_i3, %22 : i3
+        %26 = comb.xor %24, %true : i1
+        %27 = comb.icmp ne %25, %c-3_i3 : i3
+        %true_13 = hw.constant true
+        %28 = comb.xor %7, %true_13 : i1
+        %29 = comb.and %arg15, %28 : i1
+        %true_14 = hw.constant true
+        %30 = comb.xor %19, %true_14 : i1
+        %31 = comb.or %30, %29 : i1
+        %true_15 = hw.constant true
+        %32 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %33 = comb.xor %24, %true_16 : i1
+        verif.assert %17 : i1
+        %34 = comb.and %arg15, %26, %19, %12 : i1
+        %35 = comb.mux %34, %arg12, %cpha_q : i1
+        %36 = comb.mux %34, %arg3, %cmd_wr_en_q : i1
+        %37 = comb.xor %35, %true : i1
+        %38 = comb.and %37, %14, %27, %33, %32, %31, %12, %36, %9 : i1
+        %39 = comb.or %38, %24 : i1
+        %true_17 = hw.constant true
+        %40 = comb.xor %7, %true_17 : i1
+        %41 = comb.and %arg15, %40 : i1
+        %true_18 = hw.constant true
+        %42 = comb.xor %19, %true_18 : i1
+        %43 = comb.or %42, %41 : i1
+        %true_19 = hw.constant true
+        %44 = comb.xor %arg18, %true_19 : i1
+        %true_20 = hw.constant true
+        %45 = comb.xor %39, %true_20 : i1
+        %46 = comb.and %45, %44, %43, %12 : i1
+        fsm.return %46
       } action {
+        %true = hw.constant true
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
-        %c0_i20 = hw.constant 0 : i20
         %c0_i3 = hw.constant 0 : i3
         %c-1_i3 = hw.constant -1 : i3
         %c-2_i3 = hw.constant -2 : i3
@@ -11048,10 +8238,8 @@ module {
         %c3_i3 = hw.constant 3 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i16 = hw.constant -1 : i16
-        %c-1_i4 = hw.constant -1 : i4
-        %true = hw.constant true
+        %true_14 = hw.constant true
         %0 = comb.icmp ne %arg13, %cpol_q : i1
         %1 = comb.icmp ne %arg12, %cpha_q : i1
         %2 = comb.icmp ne %arg11, %full_cyc_q : i1
@@ -11060,202 +8248,157 @@ module {
         %5 = comb.icmp ne %arg9, %csnlead_q : i4
         %6 = comb.icmp ne %arg7, %clkdiv_q : i16
         %7 = comb.or %0, %1, %2, %3, %4, %5, %6 : i1
-        %8 = comb.xor %arg1, %true : i1
+        %8 = comb.xor %arg1, %true_14 : i1
         %9 = comb.icmp eq %clk_cntr_q, %c0_i16 : i16
         %10 = comb.add %clk_cntr_q, %c-1_i16 : i16
-        %11 = comb.xor %arg16, %true : i1
+        %11 = comb.xor %arg16, %true_14 : i1
         %12 = comb.and %arg1, %9 : i1
         %13 = comb.mux %7, %c-2_i3, %c1_i3 : i3
         %14 = comb.mux %arg15, %13, %c0_i3 : i3
-        %15 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %16 = comb.mux %15, %c1_i3, %c-2_i3 : i3
-        %17 = comb.xor %arg18, %true : i1
-        %18 = comb.and %12, %17 : i1
-        %19 = comb.xor %12, %true : i1
-        %20 = comb.and %17, %19 : i1
-        %21 = comb.xor %20, %true : i1
+        %15 = comb.xor %arg15, %true_14 : i1
+        %true_15 = hw.constant true
+        %16 = comb.xor %12, %true_14 : i1
         %c-3_i3 = hw.constant -3 : i3
+        %true_16 = hw.constant true
+        %17 = comb.xor %7, %true_16 : i1
+        %18 = comb.and %arg15, %17 : i1
+        %true_17 = hw.constant true
+        %19 = comb.xor %12, %true_17 : i1
+        %20 = comb.or %19, %18 : i1
+        %21 = comb.and %12, %20 : i1
         %22 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %23 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %24 = comb.or %arg18, %12 : i1
-        %25 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %26 = comb.and %cmd_wr_en_q, %22 : i1
-        %27 = comb.or %26, %cmd_wr_en_last_bit : i1
-        fsm.update %cmd_wr_en_last_bit, %27 : i1
-        %28 = comb.and %arg15, %21, %18, %15 : i1
-        %29 = comb.mux %28, %arg14, %csid_q : i1
-        %30 = comb.mux %28, %arg13, %cpol_q : i1
-        %31 = comb.mux %28, %arg12, %cpha_q : i1
-        %32 = comb.mux %28, %arg8, %csnidle_q : i4
-        %33 = comb.mux %28, %arg9, %csnlead_q : i4
-        %34 = comb.mux %28, %arg7, %clkdiv_q : i16
-        %35 = comb.mux %28, %arg3, %cmd_wr_en_q : i1
-        %36 = comb.mux %28, %arg4, %cmd_rd_en_q : i1
-        %37 = comb.mux %28, %arg2, %cmd_speed_q : i2
-        %38 = comb.mux %9, %34, %10 : i16
-        %39 = comb.mux %28, %arg7, %38 : i16
-        %40 = comb.mux %8, %clk_cntr_q, %39 : i16
-        %41 = comb.mux %arg18, %c0_i16, %40 : i16
-        %42 = comb.mux %15, %14, %c-3_i3 : i3
-        %43 = comb.mux %18, %42, %16 : i3
-        %44 = comb.mux %arg18, %c0_i3, %43 : i3
-        %45 = comb.mux %20, %c-3_i3, %44 : i3
-        %46 = comb.icmp ne %45, %c-3_i3 : i3
-        %true_0 = hw.constant true
-        %47 = comb.xor %7, %true_0 : i1
-        %48 = comb.and %arg15, %47 : i1
-        %true_1 = hw.constant true
-        %49 = comb.xor %18, %true_1 : i1
-        %50 = comb.or %49, %48 : i1
-        %true_2 = hw.constant true
-        %51 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %52 = comb.xor %20, %true_3 : i1
-        %53 = comb.xor %31, %true : i1
-        %54 = comb.and %53, %17, %46, %52, %51, %50, %15 : i1
-        %55 = comb.xor %36, %true : i1
-        %56 = comb.xor %35, %true : i1
-        %57 = comb.and %55, %56 : i1
-        %58 = comb.icmp eq %arg2, %c0_i2 : i2
-        %59 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %60 = comb.mux %28, %58, %59 : i1
-        %61 = comb.icmp eq %arg2, %c1_i2 : i2
-        %62 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %63 = comb.mux %28, %61, %62 : i1
-        %64 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %65 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %66 = comb.mux %28, %64, %65 : i1
-        %67 = comb.mux %66, %c-4_i3, %c1_i3 : i3
-        %68 = comb.xor %57, %true : i1
-        %69 = comb.xor %60, %true : i1
-        %70 = comb.and %69, %68, %63 : i1
-        %71 = comb.mux %70, %c-2_i3, %67 : i3
-        %72 = comb.and %68, %60 : i1
-        %73 = comb.mux %72, %c-1_i3, %71 : i3
-        %74 = comb.mux %57, %c0_i3, %73 : i3
-        %75 = comb.and %12, %54 : i1
-        %76 = comb.mux %75, %74, %bit_cntr_q : i3
-        %77 = comb.mux %arg18, %c0_i3, %76 : i3
-        %78 = comb.mux %28, %arg5, %byte_cntr_cpha0_q : i20
-        %79 = comb.mux %arg18, %c0_i20, %78 : i20
-        %80 = comb.mux %28, %arg5, %byte_cntr_cpha1_q : i20
-        %81 = comb.mux %arg18, %c0_i20, %80 : i20
-        %true_4 = hw.constant true
-        %82 = comb.xor %7, %true_4 : i1
-        %83 = comb.and %arg15, %82 : i1
-        %true_5 = hw.constant true
-        %84 = comb.xor %18, %true_5 : i1
-        %85 = comb.or %84, %83 : i1
-        %true_6 = hw.constant true
-        %86 = comb.xor %arg18, %true_6 : i1
-        %true_7 = hw.constant true
-        %87 = comb.xor %20, %true_7 : i1
-        %88 = comb.and %87, %86, %85, %15 : i1
-        %true_8 = hw.constant true
-        %89 = comb.xor %15, %true_8 : i1
-        %true_9 = hw.constant true
-        %90 = comb.xor %arg18, %true_9 : i1
-        %91 = comb.and %90, %18, %89 : i1
-        %92 = comb.or %20, %91 : i1
-        %93 = comb.and %15, %arg15, %7 : i1
-        %true_10 = hw.constant true
-        %94 = comb.xor %15, %true_10 : i1
-        %95 = comb.mux %18, %93, %94 : i1
-        %true_11 = hw.constant true
-        %96 = comb.xor %arg18, %true_11 : i1
-        %true_12 = hw.constant true
-        %97 = comb.xor %20, %true_12 : i1
-        %98 = comb.and %46, %18 : i1
-        %99 = comb.xor %88, %true : i1
-        %100 = comb.and %99, %98 : i1
-        %101 = comb.xor %92, %true : i1
-        %102 = comb.and %101, %100, %97, %96, %95 : i1
-        %103 = comb.and %100, %92 : i1
-        %104 = comb.or %103, %102 : i1
-        %105 = comb.mux %104, %32, %c0_i4 : i4
-        %106 = comb.and %98, %88 : i1
-        %107 = comb.mux %106, %33, %105 : i4
-        %108 = comb.mux %24, %107, %wait_cntr_q : i4
-        %109 = comb.mux %arg18, %c0_i4, %108 : i4
-        %110 = comb.xor %46, %true : i1
-        %111 = comb.and %25, %110, %18 : i1
-        %112 = comb.mux %111, %23, %109 : i4
-        %113 = comb.icmp ne %45, %c-4_i3 : i3
-        %114 = comb.and %99, %113 : i1
-        %115 = comb.icmp ne %45, %c3_i3 : i3
-        %116 = comb.and %30, %115 : i1
-        %117 = comb.icmp eq %arg2, %c0_i2 : i2
-        %118 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %119 = comb.mux %28, %117, %118 : i1
-        %120 = comb.and %36, %35 : i1
-        %121 = comb.xor %120, %true : i1
-        %122 = comb.or %119, %121 : i1
-        verif.assert %122 : i1
-        %123 = comb.icmp ne %37, %c-1_i2 : i2
-        verif.assert %123 : i1
-        %124 = comb.xor %29, %true : i1
-        verif.assert %124 : i1
-        %125 = comb.and %54, %35, %11 : i1
-        %126 = comb.mux %125, %clk_cntr_q, %41 : i16
-        %127 = comb.mux %125, %bit_cntr_q, %77 : i3
-        %128 = comb.mux %125, %byte_cntr_cpha0_q, %79 : i20
-        %129 = comb.mux %125, %byte_cntr_cpha1_q, %81 : i20
-        %130 = comb.mux %125, %wait_cntr_q, %112 : i4
-        fsm.update %wait_cntr_q, %130 : i4
-        fsm.update %byte_cntr_cpha1_q, %129 : i20
-        fsm.update %byte_cntr_cpha0_q, %128 : i20
-        fsm.update %bit_cntr_q, %127 : i3
-        fsm.update %clk_cntr_q, %126 : i16
-        %131 = comb.xor %125, %true : i1
-        %132 = comb.and %28, %131 : i1
-        %133 = comb.mux %132, %arg14, %csid_q : i1
-        %134 = comb.mux %132, %arg13, %cpol_q : i1
-        %135 = comb.mux %132, %arg12, %cpha_q : i1
-        %136 = comb.mux %132, %arg11, %full_cyc_q : i1
-        %137 = comb.mux %132, %arg8, %csnidle_q : i4
-        %138 = comb.mux %132, %arg9, %csnlead_q : i4
-        %139 = comb.mux %132, %arg10, %csntrail_q : i4
-        %140 = comb.mux %132, %arg7, %clkdiv_q : i16
-        %141 = comb.mux %132, %arg6, %csaat_q : i1
-        %142 = comb.mux %132, %arg3, %cmd_wr_en_q : i1
-        %143 = comb.mux %132, %arg4, %cmd_rd_en_q : i1
-        %144 = comb.mux %132, %arg2, %cmd_speed_q : i2
-        %145 = comb.mux %132, %arg5, %cmd_len_q : i20
-        %146 = comb.and %46, %131 : i1
-        %147 = comb.mux bin %146, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %148 = comb.and %12, %131 : i1
-        %149 = comb.mux %148, %54, %sample_en_q : i1
-        %150 = comb.mux %148, %sample_en_q, %sample_en_q2 : i1
-        %151 = comb.mux bin %125, %u_sck_flop2Fq_o, %116 : i1
-        %152 = comb.mux %131, %114, %csb_q : i1
-        %153 = comb.or %29, %152 : i1
-        fsm.update %csb_q, %153 : i1
-        fsm.update %u_sck_flop2Fq_o, %151 : i1
-        fsm.update %sample_en_q2, %150 : i1
-        fsm.update %sample_en_q, %149 : i1
-        fsm.update %segment_rd_en_cpha1, %147 : i1
-        fsm.update %cmd_len_q, %145 : i20
-        fsm.update %cmd_speed_q, %144 : i2
-        fsm.update %cmd_wr_en_q, %142 : i1
-        fsm.update %cmd_rd_en_q, %143 : i1
-        fsm.update %csaat_q, %141 : i1
-        fsm.update %clkdiv_q, %140 : i16
-        fsm.update %csntrail_q, %139 : i4
-        fsm.update %csnlead_q, %138 : i4
-        fsm.update %csnidle_q, %137 : i4
-        fsm.update %full_cyc_q, %136 : i1
-        fsm.update %cpha_q, %135 : i1
-        fsm.update %cpol_q, %134 : i1
-        fsm.update %csid_q, %133 : i1
+        %23 = comb.icmp eq %arg2, %c0_i2 : i2
+        %24 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %25 = comb.icmp eq %arg2, %c1_i2 : i2
+        %26 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %27 = comb.icmp eq %arg2, %c-2_i2 : i2
+        %28 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %29 = comb.xor %21, %true_14 : i1
+        %30 = comb.and %cmd_wr_en_q, %22 : i1
+        %31 = comb.or %30, %cmd_wr_en_last_bit : i1
+        %32 = comb.xor %isFirstCycle, %true_14 : i1
+        %33 = comb.and %32, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12 : i1
+        %34 = comb.xor %33, %true_14 : i1
+        verif.assert %34 : i1
+        fsm.update %_sh1_10, %12 : i1
+        fsm.update %_sh1_8, %15 : i1
+        fsm.update %_sh1_6, %true : i1
+        fsm.update %_sh1, %true_15 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        fsm.update %cmd_wr_en_last_bit, %31 : i1
+        %35 = comb.and %arg15, %12 : i1
+        %36 = comb.mux %35, %arg14, %csid_q : i1
+        %37 = comb.mux %35, %arg13, %cpol_q : i1
+        %38 = comb.mux %35, %arg12, %cpha_q : i1
+        %39 = comb.mux %35, %arg8, %csnidle_q : i4
+        %40 = comb.mux %35, %arg9, %csnlead_q : i4
+        %41 = comb.mux %35, %arg7, %clkdiv_q : i16
+        %42 = comb.mux %35, %arg3, %cmd_wr_en_q : i1
+        %43 = comb.mux %35, %arg4, %cmd_rd_en_q : i1
+        %44 = comb.mux %9, %41, %10 : i16
+        %45 = comb.mux %35, %arg7, %44 : i16
+        %46 = comb.mux %12, %14, %c1_i3 : i3
+        %47 = comb.mux %16, %c-3_i3, %46 : i3
+        %48 = comb.icmp ne %47, %c-3_i3 : i3
+        %49 = comb.xor %38, %true_14 : i1
+        %50 = comb.and %49, %48, %21 : i1
+        %51 = comb.xor %43, %true_14 : i1
+        %52 = comb.xor %42, %true_14 : i1
+        %53 = comb.and %51, %52 : i1
+        %54 = comb.mux %35, %23, %24 : i1
+        %55 = comb.mux %35, %25, %26 : i1
+        %56 = comb.mux %35, %27, %28 : i1
+        %57 = comb.mux %56, %c-4_i3, %c1_i3 : i3
+        %58 = comb.xor %53, %true_14 : i1
+        %59 = comb.xor %54, %true_14 : i1
+        %60 = comb.and %59, %58, %55 : i1
+        %61 = comb.mux %60, %c-2_i3, %57 : i3
+        %62 = comb.and %58, %54 : i1
+        %63 = comb.mux %62, %c-1_i3, %61 : i3
+        %64 = comb.mux %53, %c0_i3, %63 : i3
+        %65 = comb.and %48, %12 : i1
+        %66 = comb.and %29, %65 : i1
+        %67 = comb.and %66, %arg15, %7 : i1
+        %68 = comb.and %66, %16 : i1
+        %69 = comb.or %68, %67 : i1
+        %70 = comb.mux %69, %39, %c0_i4 : i4
+        %71 = comb.and %65, %21 : i1
+        %72 = comb.mux %71, %40, %70 : i4
+        %73 = comb.icmp ne %47, %c-4_i3 : i3
+        %74 = comb.and %29, %73 : i1
+        %75 = comb.icmp ne %47, %c3_i3 : i3
+        %76 = comb.and %37, %75 : i1
+        %77 = comb.and %50, %42, %11 : i1
+        %78 = comb.or %77, %8 : i1
+        %79 = comb.mux %78, %clk_cntr_q, %45 : i16
+        %true_18 = hw.constant true
+        %80 = comb.xor %50, %true_18 : i1
+        %81 = comb.or %77, %80 : i1
+        %82 = comb.mux %81, %bit_cntr_q, %64 : i3
+        %true_19 = hw.constant true
+        %83 = comb.xor %35, %true_19 : i1
+        %84 = comb.or %77, %83 : i1
+        %85 = comb.mux %84, %byte_cntr_cpha0_q, %arg5 : i20
+        %true_20 = hw.constant true
+        %86 = comb.xor %35, %true_20 : i1
+        %87 = comb.or %77, %86 : i1
+        %88 = comb.mux %87, %byte_cntr_cpha1_q, %arg5 : i20
+        %true_21 = hw.constant true
+        %89 = comb.xor %12, %true_21 : i1
+        %90 = comb.or %77, %89 : i1
+        %91 = comb.mux %90, %wait_cntr_q, %72 : i4
+        %92 = comb.mux bin %77, %u_sck_flop2Fq_o, %76 : i1
+        fsm.update %u_sck_flop2Fq_o, %92 : i1
+        fsm.update %wait_cntr_q, %91 : i4
+        fsm.update %byte_cntr_cpha1_q, %88 : i20
+        fsm.update %byte_cntr_cpha0_q, %85 : i20
+        fsm.update %bit_cntr_q, %82 : i3
+        fsm.update %clk_cntr_q, %79 : i16
+        %93 = comb.xor %77, %true_14 : i1
+        %94 = comb.and %35, %93 : i1
+        %95 = comb.mux %94, %arg14, %csid_q : i1
+        %96 = comb.mux %94, %arg13, %cpol_q : i1
+        %97 = comb.mux %94, %arg12, %cpha_q : i1
+        %98 = comb.mux %94, %arg11, %full_cyc_q : i1
+        %99 = comb.mux %94, %arg8, %csnidle_q : i4
+        %100 = comb.mux %94, %arg9, %csnlead_q : i4
+        %101 = comb.mux %94, %arg10, %csntrail_q : i4
+        %102 = comb.mux %94, %arg7, %clkdiv_q : i16
+        %103 = comb.mux %94, %arg6, %csaat_q : i1
+        %104 = comb.mux %94, %arg3, %cmd_wr_en_q : i1
+        %105 = comb.mux %94, %arg4, %cmd_rd_en_q : i1
+        %106 = comb.mux %94, %arg2, %cmd_speed_q : i2
+        %107 = comb.and %48, %93 : i1
+        %108 = comb.mux bin %107, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %109 = comb.and %12, %93 : i1
+        %110 = comb.mux %109, %50, %sample_en_q : i1
+        %111 = comb.mux %109, %sample_en_q, %sample_en_q2 : i1
+        %112 = comb.mux %93, %74, %csb_q : i1
+        %113 = comb.or %36, %112 : i1
+        fsm.update %_sh1_12, %93 : i1
+        fsm.update %csb_q, %113 : i1
+        fsm.update %sample_en_q2, %111 : i1
+        fsm.update %sample_en_q, %110 : i1
+        fsm.update %segment_rd_en_cpha1, %108 : i1
+        fsm.update %cmd_speed_q, %106 : i2
+        fsm.update %cmd_wr_en_q, %104 : i1
+        fsm.update %cmd_rd_en_q, %105 : i1
+        fsm.update %csaat_q, %103 : i1
+        fsm.update %clkdiv_q, %102 : i16
+        fsm.update %csntrail_q, %101 : i4
+        fsm.update %csnlead_q, %100 : i4
+        fsm.update %csnidle_q, %99 : i4
+        fsm.update %full_cyc_q, %98 : i1
+        fsm.update %cpha_q, %97 : i1
+        fsm.update %cpol_q, %96 : i1
+        fsm.update %csid_q, %95 : i1
       }
       fsm.transition @state_0 guard {
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
-        %c0_i2 = hw.constant 0 : i2
         %c0_i3 = hw.constant 0 : i3
         %c-2_i3 = hw.constant -2 : i3
         %c1_i3 = hw.constant 1 : i3
-        %c-1_i2 = hw.constant -1 : i2
         %true = hw.constant true
         %0 = comb.icmp ne %arg13, %cpol_q : i1
         %1 = comb.icmp ne %arg12, %cpha_q : i1
@@ -11273,55 +8416,46 @@ module {
         %13 = comb.mux %12, %c1_i3, %c-2_i3 : i3
         %14 = comb.xor %arg18, %true : i1
         %c-3_i3 = hw.constant -3 : i3
-        %15 = comb.and %arg1, %8 : i1
-        %16 = comb.and %15, %14 : i1
-        %17 = comb.mux %12, %11, %c-3_i3 : i3
-        %18 = comb.mux %16, %17, %13 : i3
-        %19 = comb.mux %arg18, %c0_i3, %18 : i3
-        %20 = comb.xor %15, %true : i1
-        %21 = comb.and %14, %20 : i1
-        %22 = comb.mux %21, %c-3_i3, %19 : i3
-        %23 = comb.xor %21, %true : i1
-        %24 = comb.icmp ne %22, %c-3_i3 : i3
-        %true_0 = hw.constant true
-        %25 = comb.xor %7, %true_0 : i1
-        %26 = comb.and %arg15, %25 : i1
-        %true_1 = hw.constant true
-        %27 = comb.xor %16, %true_1 : i1
-        %28 = comb.or %27, %26 : i1
-        %true_2 = hw.constant true
-        %29 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %30 = comb.xor %21, %true_3 : i1
-        %31 = comb.and %arg15, %23, %16, %12 : i1
-        %32 = comb.mux %31, %arg14, %csid_q : i1
-        %33 = comb.mux %31, %arg12, %cpha_q : i1
-        %34 = comb.mux %31, %arg3, %cmd_wr_en_q : i1
-        %35 = comb.mux %31, %arg4, %cmd_rd_en_q : i1
-        %36 = comb.mux %31, %arg2, %cmd_speed_q : i2
-        %37 = comb.xor %33, %true : i1
-        %38 = comb.icmp eq %arg2, %c0_i2 : i2
-        %39 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %40 = comb.mux %31, %38, %39 : i1
-        %41 = comb.and %35, %34 : i1
-        %42 = comb.xor %41, %true : i1
-        %43 = comb.or %40, %42 : i1
-        verif.assert %43 : i1
-        %44 = comb.icmp ne %36, %c-1_i2 : i2
-        verif.assert %44 : i1
-        %45 = comb.xor %32, %true : i1
-        verif.assert %45 : i1
-        %46 = comb.and %37, %14, %24, %30, %29, %28, %12, %34, %9 : i1
-        %47 = comb.or %46, %21 : i1
-        %true_4 = hw.constant true
-        %48 = comb.xor %arg15, %true_4 : i1
-        %49 = comb.and %16, %12, %48 : i1
-        %50 = comb.or %arg18, %49 : i1
-        %true_5 = hw.constant true
-        %51 = comb.xor %47, %true_5 : i1
-        %52 = comb.and %51, %50 : i1
-        fsm.return %52
+        %15 = comb.xor %isFirstCycle, %true : i1
+        %16 = comb.and %15, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %14 : i1
+        %17 = comb.xor %16, %true : i1
+        %18 = comb.and %arg1, %8 : i1
+        %19 = comb.and %18, %14 : i1
+        %20 = comb.mux %12, %11, %c-3_i3 : i3
+        %21 = comb.mux %19, %20, %13 : i3
+        %22 = comb.mux %arg18, %c0_i3, %21 : i3
+        %23 = comb.xor %18, %true : i1
+        %24 = comb.and %14, %23 : i1
+        %25 = comb.mux %24, %c-3_i3, %22 : i3
+        %26 = comb.xor %24, %true : i1
+        %27 = comb.icmp ne %25, %c-3_i3 : i3
+        %true_13 = hw.constant true
+        %28 = comb.xor %7, %true_13 : i1
+        %29 = comb.and %arg15, %28 : i1
+        %true_14 = hw.constant true
+        %30 = comb.xor %19, %true_14 : i1
+        %31 = comb.or %30, %29 : i1
+        %true_15 = hw.constant true
+        %32 = comb.xor %arg18, %true_15 : i1
+        %true_16 = hw.constant true
+        %33 = comb.xor %24, %true_16 : i1
+        verif.assert %17 : i1
+        %34 = comb.and %arg15, %26, %19, %12 : i1
+        %35 = comb.mux %34, %arg12, %cpha_q : i1
+        %36 = comb.mux %34, %arg3, %cmd_wr_en_q : i1
+        %37 = comb.xor %35, %true : i1
+        %38 = comb.and %37, %14, %27, %33, %32, %31, %12, %36, %9 : i1
+        %39 = comb.or %38, %24 : i1
+        %true_17 = hw.constant true
+        %40 = comb.xor %arg15, %true_17 : i1
+        %41 = comb.and %19, %12, %40 : i1
+        %42 = comb.or %arg18, %41 : i1
+        %true_18 = hw.constant true
+        %43 = comb.xor %39, %true_18 : i1
+        %44 = comb.and %43, %42 : i1
+        fsm.return %44
       } action {
+        %false_13 = hw.constant false
         %c0_i4 = hw.constant 0 : i4
         %c0_i16 = hw.constant 0 : i16
         %c0_i2 = hw.constant 0 : i2
@@ -11334,7 +8468,6 @@ module {
         %c3_i3 = hw.constant 3 : i3
         %c1_i2 = hw.constant 1 : i2
         %c-2_i2 = hw.constant -2 : i2
-        %c-1_i2 = hw.constant -1 : i2
         %c-1_i16 = hw.constant -1 : i16
         %c-1_i4 = hw.constant -1 : i4
         %true = hw.constant true
@@ -11353,186 +8486,174 @@ module {
         %12 = comb.and %arg1, %9 : i1
         %13 = comb.mux %7, %c-2_i3, %c1_i3 : i3
         %14 = comb.mux %arg15, %13, %c0_i3 : i3
-        %15 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
-        %16 = comb.mux %15, %c1_i3, %c-2_i3 : i3
-        %17 = comb.xor %arg18, %true : i1
-        %18 = comb.and %12, %17 : i1
-        %19 = comb.xor %12, %true : i1
-        %20 = comb.and %17, %19 : i1
-        %21 = comb.xor %20, %true : i1
+        %15 = comb.xor %arg15, %true : i1
+        %true_14 = hw.constant true
+        %16 = comb.icmp eq %wait_cntr_q, %c0_i4 : i4
+        %17 = comb.mux %16, %c1_i3, %c-2_i3 : i3
+        %18 = comb.xor %arg18, %true : i1
+        %19 = comb.and %12, %18 : i1
+        %20 = comb.xor %12, %true : i1
+        %21 = comb.and %18, %20 : i1
+        %22 = comb.xor %21, %true : i1
         %c-3_i3 = hw.constant -3 : i3
-        %22 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
-        %23 = comb.add %wait_cntr_q, %c-1_i4 : i4
-        %24 = comb.or %arg18, %12 : i1
-        %25 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
-        %26 = comb.and %cmd_wr_en_q, %22 : i1
-        %27 = comb.or %26, %cmd_wr_en_last_bit : i1
-        fsm.update %cmd_wr_en_last_bit, %27 : i1
-        %28 = comb.and %arg15, %21, %18, %15 : i1
-        %29 = comb.mux %28, %arg14, %csid_q : i1
-        %30 = comb.mux %28, %arg13, %cpol_q : i1
-        %31 = comb.mux %28, %arg12, %cpha_q : i1
-        %32 = comb.mux %28, %arg8, %csnidle_q : i4
-        %33 = comb.mux %28, %arg9, %csnlead_q : i4
-        %34 = comb.mux %28, %arg7, %clkdiv_q : i16
-        %35 = comb.mux %28, %arg3, %cmd_wr_en_q : i1
-        %36 = comb.mux %28, %arg4, %cmd_rd_en_q : i1
-        %37 = comb.mux %28, %arg2, %cmd_speed_q : i2
-        %38 = comb.mux %9, %34, %10 : i16
-        %39 = comb.mux %28, %arg7, %38 : i16
-        %40 = comb.mux %8, %clk_cntr_q, %39 : i16
-        %41 = comb.mux %arg18, %c0_i16, %40 : i16
-        %42 = comb.mux %15, %14, %c-3_i3 : i3
-        %43 = comb.mux %18, %42, %16 : i3
-        %44 = comb.mux %arg18, %c0_i3, %43 : i3
-        %45 = comb.mux %20, %c-3_i3, %44 : i3
-        %46 = comb.icmp ne %45, %c-3_i3 : i3
-        %true_0 = hw.constant true
-        %47 = comb.xor %7, %true_0 : i1
-        %48 = comb.and %arg15, %47 : i1
-        %true_1 = hw.constant true
-        %49 = comb.xor %18, %true_1 : i1
-        %50 = comb.or %49, %48 : i1
-        %true_2 = hw.constant true
-        %51 = comb.xor %arg18, %true_2 : i1
-        %true_3 = hw.constant true
-        %52 = comb.xor %20, %true_3 : i1
-        %53 = comb.xor %31, %true : i1
-        %54 = comb.and %53, %17, %46, %52, %51, %50, %15 : i1
-        %55 = comb.xor %36, %true : i1
-        %56 = comb.xor %35, %true : i1
-        %57 = comb.and %55, %56 : i1
-        %58 = comb.icmp eq %arg2, %c0_i2 : i2
-        %59 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %60 = comb.mux %28, %58, %59 : i1
-        %61 = comb.icmp eq %arg2, %c1_i2 : i2
-        %62 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
-        %63 = comb.mux %28, %61, %62 : i1
-        %64 = comb.icmp eq %arg2, %c-2_i2 : i2
-        %65 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
-        %66 = comb.mux %28, %64, %65 : i1
-        %67 = comb.mux %66, %c-4_i3, %c1_i3 : i3
-        %68 = comb.xor %57, %true : i1
-        %69 = comb.xor %60, %true : i1
-        %70 = comb.and %69, %68, %63 : i1
-        %71 = comb.mux %70, %c-2_i3, %67 : i3
-        %72 = comb.and %68, %60 : i1
-        %73 = comb.mux %72, %c-1_i3, %71 : i3
-        %74 = comb.mux %57, %c0_i3, %73 : i3
-        %75 = comb.and %12, %54 : i1
-        %76 = comb.mux %75, %74, %bit_cntr_q : i3
-        %77 = comb.mux %arg18, %c0_i3, %76 : i3
-        %78 = comb.mux %28, %arg5, %byte_cntr_cpha0_q : i20
-        %79 = comb.mux %arg18, %c0_i20, %78 : i20
-        %80 = comb.mux %28, %arg5, %byte_cntr_cpha1_q : i20
-        %81 = comb.mux %arg18, %c0_i20, %80 : i20
-        %true_4 = hw.constant true
-        %82 = comb.xor %7, %true_4 : i1
-        %83 = comb.and %arg15, %82 : i1
-        %true_5 = hw.constant true
-        %84 = comb.xor %18, %true_5 : i1
-        %85 = comb.or %84, %83 : i1
-        %true_6 = hw.constant true
-        %86 = comb.xor %arg18, %true_6 : i1
-        %true_7 = hw.constant true
-        %87 = comb.xor %20, %true_7 : i1
-        %88 = comb.and %87, %86, %85, %15 : i1
-        %true_8 = hw.constant true
-        %89 = comb.xor %15, %true_8 : i1
-        %true_9 = hw.constant true
-        %90 = comb.xor %arg18, %true_9 : i1
-        %91 = comb.and %90, %18, %89 : i1
-        %92 = comb.or %20, %91 : i1
-        %93 = comb.and %15, %arg15, %7 : i1
-        %true_10 = hw.constant true
-        %94 = comb.xor %15, %true_10 : i1
-        %95 = comb.mux %18, %93, %94 : i1
-        %true_11 = hw.constant true
-        %96 = comb.xor %arg18, %true_11 : i1
-        %true_12 = hw.constant true
-        %97 = comb.xor %20, %true_12 : i1
-        %98 = comb.and %46, %18 : i1
-        %99 = comb.xor %88, %true : i1
-        %100 = comb.and %99, %98 : i1
-        %101 = comb.xor %92, %true : i1
-        %102 = comb.and %101, %100, %97, %96, %95 : i1
-        %103 = comb.and %100, %92 : i1
-        %104 = comb.or %103, %102 : i1
-        %105 = comb.mux %104, %32, %c0_i4 : i4
-        %106 = comb.and %98, %88 : i1
-        %107 = comb.mux %106, %33, %105 : i4
-        %108 = comb.mux %24, %107, %wait_cntr_q : i4
-        %109 = comb.mux %arg18, %c0_i4, %108 : i4
-        %110 = comb.xor %46, %true : i1
-        %111 = comb.and %25, %110, %18 : i1
-        %112 = comb.mux %111, %23, %109 : i4
-        %113 = comb.icmp ne %45, %c-4_i3 : i3
-        %114 = comb.and %99, %113 : i1
-        %115 = comb.icmp ne %45, %c3_i3 : i3
-        %116 = comb.and %30, %115 : i1
-        %117 = comb.icmp eq %arg2, %c0_i2 : i2
-        %118 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
-        %119 = comb.mux %28, %117, %118 : i1
-        %120 = comb.and %36, %35 : i1
-        %121 = comb.xor %120, %true : i1
-        %122 = comb.or %119, %121 : i1
-        verif.assert %122 : i1
-        %123 = comb.icmp ne %37, %c-1_i2 : i2
-        verif.assert %123 : i1
-        %124 = comb.xor %29, %true : i1
-        verif.assert %124 : i1
-        %125 = comb.and %54, %35, %11 : i1
-        %126 = comb.mux %125, %clk_cntr_q, %41 : i16
-        %127 = comb.mux %125, %bit_cntr_q, %77 : i3
-        %128 = comb.mux %125, %byte_cntr_cpha0_q, %79 : i20
-        %129 = comb.mux %125, %byte_cntr_cpha1_q, %81 : i20
-        %130 = comb.mux %125, %wait_cntr_q, %112 : i4
-        fsm.update %wait_cntr_q, %130 : i4
-        fsm.update %byte_cntr_cpha1_q, %129 : i20
-        fsm.update %byte_cntr_cpha0_q, %128 : i20
-        fsm.update %bit_cntr_q, %127 : i3
-        fsm.update %clk_cntr_q, %126 : i16
-        %131 = comb.xor %125, %true : i1
-        %132 = comb.and %28, %131 : i1
-        %133 = comb.mux %132, %arg14, %csid_q : i1
-        %134 = comb.mux %132, %arg13, %cpol_q : i1
-        %135 = comb.mux %132, %arg12, %cpha_q : i1
-        %136 = comb.mux %132, %arg11, %full_cyc_q : i1
-        %137 = comb.mux %132, %arg8, %csnidle_q : i4
-        %138 = comb.mux %132, %arg9, %csnlead_q : i4
-        %139 = comb.mux %132, %arg10, %csntrail_q : i4
-        %140 = comb.mux %132, %arg7, %clkdiv_q : i16
-        %141 = comb.mux %132, %arg6, %csaat_q : i1
-        %142 = comb.mux %132, %arg3, %cmd_wr_en_q : i1
-        %143 = comb.mux %132, %arg4, %cmd_rd_en_q : i1
-        %144 = comb.mux %132, %arg2, %cmd_speed_q : i2
-        %145 = comb.mux %132, %arg5, %cmd_len_q : i20
-        %146 = comb.and %46, %131 : i1
-        %147 = comb.mux bin %146, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
-        %148 = comb.and %12, %131 : i1
-        %149 = comb.mux %148, %54, %sample_en_q : i1
-        %150 = comb.mux %148, %sample_en_q, %sample_en_q2 : i1
-        %151 = comb.mux bin %125, %u_sck_flop2Fq_o, %116 : i1
-        %152 = comb.mux %131, %114, %csb_q : i1
-        %153 = comb.or %29, %152 : i1
-        fsm.update %csb_q, %153 : i1
-        fsm.update %u_sck_flop2Fq_o, %151 : i1
-        fsm.update %sample_en_q2, %150 : i1
-        fsm.update %sample_en_q, %149 : i1
-        fsm.update %segment_rd_en_cpha1, %147 : i1
-        fsm.update %cmd_len_q, %145 : i20
-        fsm.update %cmd_speed_q, %144 : i2
-        fsm.update %cmd_wr_en_q, %142 : i1
-        fsm.update %cmd_rd_en_q, %143 : i1
-        fsm.update %csaat_q, %141 : i1
-        fsm.update %clkdiv_q, %140 : i16
-        fsm.update %csntrail_q, %139 : i4
-        fsm.update %csnlead_q, %138 : i4
-        fsm.update %csnidle_q, %137 : i4
-        fsm.update %full_cyc_q, %136 : i1
-        fsm.update %cpha_q, %135 : i1
-        fsm.update %cpol_q, %134 : i1
-        fsm.update %csid_q, %133 : i1
+        %true_15 = hw.constant true
+        %23 = comb.xor %7, %true_15 : i1
+        %24 = comb.and %arg15, %23 : i1
+        %true_16 = hw.constant true
+        %25 = comb.xor %19, %true_16 : i1
+        %26 = comb.or %25, %24 : i1
+        %true_17 = hw.constant true
+        %27 = comb.xor %arg18, %true_17 : i1
+        %true_18 = hw.constant true
+        %28 = comb.xor %21, %true_18 : i1
+        %29 = comb.and %28, %27, %26, %16 : i1
+        %30 = comb.icmp eq %bit_cntr_q, %c0_i3 : i3
+        %31 = comb.icmp eq %arg2, %c0_i2 : i2
+        %32 = comb.icmp eq %cmd_speed_q, %c0_i2 : i2
+        %33 = comb.icmp eq %arg2, %c1_i2 : i2
+        %34 = comb.icmp eq %cmd_speed_q, %c1_i2 : i2
+        %35 = comb.icmp eq %arg2, %c-2_i2 : i2
+        %36 = comb.icmp eq %cmd_speed_q, %c-2_i2 : i2
+        %true_19 = hw.constant true
+        %37 = comb.xor %16, %true_19 : i1
+        %true_20 = hw.constant true
+        %38 = comb.xor %arg18, %true_20 : i1
+        %39 = comb.and %38, %19, %37 : i1
+        %40 = comb.or %21, %39 : i1
+        %41 = comb.and %16, %arg15, %7 : i1
+        %true_21 = hw.constant true
+        %42 = comb.xor %16, %true_21 : i1
+        %43 = comb.mux %19, %41, %42 : i1
+        %true_22 = hw.constant true
+        %44 = comb.xor %arg18, %true_22 : i1
+        %true_23 = hw.constant true
+        %45 = comb.xor %21, %true_23 : i1
+        %46 = comb.add %wait_cntr_q, %c-1_i4 : i4
+        %47 = comb.xor %29, %true : i1
+        %48 = comb.xor %40, %true : i1
+        %49 = comb.or %arg18, %12 : i1
+        %50 = comb.icmp ne %wait_cntr_q, %c0_i4 : i4
+        %51 = comb.and %cmd_wr_en_q, %30 : i1
+        %52 = comb.or %51, %cmd_wr_en_last_bit : i1
+        %53 = comb.xor %isFirstCycle, %true : i1
+        %54 = comb.and %53, %_sh1, %_sh1_6, %_sh1_8, %_sh1_10, %_sh1_12, %18 : i1
+        %55 = comb.xor %54, %true : i1
+        verif.assert %55 : i1
+        fsm.update %_sh1_10, %12 : i1
+        fsm.update %_sh1_8, %15 : i1
+        fsm.update %_sh1_6, %16 : i1
+        fsm.update %_sh1, %true_14 : i1
+        fsm.update %isFirstCycle, %false_13 : i1
+        fsm.update %cmd_wr_en_last_bit, %52 : i1
+        %56 = comb.and %arg15, %22, %19, %16 : i1
+        %57 = comb.mux %56, %arg14, %csid_q : i1
+        %58 = comb.mux %56, %arg13, %cpol_q : i1
+        %59 = comb.mux %56, %arg12, %cpha_q : i1
+        %60 = comb.mux %56, %arg8, %csnidle_q : i4
+        %61 = comb.mux %56, %arg9, %csnlead_q : i4
+        %62 = comb.mux %56, %arg7, %clkdiv_q : i16
+        %63 = comb.mux %56, %arg3, %cmd_wr_en_q : i1
+        %64 = comb.mux %56, %arg4, %cmd_rd_en_q : i1
+        %65 = comb.mux %9, %62, %10 : i16
+        %66 = comb.mux %56, %arg7, %65 : i16
+        %67 = comb.mux %8, %clk_cntr_q, %66 : i16
+        %68 = comb.mux %arg18, %c0_i16, %67 : i16
+        %69 = comb.mux %16, %14, %c-3_i3 : i3
+        %70 = comb.mux %19, %69, %17 : i3
+        %71 = comb.mux %arg18, %c0_i3, %70 : i3
+        %72 = comb.mux %21, %c-3_i3, %71 : i3
+        %73 = comb.icmp ne %72, %c-3_i3 : i3
+        %74 = comb.xor %59, %true : i1
+        %75 = comb.and %74, %18, %73, %29 : i1
+        %76 = comb.xor %64, %true : i1
+        %77 = comb.xor %63, %true : i1
+        %78 = comb.and %76, %77 : i1
+        %79 = comb.mux %56, %31, %32 : i1
+        %80 = comb.mux %56, %33, %34 : i1
+        %81 = comb.mux %56, %35, %36 : i1
+        %82 = comb.mux %81, %c-4_i3, %c1_i3 : i3
+        %83 = comb.xor %78, %true : i1
+        %84 = comb.xor %79, %true : i1
+        %85 = comb.and %84, %83, %80 : i1
+        %86 = comb.mux %85, %c-2_i3, %82 : i3
+        %87 = comb.and %83, %79 : i1
+        %88 = comb.mux %87, %c-1_i3, %86 : i3
+        %89 = comb.mux %78, %c0_i3, %88 : i3
+        %90 = comb.and %12, %75 : i1
+        %91 = comb.mux %90, %89, %bit_cntr_q : i3
+        %92 = comb.mux %arg18, %c0_i3, %91 : i3
+        %93 = comb.mux %56, %arg5, %byte_cntr_cpha0_q : i20
+        %94 = comb.mux %arg18, %c0_i20, %93 : i20
+        %95 = comb.mux %56, %arg5, %byte_cntr_cpha1_q : i20
+        %96 = comb.mux %arg18, %c0_i20, %95 : i20
+        %97 = comb.and %73, %19 : i1
+        %98 = comb.and %47, %97 : i1
+        %99 = comb.and %48, %98, %45, %44, %43 : i1
+        %100 = comb.and %98, %40 : i1
+        %101 = comb.or %100, %99 : i1
+        %102 = comb.mux %101, %60, %c0_i4 : i4
+        %103 = comb.and %97, %29 : i1
+        %104 = comb.mux %103, %61, %102 : i4
+        %105 = comb.mux %49, %104, %wait_cntr_q : i4
+        %106 = comb.mux %arg18, %c0_i4, %105 : i4
+        %107 = comb.xor %73, %true : i1
+        %108 = comb.and %50, %107, %19 : i1
+        %109 = comb.mux %108, %46, %106 : i4
+        %110 = comb.icmp ne %72, %c-4_i3 : i3
+        %111 = comb.and %47, %110 : i1
+        %112 = comb.icmp ne %72, %c3_i3 : i3
+        %113 = comb.and %58, %112 : i1
+        %114 = comb.and %75, %63, %11 : i1
+        %115 = comb.mux %114, %clk_cntr_q, %68 : i16
+        %116 = comb.mux %114, %bit_cntr_q, %92 : i3
+        %117 = comb.mux %114, %byte_cntr_cpha0_q, %94 : i20
+        %118 = comb.mux %114, %byte_cntr_cpha1_q, %96 : i20
+        %119 = comb.mux %114, %wait_cntr_q, %109 : i4
+        %120 = comb.mux bin %114, %u_sck_flop2Fq_o, %113 : i1
+        fsm.update %u_sck_flop2Fq_o, %120 : i1
+        fsm.update %wait_cntr_q, %119 : i4
+        fsm.update %byte_cntr_cpha1_q, %118 : i20
+        fsm.update %byte_cntr_cpha0_q, %117 : i20
+        fsm.update %bit_cntr_q, %116 : i3
+        fsm.update %clk_cntr_q, %115 : i16
+        %121 = comb.xor %114, %true : i1
+        %122 = comb.and %56, %121 : i1
+        %123 = comb.mux %122, %arg14, %csid_q : i1
+        %124 = comb.mux %122, %arg13, %cpol_q : i1
+        %125 = comb.mux %122, %arg12, %cpha_q : i1
+        %126 = comb.mux %122, %arg11, %full_cyc_q : i1
+        %127 = comb.mux %122, %arg8, %csnidle_q : i4
+        %128 = comb.mux %122, %arg9, %csnlead_q : i4
+        %129 = comb.mux %122, %arg10, %csntrail_q : i4
+        %130 = comb.mux %122, %arg7, %clkdiv_q : i16
+        %131 = comb.mux %122, %arg6, %csaat_q : i1
+        %132 = comb.mux %122, %arg3, %cmd_wr_en_q : i1
+        %133 = comb.mux %122, %arg4, %cmd_rd_en_q : i1
+        %134 = comb.mux %122, %arg2, %cmd_speed_q : i2
+        %135 = comb.and %73, %121 : i1
+        %136 = comb.mux bin %135, %cmd_rd_en_q, %segment_rd_en_cpha1 : i1
+        %137 = comb.and %12, %121 : i1
+        %138 = comb.mux %137, %75, %sample_en_q : i1
+        %139 = comb.mux %137, %sample_en_q, %sample_en_q2 : i1
+        %140 = comb.mux %121, %111, %csb_q : i1
+        %141 = comb.or %57, %140 : i1
+        fsm.update %_sh1_12, %121 : i1
+        fsm.update %csb_q, %141 : i1
+        fsm.update %sample_en_q2, %139 : i1
+        fsm.update %sample_en_q, %138 : i1
+        fsm.update %segment_rd_en_cpha1, %136 : i1
+        fsm.update %cmd_speed_q, %134 : i2
+        fsm.update %cmd_wr_en_q, %132 : i1
+        fsm.update %cmd_rd_en_q, %133 : i1
+        fsm.update %csaat_q, %131 : i1
+        fsm.update %clkdiv_q, %130 : i16
+        fsm.update %csntrail_q, %129 : i4
+        fsm.update %csnlead_q, %128 : i4
+        fsm.update %csnidle_q, %127 : i4
+        fsm.update %full_cyc_q, %126 : i1
+        fsm.update %cpha_q, %125 : i1
+        fsm.update %cpol_q, %124 : i1
+        fsm.update %csid_q, %123 : i1
       }
     }
   }

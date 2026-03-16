@@ -15,7 +15,6 @@ module {
     } transitions {
       fsm.transition @state_24 guard {
         %0 = comb.or %arg3, %arg4 : i1
-        %true = hw.constant true
         %c-4_i4 = hw.constant -4 : i4
         %c7_i4 = hw.constant 7 : i4
         %1 = comb.mux %arg2, %c-4_i4, %c7_i4 : i4
@@ -24,10 +23,11 @@ module {
         %4 = comb.concat %2, %3 : i1, i2
         %c-4_i3 = hw.constant -4 : i3
         %5 = comb.icmp eq %4, %c-4_i3 : i3
-        %true_0 = hw.constant true
-        %6 = comb.xor %0, %true_0 : i1
+        %true = hw.constant true
+        %6 = comb.xor %0, %true : i1
         %7 = comb.and %6, %5 : i1
-        verif.assert %true : i1
+        %true_0 = hw.constant true
+        verif.assert %true_0 : i1
         fsm.return %7
       } action {
         %c0_i3 = hw.constant 0 : i3
@@ -40,7 +40,6 @@ module {
       }
       fsm.transition @state_14 guard {
         %0 = comb.or %arg3, %arg4 : i1
-        %true = hw.constant true
         %c-4_i4 = hw.constant -4 : i4
         %c7_i4 = hw.constant 7 : i4
         %1 = comb.mux %arg2, %c-4_i4, %c7_i4 : i4
@@ -49,10 +48,11 @@ module {
         %4 = comb.concat %2, %3 : i1, i2
         %c3_i3 = hw.constant 3 : i3
         %5 = comb.icmp eq %4, %c3_i3 : i3
-        %true_0 = hw.constant true
-        %6 = comb.xor %0, %true_0 : i1
+        %true = hw.constant true
+        %6 = comb.xor %0, %true : i1
         %7 = comb.and %6, %5 : i1
-        verif.assert %true : i1
+        %true_0 = hw.constant true
+        verif.assert %true_0 : i1
         fsm.return %7
       } action {
         %c0_i3 = hw.constant 0 : i3
@@ -64,8 +64,8 @@ module {
         fsm.update %ctr_slice_idx_q, %0 : i3
       }
       fsm.transition @state_1 guard {
-        %true = hw.constant true
         %0 = comb.or %arg3, %arg4 : i1
+        %true = hw.constant true
         verif.assert %true : i1
         fsm.return %0
       } action {
@@ -85,7 +85,8 @@ module {
       %false = hw.constant false
       %true = hw.constant true
       %false_0 = hw.constant false
-      verif.assert %true : i1
+      %true_1 = hw.constant true
+      verif.assert %true_1 : i1
       fsm.output %false, %true, %ctr_slice_idx_q, %1, %false_0 : i1, i1, i3, i16, i1
     } transitions {
       fsm.transition @state_1 guard {

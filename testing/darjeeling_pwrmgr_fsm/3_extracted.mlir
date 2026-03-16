@@ -19,8 +19,6 @@ module {
     %u_reg_otp_init2Fq_o = fsm.variable "u_reg_otp_init/q_o" {initValue = false} : i1
     %u_reg_lc_init2Fq_o = fsm.variable "u_reg_lc_init/q_o" {initValue = false} : i1
     fsm.state @state_55 output {
-      %0 = hw.struct_create (%ip_clk_en_q, %ip_clk_en_q) : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %main_ip_clk_en, %io_ip_clk_en = hw.struct_explode %0 : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
       %false = hw.constant false
       %false_0 = hw.constant false
       %false_1 = hw.constant false
@@ -28,10 +26,8 @@ module {
       %false_3 = hw.constant false
       %false_4 = hw.constant false
       %false_5 = hw.constant false
-      %1 = comb.extract %arg8 from 0 : (i6) -> i5
-      %2 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %1, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause = hw.struct_explode %2 : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause, %main_ip_clk_en, %io_ip_clk_en, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
+      %0 = comb.extract %arg8 from 0 : (i6) -> i5
+      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req_q, %rst_sys_req_q, %0, %reset_cause_q, %ip_clk_en_q, %ip_clk_en_q, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
     } transitions {
       fsm.transition @state_3414 guard {
         fsm.return %arg9
@@ -162,8 +158,6 @@ module {
       }
     }
     fsm.state @state_2766 output {
-      %0 = hw.struct_create (%ip_clk_en_q, %ip_clk_en_q) : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %main_ip_clk_en, %io_ip_clk_en = hw.struct_explode %0 : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
       %false = hw.constant false
       %false_0 = hw.constant false
       %false_1 = hw.constant false
@@ -171,10 +165,8 @@ module {
       %false_3 = hw.constant false
       %false_4 = hw.constant false
       %false_5 = hw.constant false
-      %1 = comb.extract %arg8 from 0 : (i6) -> i5
-      %2 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %1, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause = hw.struct_explode %2 : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause, %main_ip_clk_en, %io_ip_clk_en, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
+      %0 = comb.extract %arg8 from 0 : (i6) -> i5
+      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req_q, %rst_sys_req_q, %0, %reset_cause_q, %ip_clk_en_q, %ip_clk_en_q, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
     } transitions {
       fsm.transition @state_3414 guard {
         fsm.return %arg9
@@ -201,13 +193,13 @@ module {
         %4 = comb.and %3, %2 : i1
         %5 = comb.icmp ne %rst_sys_req_q, %c-1_i2 : i2
         %6 = comb.and %5, %strap_sampled_o : i1
-        %true_0 = hw.constant true
         %false = hw.constant false
-        %false_1 = hw.constant false
-        fsm.update %u_reg_lc_init2Fq_o, %false_1 : i1
+        %false_0 = hw.constant false
+        %true_1 = hw.constant true
+        fsm.update %u_reg_lc_init2Fq_o, %false_0 : i1
         fsm.update %u_reg_otp_init2Fq_o, %false : i1
         fsm.update %strap_sampled_o, %6 : i1
-        fsm.update %ip_clk_en_q, %true_0 : i1
+        fsm.update %ip_clk_en_q, %true_1 : i1
         fsm.update %ext_rst_pending_q, %4 : i1
       }
       fsm.transition @state_2766 guard {
@@ -256,13 +248,13 @@ module {
         %4 = comb.and %3, %2 : i1
         %5 = comb.icmp ne %rst_sys_req_q, %c-1_i2 : i2
         %6 = comb.and %5, %strap_sampled_o : i1
-        %true_0 = hw.constant true
         %false = hw.constant false
-        %false_1 = hw.constant false
-        fsm.update %u_reg_lc_init2Fq_o, %false_1 : i1
+        %false_0 = hw.constant false
+        %true_1 = hw.constant true
+        fsm.update %u_reg_lc_init2Fq_o, %false_0 : i1
         fsm.update %u_reg_otp_init2Fq_o, %false : i1
         fsm.update %strap_sampled_o, %6 : i1
-        fsm.update %ip_clk_en_q, %true_0 : i1
+        fsm.update %ip_clk_en_q, %true_1 : i1
         fsm.update %ext_rst_pending_q, %4 : i1
       }
       fsm.transition @state_2496 guard {
@@ -311,19 +303,17 @@ module {
         %4 = comb.and %3, %2 : i1
         %5 = comb.icmp ne %rst_sys_req_q, %c-1_i2 : i2
         %6 = comb.and %5, %strap_sampled_o : i1
-        %true_0 = hw.constant true
         %false = hw.constant false
-        %false_1 = hw.constant false
-        fsm.update %u_reg_lc_init2Fq_o, %false_1 : i1
+        %false_0 = hw.constant false
+        %true_1 = hw.constant true
+        fsm.update %u_reg_lc_init2Fq_o, %false_0 : i1
         fsm.update %u_reg_otp_init2Fq_o, %false : i1
         fsm.update %strap_sampled_o, %6 : i1
-        fsm.update %ip_clk_en_q, %true_0 : i1
+        fsm.update %ip_clk_en_q, %true_1 : i1
         fsm.update %ext_rst_pending_q, %4 : i1
       }
     }
     fsm.state @state_3414 output {
-      %0 = hw.struct_create (%ip_clk_en_q, %ip_clk_en_q) : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %main_ip_clk_en, %io_ip_clk_en = hw.struct_explode %0 : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
       %false = hw.constant false
       %false_0 = hw.constant false
       %false_1 = hw.constant false
@@ -331,10 +321,8 @@ module {
       %false_3 = hw.constant false
       %false_4 = hw.constant false
       %false_5 = hw.constant false
-      %1 = comb.extract %arg8 from 0 : (i6) -> i5
-      %2 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %1, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause = hw.struct_explode %2 : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause, %main_ip_clk_en, %io_ip_clk_en, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
+      %0 = comb.extract %arg8 from 0 : (i6) -> i5
+      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req_q, %rst_sys_req_q, %0, %reset_cause_q, %ip_clk_en_q, %ip_clk_en_q, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
     } transitions {
       fsm.transition @state_3414 guard {
         %true = hw.constant true
@@ -363,18 +351,16 @@ module {
         %false = hw.constant false
         %false_0 = hw.constant false
         %false_1 = hw.constant false
-        fsm.update %u_reg_lc_init2Fq_o, %false_1 : i1
-        fsm.update %u_reg_otp_init2Fq_o, %false_0 : i1
+        fsm.update %u_reg_lc_init2Fq_o, %false_0 : i1
+        fsm.update %u_reg_otp_init2Fq_o, %false : i1
         fsm.update %strap_sampled_o, %6 : i1
         fsm.update %rst_sys_req_q, %c-1_i2 : i2
         fsm.update %rst_lc_req_q, %c-1_i2 : i2
-        fsm.update %ip_clk_en_q, %false : i1
+        fsm.update %ip_clk_en_q, %false_1 : i1
         fsm.update %ext_rst_pending_q, %4 : i1
       }
     }
     fsm.state @state_2496 output {
-      %0 = hw.struct_create (%ip_clk_en_q, %ip_clk_en_q) : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %main_ip_clk_en, %io_ip_clk_en = hw.struct_explode %0 : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
       %false = hw.constant false
       %false_0 = hw.constant false
       %false_1 = hw.constant false
@@ -382,10 +368,8 @@ module {
       %false_3 = hw.constant false
       %false_4 = hw.constant false
       %false_5 = hw.constant false
-      %1 = comb.extract %arg8 from 0 : (i6) -> i5
-      %2 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %1, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause = hw.struct_explode %2 : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause, %main_ip_clk_en, %io_ip_clk_en, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
+      %0 = comb.extract %arg8 from 0 : (i6) -> i5
+      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req_q, %rst_sys_req_q, %0, %reset_cause_q, %ip_clk_en_q, %ip_clk_en_q, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
     } transitions {
       fsm.transition @state_4002 guard {
         %c-1_i2 = hw.constant -1 : i2
@@ -519,8 +503,6 @@ module {
       }
     }
     fsm.state @state_4002 output {
-      %0 = hw.struct_create (%ip_clk_en_q, %ip_clk_en_q) : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %main_ip_clk_en, %io_ip_clk_en = hw.struct_explode %0 : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
       %false = hw.constant false
       %false_0 = hw.constant false
       %false_1 = hw.constant false
@@ -528,10 +510,8 @@ module {
       %false_3 = hw.constant false
       %false_4 = hw.constant false
       %false_5 = hw.constant false
-      %1 = comb.extract %arg8 from 0 : (i6) -> i5
-      %2 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %1, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause = hw.struct_explode %2 : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause, %main_ip_clk_en, %io_ip_clk_en, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
+      %0 = comb.extract %arg8 from 0 : (i6) -> i5
+      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req_q, %rst_sys_req_q, %0, %reset_cause_q, %ip_clk_en_q, %ip_clk_en_q, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
     } transitions {
       fsm.transition @state_4002 guard {
         %true = hw.constant true
@@ -642,8 +622,6 @@ module {
       }
     }
     fsm.state @state_2643 output {
-      %0 = hw.struct_create (%ip_clk_en_q, %ip_clk_en_q) : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %main_ip_clk_en, %io_ip_clk_en = hw.struct_explode %0 : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
       %false = hw.constant false
       %false_0 = hw.constant false
       %false_1 = hw.constant false
@@ -651,10 +629,8 @@ module {
       %false_3 = hw.constant false
       %false_4 = hw.constant false
       %false_5 = hw.constant false
-      %1 = comb.extract %arg8 from 0 : (i6) -> i5
-      %2 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %1, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause = hw.struct_explode %2 : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause, %main_ip_clk_en, %io_ip_clk_en, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
+      %0 = comb.extract %arg8 from 0 : (i6) -> i5
+      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req_q, %rst_sys_req_q, %0, %reset_cause_q, %ip_clk_en_q, %ip_clk_en_q, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
     } transitions {
       fsm.transition @state_3414 guard {
         fsm.return %arg9
@@ -682,8 +658,8 @@ module {
         %4 = comb.and %3, %2 : i1
         %5 = comb.icmp ne %rst_sys_req_q, %c-1_i2 : i2
         %6 = comb.and %5, %strap_sampled_o : i1
-        %false = hw.constant false
         %true_0 = hw.constant true
+        %false = hw.constant false
         fsm.update %u_reg_lc_init2Fq_o, %true_0 : i1
         fsm.update %u_reg_otp_init2Fq_o, %false : i1
         fsm.update %strap_sampled_o, %6 : i1
@@ -728,8 +704,8 @@ module {
         %4 = comb.and %3, %2 : i1
         %5 = comb.icmp ne %rst_sys_req_q, %c-1_i2 : i2
         %6 = comb.and %5, %strap_sampled_o : i1
-        %false = hw.constant false
         %true_0 = hw.constant true
+        %false = hw.constant false
         fsm.update %u_reg_lc_init2Fq_o, %true_0 : i1
         fsm.update %u_reg_otp_init2Fq_o, %false : i1
         fsm.update %strap_sampled_o, %6 : i1
@@ -774,8 +750,8 @@ module {
         %4 = comb.and %3, %2 : i1
         %5 = comb.icmp ne %rst_sys_req_q, %c-1_i2 : i2
         %6 = comb.and %5, %strap_sampled_o : i1
-        %false = hw.constant false
         %true_0 = hw.constant true
+        %false = hw.constant false
         fsm.update %u_reg_lc_init2Fq_o, %true_0 : i1
         fsm.update %u_reg_otp_init2Fq_o, %false : i1
         fsm.update %strap_sampled_o, %6 : i1
@@ -785,22 +761,18 @@ module {
     fsm.state @state_168 output {
       %c1_i2 = hw.constant 1 : i2
       %true = hw.constant true
-      %0 = hw.struct_create (%ip_clk_en_q, %ip_clk_en_q) : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %main_ip_clk_en, %io_ip_clk_en = hw.struct_explode %0 : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %1 = comb.icmp eq %reset_cause_q, %c1_i2 : i2
-      %2 = comb.xor %arg3, %true : i1
-      %3 = comb.or %2, %reset_ongoing_q : i1
-      %4 = comb.icmp eq %arg4, %c1_i2 : i2
-      %5 = comb.and %3, %4, %1 : i1
+      %0 = comb.icmp eq %reset_cause_q, %c1_i2 : i2
+      %1 = comb.xor %arg3, %true : i1
+      %2 = comb.or %1, %reset_ongoing_q : i1
+      %3 = comb.icmp eq %arg4, %c1_i2 : i2
+      %4 = comb.and %2, %3, %0 : i1
       %false = hw.constant false
       %false_0 = hw.constant false
       %false_1 = hw.constant false
       %false_2 = hw.constant false
       %false_3 = hw.constant false
-      %6 = comb.extract %arg8 from 0 : (i6) -> i5
-      %7 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %6, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause = hw.struct_explode %7 : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_3, %5, %false, %false_0, %false_1, %3, %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause, %main_ip_clk_en, %io_ip_clk_en, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_2, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
+      %5 = comb.extract %arg8 from 0 : (i6) -> i5
+      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_3, %4, %false, %false_0, %false_1, %2, %rst_lc_req_q, %rst_sys_req_q, %5, %reset_cause_q, %ip_clk_en_q, %ip_clk_en_q, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_2, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
     } transitions {
       fsm.transition @state_3414 guard {
         fsm.return %arg9
@@ -874,22 +846,15 @@ module {
         %4 = comb.and %3, %2 : i1
         %5 = comb.icmp ne %rst_sys_req_q, %c-1_i2 : i2
         %6 = comb.and %5, %strap_sampled_o : i1
-        %7 = comb.xor %reset_ongoing_q, %true : i1
-        %8 = comb.xor %arg3, %true : i1
-        %9 = comb.or %8, %reset_ongoing_q : i1
-        %10 = comb.xor %9, %true : i1
-        %11 = comb.and %10, %ack_pwrup_q : i1
-        %12 = comb.xor %9, %true : i1
         %false = hw.constant false
         %false_0 = hw.constant false
-        %13 = comb.mux %12, %7, %11 : i1
-        %14 = comb.or %12, %10 : i1
-        %15 = comb.and %14, %reset_ongoing_q : i1
-        fsm.update %u_reg_lc_init2Fq_o, %false_0 : i1
-        fsm.update %u_reg_otp_init2Fq_o, %false : i1
+        %false_1 = hw.constant false
+        %false_2 = hw.constant false
+        fsm.update %u_reg_lc_init2Fq_o, %false_1 : i1
+        fsm.update %u_reg_otp_init2Fq_o, %false_0 : i1
         fsm.update %strap_sampled_o, %6 : i1
-        fsm.update %reset_ongoing_q, %15 : i1
-        fsm.update %ack_pwrup_q, %13 : i1
+        fsm.update %reset_ongoing_q, %false_2 : i1
+        fsm.update %ack_pwrup_q, %false : i1
         fsm.update %ext_rst_pending_q, %4 : i1
       }
       fsm.transition @state_168 guard {
@@ -1029,19 +994,15 @@ module {
     }
     fsm.state @state_3130 output {
       %true = hw.constant true
-      %0 = hw.struct_create (%ip_clk_en_q, %ip_clk_en_q) : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %main_ip_clk_en, %io_ip_clk_en = hw.struct_explode %0 : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %1 = comb.xor %strap_sampled_o, %true : i1
+      %0 = comb.xor %strap_sampled_o, %true : i1
       %false = hw.constant false
       %false_0 = hw.constant false
       %false_1 = hw.constant false
       %false_2 = hw.constant false
       %false_3 = hw.constant false
       %false_4 = hw.constant false
-      %2 = comb.extract %arg8 from 0 : (i6) -> i5
-      %3 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %2, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause = hw.struct_explode %3 : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_4, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause, %main_ip_clk_en, %io_ip_clk_en, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %1, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
+      %1 = comb.extract %arg8 from 0 : (i6) -> i5
+      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_4, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req_q, %rst_sys_req_q, %1, %reset_cause_q, %ip_clk_en_q, %ip_clk_en_q, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %0, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
     } transitions {
       fsm.transition @state_3414 guard {
         fsm.return %arg9
@@ -1121,8 +1082,6 @@ module {
       }
     }
     fsm.state @state_1523 output {
-      %0 = hw.struct_create (%ip_clk_en_q, %ip_clk_en_q) : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %main_ip_clk_en, %io_ip_clk_en = hw.struct_explode %0 : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
       %false = hw.constant false
       %false_0 = hw.constant false
       %false_1 = hw.constant false
@@ -1130,10 +1089,8 @@ module {
       %false_3 = hw.constant false
       %false_4 = hw.constant false
       %false_5 = hw.constant false
-      %1 = comb.extract %arg8 from 0 : (i6) -> i5
-      %2 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %1, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause = hw.struct_explode %2 : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause, %main_ip_clk_en, %io_ip_clk_en, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
+      %0 = comb.extract %arg8 from 0 : (i6) -> i5
+      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req_q, %rst_sys_req_q, %0, %reset_cause_q, %ip_clk_en_q, %ip_clk_en_q, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
     } transitions {
       fsm.transition @state_3414 guard {
         fsm.return %arg9
@@ -1163,10 +1120,10 @@ module {
         %false = hw.constant false
         %false_0 = hw.constant false
         %false_1 = hw.constant false
-        fsm.update %u_reg_lc_init2Fq_o, %false_1 : i1
-        fsm.update %u_reg_otp_init2Fq_o, %false_0 : i1
+        fsm.update %u_reg_lc_init2Fq_o, %false_0 : i1
+        fsm.update %u_reg_otp_init2Fq_o, %false : i1
         fsm.update %strap_sampled_o, %6 : i1
-        fsm.update %low_power_q, %false : i1
+        fsm.update %low_power_q, %false_1 : i1
         fsm.update %reset_cause_q, %c0_i2 : i2
         fsm.update %ext_rst_pending_q, %4 : i1
       }
@@ -1211,10 +1168,10 @@ module {
         %false = hw.constant false
         %false_0 = hw.constant false
         %false_1 = hw.constant false
-        fsm.update %u_reg_lc_init2Fq_o, %false_1 : i1
-        fsm.update %u_reg_otp_init2Fq_o, %false_0 : i1
+        fsm.update %u_reg_lc_init2Fq_o, %false_0 : i1
+        fsm.update %u_reg_otp_init2Fq_o, %false : i1
         fsm.update %strap_sampled_o, %6 : i1
-        fsm.update %low_power_q, %false : i1
+        fsm.update %low_power_q, %false_1 : i1
         fsm.update %reset_cause_q, %c0_i2 : i2
         fsm.update %ext_rst_pending_q, %4 : i1
       }
@@ -1259,17 +1216,15 @@ module {
         %false = hw.constant false
         %false_0 = hw.constant false
         %false_1 = hw.constant false
-        fsm.update %u_reg_lc_init2Fq_o, %false_1 : i1
-        fsm.update %u_reg_otp_init2Fq_o, %false_0 : i1
+        fsm.update %u_reg_lc_init2Fq_o, %false_0 : i1
+        fsm.update %u_reg_otp_init2Fq_o, %false : i1
         fsm.update %strap_sampled_o, %6 : i1
-        fsm.update %low_power_q, %false : i1
+        fsm.update %low_power_q, %false_1 : i1
         fsm.update %reset_cause_q, %c0_i2 : i2
         fsm.update %ext_rst_pending_q, %4 : i1
       }
     }
     fsm.state @state_1028 output {
-      %0 = hw.struct_create (%ip_clk_en_q, %ip_clk_en_q) : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %main_ip_clk_en, %io_ip_clk_en = hw.struct_explode %0 : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
       %false = hw.constant false
       %false_0 = hw.constant false
       %false_1 = hw.constant false
@@ -1277,10 +1232,8 @@ module {
       %false_3 = hw.constant false
       %false_4 = hw.constant false
       %false_5 = hw.constant false
-      %1 = comb.extract %arg8 from 0 : (i6) -> i5
-      %2 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %1, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause = hw.struct_explode %2 : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause, %main_ip_clk_en, %io_ip_clk_en, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
+      %0 = comb.extract %arg8 from 0 : (i6) -> i5
+      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req_q, %rst_sys_req_q, %0, %reset_cause_q, %ip_clk_en_q, %ip_clk_en_q, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
     } transitions {
       fsm.transition @state_3414 guard {
         fsm.return %arg9
@@ -1507,8 +1460,6 @@ module {
       }
     }
     fsm.state @state_868 output {
-      %0 = hw.struct_create (%ip_clk_en_q, %ip_clk_en_q) : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %main_ip_clk_en, %io_ip_clk_en = hw.struct_explode %0 : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
       %false = hw.constant false
       %false_0 = hw.constant false
       %false_1 = hw.constant false
@@ -1516,10 +1467,8 @@ module {
       %false_3 = hw.constant false
       %false_4 = hw.constant false
       %false_5 = hw.constant false
-      %1 = comb.extract %arg8 from 0 : (i6) -> i5
-      %2 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %1, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause = hw.struct_explode %2 : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause, %main_ip_clk_en, %io_ip_clk_en, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
+      %0 = comb.extract %arg8 from 0 : (i6) -> i5
+      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req_q, %rst_sys_req_q, %0, %reset_cause_q, %ip_clk_en_q, %ip_clk_en_q, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
     } transitions {
       fsm.transition @state_3414 guard {
         fsm.return %arg9
@@ -1551,15 +1500,15 @@ module {
         %7 = comb.and %6, %strap_sampled_o : i1
         %8 = comb.or %0, %arg6 : i1
         %9 = comb.xor %8, %true : i1
-        %10 = comb.mux %9, %reset_cause_q, %c-1_i2 : i2
-        %11 = comb.mux %8, %c-6_i4, %c5_i4 : i4
+        %10 = comb.mux %8, %c-6_i4, %c5_i4 : i4
         %false = hw.constant false
         %false_0 = hw.constant false
+        %11 = comb.mux %9, %reset_cause_q, %c-1_i2 : i2
         fsm.update %u_reg_lc_init2Fq_o, %false_0 : i1
         fsm.update %u_reg_otp_init2Fq_o, %false : i1
-        fsm.update %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o, %11 : i4
+        fsm.update %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o, %10 : i4
         fsm.update %strap_sampled_o, %7 : i1
-        fsm.update %reset_cause_q, %10 : i2
+        fsm.update %reset_cause_q, %11 : i2
         fsm.update %ext_rst_pending_q, %5 : i1
       }
       fsm.transition @state_917 guard {
@@ -1606,15 +1555,15 @@ module {
         %7 = comb.and %6, %strap_sampled_o : i1
         %8 = comb.or %0, %arg6 : i1
         %9 = comb.xor %8, %true : i1
-        %10 = comb.mux %9, %reset_cause_q, %c-1_i2 : i2
-        %11 = comb.mux %8, %c-6_i4, %c5_i4 : i4
+        %10 = comb.mux %8, %c-6_i4, %c5_i4 : i4
         %false = hw.constant false
         %false_0 = hw.constant false
+        %11 = comb.mux %9, %reset_cause_q, %c-1_i2 : i2
         fsm.update %u_reg_lc_init2Fq_o, %false_0 : i1
         fsm.update %u_reg_otp_init2Fq_o, %false : i1
-        fsm.update %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o, %11 : i4
+        fsm.update %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o, %10 : i4
         fsm.update %strap_sampled_o, %7 : i1
-        fsm.update %reset_cause_q, %10 : i2
+        fsm.update %reset_cause_q, %11 : i2
         fsm.update %ext_rst_pending_q, %5 : i1
       }
       fsm.transition @state_868 guard {
@@ -1661,21 +1610,19 @@ module {
         %7 = comb.and %6, %strap_sampled_o : i1
         %8 = comb.or %0, %arg6 : i1
         %9 = comb.xor %8, %true : i1
-        %10 = comb.mux %9, %reset_cause_q, %c-1_i2 : i2
-        %11 = comb.mux %8, %c-6_i4, %c5_i4 : i4
+        %10 = comb.mux %8, %c-6_i4, %c5_i4 : i4
         %false = hw.constant false
         %false_0 = hw.constant false
+        %11 = comb.mux %9, %reset_cause_q, %c-1_i2 : i2
         fsm.update %u_reg_lc_init2Fq_o, %false_0 : i1
         fsm.update %u_reg_otp_init2Fq_o, %false : i1
-        fsm.update %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o, %11 : i4
+        fsm.update %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o, %10 : i4
         fsm.update %strap_sampled_o, %7 : i1
-        fsm.update %reset_cause_q, %10 : i2
+        fsm.update %reset_cause_q, %11 : i2
         fsm.update %ext_rst_pending_q, %5 : i1
       }
     }
     fsm.state @state_917 output {
-      %0 = hw.struct_create (%ip_clk_en_q, %ip_clk_en_q) : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %main_ip_clk_en, %io_ip_clk_en = hw.struct_explode %0 : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
       %false = hw.constant false
       %false_0 = hw.constant false
       %false_1 = hw.constant false
@@ -1683,10 +1630,8 @@ module {
       %false_3 = hw.constant false
       %false_4 = hw.constant false
       %false_5 = hw.constant false
-      %1 = comb.extract %arg8 from 0 : (i6) -> i5
-      %2 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %1, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause = hw.struct_explode %2 : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause, %main_ip_clk_en, %io_ip_clk_en, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
+      %0 = comb.extract %arg8 from 0 : (i6) -> i5
+      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req_q, %rst_sys_req_q, %0, %reset_cause_q, %ip_clk_en_q, %ip_clk_en_q, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
     } transitions {
       fsm.transition @state_3414 guard {
         fsm.return %arg9
@@ -1933,8 +1878,6 @@ module {
       }
     }
     fsm.state @state_778 output {
-      %0 = hw.struct_create (%ip_clk_en_q, %ip_clk_en_q) : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %main_ip_clk_en, %io_ip_clk_en = hw.struct_explode %0 : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
       %false = hw.constant false
       %false_0 = hw.constant false
       %false_1 = hw.constant false
@@ -1942,10 +1885,8 @@ module {
       %false_2 = hw.constant false
       %false_3 = hw.constant false
       %false_4 = hw.constant false
-      %1 = comb.extract %arg8 from 0 : (i6) -> i5
-      %2 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %1, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause = hw.struct_explode %2 : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_4, %false, %false_0, %false_1, %true, %false_2, %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause, %main_ip_clk_en, %io_ip_clk_en, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_3, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
+      %0 = comb.extract %arg8 from 0 : (i6) -> i5
+      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_4, %false, %false_0, %false_1, %true, %false_2, %rst_lc_req_q, %rst_sys_req_q, %0, %reset_cause_q, %ip_clk_en_q, %ip_clk_en_q, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_3, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
     } transitions {
       fsm.transition @state_3414 guard {
         fsm.return %arg9
@@ -1972,13 +1913,13 @@ module {
         %4 = comb.and %3, %2 : i1
         %5 = comb.icmp ne %rst_sys_req_q, %c-1_i2 : i2
         %6 = comb.and %5, %strap_sampled_o : i1
-        %true_0 = hw.constant true
         %false = hw.constant false
-        %false_1 = hw.constant false
-        fsm.update %u_reg_lc_init2Fq_o, %false_1 : i1
+        %false_0 = hw.constant false
+        %true_1 = hw.constant true
+        fsm.update %u_reg_lc_init2Fq_o, %false_0 : i1
         fsm.update %u_reg_otp_init2Fq_o, %false : i1
         fsm.update %strap_sampled_o, %6 : i1
-        fsm.update %reset_ongoing_q, %true_0 : i1
+        fsm.update %reset_ongoing_q, %true_1 : i1
         fsm.update %ext_rst_pending_q, %4 : i1
       }
       fsm.transition @state_1647 guard {
@@ -2008,30 +1949,26 @@ module {
         %4 = comb.and %3, %2 : i1
         %5 = comb.icmp ne %rst_sys_req_q, %c-1_i2 : i2
         %6 = comb.and %5, %strap_sampled_o : i1
-        %true_0 = hw.constant true
         %false = hw.constant false
-        %false_1 = hw.constant false
-        fsm.update %u_reg_lc_init2Fq_o, %false_1 : i1
+        %false_0 = hw.constant false
+        %true_1 = hw.constant true
+        fsm.update %u_reg_lc_init2Fq_o, %false_0 : i1
         fsm.update %u_reg_otp_init2Fq_o, %false : i1
         fsm.update %strap_sampled_o, %6 : i1
-        fsm.update %reset_ongoing_q, %true_0 : i1
+        fsm.update %reset_ongoing_q, %true_1 : i1
         fsm.update %ext_rst_pending_q, %4 : i1
       }
     }
     fsm.state @state_1744 output {
       %true = hw.constant true
-      %0 = hw.struct_create (%ip_clk_en_q, %ip_clk_en_q) : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %main_ip_clk_en, %io_ip_clk_en = hw.struct_explode %0 : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %1 = comb.xor %arg6, %true : i1
+      %0 = comb.xor %arg6, %true : i1
       %false = hw.constant false
       %true_0 = hw.constant true
       %false_1 = hw.constant false
       %false_2 = hw.constant false
       %false_3 = hw.constant false
-      %2 = comb.extract %arg8 from 0 : (i6) -> i5
-      %3 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %2, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause = hw.struct_explode %3 : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_3, %1, %1, %false, %true_0, %false_1, %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause, %main_ip_clk_en, %io_ip_clk_en, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_2, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
+      %1 = comb.extract %arg8 from 0 : (i6) -> i5
+      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_3, %0, %0, %false, %true_0, %false_1, %rst_lc_req_q, %rst_sys_req_q, %1, %reset_cause_q, %ip_clk_en_q, %ip_clk_en_q, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_2, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
     } transitions {
       fsm.transition @state_3414 guard {
         fsm.return %arg9
@@ -2059,9 +1996,9 @@ module {
         %5 = comb.icmp ne %rst_sys_req_q, %c-1_i2 : i2
         %6 = comb.and %5, %strap_sampled_o : i1
         %7 = comb.xor %arg6, %true : i1
-        %8 = comb.or %7, %ip_clk_en_q : i1
         %false = hw.constant false
         %false_0 = hw.constant false
+        %8 = comb.or %7, %ip_clk_en_q : i1
         fsm.update %u_reg_lc_init2Fq_o, %false_0 : i1
         fsm.update %u_reg_otp_init2Fq_o, %false : i1
         fsm.update %strap_sampled_o, %6 : i1
@@ -2109,9 +2046,9 @@ module {
         %5 = comb.icmp ne %rst_sys_req_q, %c-1_i2 : i2
         %6 = comb.and %5, %strap_sampled_o : i1
         %7 = comb.xor %arg6, %true : i1
-        %8 = comb.or %7, %ip_clk_en_q : i1
         %false = hw.constant false
         %false_0 = hw.constant false
+        %8 = comb.or %7, %ip_clk_en_q : i1
         fsm.update %u_reg_lc_init2Fq_o, %false_0 : i1
         fsm.update %u_reg_otp_init2Fq_o, %false : i1
         fsm.update %strap_sampled_o, %6 : i1
@@ -2159,9 +2096,9 @@ module {
         %5 = comb.icmp ne %rst_sys_req_q, %c-1_i2 : i2
         %6 = comb.and %5, %strap_sampled_o : i1
         %7 = comb.xor %arg6, %true : i1
-        %8 = comb.or %7, %ip_clk_en_q : i1
         %false = hw.constant false
         %false_0 = hw.constant false
+        %8 = comb.or %7, %ip_clk_en_q : i1
         fsm.update %u_reg_lc_init2Fq_o, %false_0 : i1
         fsm.update %u_reg_otp_init2Fq_o, %false : i1
         fsm.update %strap_sampled_o, %6 : i1
@@ -2170,8 +2107,6 @@ module {
       }
     }
     fsm.state @state_1647 output {
-      %0 = hw.struct_create (%ip_clk_en_q, %ip_clk_en_q) : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %main_ip_clk_en, %io_ip_clk_en = hw.struct_explode %0 : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
       %false = hw.constant false
       %false_0 = hw.constant false
       %false_1 = hw.constant false
@@ -2179,10 +2114,8 @@ module {
       %false_3 = hw.constant false
       %false_4 = hw.constant false
       %false_5 = hw.constant false
-      %1 = comb.extract %arg8 from 0 : (i6) -> i5
-      %2 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %1, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause = hw.struct_explode %2 : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause, %main_ip_clk_en, %io_ip_clk_en, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
+      %0 = comb.extract %arg8 from 0 : (i6) -> i5
+      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req_q, %rst_sys_req_q, %0, %reset_cause_q, %ip_clk_en_q, %ip_clk_en_q, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
     } transitions {
       fsm.transition @state_4092 guard {
         %true = hw.constant true
@@ -2281,19 +2214,15 @@ module {
     }
     fsm.state @state_2425 output {
       %true = hw.constant true
-      %0 = hw.struct_create (%ip_clk_en_q, %ip_clk_en_q) : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %main_ip_clk_en, %io_ip_clk_en = hw.struct_explode %0 : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %1 = comb.and %arg17, %arg19, %arg22 : i1
-      %2 = comb.xor %1, %true : i1
+      %0 = comb.and %arg17, %arg19, %arg22 : i1
+      %1 = comb.xor %0, %true : i1
       %false = hw.constant false
       %false_0 = hw.constant false
       %false_1 = hw.constant false
       %false_2 = hw.constant false
       %false_3 = hw.constant false
-      %3 = comb.extract %arg8 from 0 : (i6) -> i5
-      %4 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %3, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause = hw.struct_explode %4 : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_3, %2, %false, %2, %false_0, %false_1, %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause, %main_ip_clk_en, %io_ip_clk_en, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_2, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
+      %2 = comb.extract %arg8 from 0 : (i6) -> i5
+      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_3, %1, %false, %1, %false_0, %false_1, %rst_lc_req_q, %rst_sys_req_q, %2, %reset_cause_q, %ip_clk_en_q, %ip_clk_en_q, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_2, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
     } transitions {
       fsm.transition @state_3414 guard {
         fsm.return %arg9
@@ -2322,9 +2251,9 @@ module {
         %6 = comb.and %5, %strap_sampled_o : i1
         %7 = comb.and %arg17, %arg19, %arg22 : i1
         %8 = comb.xor %7, %true : i1
-        %9 = comb.or %8, %ip_clk_en_q : i1
         %false = hw.constant false
         %false_0 = hw.constant false
+        %9 = comb.or %8, %ip_clk_en_q : i1
         fsm.update %u_reg_lc_init2Fq_o, %false_0 : i1
         fsm.update %u_reg_otp_init2Fq_o, %false : i1
         fsm.update %strap_sampled_o, %6 : i1
@@ -2362,15 +2291,13 @@ module {
         %4 = comb.and %3, %2 : i1
         %5 = comb.icmp ne %rst_sys_req_q, %c-1_i2 : i2
         %6 = comb.and %5, %strap_sampled_o : i1
-        %7 = comb.and %arg17, %arg19, %arg22 : i1
-        %8 = comb.xor %7, %true : i1
-        %9 = comb.or %8, %ip_clk_en_q : i1
         %false = hw.constant false
         %false_0 = hw.constant false
+        %true_1 = hw.constant true
         fsm.update %u_reg_lc_init2Fq_o, %false_0 : i1
         fsm.update %u_reg_otp_init2Fq_o, %false : i1
         fsm.update %strap_sampled_o, %6 : i1
-        fsm.update %ip_clk_en_q, %9 : i1
+        fsm.update %ip_clk_en_q, %true_1 : i1
         fsm.update %ext_rst_pending_q, %4 : i1
       }
       fsm.transition @state_1423 guard {
@@ -2401,32 +2328,25 @@ module {
         %4 = comb.and %3, %2 : i1
         %5 = comb.icmp ne %rst_sys_req_q, %c-1_i2 : i2
         %6 = comb.and %5, %strap_sampled_o : i1
-        %7 = comb.and %arg17, %arg19, %arg22 : i1
-        %8 = comb.xor %7, %true : i1
-        %9 = comb.or %8, %ip_clk_en_q : i1
         %false = hw.constant false
         %false_0 = hw.constant false
         fsm.update %u_reg_lc_init2Fq_o, %false_0 : i1
         fsm.update %u_reg_otp_init2Fq_o, %false : i1
         fsm.update %strap_sampled_o, %6 : i1
-        fsm.update %ip_clk_en_q, %9 : i1
+        fsm.update %ip_clk_en_q, %ip_clk_en_q : i1
         fsm.update %ext_rst_pending_q, %4 : i1
       }
     }
     fsm.state @state_4092 output {
-      %0 = hw.struct_create (%ip_clk_en_q, %ip_clk_en_q) : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %main_ip_clk_en, %io_ip_clk_en = hw.struct_explode %0 : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %1 = comb.extract %arg8 from 2 : (i6) -> i1
+      %0 = comb.extract %arg8 from 2 : (i6) -> i1
       %false = hw.constant false
       %false_0 = hw.constant false
       %false_1 = hw.constant false
       %false_2 = hw.constant false
       %false_3 = hw.constant false
       %false_4 = hw.constant false
-      %2 = comb.extract %arg8 from 0 : (i6) -> i5
-      %3 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %2, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause = hw.struct_explode %3 : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      fsm.output %ack_pwrup_q, %req_pwrdn_q, %1, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause, %main_ip_clk_en, %io_ip_clk_en, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
+      %1 = comb.extract %arg8 from 0 : (i6) -> i5
+      fsm.output %ack_pwrup_q, %req_pwrdn_q, %0, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req_q, %rst_sys_req_q, %1, %reset_cause_q, %ip_clk_en_q, %ip_clk_en_q, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
     } transitions {
       fsm.transition @state_4092 guard {
         %c1_i2 = hw.constant 1 : i2
@@ -2615,8 +2535,6 @@ module {
       }
     }
     fsm.state @state_1423 output {
-      %0 = hw.struct_create (%ip_clk_en_q, %ip_clk_en_q) : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %main_ip_clk_en, %io_ip_clk_en = hw.struct_explode %0 : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
       %false = hw.constant false
       %false_0 = hw.constant false
       %false_1 = hw.constant false
@@ -2624,10 +2542,8 @@ module {
       %false_3 = hw.constant false
       %false_4 = hw.constant false
       %false_5 = hw.constant false
-      %1 = comb.extract %arg8 from 0 : (i6) -> i5
-      %2 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %1, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause = hw.struct_explode %2 : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause, %main_ip_clk_en, %io_ip_clk_en, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
+      %0 = comb.extract %arg8 from 0 : (i6) -> i5
+      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req_q, %rst_sys_req_q, %0, %reset_cause_q, %ip_clk_en_q, %ip_clk_en_q, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
     } transitions {
       fsm.transition @state_3721 guard {
         %c1_i2 = hw.constant 1 : i2
@@ -2815,8 +2731,6 @@ module {
       }
     }
     fsm.state @state_3721 output {
-      %0 = hw.struct_create (%ip_clk_en_q, %ip_clk_en_q) : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
-      %main_ip_clk_en, %io_ip_clk_en = hw.struct_explode %0 : !hw.struct<main_ip_clk_en: i1, io_ip_clk_en: i1>
       %false = hw.constant false
       %false_0 = hw.constant false
       %false_1 = hw.constant false
@@ -2824,10 +2738,8 @@ module {
       %false_3 = hw.constant false
       %false_4 = hw.constant false
       %false_5 = hw.constant false
-      %1 = comb.extract %arg8 from 0 : (i6) -> i5
-      %2 = hw.struct_create (%rst_lc_req_q, %rst_sys_req_q, %1, %reset_cause_q) : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause = hw.struct_explode %2 : !hw.struct<rst_lc_req: i2, rst_sys_req: i2, rstreqs: i5, reset_cause: i2>
-      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req, %rst_sys_req, %rstreqs, %reset_cause, %main_ip_clk_en, %io_ip_clk_en, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
+      %0 = comb.extract %arg8 from 0 : (i6) -> i5
+      fsm.output %ack_pwrup_q, %req_pwrdn_q, %false_5, %false, %false_0, %false_1, %false_2, %false_3, %rst_lc_req_q, %rst_sys_req_q, %0, %reset_cause_q, %ip_clk_en_q, %ip_clk_en_q, %u_reg_otp_init2Fq_o, %u_reg_lc_init2Fq_o, %false_4, %strap_sampled_o, %low_power_q, %u_fetch_en2Fgen_flops.u_prim_flop2Fu_secure_anchor_flop2Fq_o : i1, i1, i1, i1, i1, i1, i1, i1, i2, i2, i5, i2, i1, i1, i1, i1, i1, i1, i1, i4
     } transitions {
       fsm.transition @state_3721 guard {
         %true = hw.constant true
@@ -2860,13 +2772,12 @@ module {
         %5 = comb.icmp ne %rst_sys_req_q, %c-1_i2 : i2
         %6 = comb.and %5, %strap_sampled_o : i1
         %true_0 = hw.constant true
-        %7 = comb.xor %arg5, %true_0 : i1
         %false = hw.constant false
         %false_1 = hw.constant false
         fsm.update %u_reg_lc_init2Fq_o, %false_1 : i1
         fsm.update %u_reg_otp_init2Fq_o, %false : i1
         fsm.update %strap_sampled_o, %6 : i1
-        fsm.update %req_pwrdn_q, %7 : i1
+        fsm.update %req_pwrdn_q, %true_0 : i1
         fsm.update %ext_rst_pending_q, %4 : i1
       }
       fsm.transition @state_3414 guard {
@@ -2932,14 +2843,13 @@ module {
         %4 = comb.and %3, %2 : i1
         %5 = comb.icmp ne %rst_sys_req_q, %c-1_i2 : i2
         %6 = comb.and %5, %strap_sampled_o : i1
-        %true_0 = hw.constant true
-        %7 = comb.xor %arg5, %true_0 : i1
         %false = hw.constant false
+        %false_0 = hw.constant false
         %false_1 = hw.constant false
         fsm.update %u_reg_lc_init2Fq_o, %false_1 : i1
-        fsm.update %u_reg_otp_init2Fq_o, %false : i1
+        fsm.update %u_reg_otp_init2Fq_o, %false_0 : i1
         fsm.update %strap_sampled_o, %6 : i1
-        fsm.update %req_pwrdn_q, %7 : i1
+        fsm.update %req_pwrdn_q, %false : i1
         fsm.update %ext_rst_pending_q, %4 : i1
       }
     }

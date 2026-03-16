@@ -313,28 +313,17 @@ module {
     %num_rounds_q = seq.firreg %265 clock %279 reset async %280, %c0_i4 : i4
     %cyc_ctr_q = seq.firreg %274 clock %279 reset async %280, %c0_i3 : i3
     %281 = comb.extract %cyc_ctr_q from 2 : (i3) -> i1
-    %282 = comb.icmp weq %op_i, %c1_i2 : i2
-    %283 = comb.icmp weq %op_i, %c-2_i2 : i2
-    %284 = comb.or %282, %283 : i1
-    %285 = ltl.implication %cfg_valid_i, %284 : i1, i1
-    verif.clocked_assert %285, posedge %clk_i : !ltl.property
-    %286 = comb.icmp weq %key_len_i, %c1_i3 : i3
-    %287 = comb.icmp weq %key_len_i, %c2_i3 : i3
-    %288 = comb.icmp weq %key_len_i, %c-4_i3 : i3
-    %289 = comb.or %286, %287, %288 : i1
-    %290 = ltl.implication %cfg_valid_i, %289 : i1, i1
-    verif.clocked_assert %290, posedge %clk_i : !ltl.property
-    %291 = comb.xor %275, %true : i1
-    %292 = comb.icmp weq %u_state_regs.state_o, %c9_i6 : i6
-    %293 = comb.icmp weq %u_state_regs.state_o, %c-29_i6 : i6
-    %294 = comb.icmp weq %u_state_regs.state_o, %c-3_i6 : i6
-    %295 = comb.icmp weq %u_state_regs.state_o, %c16_i6 : i6
-    %296 = comb.icmp weq %u_state_regs.state_o, %c-28_i6 : i6
-    %297 = comb.icmp weq %u_state_regs.state_o, %c-6_i6 : i6
-    %298 = comb.icmp weq %u_state_regs.state_o, %c14_i6 : i6
-    %299 = comb.or %292, %293, %294, %295, %296, %297, %298 : i1
-    %300 = ltl.implication %291, %299 : i1, i1
-    verif.clocked_assert %300, posedge %clk_i : !ltl.property
+    %282 = comb.xor %275, %true : i1
+    %283 = comb.icmp weq %u_state_regs.state_o, %c9_i6 : i6
+    %284 = comb.icmp weq %u_state_regs.state_o, %c-29_i6 : i6
+    %285 = comb.icmp weq %u_state_regs.state_o, %c-3_i6 : i6
+    %286 = comb.icmp weq %u_state_regs.state_o, %c16_i6 : i6
+    %287 = comb.icmp weq %u_state_regs.state_o, %c-28_i6 : i6
+    %288 = comb.icmp weq %u_state_regs.state_o, %c-6_i6 : i6
+    %289 = comb.icmp weq %u_state_regs.state_o, %c14_i6 : i6
+    %290 = comb.or %283, %284, %285, %286, %287, %288, %289 : i1
+    %291 = ltl.implication %282, %290 : i1, i1
+    verif.clocked_assert %291, posedge %clk_i : !ltl.property
     hw.output %241, %243, %275, %244, %245, %247, %248, %251, %252, %250, %253, %254, %256, %257, %258, %259, %260, %rnd_ctr_q, %261, %263, %267, %268, %269, %270, %271 : i1, i1, i1, i1, i1, i5, i1, i1, i1, i5, i5, i1, i3, i1, i1, i1, i1, i4, i5, i3, i1, i1, i1, i1, i1
   }
   hw.module private @prim_sparse_fsm_flop(in %clk_i : i1, in %rst_ni : i1, in %state_i : i6, out state_o : i6) {

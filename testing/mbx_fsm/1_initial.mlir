@@ -95,6 +95,10 @@ module {
     %83 = comb.mux %82, %aff_ctrl_state_q.q_o, %80 : i3
     %84 = comb.xor %82, %true : i1
     %85 = comb.and %84, %41, %79, %76, %68, %65, %62, %54, %51, %40 : i1
+    %86 = comb.and %3, %24, %58, %sys_read_all_i : i1
+    %87 = ltl.past %86, 1 : i1
+    %88 = ltl.implication %87, %0 : i1, i1
+    verif.clocked_assert %88, posedge %clk_i : !ltl.property
     hw.output %1, %2, %3, %4, %14, %15, %10, %7, %85 : i1, i1, i1, i1, i1, i1, i1, i1, i1
   }
   hw.module private @prim_flop(in %clk_i : i1, in %rst_ni : i1, in %d_i : i3, out q_o : i3) {

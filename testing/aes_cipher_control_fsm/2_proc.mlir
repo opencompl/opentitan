@@ -59,7 +59,7 @@ module {
     %30 = comb.mux %29, %c14_i5, %28 : i5
     %31 = comb.mux %dec_key_gen_q_i, %c-9_i5, %30 : i5
     %32 = comb.icmp ne %key_len_i, %c-4_i3 : i3
-    %33 = comb.and %key_expand_out_req_i, %283 : i1
+    %33 = comb.and %key_expand_out_req_i, %281 : i1
     %34 = comb.and %32, %33 : i1
     %35 = comb.xor %dec_key_gen_q_i, %true : i1
     %36 = comb.add %rnd_ctr_q, %c1_i4 : i4
@@ -70,10 +70,10 @@ module {
     %41 = comb.mux %20, %c-8_i5, %40 : i5
     %42 = comb.mux %14, %c14_i5, %41 : i5
     %43 = comb.or %dec_key_gen_q_i, %sub_bytes_out_req_i : i1
-    %44 = comb.and %key_expand_out_req_i, %283, %43 : i1
+    %44 = comb.and %key_expand_out_req_i, %281, %43 : i1
     %45 = comb.icmp uge %rnd_ctr_q, %0 : i4
     %46 = comb.icmp eq %u_state_regs2Fu_state_flop2Fq_o, %c16_i6 : i6
-    %47 = comb.and %sub_bytes_out_req_i, %283 : i1
+    %47 = comb.and %sub_bytes_out_req_i, %281 : i1
     %48 = comb.or %47, %dec_key_gen_q_i : i1
     %49 = comb.or %mux_sel_err_i, %sp_enc_err_i, %op_err_i : i1
     %50 = comb.xor %49, %true : i1
@@ -308,43 +308,13 @@ module {
     %279 = seq.to_clock %clk_i
     %280 = comb.xor %rst_ni, %true : i1
     %u_state_regs2Fu_state_flop2Fq_o = seq.compreg name "u_state_regs/u_state_flop/q_o" %278, %279 reset %280, %c9_i6 : i6  
-    %281 = seq.to_clock %clk_i
-    %282 = comb.xor %rst_ni, %true : i1
-    %prng_reseed_done_q = seq.compreg %273, %281 reset %282, %false : i1  
-    %rnd_ctr_q = seq.compreg %266, %281 reset %282, %c0_i4 : i4  
-    %num_rounds_q = seq.compreg %265, %281 reset %282, %c0_i4 : i4  
-    %cyc_ctr_q = seq.compreg %274, %281 reset %282, %c0_i3 : i3  
-    %283 = comb.extract %cyc_ctr_q from 2 : (i3) -> i1
-    %284 = comb.icmp eq %op_i, %c1_i2 : i2
-    %285 = comb.icmp eq %op_i, %c-2_i2 : i2
-    %286 = comb.or %284, %285 : i1
-    %true_0 = hw.constant true
-    %287 = comb.xor %cfg_valid_i, %true_0 : i1
-    %288 = comb.or %287, %286 : i1
-    %289 = builtin.unrealized_conversion_cast %288 : i1 to !ltl.property
-    verif.assert %288 : i1
-    %290 = comb.icmp eq %key_len_i, %c1_i3 : i3
-    %291 = comb.icmp eq %key_len_i, %c2_i3 : i3
-    %292 = comb.icmp eq %key_len_i, %c-4_i3 : i3
-    %293 = comb.or %290, %291, %292 : i1
-    %true_1 = hw.constant true
-    %294 = comb.xor %cfg_valid_i, %true_1 : i1
-    %295 = comb.or %294, %293 : i1
-    %296 = builtin.unrealized_conversion_cast %295 : i1 to !ltl.property
-    verif.assert %295 : i1
-    %297 = comb.xor %275, %true : i1
-    %298 = comb.icmp eq %u_state_regs2Fu_state_flop2Fq_o, %c9_i6 : i6
-    %299 = comb.icmp eq %u_state_regs2Fu_state_flop2Fq_o, %c-29_i6 : i6
-    %300 = comb.icmp eq %u_state_regs2Fu_state_flop2Fq_o, %c-3_i6 : i6
-    %301 = comb.icmp eq %u_state_regs2Fu_state_flop2Fq_o, %c16_i6 : i6
-    %302 = comb.icmp eq %u_state_regs2Fu_state_flop2Fq_o, %c-28_i6 : i6
-    %303 = comb.icmp eq %u_state_regs2Fu_state_flop2Fq_o, %c-6_i6 : i6
-    %304 = comb.icmp eq %u_state_regs2Fu_state_flop2Fq_o, %c14_i6 : i6
-    %305 = comb.or %298, %299, %300, %301, %302, %303, %304 : i1
-    %true_2 = hw.constant true
-    %306 = comb.or %275, %305 : i1
-    %307 = builtin.unrealized_conversion_cast %306 : i1 to !ltl.property
-    verif.assert %306 : i1
+    %prng_reseed_done_q = seq.compreg %273, %279 reset %280, %false : i1  
+    %rnd_ctr_q = seq.compreg %266, %279 reset %280, %c0_i4 : i4  
+    %num_rounds_q = seq.compreg %265, %279 reset %280, %c0_i4 : i4  
+    %cyc_ctr_q = seq.compreg %274, %279 reset %280, %c0_i3 : i3  
+    %281 = comb.extract %cyc_ctr_q from 2 : (i3) -> i1
+    %282 = comb.or %275, %3, %18, %37, %46, %56, %59, %60 : i1
+    verif.assert %282 : i1
     hw.output %241, %243, %275, %244, %245, %247, %248, %251, %252, %250, %253, %254, %256, %257, %258, %259, %260, %rnd_ctr_q, %261, %263, %267, %268, %269, %270, %271 : i1, i1, i1, i1, i1, i5, i1, i1, i1, i5, i5, i1, i3, i1, i1, i1, i1, i4, i5, i3, i1, i1, i1, i1, i1
   }
 }

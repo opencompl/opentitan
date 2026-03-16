@@ -4,7 +4,6 @@ module {
     %c-1_i4 = hw.constant -1 : i4
     %c-1_i20 = hw.constant -1 : i20
     %c-1_i16 = hw.constant -1 : i16
-    %c-1_i2 = hw.constant -1 : i2
     %c-2_i2 = hw.constant -2 : i2
     %c1_i2 = hw.constant 1 : i2
     %c-3_i3 = hw.constant -3 : i3
@@ -343,15 +342,17 @@ module {
     %281 = comb.mux %280, %271, %279 : i4
     %282 = comb.and %266, %274 : i1
     %283 = comb.mux %282, %268, %281 : i4
-    %284 = comb.icmp eq %26, %c0_i2 : i2
-    %285 = comb.and %25, %24 : i1
-    %286 = comb.xor %285, %true : i1
-    %287 = comb.or %284, %286 : i1
-    verif.clocked_assert %287, posedge %clk_i : i1
-    %288 = comb.icmp ne %26, %c-1_i2 : i2
-    verif.clocked_assert %288, posedge %clk_i : i1
-    %289 = comb.xor %16, %true : i1
-    verif.clocked_assert %289, posedge %clk_i : i1
+    %isFirstCycle = seq.firreg %false clock %41 reset async %42, %true : i1
+    %284 = comb.xor %isFirstCycle, %true : i1
+    %285 = comb.icmp eq %state_q, %c-3_i3 : i3
+    %286 = ltl.past %285, 1 : i1
+    %287 = ltl.past %83, 1 : i1
+    %288 = ltl.past %64, 1 : i1
+    %289 = ltl.past %60, 1 : i1
+    %290 = ltl.past %1, 1 : i1
+    %291 = comb.and %284, %286, %287, %288, %289, %290, %91 : i1
+    %292 = ltl.implication %291, %43 : i1, i1
+    verif.clocked_assert %292, posedge %clk_i : !ltl.property
     hw.output %6, %u_sck_flop.q_o, %csb_q, %283, %237, %239, %2, %3, %4, %5, %cmd_speed_q, %19, %58, %56, %46 : i1, i1, i1, i4, i1, i1, i1, i1, i1, i1, i2, i1, i1, i1, i1
   }
   hw.module private @prim_flop_en(in %clk_i : i1, in %rst_ni : i1, in %en_i : i1, in %d_i : i1, out q_o : i1) {

@@ -43,17 +43,9 @@ module {
     %31 = comb.xor %rst_ni, %true : i1
     %ctr_slice_idx_q = seq.compreg %25, %30 reset %31, %c0_i3 : i3  
     %ctr_carry_q = seq.compreg %26, %30 reset %31, %false : i1  
-    %32 = seq.to_clock %clk_i
-    %33 = comb.xor %rst_ni, %true : i1
-    %u_state_regs2Fu_state_flop2Fq_o = seq.compreg name "u_state_regs/u_state_flop/q_o" %29, %32 reset %33, %c14_i5 : i5  
-    %34 = comb.xor %24, %true : i1
-    %35 = comb.icmp eq %u_state_regs2Fu_state_flop2Fq_o, %c14_i5 : i5
-    %36 = comb.icmp eq %u_state_regs2Fu_state_flop2Fq_o, %c-8_i5 : i5
-    %37 = comb.or %35, %36 : i1
-    %true_0 = hw.constant true
-    %38 = comb.or %24, %37 : i1
-    %39 = builtin.unrealized_conversion_cast %38 : i1 to !ltl.property
-    verif.assert %38 : i1
+    %u_state_regs2Fu_state_flop2Fq_o = seq.compreg name "u_state_regs/u_state_flop/q_o" %29, %30 reset %31, %c14_i5 : i5  
+    %32 = comb.or %24, %5, %6 : i1
+    verif.assert %32 : i1
     hw.output %5, %24, %ctr_slice_idx_q, %3, %16 : i1, i1, i3, i16, i1
   }
 }

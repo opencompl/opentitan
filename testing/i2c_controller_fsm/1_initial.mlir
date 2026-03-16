@@ -639,12 +639,16 @@ module {
     %573 = comb.concat %false, %stretch_timeout_i : i1, i30
     %574 = comb.icmp ugt %stretch_idle_cnt, %573 : i31
     %575 = comb.and %336, %timeout_enable_i, %574 : i1
-    %576 = ltl.past %323, 1 : i1
-    %577 = comb.xor %576, %true : i1
-    %578 = comb.and bin %323, %577 : i1
-    %579 = ltl.delay %323, 1, 0 : i1
-    %580 = ltl.implication %578, %579 : i1, !ltl.sequence
-    verif.clocked_assert %580, posedge %clk_i : !ltl.property
+    %isFirstCycle = seq.firreg %false clock %75 reset async %76, %true : i1
+    %isSecondCycle = seq.firreg %isFirstCycle clock %75 reset async %76, %false : i1
+    %576 = comb.xor %isFirstCycle, %true : i1
+    %577 = comb.xor %isSecondCycle, %true : i1
+    %578 = ltl.past %323, 1 : i1
+    %579 = ltl.past %578, 1 : i1
+    %580 = comb.icmp ult %579, %578 : i1
+    %581 = comb.and %576, %577, %580 : i1
+    %582 = ltl.implication %581, %323 : i1, i1
+    verif.clocked_assert %582, posedge %clk_i : !ltl.property
     hw.output %323, %322, %324, %327, %328, %330, %321, %331, %unhandled_nak_cnt_expired, %116, %332, %575, %334, %335 : i1, i1, i1, i1, i1, i8, i1, i1, i1, i1, i1, i1, i1, i1
   }
 }

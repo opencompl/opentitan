@@ -25,10 +25,6 @@ module adc_ctrl_fsm
   input       adc_d_val_i,//valid bit for ADC value
   output logic      adc_pd_o,
   output logic[1:0] adc_chn_sel_o,
-  output logic      chn0_val_we_o,
-  output logic      chn1_val_we_o,
-  output logic [9:0] chn0_val_o,
-  output logic [9:0] chn1_val_o,
   output logic       adc_ctrl_done_o,
   output logic       oneshot_done_o,
   output fsm_state_e aon_fsm_state_o, // FSM state output for debug purposes
@@ -123,34 +119,6 @@ module adc_ctrl_fsm
       wakeup_timer_cnt_q <= '0;
     end else begin
       wakeup_timer_cnt_q <= wakeup_timer_cnt_d;
-    end
-  end
-
-  assign fsm_chn0_sel = (fsm_state_q == ONEST_0) || (fsm_state_q == LP_0) || (fsm_state_q == NP_0);
-  assign chn0_val_we_d = fsm_chn0_sel && adc_d_val_i;//adc_d_val_i is a valid pulse
-  assign chn0_val_d = (chn0_val_we_d) ? adc_d_i : chn0_val_o;
-
-  assign fsm_chn1_sel = (fsm_state_q == ONEST_1) || (fsm_state_q == LP_1) || (fsm_state_q == NP_1);
-  assign chn1_val_we_d = fsm_chn1_sel && adc_d_val_i;
-  assign chn1_val_d = (chn1_val_we_d) ? adc_d_i : chn1_val_o;
-
-  always_ff @(posedge clk_aon_i or negedge rst_aon_ni) begin
-    if (!rst_aon_ni) begin
-      chn0_val_we_o  <= '0;
-      chn1_val_we_o  <= '0;
-      chn0_val_o     <= '0;
-      chn1_val_o     <= '0;
-    end
-    else if (cfg_fsm_rst_i) begin
-      chn0_val_we_o  <= '0;
-      chn1_val_we_o  <= '0;
-      chn0_val_o     <= '0;
-      chn1_val_o     <= '0;
-    end else begin
-      chn0_val_we_o  <= chn0_val_we_d;
-      chn1_val_we_o  <= chn1_val_we_d;
-      chn0_val_o     <= chn0_val_d;
-      chn1_val_o     <= chn1_val_d;
     end
   end
 

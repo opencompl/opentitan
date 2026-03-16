@@ -17,13 +17,11 @@ module {
     %rst_req_o = fsm.variable "rst_req_o" {initValue = false} : i1
     fsm.state @state_34 output {
       %true = hw.constant true
-      %0 = hw.struct_create (%pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q) : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en = hw.struct_explode %0 : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %1 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-      %2 = comb.and %mon_main_pok, %1 : i1
-      %3 = comb.xor %2, %true : i1
-      verif.assert %3 : i1
-      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
+      %0 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
+      %1 = comb.and %mon_main_pok, %0 : i1
+      %2 = comb.xor %1, %true : i1
+      verif.assert %2 : i1
+      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
     } transitions {
       fsm.transition @state_431 guard {
         %true = hw.constant true
@@ -48,38 +46,36 @@ module {
         %true = hw.constant true
         %0 = comb.and %arg7, %arg8 : i1
         %1 = comb.and %arg7, %arg9 : i1
-        %2 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-        %3 = comb.xor %pd_nq, %true : i1
-        %4 = comb.and %3, %mon_main_pok : i1
-        %5 = comb.xor %4, %true : i1
+        %2 = comb.or %fsm_invalid_q, %0 : i1
+        %3 = comb.or %fsm_invalid_q, %1 : i1
+        %4 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
+        %5 = comb.xor %pd_nq, %true : i1
+        %6 = comb.and %5, %mon_main_pok : i1
+        %7 = comb.xor %6, %true : i1
         %true_0 = hw.constant true
-        %6 = comb.xor %4, %true_0 : i1
-        %7 = comb.or %6, %5 : i1
-        %8 = comb.and %7, %mon_main_pok : i1
-        %9 = comb.and %mon_main_pok, %2 : i1
-        %10 = comb.or %rst_req_o, %9 : i1
-        %11 = comb.xor %arg6, %true : i1
-        %12 = comb.and %11, %10 : i1
-        %13 = comb.xor %9, %true : i1
-        verif.assert %13 : i1
-        fsm.update %rst_req_o, %12 : i1
-        fsm.update %mon_main_pok, %8 : i1
+        %8 = comb.xor %6, %true_0 : i1
+        %9 = comb.or %8, %7 : i1
+        %10 = comb.and %9, %mon_main_pok : i1
+        %11 = comb.and %mon_main_pok, %4 : i1
+        %12 = comb.or %rst_req_o, %11 : i1
+        %13 = comb.xor %arg6, %true : i1
+        %14 = comb.and %13, %12 : i1
+        %15 = comb.xor %11, %true : i1
+        verif.assert %15 : i1
+        fsm.update %rst_req_o, %14 : i1
+        fsm.update %mon_main_pok, %10 : i1
+        fsm.update %io_clk_en_q, %3 : i1
+        fsm.update %main_clk_en_q, %2 : i1
         fsm.update %cause_q, %c0_i2 : i2
-        %14 = comb.or %fsm_invalid_q, %0 : i1
-        %15 = comb.or %fsm_invalid_q, %1 : i1
-        fsm.update %io_clk_en_q, %15 : i1
-        fsm.update %main_clk_en_q, %14 : i1
       }
     }
     fsm.state @state_431 output {
       %true = hw.constant true
-      %0 = hw.struct_create (%pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q) : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en = hw.struct_explode %0 : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %1 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-      %2 = comb.and %mon_main_pok, %1 : i1
-      %3 = comb.xor %2, %true : i1
-      verif.assert %3 : i1
-      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
+      %0 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
+      %1 = comb.and %mon_main_pok, %0 : i1
+      %2 = comb.xor %1, %true : i1
+      verif.assert %2 : i1
+      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
     } transitions {
       fsm.transition @state_431 guard {
         %true = hw.constant true
@@ -91,7 +87,8 @@ module {
         %3 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true_0 : i1
         fsm.return %3
       } action {
-        fsm.update %u_main_pok_sync2Fu_sync_22Fq_o, %u_main_pok_sync2Fu_sync_12Fq_o : i1
+        %false = hw.constant false
+        fsm.update %false, %u_main_pok_sync2Fu_sync_12Fq_o : i1
         fsm.update %u_main_pok_sync2Fu_sync_12Fq_o, %async_main_pok_st : i1
         fsm.update %async_main_pok_st, %arg13 : i1
         fsm.update %fsm_invalid_q, %fsm_invalid_q : i1
@@ -103,25 +100,20 @@ module {
         %true = hw.constant true
         %0 = comb.and %arg7, %arg8 : i1
         %1 = comb.and %arg7, %arg9 : i1
+        %2 = comb.or %fsm_invalid_q, %0 : i1
+        %3 = comb.or %fsm_invalid_q, %1 : i1
         %true_0 = hw.constant true
-        %2 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-        %3 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-        %4 = comb.and %3, %pwr_clamp_env_q : i1
-        %5 = comb.or %u_main_pok_sync2Fu_sync_22Fq_o, %mon_main_pok : i1
-        %6 = comb.and %mon_main_pok, %2 : i1
-        %7 = comb.or %rst_req_o, %6 : i1
-        %8 = comb.xor %arg6, %true : i1
-        %9 = comb.and %8, %7 : i1
-        %10 = comb.xor %6, %true : i1
-        verif.assert %10 : i1
-        fsm.update %rst_req_o, %9 : i1
-        fsm.update %mon_main_pok, %5 : i1
-        fsm.update %pwr_clamp_env_q, %4 : i1
+        %4 = comb.or %rst_req_o, %mon_main_pok : i1
+        %5 = comb.xor %arg6, %true : i1
+        %6 = comb.and %5, %4 : i1
+        %7 = comb.xor %mon_main_pok, %true : i1
+        verif.assert %7 : i1
+        fsm.update %rst_req_o, %6 : i1
+        fsm.update %mon_main_pok, %mon_main_pok : i1
+        fsm.update %io_clk_en_q, %3 : i1
+        fsm.update %main_clk_en_q, %2 : i1
+        fsm.update %pwr_clamp_env_q, %pwr_clamp_env_q : i1
         fsm.update %pd_nq, %true_0 : i1
-        %11 = comb.or %fsm_invalid_q, %0 : i1
-        %12 = comb.or %fsm_invalid_q, %1 : i1
-        fsm.update %io_clk_en_q, %12 : i1
-        fsm.update %main_clk_en_q, %11 : i1
       }
       fsm.transition @state_401 guard {
         %true = hw.constant true
@@ -131,7 +123,8 @@ module {
         verif.assert %2 : i1
         fsm.return %u_main_pok_sync2Fu_sync_22Fq_o
       } action {
-        fsm.update %u_main_pok_sync2Fu_sync_22Fq_o, %u_main_pok_sync2Fu_sync_12Fq_o : i1
+        %true = hw.constant true
+        fsm.update %true, %u_main_pok_sync2Fu_sync_12Fq_o : i1
         fsm.update %u_main_pok_sync2Fu_sync_12Fq_o, %async_main_pok_st : i1
         fsm.update %async_main_pok_st, %arg13 : i1
         fsm.update %fsm_invalid_q, %fsm_invalid_q : i1
@@ -140,39 +133,33 @@ module {
         fsm.update %pwr_clamp_q, %pwr_clamp_q : i1
         fsm.update %cause_toggle_q, %cause_toggle_q : i1
         fsm.update %cause_q, %cause_q : i2
-        %true = hw.constant true
+        %true_0 = hw.constant true
         %0 = comb.and %arg7, %arg8 : i1
         %1 = comb.and %arg7, %arg9 : i1
-        %true_0 = hw.constant true
-        %2 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-        %3 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-        %4 = comb.and %3, %pwr_clamp_env_q : i1
-        %5 = comb.or %u_main_pok_sync2Fu_sync_22Fq_o, %mon_main_pok : i1
-        %6 = comb.and %mon_main_pok, %2 : i1
-        %7 = comb.or %rst_req_o, %6 : i1
-        %8 = comb.xor %arg6, %true : i1
-        %9 = comb.and %8, %7 : i1
-        %10 = comb.xor %6, %true : i1
-        verif.assert %10 : i1
-        fsm.update %rst_req_o, %9 : i1
-        fsm.update %mon_main_pok, %5 : i1
-        fsm.update %pwr_clamp_env_q, %4 : i1
-        fsm.update %pd_nq, %true_0 : i1
-        %11 = comb.or %fsm_invalid_q, %0 : i1
-        %12 = comb.or %fsm_invalid_q, %1 : i1
-        fsm.update %io_clk_en_q, %12 : i1
-        fsm.update %main_clk_en_q, %11 : i1
+        %2 = comb.or %fsm_invalid_q, %0 : i1
+        %3 = comb.or %fsm_invalid_q, %1 : i1
+        %true_1 = hw.constant true
+        %false = hw.constant false
+        %true_2 = hw.constant true
+        %4 = comb.xor %arg6, %true_0 : i1
+        %5 = comb.and %4, %rst_req_o : i1
+        %true_3 = hw.constant true
+        verif.assert %true_3 : i1
+        fsm.update %rst_req_o, %5 : i1
+        fsm.update %mon_main_pok, %true_2 : i1
+        fsm.update %io_clk_en_q, %3 : i1
+        fsm.update %main_clk_en_q, %2 : i1
+        fsm.update %pwr_clamp_env_q, %false : i1
+        fsm.update %pd_nq, %true_1 : i1
       }
     }
     fsm.state @state_401 output {
       %true = hw.constant true
-      %0 = hw.struct_create (%pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q) : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en = hw.struct_explode %0 : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %1 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-      %2 = comb.and %mon_main_pok, %1 : i1
-      %3 = comb.xor %2, %true : i1
-      verif.assert %3 : i1
-      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
+      %0 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
+      %1 = comb.and %mon_main_pok, %0 : i1
+      %2 = comb.xor %1, %true : i1
+      verif.assert %2 : i1
+      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
     } transitions {
       fsm.transition @state_700 guard {
         %true = hw.constant true
@@ -196,53 +183,51 @@ module {
         %true = hw.constant true
         %0 = comb.and %arg7, %arg8 : i1
         %1 = comb.and %arg7, %arg9 : i1
-        %2 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
+        %2 = comb.or %fsm_invalid_q, %0 : i1
+        %3 = comb.or %fsm_invalid_q, %1 : i1
+        %4 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
         %false = hw.constant false
-        %3 = comb.xor %pd_nq, %true : i1
-        %4 = comb.and %3, %mon_main_pok : i1
-        %5 = comb.xor %4, %true : i1
+        %5 = comb.xor %pd_nq, %true : i1
+        %6 = comb.and %5, %mon_main_pok : i1
+        %7 = comb.xor %6, %true : i1
         %true_0 = hw.constant true
-        %6 = comb.xor %4, %true_0 : i1
-        %7 = comb.or %6, %5 : i1
-        %8 = comb.and %7, %mon_main_pok : i1
-        %9 = comb.and %mon_main_pok, %2 : i1
-        %10 = comb.or %rst_req_o, %9 : i1
-        %11 = comb.xor %arg6, %true : i1
-        %12 = comb.and %11, %10 : i1
-        %13 = comb.xor %9, %true : i1
-        verif.assert %13 : i1
-        fsm.update %rst_req_o, %12 : i1
-        fsm.update %mon_main_pok, %8 : i1
+        %8 = comb.xor %6, %true_0 : i1
+        %9 = comb.or %8, %7 : i1
+        %10 = comb.and %9, %mon_main_pok : i1
+        %11 = comb.and %mon_main_pok, %4 : i1
+        %12 = comb.or %rst_req_o, %11 : i1
+        %13 = comb.xor %arg6, %true : i1
+        %14 = comb.and %13, %12 : i1
+        %15 = comb.xor %11, %true : i1
+        verif.assert %15 : i1
+        fsm.update %rst_req_o, %14 : i1
+        fsm.update %mon_main_pok, %10 : i1
+        fsm.update %io_clk_en_q, %3 : i1
+        fsm.update %main_clk_en_q, %2 : i1
         fsm.update %pwr_clamp_q, %false : i1
-        %14 = comb.or %fsm_invalid_q, %0 : i1
-        %15 = comb.or %fsm_invalid_q, %1 : i1
-        fsm.update %io_clk_en_q, %15 : i1
-        fsm.update %main_clk_en_q, %14 : i1
       }
     }
     fsm.state @state_700 output {
       %true = hw.constant true
-      %0 = hw.struct_create (%pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q) : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en = hw.struct_explode %0 : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %1 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-      %2 = comb.and %mon_main_pok, %1 : i1
-      %3 = comb.xor %2, %true : i1
-      verif.assert %3 : i1
-      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
+      %0 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
+      %1 = comb.and %mon_main_pok, %0 : i1
+      %2 = comb.xor %1, %true : i1
+      verif.assert %2 : i1
+      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
     } transitions {
       fsm.transition @state_700 guard {
-        %c218_i10 = hw.constant 218 : i10
         %true = hw.constant true
         %0 = comb.and %arg11, %arg12 : i1
-        %c-324_i10 = hw.constant -324 : i10
         %1 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-        %2 = comb.mux %0, %c218_i10, %c-324_i10 : i10
+        %c109_i9 = hw.constant 109 : i9
+        %c-162_i9 = hw.constant -162 : i9
+        %2 = comb.mux %0, %c109_i9, %c-162_i9 : i9
         %3 = comb.and %mon_main_pok, %1 : i1
         %4 = comb.xor %3, %true : i1
         verif.assert %4 : i1
-        %5 = comb.extract %2 from 5 : (i10) -> i2
-        %6 = comb.extract %2 from 9 : (i10) -> i1
-        %7 = comb.extract %2 from 1 : (i10) -> i2
+        %5 = comb.extract %2 from 4 : (i9) -> i2
+        %6 = comb.extract %2 from 8 : (i9) -> i1
+        %7 = comb.extract %2 from 0 : (i9) -> i2
         %8 = comb.concat %6, %5, %7 : i1, i2, i2
         %c-10_i5 = hw.constant -10 : i5
         %9 = comb.icmp eq %8, %c-10_i5 : i5
@@ -335,28 +320,26 @@ module {
     }
     fsm.state @state_218 output {
       %true = hw.constant true
-      %0 = hw.struct_create (%pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q) : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en = hw.struct_explode %0 : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %1 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-      %2 = comb.and %mon_main_pok, %1 : i1
-      %3 = comb.xor %2, %true : i1
-      verif.assert %3 : i1
-      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
+      %0 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
+      %1 = comb.and %mon_main_pok, %0 : i1
+      %2 = comb.xor %1, %true : i1
+      verif.assert %2 : i1
+      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
     } transitions {
       fsm.transition @state_992 guard {
-        %c-32_i10 = hw.constant -32 : i10
         %true = hw.constant true
-        %c218_i10 = hw.constant 218 : i10
         %0 = comb.xor %arg5, %true : i1
         %1 = comb.and %arg4, %0 : i1
         %2 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-        %3 = comb.mux %1, %c-32_i10, %c218_i10 : i10
+        %c-16_i9 = hw.constant -16 : i9
+        %c109_i9 = hw.constant 109 : i9
+        %3 = comb.mux %1, %c-16_i9, %c109_i9 : i9
         %4 = comb.and %mon_main_pok, %2 : i1
         %5 = comb.xor %4, %true : i1
         verif.assert %5 : i1
-        %6 = comb.extract %3 from 8 : (i10) -> i2
-        %7 = comb.extract %3 from 3 : (i10) -> i3
-        %8 = comb.extract %3 from 1 : (i10) -> i1
+        %6 = comb.extract %3 from 7 : (i9) -> i2
+        %7 = comb.extract %3 from 2 : (i9) -> i3
+        %8 = comb.extract %3 from 0 : (i9) -> i1
         %9 = comb.concat %6, %7, %8 : i2, i3, i1
         %c-8_i6 = hw.constant -8 : i6
         %10 = comb.icmp eq %9, %c-8_i6 : i6
@@ -458,13 +441,11 @@ module {
     }
     fsm.state @state_992 output {
       %true = hw.constant true
-      %0 = hw.struct_create (%pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q) : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en = hw.struct_explode %0 : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %1 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-      %2 = comb.and %mon_main_pok, %1 : i1
-      %3 = comb.xor %2, %true : i1
-      verif.assert %3 : i1
-      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
+      %0 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
+      %1 = comb.and %mon_main_pok, %0 : i1
+      %2 = comb.xor %1, %true : i1
+      verif.assert %2 : i1
+      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
     } transitions {
       fsm.transition @state_992 guard {
         %c117_i10 = hw.constant 117 : i10
@@ -575,13 +556,11 @@ module {
     }
     fsm.state @state_117 output {
       %true = hw.constant true
-      %0 = hw.struct_create (%pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q) : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en = hw.struct_explode %0 : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %1 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-      %2 = comb.and %mon_main_pok, %1 : i1
-      %3 = comb.xor %2, %true : i1
-      verif.assert %3 : i1
-      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
+      %0 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
+      %1 = comb.and %mon_main_pok, %0 : i1
+      %2 = comb.xor %1, %true : i1
+      verif.assert %2 : i1
+      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
     } transitions {
       fsm.transition @state_891 guard {
         %true = hw.constant true
@@ -686,13 +665,11 @@ module {
     }
     fsm.state @state_891 output {
       %true = hw.constant true
-      %0 = hw.struct_create (%pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q) : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en = hw.struct_explode %0 : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %1 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-      %2 = comb.and %mon_main_pok, %1 : i1
-      %3 = comb.xor %2, %true : i1
-      verif.assert %3 : i1
-      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
+      %0 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
+      %1 = comb.and %mon_main_pok, %0 : i1
+      %2 = comb.xor %1, %true : i1
+      verif.assert %2 : i1
+      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
     } transitions {
       fsm.transition @state_891 guard {
         %true = hw.constant true
@@ -742,29 +719,29 @@ module {
         %4 = comb.xor %arg12, %true : i1
         %5 = comb.or %1, %4 : i1
         %6 = comb.and %3, %5 : i1
-        %7 = comb.xor %arg7, %true : i1
-        %8 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-        %9 = comb.mux %6, %7, %pwr_clamp_env_q : i1
-        %10 = comb.xor %pd_nq, %true : i1
-        %11 = comb.and %10, %mon_main_pok : i1
-        %12 = comb.xor %11, %true : i1
+        %7 = comb.or %fsm_invalid_q, %0 : i1
+        %8 = comb.or %fsm_invalid_q, %1 : i1
+        %9 = comb.xor %arg7, %true : i1
+        %10 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
+        %11 = comb.mux %6, %9, %pwr_clamp_env_q : i1
+        %12 = comb.xor %pd_nq, %true : i1
+        %13 = comb.and %12, %mon_main_pok : i1
+        %14 = comb.xor %13, %true : i1
         %true_0 = hw.constant true
-        %13 = comb.xor %11, %true_0 : i1
-        %14 = comb.or %13, %12 : i1
-        %15 = comb.and %14, %mon_main_pok : i1
-        %16 = comb.and %mon_main_pok, %8 : i1
-        %17 = comb.or %rst_req_o, %16 : i1
-        %18 = comb.xor %arg6, %true : i1
-        %19 = comb.and %18, %17 : i1
-        %20 = comb.xor %16, %true : i1
-        verif.assert %20 : i1
-        fsm.update %rst_req_o, %19 : i1
-        fsm.update %mon_main_pok, %15 : i1
-        fsm.update %pwr_clamp_env_q, %9 : i1
-        %21 = comb.or %fsm_invalid_q, %0 : i1
-        %22 = comb.or %fsm_invalid_q, %1 : i1
-        fsm.update %io_clk_en_q, %22 : i1
-        fsm.update %main_clk_en_q, %21 : i1
+        %15 = comb.xor %13, %true_0 : i1
+        %16 = comb.or %15, %14 : i1
+        %17 = comb.and %16, %mon_main_pok : i1
+        %18 = comb.and %mon_main_pok, %10 : i1
+        %19 = comb.or %rst_req_o, %18 : i1
+        %20 = comb.xor %arg6, %true : i1
+        %21 = comb.and %20, %19 : i1
+        %22 = comb.xor %18, %true : i1
+        verif.assert %22 : i1
+        fsm.update %rst_req_o, %21 : i1
+        fsm.update %mon_main_pok, %17 : i1
+        fsm.update %io_clk_en_q, %8 : i1
+        fsm.update %main_clk_en_q, %7 : i1
+        fsm.update %pwr_clamp_env_q, %11 : i1
       }
       fsm.transition @state_711 guard {
         %true = hw.constant true
@@ -793,29 +770,29 @@ module {
         %4 = comb.xor %arg12, %true : i1
         %5 = comb.or %1, %4 : i1
         %6 = comb.and %3, %5 : i1
-        %7 = comb.xor %arg7, %true : i1
-        %8 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-        %9 = comb.mux %6, %7, %pwr_clamp_env_q : i1
-        %10 = comb.xor %pd_nq, %true : i1
-        %11 = comb.and %10, %mon_main_pok : i1
-        %12 = comb.xor %11, %true : i1
+        %7 = comb.or %fsm_invalid_q, %0 : i1
+        %8 = comb.or %fsm_invalid_q, %1 : i1
+        %9 = comb.xor %arg7, %true : i1
+        %10 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
+        %11 = comb.mux %6, %9, %pwr_clamp_env_q : i1
+        %12 = comb.xor %pd_nq, %true : i1
+        %13 = comb.and %12, %mon_main_pok : i1
+        %14 = comb.xor %13, %true : i1
         %true_0 = hw.constant true
-        %13 = comb.xor %11, %true_0 : i1
-        %14 = comb.or %13, %12 : i1
-        %15 = comb.and %14, %mon_main_pok : i1
-        %16 = comb.and %mon_main_pok, %8 : i1
-        %17 = comb.or %rst_req_o, %16 : i1
-        %18 = comb.xor %arg6, %true : i1
-        %19 = comb.and %18, %17 : i1
-        %20 = comb.xor %16, %true : i1
-        verif.assert %20 : i1
-        fsm.update %rst_req_o, %19 : i1
-        fsm.update %mon_main_pok, %15 : i1
-        fsm.update %pwr_clamp_env_q, %9 : i1
-        %21 = comb.or %fsm_invalid_q, %0 : i1
-        %22 = comb.or %fsm_invalid_q, %1 : i1
-        fsm.update %io_clk_en_q, %22 : i1
-        fsm.update %main_clk_en_q, %21 : i1
+        %15 = comb.xor %13, %true_0 : i1
+        %16 = comb.or %15, %14 : i1
+        %17 = comb.and %16, %mon_main_pok : i1
+        %18 = comb.and %mon_main_pok, %10 : i1
+        %19 = comb.or %rst_req_o, %18 : i1
+        %20 = comb.xor %arg6, %true : i1
+        %21 = comb.and %20, %19 : i1
+        %22 = comb.xor %18, %true : i1
+        verif.assert %22 : i1
+        fsm.update %rst_req_o, %21 : i1
+        fsm.update %mon_main_pok, %17 : i1
+        fsm.update %io_clk_en_q, %8 : i1
+        fsm.update %main_clk_en_q, %7 : i1
+        fsm.update %pwr_clamp_env_q, %11 : i1
       }
       fsm.transition @state_332 guard {
         %true = hw.constant true
@@ -845,45 +822,37 @@ module {
         %true = hw.constant true
         %0 = comb.and %arg7, %arg8 : i1
         %1 = comb.and %arg7, %arg9 : i1
-        %2 = comb.xor %arg11, %true : i1
-        %3 = comb.or %0, %2 : i1
-        %4 = comb.xor %arg12, %true : i1
-        %5 = comb.or %1, %4 : i1
-        %6 = comb.and %3, %5 : i1
-        %7 = comb.xor %arg7, %true : i1
-        %8 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-        %9 = comb.mux %6, %7, %pwr_clamp_env_q : i1
-        %10 = comb.xor %pd_nq, %true : i1
-        %11 = comb.and %10, %mon_main_pok : i1
-        %12 = comb.xor %11, %true : i1
+        %2 = comb.or %fsm_invalid_q, %0 : i1
+        %3 = comb.or %fsm_invalid_q, %1 : i1
+        %4 = comb.xor %arg7, %true : i1
+        %5 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
+        %6 = comb.xor %pd_nq, %true : i1
+        %7 = comb.and %6, %mon_main_pok : i1
+        %8 = comb.xor %7, %true : i1
         %true_0 = hw.constant true
-        %13 = comb.xor %11, %true_0 : i1
-        %14 = comb.or %13, %12 : i1
-        %15 = comb.and %14, %mon_main_pok : i1
-        %16 = comb.and %mon_main_pok, %8 : i1
-        %17 = comb.or %rst_req_o, %16 : i1
-        %18 = comb.xor %arg6, %true : i1
-        %19 = comb.and %18, %17 : i1
-        %20 = comb.xor %16, %true : i1
-        verif.assert %20 : i1
-        fsm.update %rst_req_o, %19 : i1
-        fsm.update %mon_main_pok, %15 : i1
-        fsm.update %pwr_clamp_env_q, %9 : i1
-        %21 = comb.or %fsm_invalid_q, %0 : i1
-        %22 = comb.or %fsm_invalid_q, %1 : i1
-        fsm.update %io_clk_en_q, %22 : i1
-        fsm.update %main_clk_en_q, %21 : i1
+        %9 = comb.xor %7, %true_0 : i1
+        %10 = comb.or %9, %8 : i1
+        %11 = comb.and %10, %mon_main_pok : i1
+        %12 = comb.and %mon_main_pok, %5 : i1
+        %13 = comb.or %rst_req_o, %12 : i1
+        %14 = comb.xor %arg6, %true : i1
+        %15 = comb.and %14, %13 : i1
+        %16 = comb.xor %12, %true : i1
+        verif.assert %16 : i1
+        fsm.update %rst_req_o, %15 : i1
+        fsm.update %mon_main_pok, %11 : i1
+        fsm.update %io_clk_en_q, %3 : i1
+        fsm.update %main_clk_en_q, %2 : i1
+        fsm.update %pwr_clamp_env_q, %4 : i1
       }
     }
     fsm.state @state_332 output {
       %true = hw.constant true
-      %0 = hw.struct_create (%pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q) : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en = hw.struct_explode %0 : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %1 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-      %2 = comb.and %mon_main_pok, %1 : i1
-      %3 = comb.xor %2, %true : i1
-      verif.assert %3 : i1
-      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
+      %0 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
+      %1 = comb.and %mon_main_pok, %0 : i1
+      %2 = comb.xor %1, %true : i1
+      verif.assert %2 : i1
+      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
     } transitions {
       fsm.transition @state_521 guard {
         %true = hw.constant true
@@ -908,37 +877,35 @@ module {
         %true = hw.constant true
         %0 = comb.and %arg7, %arg8 : i1
         %1 = comb.and %arg7, %arg9 : i1
-        %2 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-        %3 = comb.xor %pd_nq, %true : i1
-        %4 = comb.and %3, %mon_main_pok : i1
-        %5 = comb.xor %4, %true : i1
+        %2 = comb.or %fsm_invalid_q, %0 : i1
+        %3 = comb.or %fsm_invalid_q, %1 : i1
+        %4 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
+        %5 = comb.xor %pd_nq, %true : i1
+        %6 = comb.and %5, %mon_main_pok : i1
+        %7 = comb.xor %6, %true : i1
         %true_0 = hw.constant true
-        %6 = comb.xor %4, %true_0 : i1
-        %7 = comb.or %6, %5 : i1
-        %8 = comb.and %7, %mon_main_pok : i1
-        %9 = comb.and %mon_main_pok, %2 : i1
-        %10 = comb.or %rst_req_o, %9 : i1
-        %11 = comb.xor %arg6, %true : i1
-        %12 = comb.and %11, %10 : i1
-        %13 = comb.xor %9, %true : i1
-        verif.assert %13 : i1
-        fsm.update %rst_req_o, %12 : i1
-        fsm.update %mon_main_pok, %8 : i1
-        %14 = comb.or %fsm_invalid_q, %0 : i1
-        %15 = comb.or %fsm_invalid_q, %1 : i1
-        fsm.update %io_clk_en_q, %15 : i1
-        fsm.update %main_clk_en_q, %14 : i1
+        %8 = comb.xor %6, %true_0 : i1
+        %9 = comb.or %8, %7 : i1
+        %10 = comb.and %9, %mon_main_pok : i1
+        %11 = comb.and %mon_main_pok, %4 : i1
+        %12 = comb.or %rst_req_o, %11 : i1
+        %13 = comb.xor %arg6, %true : i1
+        %14 = comb.and %13, %12 : i1
+        %15 = comb.xor %11, %true : i1
+        verif.assert %15 : i1
+        fsm.update %rst_req_o, %14 : i1
+        fsm.update %mon_main_pok, %10 : i1
+        fsm.update %io_clk_en_q, %3 : i1
+        fsm.update %main_clk_en_q, %2 : i1
       }
     }
     fsm.state @state_711 output {
       %true = hw.constant true
-      %0 = hw.struct_create (%pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q) : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en = hw.struct_explode %0 : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %1 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-      %2 = comb.and %mon_main_pok, %1 : i1
-      %3 = comb.xor %2, %true : i1
-      verif.assert %3 : i1
-      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
+      %0 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
+      %1 = comb.and %mon_main_pok, %0 : i1
+      %2 = comb.xor %1, %true : i1
+      verif.assert %2 : i1
+      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
     } transitions {
       fsm.transition @state_711 guard {
         %true = hw.constant true
@@ -967,32 +934,32 @@ module {
         %true = hw.constant true
         %0 = comb.and %arg7, %arg8 : i1
         %1 = comb.and %arg7, %arg9 : i1
-        %2 = comb.or %arg2, %arg3 : i1
-        %3 = comb.mux %arg3, %c-2_i2, %c1_i2 : i2
-        %4 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-        %5 = comb.mux %2, %3, %cause_q : i2
-        %6 = comb.xor %2, %cause_toggle_q : i1
-        %7 = comb.xor %pd_nq, %true : i1
-        %8 = comb.and %7, %mon_main_pok : i1
-        %9 = comb.xor %8, %true : i1
+        %2 = comb.or %fsm_invalid_q, %0 : i1
+        %3 = comb.or %fsm_invalid_q, %1 : i1
+        %4 = comb.or %arg2, %arg3 : i1
+        %5 = comb.mux %arg3, %c-2_i2, %c1_i2 : i2
+        %6 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
+        %7 = comb.mux %4, %5, %cause_q : i2
+        %8 = comb.xor %4, %cause_toggle_q : i1
+        %9 = comb.xor %pd_nq, %true : i1
+        %10 = comb.and %9, %mon_main_pok : i1
+        %11 = comb.xor %10, %true : i1
         %true_0 = hw.constant true
-        %10 = comb.xor %8, %true_0 : i1
-        %11 = comb.or %10, %9 : i1
-        %12 = comb.and %11, %mon_main_pok : i1
-        %13 = comb.and %mon_main_pok, %4 : i1
-        %14 = comb.or %rst_req_o, %13 : i1
-        %15 = comb.xor %arg6, %true : i1
-        %16 = comb.and %15, %14 : i1
-        %17 = comb.xor %13, %true : i1
-        verif.assert %17 : i1
-        fsm.update %rst_req_o, %16 : i1
-        fsm.update %mon_main_pok, %12 : i1
-        fsm.update %cause_toggle_q, %6 : i1
-        fsm.update %cause_q, %5 : i2
-        %18 = comb.or %fsm_invalid_q, %0 : i1
-        %19 = comb.or %fsm_invalid_q, %1 : i1
-        fsm.update %io_clk_en_q, %19 : i1
-        fsm.update %main_clk_en_q, %18 : i1
+        %12 = comb.xor %10, %true_0 : i1
+        %13 = comb.or %12, %11 : i1
+        %14 = comb.and %13, %mon_main_pok : i1
+        %15 = comb.and %mon_main_pok, %6 : i1
+        %16 = comb.or %rst_req_o, %15 : i1
+        %17 = comb.xor %arg6, %true : i1
+        %18 = comb.and %17, %16 : i1
+        %19 = comb.xor %15, %true : i1
+        verif.assert %19 : i1
+        fsm.update %rst_req_o, %18 : i1
+        fsm.update %mon_main_pok, %14 : i1
+        fsm.update %io_clk_en_q, %3 : i1
+        fsm.update %main_clk_en_q, %2 : i1
+        fsm.update %cause_toggle_q, %8 : i1
+        fsm.update %cause_q, %7 : i2
       }
       fsm.transition @state_431 guard {
         %true = hw.constant true
@@ -1003,6 +970,7 @@ module {
         verif.assert %3 : i1
         fsm.return %0
       } action {
+        %true = hw.constant true
         fsm.update %u_main_pok_sync2Fu_sync_22Fq_o, %u_main_pok_sync2Fu_sync_12Fq_o : i1
         fsm.update %u_main_pok_sync2Fu_sync_12Fq_o, %async_main_pok_st : i1
         fsm.update %async_main_pok_st, %arg13 : i1
@@ -1014,46 +982,42 @@ module {
         fsm.update %pd_nq, %pd_nq : i1
         %c-2_i2 = hw.constant -2 : i2
         %c1_i2 = hw.constant 1 : i2
-        %true = hw.constant true
+        %true_0 = hw.constant true
         %0 = comb.and %arg7, %arg8 : i1
         %1 = comb.and %arg7, %arg9 : i1
-        %2 = comb.or %arg2, %arg3 : i1
-        %3 = comb.mux %arg3, %c-2_i2, %c1_i2 : i2
-        %4 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-        %5 = comb.mux %2, %3, %cause_q : i2
-        %6 = comb.xor %2, %cause_toggle_q : i1
-        %7 = comb.xor %pd_nq, %true : i1
+        %2 = comb.or %fsm_invalid_q, %0 : i1
+        %3 = comb.or %fsm_invalid_q, %1 : i1
+        %4 = comb.mux %arg3, %c-2_i2, %c1_i2 : i2
+        %5 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true_0 : i1
+        %6 = comb.xor %cause_toggle_q, %true : i1
+        %7 = comb.xor %pd_nq, %true_0 : i1
         %8 = comb.and %7, %mon_main_pok : i1
-        %9 = comb.xor %8, %true : i1
-        %true_0 = hw.constant true
-        %10 = comb.xor %8, %true_0 : i1
+        %9 = comb.xor %8, %true_0 : i1
+        %true_1 = hw.constant true
+        %10 = comb.xor %8, %true_1 : i1
         %11 = comb.or %10, %9 : i1
         %12 = comb.and %11, %mon_main_pok : i1
-        %13 = comb.and %mon_main_pok, %4 : i1
+        %13 = comb.and %mon_main_pok, %5 : i1
         %14 = comb.or %rst_req_o, %13 : i1
-        %15 = comb.xor %arg6, %true : i1
+        %15 = comb.xor %arg6, %true_0 : i1
         %16 = comb.and %15, %14 : i1
-        %17 = comb.xor %13, %true : i1
+        %17 = comb.xor %13, %true_0 : i1
         verif.assert %17 : i1
         fsm.update %rst_req_o, %16 : i1
         fsm.update %mon_main_pok, %12 : i1
+        fsm.update %io_clk_en_q, %3 : i1
+        fsm.update %main_clk_en_q, %2 : i1
         fsm.update %cause_toggle_q, %6 : i1
-        fsm.update %cause_q, %5 : i2
-        %18 = comb.or %fsm_invalid_q, %0 : i1
-        %19 = comb.or %fsm_invalid_q, %1 : i1
-        fsm.update %io_clk_en_q, %19 : i1
-        fsm.update %main_clk_en_q, %18 : i1
+        fsm.update %cause_q, %4 : i2
       }
     }
     fsm.state @state_521 output {
       %true = hw.constant true
-      %0 = hw.struct_create (%pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q) : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en = hw.struct_explode %0 : !hw.struct<main_pd_n: i1, pwr_clamp_env: i1, pwr_clamp: i1, slow_clk_en: i1, core_clk_en: i1, io_clk_en: i1>
-      %1 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-      %2 = comb.and %mon_main_pok, %1 : i1
-      %3 = comb.xor %2, %true : i1
-      verif.assert %3 : i1
-      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %main_pd_n, %pwr_clamp_env, %pwr_clamp, %slow_clk_en, %core_clk_en, %io_clk_en : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
+      %0 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
+      %1 = comb.and %mon_main_pok, %0 : i1
+      %2 = comb.xor %1, %true : i1
+      verif.assert %2 : i1
+      fsm.output %req_pwrup_q, %cause_toggle_q, %cause_q, %ack_pwrdn_q, %rst_req_o, %fsm_invalid_q, %pd_nq, %pwr_clamp_env_q, %pwr_clamp_q, %true, %main_clk_en_q, %io_clk_en_q : i1, i1, i2, i1, i1, i1, i1, i1, i1, i1, i1, i1
     } transitions {
       fsm.transition @state_711 guard {
         %true = hw.constant true
@@ -1087,26 +1051,26 @@ module {
         %true = hw.constant true
         %0 = comb.and %arg7, %arg8 : i1
         %1 = comb.and %arg7, %arg9 : i1
-        %2 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-        %3 = comb.xor %arg7, %true : i1
-        %4 = comb.and %3, %mon_main_pok : i1
-        %5 = comb.xor %4, %true : i1
+        %2 = comb.or %fsm_invalid_q, %0 : i1
+        %3 = comb.or %fsm_invalid_q, %1 : i1
+        %4 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
+        %5 = comb.xor %arg7, %true : i1
+        %6 = comb.and %5, %mon_main_pok : i1
+        %7 = comb.xor %6, %true : i1
         %true_0 = hw.constant true
-        %6 = comb.xor %4, %true_0 : i1
-        %7 = comb.or %6, %5 : i1
-        %8 = comb.and %7, %mon_main_pok : i1
-        %9 = comb.and %mon_main_pok, %2 : i1
-        %10 = comb.or %rst_req_o, %9 : i1
-        %11 = comb.xor %arg6, %true : i1
-        %12 = comb.and %11, %10 : i1
-        %13 = comb.xor %9, %true : i1
-        verif.assert %13 : i1
-        fsm.update %rst_req_o, %12 : i1
-        fsm.update %mon_main_pok, %8 : i1
-        %14 = comb.or %fsm_invalid_q, %0 : i1
-        %15 = comb.or %fsm_invalid_q, %1 : i1
-        fsm.update %io_clk_en_q, %15 : i1
-        fsm.update %main_clk_en_q, %14 : i1
+        %8 = comb.xor %6, %true_0 : i1
+        %9 = comb.or %8, %7 : i1
+        %10 = comb.and %9, %mon_main_pok : i1
+        %11 = comb.and %mon_main_pok, %4 : i1
+        %12 = comb.or %rst_req_o, %11 : i1
+        %13 = comb.xor %arg6, %true : i1
+        %14 = comb.and %13, %12 : i1
+        %15 = comb.xor %11, %true : i1
+        verif.assert %15 : i1
+        fsm.update %rst_req_o, %14 : i1
+        fsm.update %mon_main_pok, %10 : i1
+        fsm.update %io_clk_en_q, %3 : i1
+        fsm.update %main_clk_en_q, %2 : i1
       }
       fsm.transition @state_521 guard {
         %true = hw.constant true
@@ -1140,26 +1104,26 @@ module {
         %true = hw.constant true
         %0 = comb.and %arg7, %arg8 : i1
         %1 = comb.and %arg7, %arg9 : i1
-        %2 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
-        %3 = comb.xor %arg7, %true : i1
-        %4 = comb.and %3, %mon_main_pok : i1
-        %5 = comb.xor %4, %true : i1
+        %2 = comb.or %fsm_invalid_q, %0 : i1
+        %3 = comb.or %fsm_invalid_q, %1 : i1
+        %4 = comb.xor %u_main_pok_sync2Fu_sync_22Fq_o, %true : i1
+        %5 = comb.xor %arg7, %true : i1
+        %6 = comb.and %5, %mon_main_pok : i1
+        %7 = comb.xor %6, %true : i1
         %true_0 = hw.constant true
-        %6 = comb.xor %4, %true_0 : i1
-        %7 = comb.or %6, %5 : i1
-        %8 = comb.and %7, %mon_main_pok : i1
-        %9 = comb.and %mon_main_pok, %2 : i1
-        %10 = comb.or %rst_req_o, %9 : i1
-        %11 = comb.xor %arg6, %true : i1
-        %12 = comb.and %11, %10 : i1
-        %13 = comb.xor %9, %true : i1
-        verif.assert %13 : i1
-        fsm.update %rst_req_o, %12 : i1
-        fsm.update %mon_main_pok, %8 : i1
-        %14 = comb.or %fsm_invalid_q, %0 : i1
-        %15 = comb.or %fsm_invalid_q, %1 : i1
-        fsm.update %io_clk_en_q, %15 : i1
-        fsm.update %main_clk_en_q, %14 : i1
+        %8 = comb.xor %6, %true_0 : i1
+        %9 = comb.or %8, %7 : i1
+        %10 = comb.and %9, %mon_main_pok : i1
+        %11 = comb.and %mon_main_pok, %4 : i1
+        %12 = comb.or %rst_req_o, %11 : i1
+        %13 = comb.xor %arg6, %true : i1
+        %14 = comb.and %13, %12 : i1
+        %15 = comb.xor %11, %true : i1
+        verif.assert %15 : i1
+        fsm.update %rst_req_o, %14 : i1
+        fsm.update %mon_main_pok, %10 : i1
+        fsm.update %io_clk_en_q, %3 : i1
+        fsm.update %main_clk_en_q, %2 : i1
       }
     }
   }
