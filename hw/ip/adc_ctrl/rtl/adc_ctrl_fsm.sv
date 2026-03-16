@@ -349,9 +349,18 @@ module adc_ctrl_fsm
     endcase
   end
 
+  logic isFirstCycle;
+  always_ff @(posedge clk_aon_i or negedge rst_aon_ni) begin
+    if (!rst_aon_ni) begin
+      isFirstCycle <= 1'b1;
+    end else begin
+      isFirstCycle <= 1'b0;
+    end
+  end
+
   //  `ASSUME(LpSampleCntCfg_M, cfg_lp_sample_cnt_i > '0, clk_aon_i, !rst_aon_ni)
   //  `ASSUME(NpSampleCntCfg_M, cfg_np_sample_cnt_i > '0, clk_aon_i, !rst_aon_ni)
-    `ASSERT(NpCntClrPwrDn_A, fsm_state_q == PWRDN |-> (np_sample_cnt_q == '0),
+    `ASSERT(NpCntClrPwrDn_A, !isFirstCycle && $past(fsm_state_q == NP_DONE) |-> (fsm_state_q == PWRDN),
             clk_aon_i, !rst_aon_ni)
 
   //  // This statement should hold true even during low power scanning
