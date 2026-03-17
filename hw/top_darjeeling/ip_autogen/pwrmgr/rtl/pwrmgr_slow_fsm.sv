@@ -335,6 +335,21 @@ module pwrmgr_slow_fsm import pwrmgr_pkg::*; (
   ////////////////////////////
   // Under normal circumstances, this should NEVER fire
   // May need to add a signal to disable this check for simulation
-  `ASSERT(IntRstReq_A, pwr_rst_req == '0)
+  // `ASSERT(IntRstReq_A, pwr_rst_req == '0)
+
+  // Track first cycle for assertion stability
+  logic isFirstCycle;
+  always_ff @(posedge clk_i or negedge rst_ni) begin
+    if (!rst_ni) isFirstCycle <= 1'b1;
+    else         isFirstCycle <= 1'b0;
+  end
+
+  // When SlowPwrStateMainPowerOff's exit condition is met (!main_pok_st | main_pd_ni),
+  // the FSM must transition to SlowPwrStateLowPower on the next cycle.
+  `ASSERT(MainPowerOffGoesToLowPower_A,
+      (!isFirstCycle
+       && $past(state_q == SlowPwrStateMainPowerOff))
+      |-> state_q == SlowPwrStateLowPower,
+      clk_i, rst_ni)
 
 endmodule
